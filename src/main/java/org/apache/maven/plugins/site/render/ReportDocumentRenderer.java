@@ -54,6 +54,7 @@ import org.codehaus.plexus.util.WriterFactory;
  * Renders a Maven report in a Doxia site.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
+ * @see org.apache.maven.doxia.siterenderer.DoxiaDocumentRenderer
  */
 public class ReportDocumentRenderer
     implements DocumentRenderer
@@ -264,8 +265,8 @@ public class ReportDocumentRenderer
             return;
         }
 
-        // render main sink
-        renderer.generateDocument( writer, mainSink, siteRenderingContext );
+        // render main sink document content
+        renderer.mergeDocumentIntoSite( writer, mainSink, siteRenderingContext );
 
         // render sub-sinks, eventually created by multi-page reports
         String outputName = "";
@@ -288,7 +289,7 @@ public class ReportDocumentRenderer
                 try
                 {
                     out = WriterFactory.newWriter( outputFile, siteRenderingContext.getOutputEncoding() );
-                    renderer.generateDocument( out, mySink, siteRenderingContext );
+                    renderer.mergeDocumentIntoSite( out, mySink, siteRenderingContext );
                     mySink.close();
                     mySink = null;
                     out.close();
