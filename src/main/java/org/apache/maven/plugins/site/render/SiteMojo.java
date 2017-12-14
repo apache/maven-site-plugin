@@ -195,7 +195,8 @@ public class SiteMojo
         context.getSiteDirectories().clear();
         context.addSiteDirectory( generatedSiteDirectory );
 
-        Map<String, DocumentRenderer> generatedDocuments = siteRenderer.locateDocumentFiles( context );
+        Map<String, DocumentRenderer> generatedDocuments =
+            siteRenderer.locateDocumentFiles( context, false /* not editable */ );
 
         renderDoxiaDocuments( generatedDocuments, context, outputDir, true );
 

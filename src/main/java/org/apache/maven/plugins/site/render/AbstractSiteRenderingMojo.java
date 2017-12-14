@@ -452,7 +452,7 @@ public abstract class AbstractSiteRenderingMojo
                                                              List<MavenReportExecution> reports, Locale locale )
         throws IOException, RendererException
     {
-        Map<String, DocumentRenderer> documents = siteRenderer.locateDocumentFiles( context );
+        Map<String, DocumentRenderer> documents = siteRenderer.locateDocumentFiles( context, true );
 
         Map<String, MavenReport> reportsByOutputName = locateReports( reports, documents, locale );
 
