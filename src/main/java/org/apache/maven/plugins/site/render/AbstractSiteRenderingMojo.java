@@ -44,6 +44,7 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
@@ -408,7 +409,10 @@ public abstract class AbstractSiteRenderingMojo
             }
             else
             {
-                RenderingContext renderingContext = new RenderingContext( siteDirectory, outputName );
+                String reportMojoInfo = mavenReportExecution.getPlugin().getGroupId() + ':'
+                    + mavenReportExecution.getPlugin().getArtifactId() + ':'
+                    + mavenReportExecution.getPlugin().getVersion() + ':' + mavenReportExecution.getGoal();
+                RenderingContext renderingContext = new RenderingContext( siteDirectory, outputName, reportMojoInfo );
                 DocumentRenderer renderer =
                     new ReportDocumentRenderer( mavenReportExecution, renderingContext, getLog() );
                 documents.put( outputName, renderer );
@@ -467,7 +471,9 @@ public abstract class AbstractSiteRenderingMojo
             // add "Project Information" category summary document
             List<MavenReport> categoryReports = categories.get( MavenReport.CATEGORY_PROJECT_INFORMATION );
 
-            RenderingContext renderingContext = new RenderingContext( siteDirectory, "project-info.html" );
+            RenderingContext renderingContext =
+                new RenderingContext( siteDirectory, "project-info.html",
+                                      getSitePluginInfo() + ":CategorySummaryDocumentRenderer" );
             String title = i18n.getString( "site-plugin", locale, "report.information.title" );
             String desc1 = i18n.getString( "site-plugin", locale, "report.information.description1" );
             String desc2 = i18n.getString( "site-plugin", locale, "report.information.description2" );
@@ -488,7 +494,9 @@ public abstract class AbstractSiteRenderingMojo
         {
             // add "Project Reports" category summary document
             List<MavenReport> categoryReports = categories.get( MavenReport.CATEGORY_PROJECT_REPORTS );
-            RenderingContext renderingContext = new RenderingContext( siteDirectory, "project-reports.html" );
+            RenderingContext renderingContext =
+                new RenderingContext( siteDirectory, "project-reports.html",
+                                      getSitePluginInfo() + ":CategorySummaryDocumentRenderer" );
             String title = i18n.getString( "site-plugin", locale, "report.project.title" );
             String desc1 = i18n.getString( "site-plugin", locale, "report.project.description1" );
             String desc2 = i18n.getString( "site-plugin", locale, "report.project.description2" );
@@ -507,6 +515,11 @@ public abstract class AbstractSiteRenderingMojo
         return documents;
     }
 
+    private String getSitePluginInfo()
+    {
+        PluginDescriptor pluginDescriptor = (PluginDescriptor) getPluginContext().get( "pluginDescriptor" );
+        return pluginDescriptor.getId();
+    }
     protected void populateReportItems( DecorationModel decorationModel, Locale locale,
                                         Map<String, MavenReport> reportsByOutputName )
     {
