@@ -338,6 +338,7 @@ public abstract class AbstractSiteRenderingMojo
         }
 
         // Generate static site
+        context.setRootDirectory( project.getBasedir() );
         if ( !locale.getLanguage().equals( Locale.getDefault().getLanguage() ) )
         {
             context.addSiteDirectory( new File( siteDirectory, locale.getLanguage() ) );
