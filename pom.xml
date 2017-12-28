@@ -196,7 +196,7 @@ under the License.
 
   <properties>
     <doxiaVersion>1.8</doxiaVersion>
-    <doxiaSitetoolsVersion>1.8-SNAPSHOT</doxiaSitetoolsVersion>
+    <doxiaSitetoolsVersion>1.8</doxiaSitetoolsVersion>
     <mavenVersion>3.0</mavenVersion>
     <prerequisiteMavenVersion>2.2.1</prerequisiteMavenVersion>
     <wagonVersion>1.0</wagonVersion>
