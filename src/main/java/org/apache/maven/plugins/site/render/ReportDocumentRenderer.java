@@ -134,7 +134,7 @@ public class ReportDocumentRenderer
 
         private String outputName;
 
-        public MultiPageSubSink( File outputDir, String outputName, RenderingContext ctx )
+        MultiPageSubSink( File outputDir, String outputName, RenderingContext ctx )
         {
             super( ctx );
             this.outputName = outputName;
@@ -160,7 +160,7 @@ public class ReportDocumentRenderer
 
         private List<MultiPageSubSink> sinks = new ArrayList<MultiPageSubSink>();
 
-        public MultiPageSinkFactory( RenderingContext ctx )
+        MultiPageSinkFactory( RenderingContext ctx )
         {
             this.context = ctx;
         }
