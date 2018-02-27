@@ -42,6 +42,7 @@ import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
+import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -147,10 +148,11 @@ public abstract class AbstractSiteRenderingMojo
     /**
      * replaces previous reportPlugins parameter, that was injected by Maven core from
      * reporting section: but this new configuration format has been abandoned.
-     * @since 3.7
+     *
+     * @since 3.7.1
      */
-    @Parameter( defaultValue = "${project.reporting.plugins}", readonly = true )
-    private ReportPlugin[] reportingPlugins;
+    @Parameter( defaultValue = "${project.reporting}", readonly = true )
+    private Reporting reporting;
 
     private PlexusContainer container;
 
@@ -235,7 +237,7 @@ public abstract class AbstractSiteRenderingMojo
             mavenReportExecutorRequest.setLocalRepository( localRepository );
             mavenReportExecutorRequest.setMavenSession( mavenSession );
             mavenReportExecutorRequest.setProject( project );
-            mavenReportExecutorRequest.setReportPlugins( reportingPlugins );
+            mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
 
             MavenReportExecutor mavenReportExecutor;
             try
@@ -270,6 +272,38 @@ public abstract class AbstractSiteRenderingMojo
         }
 
         return reportExecutions;
+    }
+
+    /**
+     * Get the report plugins from reporting section, adding if necessary (ni.e. not excluded)
+     * default reports (i.e. maven-project-info-reports)
+     *
+     * @return the effective list of reports
+     * @since 3.7.1
+     */
+    private ReportPlugin[] getReportingPlugins()
+    {
+        List<ReportPlugin> reportingPlugins = reporting.getPlugins();
+
+        // MSITE-806: add default report plugin like done in maven-model-builder DefaultReportingConverter
+        boolean hasMavenProjectInfoReportsPlugin = false;
+        for ( ReportPlugin plugin : reportingPlugins )
+        {
+            if ( "org.apache.maven.plugins".equals( plugin.getGroupId() )
+                && "maven-project-info-reports-plugin".equals( plugin.getArtifactId() ) )
+            {
+                hasMavenProjectInfoReportsPlugin = true;
+                break;
+            }
+        }
+
+        if ( !reporting.isExcludeDefaults() && !hasMavenProjectInfoReportsPlugin )
+        {
+            ReportPlugin mpir = new ReportPlugin();
+            mpir.setArtifactId( "maven-project-info-reports-plugin" );
+            reportingPlugins.add( mpir );
+        }
+        return reportingPlugins.toArray( new ReportPlugin[reportingPlugins.size()] );
     }
 
     protected SiteRenderingContext createSiteRenderingContext( Locale locale )
