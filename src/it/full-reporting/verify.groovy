@@ -33,7 +33,7 @@ assert new File( sitedir, 'checkstyle.html' ).exists();
 assert new File( sitedir, 'cpd.html' ).exists();
 assert new File( sitedir, 'apidocs/index.html' ).exists();
 assert new File( sitedir, 'apidocs/org/apache/maven/plugins/site/its/App.html' ).exists();
-assert new File( sitedir, 'cobertura/index.html' ).exists();
+//assert new File( sitedir, 'cobertura/index.html' ).exists();
 assert new File( sitedir, 'xref/index.html' ).exists();
 assert new File( sitedir, 'xref-test/index.html' ).exists();
 
