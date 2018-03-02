@@ -17,9 +17,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-return true;
-
 assert new File( basedir, 'target/surefire-reports' ).exists();
 assert new File( basedir, 'target/surefire-reports/org.apache.maven.plugins.site.its.AppTest.txt' ).exists();
 content = new File( basedir, 'target/surefire-reports/org.apache.maven.plugins.site.its.AppTest.txt' ).text;
@@ -94,3 +91,5 @@ for ( String report : reports )
     index2 = i2;
     previousReportLink = link;
 }
+
+return true;
