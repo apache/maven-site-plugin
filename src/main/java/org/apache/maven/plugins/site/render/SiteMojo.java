@@ -42,6 +42,9 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
+import org.apache.maven.shared.utils.logging.MessageBuilder;
+
+import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
 /**
  * Generates the site for a single project.
@@ -251,20 +254,27 @@ public class SiteMojo
 
         if ( doxiaDocuments.size() > 0 )
         {
-            StringBuilder sb = new StringBuilder( 15 * counts.size() );
+            MessageBuilder mb = buffer();
+            mb.a( "Rendering " );
+            mb.strong( doxiaDocuments.size() + ( generated ? " generated" : "" ) + " Doxia document"
+                + ( doxiaDocuments.size() > 1 ? "s" : "" ) );
+            mb.a( ": " );
+
+            boolean first = true;
             for ( Map.Entry<String, Integer> entry : counts.entrySet() )
             {
-                if ( sb.length() > 0 )
+                if ( first )
                 {
-                    sb.append( ", " );
+                    first = false;
                 }
-                sb.append( entry.getValue() );
-                sb.append( ' ' );
-                sb.append( entry.getKey() );
+                else
+                {
+                    mb.a( ", " );
+                }
+                mb.strong( entry.getValue() + " " + entry.getKey() );
             }
 
-            getLog().info( "Rendering " + doxiaDocuments.size() + ( generated ? " generated" : "" ) + " Doxia document"
-                + ( doxiaDocuments.size() > 1 ? "s" : "" ) + ": " + sb.toString() );
+            getLog().info( mb.toString() );
 
             siteRenderer.render( doxiaDocuments.values(), context, outputDir );
         }

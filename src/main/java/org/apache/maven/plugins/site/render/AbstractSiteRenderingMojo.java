@@ -62,6 +62,8 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
+import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
+
 /**
  * Base class for site rendering mojos.
  *
@@ -339,7 +341,7 @@ public abstract class AbstractSiteRenderingMojo
         SiteRenderingContext context;
         if ( templateFile != null )
         {
-            getLog().info( "Rendering site with " + templateFile + " template file." );
+            getLog().info( buffer().strong( "Rendering site with " + templateFile + " template file." ).toString() );
 
             if ( !templateFile.exists() )
             {
@@ -355,7 +357,7 @@ public abstract class AbstractSiteRenderingMojo
                 Artifact skinArtifact =
                     siteTool.getSkinArtifactFromRepository( localRepository, repositories, decorationModel );
 
-                getLog().info( "Rendering site with " + skinArtifact.getId() + " skin." );
+                getLog().info( buffer().strong( "Rendering site with " + skinArtifact.getId() + " skin." ).toString() );
 
                 context = siteRenderer.createContextForSkin( skinArtifact, attributes, decorationModel,
                                                              project.getName(), locale );
