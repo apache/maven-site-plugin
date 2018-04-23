@@ -100,17 +100,17 @@ public class DoxiaFilter
         Map<String, DocumentRenderer> documents;
         SiteRenderingContext generatedSiteContext;
 
-        String localeWanted = null;
+        String languageWanted = null;
         for ( Locale locale : localesList )
         {
             if ( path.startsWith( locale.getLanguage() + "/" ) )
             {
-                localeWanted = locale.getLanguage();
-                path = path.substring( locale.getLanguage().length() + 1 );
+                languageWanted = locale.getLanguage();
+                path = path.substring( languageWanted.length() + 1 );
             }
         }
 
-        if ( localeWanted == null )
+        if ( languageWanted == null )
         {
             DoxiaBean defaultDoxiaBean = i18nDoxiaContexts.get( "default" );
             if ( defaultDoxiaBean == null )
@@ -123,10 +123,10 @@ public class DoxiaFilter
         }
         else
         {
-            DoxiaBean i18nDoxiaBean = i18nDoxiaContexts.get( localeWanted );
+            DoxiaBean i18nDoxiaBean = i18nDoxiaContexts.get( languageWanted );
             if ( i18nDoxiaBean == null )
             {
-                throw new ServletException( "No doxia bean found for the locale " + localeWanted );
+                throw new ServletException( "No doxia bean found for the language " + languageWanted );
             }
             context = i18nDoxiaBean.getContext();
             documents = i18nDoxiaBean.getDocuments();
