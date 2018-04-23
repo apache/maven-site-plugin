@@ -140,6 +140,7 @@ public class SiteMojo
                 }
                 else
                 {
+                    getLog().info( "" );
                     getLog().info( buffer().strong( "Rendering localized site for " + locale.getDisplayName() + " ("
                         + locale + ")" ).toString() );
                 }
