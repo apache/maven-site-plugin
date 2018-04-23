@@ -447,13 +447,14 @@ public abstract class AbstractDeployMojo
                 {
                     // TODO: this also uploads the non-default locales,
                     // is there a way to exclude directories in wagon?
-                    getLog().info( "   >>> to " + repository.getUrl() + "/" + relativeDir );
+                    getLog().info( "   >>> to " + appendSlash( repository.getUrl() ) + relativeDir );
 
                     wagon.putDirectory( inputDirectory, relativeDir );
                 }
                 else
                 {
-                    getLog().info( "   >>> to " + repository.getUrl() + locale.getLanguage() + "/" + relativeDir );
+                    getLog().info( "   >>> to " + appendSlash( repository.getUrl() ) + locale.getLanguage() + "/"
+                        + relativeDir );
 
                     wagon.putDirectory( new File( inputDirectory, locale.getLanguage() ),
                                         locale.getLanguage() + "/" + relativeDir );
