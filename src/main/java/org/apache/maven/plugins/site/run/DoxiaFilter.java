@@ -105,7 +105,7 @@ public class DoxiaFilter
         {
             if ( path.startsWith( locale.getLanguage() + "/" ) )
             {
-                localeWanted = locale.toString();
+                localeWanted = locale.getLanguage();
                 path = path.substring( locale.getLanguage().length() + 1 );
             }
         }
