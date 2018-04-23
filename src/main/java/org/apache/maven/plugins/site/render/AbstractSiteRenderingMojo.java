@@ -434,15 +434,13 @@ public abstract class AbstractSiteRenderingMojo
 
             if ( documents.containsKey( outputName ) )
             {
-                String displayLanguage = locale.getDisplayLanguage( Locale.ENGLISH );
-
                 String reportMojoInfo =
                     ( mavenReportExecution.getGoal() == null ) ? "" : ( " ("
                         + mavenReportExecution.getPlugin().getArtifactId() + ':'
                         + mavenReportExecution.getPlugin().getVersion() + ':' + mavenReportExecution.getGoal() + ')' );
 
                 getLog().info( "Skipped \"" + report.getName( locale ) + "\" report" + reportMojoInfo + ", file \""
-                                   + outputName + "\" already exists for the " + displayLanguage + " version." );
+                                   + outputName + "\" already exists." );
 
                 reports.remove( mavenReportExecution );
             }
