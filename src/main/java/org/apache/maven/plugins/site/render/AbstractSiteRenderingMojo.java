@@ -341,7 +341,8 @@ public abstract class AbstractSiteRenderingMojo
         SiteRenderingContext context;
         if ( templateFile != null )
         {
-            getLog().info( buffer().strong( "Rendering site with " + templateFile + " template file." ).toString() );
+            getLog().info( buffer().a( "Rendering content with " ).strong( templateFile
+                + " template file" ).a( '.' ).toString() );
 
             if ( !templateFile.exists() )
             {
@@ -357,7 +358,8 @@ public abstract class AbstractSiteRenderingMojo
                 Artifact skinArtifact =
                     siteTool.getSkinArtifactFromRepository( localRepository, repositories, decorationModel );
 
-                getLog().info( buffer().strong( "Rendering site with " + skinArtifact.getId() + " skin." ).toString() );
+                getLog().info( buffer().a( "Rendering content with " ).strong( skinArtifact.getId()
+                    + " skin" ).a( '.' ).toString() );
 
                 context = siteRenderer.createContextForSkin( skinArtifact, attributes, decorationModel,
                                                              project.getName(), locale );

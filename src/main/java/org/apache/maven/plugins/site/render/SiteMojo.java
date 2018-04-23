@@ -133,6 +133,16 @@ public class SiteMojo
 
             for ( Locale locale : localesList )
             {
+                if ( locale == defaultLocale )
+                {
+                    getLog().info( buffer().strong( "Rendering site with default locale " + locale.getDisplayName()
+                        + " (" + locale + ")" ).toString() );
+                }
+                else
+                {
+                    getLog().info( buffer().strong( "Rendering localized site for " + locale.getDisplayName() + " ("
+                        + locale + ")" ).toString() );
+                }
                 renderLocale( locale, reports );
             }
         }
