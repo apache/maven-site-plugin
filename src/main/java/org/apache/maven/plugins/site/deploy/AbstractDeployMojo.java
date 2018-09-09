@@ -258,9 +258,9 @@ public abstract class AbstractDeployMojo
         throws MojoExecutionException
     {
         String to = getSite( project ).getUrl();
-        String from = getTopDistributionManagementSiteUrl();
 
-        getLog().debug( "Mapping url from: " + from );
+        getLog().debug( "Mapping url source calculation: " );
+        String from = getTopDistributionManagementSiteUrl();
 
         String relative = siteTool.getRelativePath( to, from );
 
