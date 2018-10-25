@@ -257,8 +257,12 @@ public abstract class AbstractDeployMojo
     protected String getDeployModuleDirectory()
         throws MojoExecutionException
     {
-        String relative = siteTool.getRelativePath( getSite( project ).getUrl(),
-                                                    getTopDistributionManagementSiteUrl() );
+        String to = getSite( project ).getUrl();
+
+        getLog().debug( "Mapping url source calculation: " );
+        String from = getTopDistributionManagementSiteUrl();
+
+        String relative = siteTool.getRelativePath( to, from );
 
         // SiteTool.getRelativePath() uses File.separatorChar,
         // so we need to convert '\' to '/' in order for the URL to be valid for Windows users
