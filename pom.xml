@@ -207,6 +207,8 @@ under the License.
     <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
     <pmdPluginVersion>3.0.1</pmdPluginVersion>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
   </properties>
 
   <dependencies>
@@ -392,20 +394,34 @@ under the License.
     </dependency>
 
     <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty</artifactId>
-      <version>6.1.25</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty-util</artifactId>
-      <version>6.1.25</version>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.11.v20180605</version>
     </dependency>
 
     <dependency>
-      <groupId>org.mortbay.jetty</groupId>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <version>9.4.11.v20180605</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+      <version>9.4.11.v20180605</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-client</artifactId>
-      <version>6.1.25</version>
+      <version>9.4.11.v20180605</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-proxy</artifactId>
+      <version>9.4.11.v20180605</version>
       <scope>test</scope>
     </dependency>
 
@@ -533,10 +549,6 @@ under the License.
               <rules>
                 <enforceBytecodeVersion>
                   <maxJdkVersion>${maven.compiler.target}</maxJdkVersion>
-                  <excludes><!-- DOXIA-554 Markdown parser requires Java 7 (use version 1.7 if you absolutely require Java 6) -->
-                    <exclude>org.apache.maven.doxia:doxia-module-markdown</exclude>
-                    <exclude>org.nibor.autolink:autolink</exclude>
-                  </excludes>
                 </enforceBytecodeVersion>
               </rules>
               <fail>true</fail>
