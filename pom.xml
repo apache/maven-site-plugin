@@ -209,6 +209,7 @@ under the License.
     <pmdPluginVersion>3.0.1</pmdPluginVersion>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
+    <jettyVersion>9.4.11.v20180605</jettyVersion>
   </properties>
 
   <dependencies>
@@ -396,32 +397,32 @@ under the License.
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.11.v20180605</version>
+      <version>${jettyVersion}</version>
     </dependency>
 
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-webapp</artifactId>
-      <version>9.4.11.v20180605</version>
+      <version>${jettyVersion}</version>
     </dependency>
 
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-util</artifactId>
-      <version>9.4.11.v20180605</version>
+      <version>${jettyVersion}</version>
     </dependency>
 
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-client</artifactId>
-      <version>9.4.11.v20180605</version>
+      <version>${jettyVersion}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-proxy</artifactId>
-      <version>9.4.11.v20180605</version>
+      <version>${jettyVersion}</version>
       <scope>test</scope>
     </dependency>
 
