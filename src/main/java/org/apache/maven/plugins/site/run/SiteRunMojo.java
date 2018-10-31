@@ -38,8 +38,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.codehaus.plexus.util.IOUtil;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -76,7 +74,7 @@ public class SiteRunMojo
     {
         checkInputEncoding();
 
-        Server server = new Server(port);
+        Server server = new Server( port );
         server.setStopAtShutdown( true );
 
         WebAppContext webapp = createWebApplication();
