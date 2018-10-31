@@ -209,7 +209,7 @@ under the License.
     <pmdPluginVersion>3.0.1</pmdPluginVersion>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
-    <jettyVersion>9.4.11.v20180605</jettyVersion>
+    <jettyVersion>9.4.12.v20180830</jettyVersion>
   </properties>
 
   <dependencies>
