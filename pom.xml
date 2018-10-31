@@ -213,6 +213,19 @@ under the License.
   </properties>
 
   <dependencies>
+    <!-- exclude obsolete runtime artifact included by transitive dependencies (pulled by doxia-site-renderer) -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-api</artifactId>
@@ -351,23 +364,19 @@ under the License.
       <scope>runtime</scope>
     </dependency>
 
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
-    </dependency>
-
     <!-- Doxia Sitetools -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-decoration-model</artifactId>
       <version>${doxiaSitetoolsVersion}</version>
     </dependency>
+
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-site-renderer</artifactId>
       <version>${doxiaSitetoolsVersion}</version>
     </dependency>
+
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-integration-tools</artifactId>
@@ -397,6 +406,12 @@ under the License.
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
+      <version>${jettyVersion}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
       <version>${jettyVersion}</version>
     </dependency>
 
