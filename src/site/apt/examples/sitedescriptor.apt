@@ -179,8 +179,8 @@ Configuring the Site Descriptor
 * Including Generated Content
 
   Files in the format-based directory structure can be linked to by their target
-  HTML filename, e.g. <<<${basedir}/src/site/apt/foo.apt>>> and
-  <<<${basedir}/src/site/fml/faq.fml>>> can be linked to via:
+  HTML filename, e.g. <<<$\{basedir\}/src/site/apt/foo.apt>>> and
+  <<<$\{basedir\}/src/site/fml/faq.fml>>> can be linked to via:
 
 +-----+
 <project>
