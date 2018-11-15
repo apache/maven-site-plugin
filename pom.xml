@@ -206,7 +206,7 @@ under the License.
     <javadocPluginVersion>2.9.1</javadocPluginVersion>
     <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
-    <pmdPluginVersion>3.0.1</pmdPluginVersion>
+    <pmdPluginVersion>3.11.0</pmdPluginVersion>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
     <jettyVersion>9.4.12.v20180830</jettyVersion>
