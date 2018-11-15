@@ -38,12 +38,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.codehaus.plexus.util.IOUtil;
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.DefaultHandler;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
  * Starts the site up, rendering documents as requested for faster editing.
@@ -78,22 +74,13 @@ public class SiteRunMojo
     {
         checkInputEncoding();
 
-        Server server = new Server();
+        Server server = new Server( port );
         server.setStopAtShutdown( true );
-
-        Connector defaultConnector = getDefaultConnector();
-        server.setConnectors( new Connector[] { defaultConnector } );
 
         WebAppContext webapp = createWebApplication();
         webapp.setServer( server );
 
-        DefaultHandler defaultHandler = new DefaultHandler();
-        defaultHandler.setServer( server );
-
-        Handler[] handlers = new Handler[2];
-        handlers[0] = webapp;
-        handlers[1] = defaultHandler;
-        server.setHandlers( handlers );
+        server.setHandler( webapp );
 
         getLog().info( "Starting Jetty on http://localhost:" + port + "/" );
         try
@@ -222,14 +209,6 @@ public class SiteRunMojo
             throw new MojoExecutionException( "Unable to set up webapp", e );
         }
         return webapp;
-    }
-
-    private Connector getDefaultConnector()
-    {
-        Connector connector = new SelectChannelConnector();
-        connector.setPort( port );
-        connector.setMaxIdleTime( MAX_IDLE_TIME );
-        return connector;
     }
 
     public void setTempWebappDirectory( File tempWebappDirectory )
