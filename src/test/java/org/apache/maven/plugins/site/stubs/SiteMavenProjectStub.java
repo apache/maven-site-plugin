@@ -32,7 +32,7 @@ import org.codehaus.plexus.util.xml.XmlStreamReader;
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ *
  */
 public class SiteMavenProjectStub
     extends MavenProjectStub

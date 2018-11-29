@@ -40,7 +40,7 @@ import org.apache.maven.project.MavenProject;
  * such as by calling <code>mvn site</code>.</p>
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ *
  * @since 2.0
  */
 @Mojo( name = "stage", requiresDependencyResolution = ResolutionScope.TEST )

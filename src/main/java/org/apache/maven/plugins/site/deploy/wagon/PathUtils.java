@@ -32,7 +32,7 @@ import java.util.StringTokenizer;
  * ie Maven &gt;= 3.0.1.
  *
  * @author <a href="michal.maczka@dimatics.com">Michal Maczka</a>
- * @version $Id$
+ *
  */
 public final class PathUtils
 {

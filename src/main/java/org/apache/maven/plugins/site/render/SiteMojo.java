@@ -55,7 +55,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
  *
  * @author <a href="mailto:evenisse@apache.org">Emmanuel Venisse</a>
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ *
  */
 @Mojo( name = "site", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true )
 public class SiteMojo

@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Olivier Lamy
  * @since 3.0-beta-2
- * @version $Id$
+ *
  */
 public class SimpleDavServerHandler
 {

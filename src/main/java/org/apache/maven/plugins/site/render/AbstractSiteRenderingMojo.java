@@ -68,7 +68,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
  * Base class for site rendering mojos.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- * @version $Id$
+ *
  */
 public abstract class AbstractSiteRenderingMojo
     extends AbstractSiteDescriptorMojo implements Contextualizable

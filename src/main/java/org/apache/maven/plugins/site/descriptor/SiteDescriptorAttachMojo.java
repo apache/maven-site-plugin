@@ -42,7 +42,7 @@ import org.codehaus.plexus.util.FileUtils;
  * define this goal execution to restore the intended behavior.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- * @version $Id$
+ *
  * @since 2.0
  */
 @Mojo( name = "attach-descriptor", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true )

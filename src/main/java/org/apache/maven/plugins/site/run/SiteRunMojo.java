@@ -46,7 +46,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * It uses Jetty as the web server.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- * @version $Id$
+ *
  */
 @Mojo( name = "run", aggregator = true, requiresReports = true )
 public class SiteRunMojo

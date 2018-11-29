@@ -43,7 +43,7 @@ import org.apache.maven.plugins.site.deploy.HttpRequest;
 /**
  * @author Olivier Lamy
  * @since 
- * @version $Id$
+ *
  */
 public class AuthAsyncProxyServlet
     extends AsyncProxyServlet

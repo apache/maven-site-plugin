@@ -43,7 +43,7 @@ import org.codehaus.plexus.util.xml.XmlWriterUtil;
  * <code>site.xml</code>, for the first locale.
  *
  * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
- * @version $Id$
+ *
  * @since 2.2
  */
 @Mojo( name = "effective-site", requiresReports = true )
