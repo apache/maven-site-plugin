@@ -114,6 +114,9 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>${pmdPluginVersion}</version>
+        <configuration>
+          <skipEmptyReport>false</skipEmptyReport>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

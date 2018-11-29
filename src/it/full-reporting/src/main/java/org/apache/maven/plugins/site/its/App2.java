@@ -23,7 +23,7 @@ package org.apache.maven.plugins.site.its;
  * Hello world!
  *
  */
-public class App 
+public class App2
 {
     public static void main( String[] args )
     {
