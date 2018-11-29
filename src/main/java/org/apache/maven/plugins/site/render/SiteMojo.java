@@ -229,10 +229,10 @@ public class SiteMojo
                                                          boolean generated )
                                                              throws RendererException, IOException
     {
-        Map<String, DocumentRenderer> doxiaDocuments = new TreeMap<String, DocumentRenderer>();
-        List<DocumentRenderer> nonDoxiaDocuments = new ArrayList<DocumentRenderer>();
+        Map<String, DocumentRenderer> doxiaDocuments = new TreeMap<>();
+        List<DocumentRenderer> nonDoxiaDocuments = new ArrayList<>();
 
-        Map<String, Integer> counts = new TreeMap<String, Integer>();
+        Map<String, Integer> counts = new TreeMap<>();
 
         for ( Map.Entry<String, DocumentRenderer> entry : documents.entrySet() )
         {

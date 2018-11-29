@@ -19,16 +19,6 @@ package org.apache.maven.plugins.site.run;
  * under the License.
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -40,6 +30,15 @@ import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.codehaus.plexus.util.IOUtil;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Starts the site up, rendering documents as requested for faster editing.
@@ -109,30 +108,15 @@ public class SiteRunMojo
         File webXml = new File( tempWebappDirectory, "WEB-INF/web.xml" );
         webXml.getParentFile().mkdirs();
 
-        InputStream inStream = null;
-        FileOutputStream outStream = null;
-        try
+
+        try ( InputStream inStream = getClass().getResourceAsStream( "/run/web.xml" ); //
+            FileOutputStream outStream = new FileOutputStream( webXml ) )
         {
-            inStream = getClass().getResourceAsStream( "/run/web.xml" );
-            outStream = new FileOutputStream( webXml );
             IOUtil.copy( inStream, outStream );
-            outStream.close();
-            outStream = null;
-            inStream.close();
-            inStream = null;
-        }
-        catch ( FileNotFoundException e )
-        {
-            throw new MojoExecutionException( "Unable to construct temporary webapp for running site", e );
         }
         catch ( IOException e )
         {
             throw new MojoExecutionException( "Unable to construct temporary webapp for running site", e );
-        }
-        finally
-        {
-            IOUtil.close( outStream );
-            IOUtil.close( inStream );
         }
 
         WebAppContext webapp = new WebAppContext();
@@ -159,7 +143,7 @@ public class SiteRunMojo
 
         try
         {
-            Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<String, DoxiaBean>();
+            Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
 
             for ( Locale locale : localesList )
             {

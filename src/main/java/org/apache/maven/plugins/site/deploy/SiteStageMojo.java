@@ -164,14 +164,10 @@ public class SiteStageMojo
             return null;
         }
 
-        for ( MavenProject reactorProject : reactorProjects )
-        {
-            if ( reactorProject.isExecutionRoot() )
-            {
-                return reactorProject;
-            }
-        }
+        return reactorProjects //
+            .stream() //
+            .filter( mavenProject -> mavenProject.isExecutionRoot() ) //
+            .findFirst().get();
 
-        return null;
     }
 }

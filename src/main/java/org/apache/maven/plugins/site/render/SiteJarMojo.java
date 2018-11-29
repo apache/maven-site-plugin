@@ -146,19 +146,7 @@ public class SiteJarMojo
                 getLog().info( "NOT adding site jar to the list of attached artifacts." );
             }
         }
-        catch ( ArchiverException e )
-        {
-            throw new MojoExecutionException( "Error while creating archive.", e );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Error while creating archive.", e );
-        }
-        catch ( ManifestException e )
-        {
-            throw new MojoExecutionException( "Error while creating archive.", e );
-        }
-        catch ( DependencyResolutionRequiredException e )
+        catch ( ArchiverException | IOException | ManifestException | DependencyResolutionRequiredException e )
         {
             throw new MojoExecutionException( "Error while creating archive.", e );
         }

@@ -469,23 +469,8 @@ public abstract class AbstractDeployMojo
                 }
             }
         }
-        catch ( ResourceDoesNotExistException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( TransferFailedException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( AuthorizationException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( ConnectionException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( AuthenticationException e )
+        catch ( ResourceDoesNotExistException | TransferFailedException | AuthorizationException | ConnectionException
+            |  AuthenticationException e )
         {
             throw new MojoExecutionException( "Error uploading site", e );
         }
