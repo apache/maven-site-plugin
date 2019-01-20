@@ -26,7 +26,7 @@ under the License.
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
     <version>33</version>
-    <relativePath>../../pom/maven/maven-plugins/pom.xml</relativePath>
+    <relativePath/>
   </parent>
 
   <artifactId>maven-site-plugin</artifactId>
@@ -170,7 +170,7 @@ under the License.
   </contributors>
 
   <prerequisites>
-    <maven>${prerequisiteMavenVersion}</maven>
+    <maven>${mavenVersion}</maven>
   </prerequisites>
 
   <scm>
@@ -195,22 +195,21 @@ under the License.
   </distributionManagement>
 
   <properties>
+    <mavenVersion>3.0</mavenVersion>
     <javaVersion>8</javaVersion>
+    <!-- for dependencies -->
     <doxiaVersion>1.8</doxiaVersion>
     <doxiaSitetoolsVersion>1.8.1</doxiaSitetoolsVersion>
-    <mavenVersion>3.0</mavenVersion>
-    <prerequisiteMavenVersion>2.2.1</prerequisiteMavenVersion>
-    <wagonVersion>1.0</wagonVersion>
+    <jettyVersion>9.4.12.v20180830</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
+    <wagonVersion>3.3.1</wagonVersion>
     <!-- for ITs -->
-    <javadocPluginVersion>2.9.1</javadocPluginVersion>
-    <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
+    <javadocPluginVersion>3.0.1</javadocPluginVersion>
     <pmdPluginVersion>3.11.0</pmdPluginVersion>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <jettyVersion>9.4.12.v20180830</jettyVersion>
+    <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
+    <surefirePluginVersion>2.22.1</surefirePluginVersion>
   </properties>
 
   <dependencies>
@@ -441,8 +440,6 @@ under the License.
       <version>${jettyVersion}</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- note slf4j- upgrade possible until upgrade wagon-webdav-jackrabbit is upgraded too -->
 
     <dependency>
       <groupId>org.slf4j</groupId>
