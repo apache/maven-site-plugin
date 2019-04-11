@@ -19,12 +19,6 @@ package org.apache.maven.plugins.site;
  * under the License.
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -33,7 +27,12 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.i18n.I18N;
-import org.codehaus.plexus.util.IOUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Base class for site mojos.
@@ -107,21 +106,13 @@ public abstract class AbstractSiteMojo
         final Properties properties = new Properties();
         final String corePomProperties = "META-INF/maven/org.apache.maven/maven-core/pom.properties";
 
-        InputStream in = null;
-        try
+        try ( InputStream in = MavenProject.class.getClassLoader().getResourceAsStream( corePomProperties ) )
         {
-            in = MavenProject.class.getClassLoader().getResourceAsStream( corePomProperties );
             properties.load( in );
-            in.close();
-            in = null;
         }
         catch ( IOException ioe )
         {
             return "";
-        }
-        finally
-        {
-            IOUtil.close( in );
         }
 
         return properties.getProperty( "version" ).trim();

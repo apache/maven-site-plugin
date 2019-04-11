@@ -40,7 +40,7 @@ import org.apache.maven.project.MavenProject;
  * such as by calling <code>mvn site</code>.</p>
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ *
  * @since 2.0
  */
 @Mojo( name = "stage", requiresDependencyResolution = ResolutionScope.TEST )
@@ -164,14 +164,10 @@ public class SiteStageMojo
             return null;
         }
 
-        for ( MavenProject reactorProject : reactorProjects )
-        {
-            if ( reactorProject.isExecutionRoot() )
-            {
-                return reactorProject;
-            }
-        }
+        return reactorProjects //
+            .stream() //
+            .filter( mavenProject -> mavenProject.isExecutionRoot() ) //
+            .findFirst().get();
 
-        return null;
     }
 }

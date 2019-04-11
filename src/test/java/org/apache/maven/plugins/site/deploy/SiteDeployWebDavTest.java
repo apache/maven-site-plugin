@@ -27,7 +27,7 @@ import org.apache.maven.plugins.site.deploy.SiteDeployMojo;
 /**
  * @author Olivier Lamy
  * @since 3.0-beta-2
- * @version $Id$
+ *
  */
 public class SiteDeployWebDavTest
     extends AbstractSiteDeployWebDavTest

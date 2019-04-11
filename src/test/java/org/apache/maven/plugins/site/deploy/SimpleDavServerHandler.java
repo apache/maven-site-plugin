@@ -36,19 +36,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Request;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.AbstractHandler;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler.Context;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.apache.maven.plugins.site.deploy.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Olivier Lamy
  * @since 3.0-beta-2
- * @version $Id$
+ *
  */
 public class SimpleDavServerHandler
 {
@@ -67,7 +69,7 @@ public class SimpleDavServerHandler
         this.siteTargetPath = targetPath;
         Handler repoHandler = new AbstractHandler()
         {
-            public void handle( String target, HttpServletRequest request, HttpServletResponse response, int dispatch )
+            public void handle( String target, Request r, HttpServletRequest request, HttpServletResponse response )
                 throws IOException, ServletException
             {
                 String targetPath = request.getPathInfo();
@@ -112,16 +114,17 @@ public class SimpleDavServerHandler
     {
         siteTargetPath = null;
         server = new Server( 0 );
-        Context context = new Context( server, "/", 0 );
-
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        context.setContextPath("/");
+        server.setHandler(context);
         context.addServlet( new ServletHolder( servlet ), "/" );
-        
+
         server.start();
-    }   
+    }
     
     public int getPort()
     {
-        return server.getConnectors()[0].getLocalPort();
+        return server.getURI().getPort();
     }
 
     public void stop()
@@ -131,30 +134,5 @@ public class SimpleDavServerHandler
     }
     
     
-    static class HttpRequest
-    {
-        Map<String, String> headers = new HashMap<String,String>();
-        
-        String method;
-        
-        String path;
-        
-        HttpRequest()
-        {
-            // nop
-        }
 
-        @Override
-        public String toString()
-        {
-            StringBuilder sb = new StringBuilder( method ).append( " path " ).append( path )
-                .append( SystemUtils.LINE_SEPARATOR );
-            for ( Entry<String, String> entry : headers.entrySet() )
-            {
-                sb.append( entry.getKey() ).append( " : " ).append( entry.getValue() )
-                    .append( SystemUtils.LINE_SEPARATOR );
-            }
-            return sb.toString();
-        }
-    }
 }

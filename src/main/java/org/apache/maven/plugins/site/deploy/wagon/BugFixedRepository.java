@@ -34,7 +34,7 @@ import java.util.Properties;
  * ie Maven &gt;= 3.0.1.
  *
  * @author <a href="michal.maczka@dimatics.com">Michal Maczka</a>
- * @version $Id$
+ *
  * @todo [BP] some things are specific to certain wagons (eg key stuff in authInfo, permissions)
  */
 public class BugFixedRepository

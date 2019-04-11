@@ -19,11 +19,6 @@ package org.apache.maven.plugins.site.descriptor;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Writer;
@@ -31,19 +26,23 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
 import org.codehaus.plexus.util.xml.XmlWriterUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+
 /**
  * Displays the effective site descriptor as an XML for this build, after inheritance and interpolation of
  * <code>site.xml</code>, for the first locale.
  *
  * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
- * @version $Id$
+ *
  * @since 2.2
  */
 @Mojo( name = "effective-site", requiresReports = true )
@@ -171,21 +170,11 @@ public class EffectiveSiteMojo
     protected static void writeXmlFile( File output, String content )
         throws IOException
     {
-        Writer out = null;
-        try
+        try ( Writer out = WriterFactory.newXmlWriter( output ) )
         {
             output.getParentFile().mkdirs();
 
-            out = WriterFactory.newXmlWriter( output );
-
             out.write( content );
-
-            out.close();
-            out = null;
-        }
-        finally
-        {
-            IOUtil.close( out );
         }
     }
 }

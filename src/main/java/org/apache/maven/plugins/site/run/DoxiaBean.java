@@ -28,7 +28,7 @@ import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
  * Bean to handle Doxia in a servlet context attribute
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ *
  */
 public class DoxiaBean
 {

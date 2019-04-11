@@ -257,8 +257,12 @@ public abstract class AbstractDeployMojo
     protected String getDeployModuleDirectory()
         throws MojoExecutionException
     {
-        String relative = siteTool.getRelativePath( getSite( project ).getUrl(),
-                                                    getTopDistributionManagementSiteUrl() );
+        String to = getSite( project ).getUrl();
+
+        getLog().debug( "Mapping url source calculation: " );
+        String from = getTopDistributionManagementSiteUrl();
+
+        String relative = siteTool.getRelativePath( to, from );
 
         // SiteTool.getRelativePath() uses File.separatorChar,
         // so we need to convert '\' to '/' in order for the URL to be valid for Windows users
@@ -319,7 +323,11 @@ public abstract class AbstractDeployMojo
             {
                 try
                 {
-                    SettingsDecrypter settingsDecrypter = container.lookup( SettingsDecrypter.class );
+                    // The cast does not make sense, however I get when compiled with maven 3.5.4:
+                    // error: incompatible types: Object cannot be converted to SettingsDecrypter
+                    // The cast is not necessary with maven 3.3.9
+                    SettingsDecrypter settingsDecrypter =
+                            (SettingsDecrypter) container.lookup( SettingsDecrypter.class );
 
                     proxyInfo = getProxy( repository, settingsDecrypter );
                 }
@@ -461,23 +469,8 @@ public abstract class AbstractDeployMojo
                 }
             }
         }
-        catch ( ResourceDoesNotExistException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( TransferFailedException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( AuthorizationException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( ConnectionException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
-        }
-        catch ( AuthenticationException e )
+        catch ( ResourceDoesNotExistException | TransferFailedException | AuthorizationException | ConnectionException
+            |  AuthenticationException e )
         {
             throw new MojoExecutionException( "Error uploading site", e );
         }

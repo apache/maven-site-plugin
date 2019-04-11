@@ -1,4 +1,4 @@
-package org.apache.maven.plugins.site.its;
+package org.apache.maven.plugins.site.deploy;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,14 +19,34 @@ package org.apache.maven.plugins.site.its;
  * under the License.
  */
 
-/**
- * Hello world!
- *
- */
-public class App 
+import org.apache.commons.lang3.SystemUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+class HttpRequest
 {
-    public static void main( String[] args )
+    Map<String, String> headers = new HashMap<String,String>();
+
+    String method;
+
+    String path;
+
+    HttpRequest()
     {
-        System.out.println( "Hello World!" );
+        // nop
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder( method ).append( " path " ).append( path )
+                .append( SystemUtils.LINE_SEPARATOR );
+        for ( Map.Entry<String, String> entry : headers.entrySet() )
+        {
+            sb.append( entry.getKey() ).append( " : " ).append( entry.getValue() )
+                    .append( SystemUtils.LINE_SEPARATOR );
+        }
+        return sb.toString();
     }
 }

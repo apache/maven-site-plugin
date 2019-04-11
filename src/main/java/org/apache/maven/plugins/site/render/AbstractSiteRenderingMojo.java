@@ -19,17 +19,6 @@ package org.apache.maven.plugins.site.render;
  * under the License.
  */
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.Menu;
@@ -62,13 +51,25 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
 /**
  * Base class for site rendering mojos.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- * @version $Id$
+ *
  */
 public abstract class AbstractSiteRenderingMojo
     extends AbstractSiteDescriptorMojo implements Contextualizable
@@ -244,7 +245,7 @@ public abstract class AbstractSiteRenderingMojo
             MavenReportExecutor mavenReportExecutor;
             try
             {
-                mavenReportExecutor = (MavenReportExecutor) container.lookup( MavenReportExecutor.class.getName() );
+                mavenReportExecutor = container.lookup( MavenReportExecutor.class );
             }
             catch ( ComponentLookupException e )
             {
@@ -256,24 +257,18 @@ public abstract class AbstractSiteRenderingMojo
         else
         {
             // Maven 2
-            allReports = new ArrayList<MavenReportExecution>( reports.size() );
-            for ( MavenReport report : reports )
-            {
-                allReports.add( new MavenReportExecution( report ) );
-            }
+            // [olamy] do we still need Maven2 support??
+            allReports = reports.stream()
+                .map( report -> new MavenReportExecution( report ) )
+                .collect( Collectors.toList() );
         }
 
         // filter out reports that can't be generated
-        List<MavenReportExecution> reportExecutions = new ArrayList<MavenReportExecution>( allReports.size() );
-        for ( MavenReportExecution exec : allReports )
-        {
-            if ( exec.canGenerateReport() )
-            {
-                reportExecutions.add( exec );
-            }
-        }
 
-        return reportExecutions;
+        return allReports.stream() //
+            .filter( mavenReportExecution -> mavenReportExecution.canGenerateReport() ) //
+            .collect( Collectors.toList() );
+
     }
 
     /**
@@ -314,7 +309,7 @@ public abstract class AbstractSiteRenderingMojo
         DecorationModel decorationModel = prepareDecorationModel( locale );
         if ( attributes == null )
         {
-            attributes = new HashMap<String, Object>();
+            attributes = new HashMap<>();
         }
 
         if ( attributes.get( "project" ) == null )
@@ -420,9 +415,9 @@ public abstract class AbstractSiteRenderingMojo
                                                       Map<String, DocumentRenderer> documents, Locale locale )
     {
         // copy Collection to prevent ConcurrentModificationException
-        List<MavenReportExecution> filtered = new ArrayList<MavenReportExecution>( reports );
+        List<MavenReportExecution> filtered = new ArrayList<>( reports );
 
-        Map<String, MavenReport> reportsByOutputName = new LinkedHashMap<String, MavenReport>();
+        Map<String, MavenReport> reportsByOutputName = new LinkedHashMap<>();
         for ( MavenReportExecution mavenReportExecution : filtered )
         {
             MavenReport report = mavenReportExecution.getMavenReport();
@@ -467,13 +462,13 @@ public abstract class AbstractSiteRenderingMojo
      */
     protected Map<String, List<MavenReport>> categoriseReports( Collection<MavenReport> reports )
     {
-        Map<String, List<MavenReport>> categories = new LinkedHashMap<String, List<MavenReport>>();
+        Map<String, List<MavenReport>> categories = new LinkedHashMap<>();
         for ( MavenReport report : reports )
         {
             List<MavenReport> categoryReports = categories.get( report.getCategoryName() );
             if ( categoryReports == null )
             {
-                categoryReports = new ArrayList<MavenReport>();
+                categoryReports = new ArrayList<>();
                 categories.put( report.getCategoryName(), categoryReports );
             }
             categoryReports.add( report );

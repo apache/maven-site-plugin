@@ -37,7 +37,7 @@ import org.codehaus.plexus.i18n.I18N;
  * Generate a sitemap.
  *
  * @author ltheussl
- * @version $Id$
+ *
  * @since 2.1
  */
 public class SiteMap

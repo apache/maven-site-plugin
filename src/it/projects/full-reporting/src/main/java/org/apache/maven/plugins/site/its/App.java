@@ -1,4 +1,4 @@
-package byebye;
+package org.apache.maven.plugins.site.its;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -8,9 +8,9 @@ package byebye;
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -19,15 +19,18 @@ package byebye;
  * under the License.
  */
 
-import byebye.ByeBye;
-import junit.framework.TestCase;
-
-public class ByeByeTest extends TestCase
+/**
+ * Hello world!
+ *
+ */
+public class App 
 {
-    public void testByeBye()
+    public static void main( String[] args )
     {
-        final ByeBye byeBye = new ByeBye();
-        assertEquals( "Bye bye world!", byeBye.byebye( null ) );
-        assertEquals( "Bye bye EMMA!", byeBye.byebye( "EMMA" ) );
+        System.out.println( "Hello World!" );
+    }
+
+    public void foo(){
+        System.out.println( "foo" );
     }
 }

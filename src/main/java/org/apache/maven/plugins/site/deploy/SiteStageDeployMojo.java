@@ -38,7 +38,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * POM, using <a href="/wagon/">wagon supported protocols</a>
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ *
  * @since 2.0
  */
 @Mojo( name = "stage-deploy", requiresDependencyResolution = ResolutionScope.TEST )
@@ -96,13 +96,18 @@ public class SiteStageDeployMojo
     {
         if ( StringUtils.isNotEmpty( topSiteURL ) )
         {
+            getLog().debug( "stage-deploy top distributionManagement.site.url configured with topSiteURL parameter: "
+                + topSiteURL );
             return topSiteURL;
         }
 
         if ( StringUtils.isNotEmpty( stagingSiteURL ) )
         {
             // We need to calculate the first project that supplied same stagingSiteURL
-            return getSite( getTopMostParentWithSameStagingSiteURL() ).getUrl();
+            MavenProject topProject = getTopMostParentWithSameStagingSiteURL();
+            String url = getSite( topProject ).getUrl();
+            getLog().debug( "stage-deploy top stagingSiteURL found in " + topProject.getId() + " with value: " + url );
+            return url;
         }
 
         return super.determineTopDistributionManagementSiteUrl();
