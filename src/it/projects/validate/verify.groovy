@@ -17,6 +17,6 @@
  * under the License.
  */
 
-buildlog = new File( basedir, 'buildlog' )
+buildlog = new File( basedir, 'build.log' )
 
 assert buildlog.text.contains('BUILD SUCCESS')
