@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -17,4 +17,6 @@
  * under the License.
  */
 
-asfMavenTlpPlgnBuild(jdk:['8','11','12'], maven:['3.0.x', '3.2.x', '3.3.x', '3.5.x'])
+buildlog = new File( basedir, 'build.log' )
+
+assert buildlog.text.contains('BUILD SUCCESS')
