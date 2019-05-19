@@ -243,6 +243,12 @@ public class ReportDocumentRenderer
             String report = ( reportMojoInfo == null ) ? ( '"' + localReportName + '"' ) : reportMojoInfo;
             throw new RendererException( "Error generating " + report + " report", e );
         }
+        catch ( RuntimeException re )
+        {
+            // MSITE-836: if report generation throws a RuntimeException, transform to RendererException
+            String report = ( reportMojoInfo == null ) ? ( '"' + localReportName + '"' ) : reportMojoInfo;
+            throw new RendererException( "Error generating " + report + " report", re );
+        }
         catch ( LinkageError e )
         {
             String report = ( reportMojoInfo == null ) ? ( '"' + localReportName + '"' ) : reportMojoInfo;
