@@ -30,7 +30,7 @@ under the License.
   </parent>
 
   <artifactId>maven-site-plugin</artifactId>
-  <version>4.0-SNAPSHOT</version>
+  <version>3.8-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Apache Maven Site Plugin</name>
@@ -198,8 +198,8 @@ under the License.
     <mavenVersion>3.0</mavenVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
-    <doxiaVersion>1.9-SNAPSHOT</doxiaVersion>
-    <doxiaSitetoolsVersion>1.9.0-SNAPSHOT</doxiaSitetoolsVersion>
+    <doxiaVersion>1.9</doxiaVersion>
+    <doxiaSitetoolsVersion>1.9-SNAPSHOT</doxiaSitetoolsVersion>
     <jettyVersion>9.4.12.v20180830</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>

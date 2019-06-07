@@ -34,12 +34,6 @@ Migrate
   adjustments to their environment, documents or configuration. Below is a list
   of these changes and what you as a user need to be aware of.
 
-* From 3.x to 4.x
-
-  * Version 4 of the plugin outputs (X)HTML5 by default.
-
-  []
-
 * From 3.4 to 3.5.1
 
   * Since {{{http://velocity.apache.org}Velocity}} has been upgraded from version 1.5 to version 1.7,
