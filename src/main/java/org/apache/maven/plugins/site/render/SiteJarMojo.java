@@ -42,7 +42,7 @@ import org.codehaus.plexus.archiver.jar.ManifestException;
  * Bundles the site output into a JAR so that it can be deployed to a repository.
  *
  * @author <a href="mailto:mbeerman@yahoo.com">Matthew Beermann</a>
- * @version $Id$
+ *
  * @since 2.0-beta-6
  */
 // MSITE-665: requiresDependencyResolution workaround for MPLUGIN-253 
@@ -146,19 +146,7 @@ public class SiteJarMojo
                 getLog().info( "NOT adding site jar to the list of attached artifacts." );
             }
         }
-        catch ( ArchiverException e )
-        {
-            throw new MojoExecutionException( "Error while creating archive.", e );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Error while creating archive.", e );
-        }
-        catch ( ManifestException e )
-        {
-            throw new MojoExecutionException( "Error while creating archive.", e );
-        }
-        catch ( DependencyResolutionRequiredException e )
+        catch ( ArchiverException | IOException | ManifestException | DependencyResolutionRequiredException e )
         {
             throw new MojoExecutionException( "Error while creating archive.", e );
         }

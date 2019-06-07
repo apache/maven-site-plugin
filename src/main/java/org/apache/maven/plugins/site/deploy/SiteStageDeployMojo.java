@@ -38,7 +38,7 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
  * POM, using <a href="/wagon/">wagon supported protocols</a>
  *
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
- * @version $Id$
+ *
  * @since 2.0
  */
 @Mojo( name = "stage-deploy", requiresDependencyResolution = ResolutionScope.TEST )

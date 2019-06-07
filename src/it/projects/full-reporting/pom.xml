@@ -31,17 +31,8 @@ under the License.
   <groupId>org.apache.maven.plugins.site.its</groupId>
   <artifactId>full-reporting</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <name>maven-site-plugin IT: full reporting</name>
-  <url>http://maven.apache.org</url>
-
-  <properties>
-    <javadocPluginVersion>@javadocPluginVersion@</javadocPluginVersion>
-    <checkstylePluginVersion>@checkstylePluginVersion@</checkstylePluginVersion>
-    <projectInfoReportsPluginVersion>@projectInfoReportsPluginVersion@</projectInfoReportsPluginVersion>
-    <pmdPluginVersion>@pmdPluginVersion@</pmdPluginVersion>
-  </properties>
 
   <dependencies>
     <dependency>
@@ -61,13 +52,18 @@ under the License.
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>@surefirePluginVersion@</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${javadocPluginVersion}</version>
+        <version>@javadocPluginVersion@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstylePluginVersion}</version>
+        <version>@checkstylePluginVersion@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -77,7 +73,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${pmdPluginVersion}</version>
+        <version>@pmdPluginVersion@</version>
       </plugin>
     </plugins>
   </build>
@@ -113,17 +109,20 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>${pmdPluginVersion}</version>
+        <version>@pmdPluginVersion@</version>
+        <configuration>
+          <skipEmptyReport>false</skipEmptyReport>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${javadocPluginVersion}</version>
+        <version>@javadocPluginVersion@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${checkstylePluginVersion}</version>
+        <version>@checkstylePluginVersion@</version>
       </plugin>
     </plugins>
   </reporting>

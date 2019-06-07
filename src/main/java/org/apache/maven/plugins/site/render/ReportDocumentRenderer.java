@@ -46,7 +46,6 @@ import org.apache.maven.reporting.MavenMultiPageReport;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.WriterFactory;
 
@@ -244,6 +243,12 @@ public class ReportDocumentRenderer
             String report = ( reportMojoInfo == null ) ? ( '"' + localReportName + '"' ) : reportMojoInfo;
             throw new RendererException( "Error generating " + report + " report", e );
         }
+        catch ( RuntimeException re )
+        {
+            // MSITE-836: if report generation throws a RuntimeException, transform to RendererException
+            String report = ( reportMojoInfo == null ) ? ( '"' + localReportName + '"' ) : reportMojoInfo;
+            throw new RendererException( "Error generating " + report + " report", re );
+        }
         catch ( LinkageError e )
         {
             String report = ( reportMojoInfo == null ) ? ( '"' + localReportName + '"' ) : reportMojoInfo;
@@ -285,20 +290,14 @@ public class ReportDocumentRenderer
 
                 File outputFile = new File( mySink.getOutputDir(), outputName );
 
-                Writer out = null;
-                try
+                try ( Writer out = WriterFactory.newWriter( outputFile, siteRenderingContext.getOutputEncoding() ) )
                 {
-                    out = WriterFactory.newWriter( outputFile, siteRenderingContext.getOutputEncoding() );
                     renderer.mergeDocumentIntoSite( out, mySink, siteRenderingContext );
                     mySink.close();
                     mySink = null;
-                    out.close();
-                    out = null;
                 }
                 finally
                 {
-                    IOUtil.close( out );
-
                     if ( mySink != null )
                     {
                         mySink.close();
@@ -339,15 +338,7 @@ public class ReportDocumentRenderer
         {
             return false;
         }
-        catch ( IllegalArgumentException iae )
-        {
-            throw new MavenReportException( "error while invoking generate on " + report.getClass(), iae );
-        }
-        catch ( IllegalAccessException iae )
-        {
-            throw new MavenReportException( "error while invoking generate on " + report.getClass(), iae );
-        }
-        catch ( InvocationTargetException ite )
+        catch ( IllegalArgumentException | IllegalAccessException | InvocationTargetException ite )
         {
             throw new MavenReportException( "error while invoking generate on " + report.getClass(), ite );
         }

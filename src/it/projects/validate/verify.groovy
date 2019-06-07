@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.its;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,14 +17,6 @@ package org.apache.maven.plugins.site.its;
  * under the License.
  */
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
-}
+buildlog = new File( basedir, 'build.log' )
+
+assert buildlog.text.contains('BUILD SUCCESS')
