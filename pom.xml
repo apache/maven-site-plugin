@@ -198,7 +198,7 @@ under the License.
     <mavenVersion>3.0</mavenVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
-    <doxiaVersion>1.8</doxiaVersion>
+    <doxiaVersion>1.9</doxiaVersion>
     <doxiaSitetoolsVersion>1.8.1</doxiaSitetoolsVersion>
     <jettyVersion>9.4.12.v20180830</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
