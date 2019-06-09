@@ -198,8 +198,8 @@ under the License.
     <mavenVersion>3.0</mavenVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
-    <doxiaVersion>1.8</doxiaVersion>
-    <doxiaSitetoolsVersion>1.8.1</doxiaSitetoolsVersion>
+    <doxiaVersion>1.9</doxiaVersion>
+    <doxiaSitetoolsVersion>1.9</doxiaSitetoolsVersion>
     <jettyVersion>9.4.12.v20180830</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
@@ -337,7 +337,17 @@ under the License.
 
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-core</artifactId>
+      <version>${doxiaVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-module-xhtml</artifactId>
+      <version>${doxiaVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-module-xhtml5</artifactId>
       <version>${doxiaVersion}</version>
     </dependency>
     <dependency>
