@@ -40,4 +40,8 @@ assert !content.replace('<<<$value', '').contains( '<<<$' );
 
 assert new File( basedir, 'target/site/markdown2.html' ).exists(); // DOXIA-535
 
+assert new File( basedir, 'target/site/confluence.html' ).exists(); // MSITE-838
+assert new File( basedir, 'target/site/docbook.html' ).exists(); //MSITE-838
+assert new File( basedir, 'target/site/twiki.html' ).exists(); //MSITE-838
+
 return true;
