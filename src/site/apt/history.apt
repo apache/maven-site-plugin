@@ -56,6 +56,8 @@ Maven Site Plugin History
 *-----------------*--------------------*--------*------------------*--------------------*---------------*
 || relelease date || maven-site-plugin || {{{/doxia/}Doxia}} || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} || Comment 
 *-----------------*--------------------*--------*------------------*--------------------*---------------*
+| 2019-06         | 3.8                | 1.9    | 1.9.1            | 1.4                | addition of confluence/docbook/twiki support by default
+*-----------------*--------------------*--------*------------------*--------------------*---------------*
 | 2018-04         | 3.7.1              | 1.8    | 1.8.1            | 1.4                |
 *-----------------*--------------------*--------*------------------*--------------------*---------------*
 | 2017-12-31      | 3.7                | 1.8    | 1.8              | 1.4                | Markdown parser/HTML renderer {{{/doxia/doxia/doxia-modules/doxia-module-markdown/}changed}}
