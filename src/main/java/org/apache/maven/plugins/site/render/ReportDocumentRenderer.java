@@ -388,20 +388,20 @@ public class ReportDocumentRenderer
         }
     }
 
-    public String getOutputName()
     @Override
+    public String getOutputName()
     {
         return renderingContext.getOutputName();
     }
 
-    public RenderingContext getRenderingContext()
     @Override
+    public RenderingContext getRenderingContext()
     {
         return renderingContext;
     }
 
-    public boolean isOverwrite()
     @Override
+    public boolean isOverwrite()
     {
         // TODO: would be nice to query the report to see if it is modified
         return true;
@@ -410,8 +410,8 @@ public class ReportDocumentRenderer
     /**
      * @return true if the current report is external, false otherwise
      */
-    public boolean isExternalReport()
     @Override
+    public boolean isExternalReport()
     {
         return report.isExternalReport();
     }
