@@ -46,6 +46,7 @@ import org.apache.maven.reporting.MavenMultiPageReport;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
+import org.codehaus.plexus.util.PathTool;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.WriterFactory;
 
@@ -155,37 +156,73 @@ public class ReportDocumentRenderer
     private static class MultiPageSinkFactory
         implements SinkFactory
     {
+        /**
+         * The report that is (may be) generating multiple pages
+         */
+        private MavenReport report;
+
+        /**
+         * The main RenderingContext, which is the base for the RenderingContext of sub-pages
+         */
         private RenderingContext context;
 
+        /**
+         * List of sinks (sub-pages) associated to this report
+         */
         private List<MultiPageSubSink> sinks = new ArrayList<MultiPageSubSink>();
 
-        MultiPageSinkFactory( RenderingContext ctx )
+        MultiPageSinkFactory( MavenReport report, RenderingContext ctx )
         {
+        	this.report = report;
             this.context = ctx;
         }
 
-        public Sink createSink( File outputDir, String outputName )
+        @Override
+		public Sink createSink( File outputDir, String outputName )
         {
-            MultiPageSubSink sink = new MultiPageSubSink( outputDir, outputName, context );
+        	// Create a new context, similar to the main one, but with a different output name
+        	String outputRelativeToTargetSite = PathTool.getRelativeFilePath(
+					report.getReportOutputDirectory().getPath(),
+					new File( outputDir, outputName ).getPath()
+				);
+
+        	RenderingContext newContext = new RenderingContext(
+        			context.getBasedir(),
+        			context.getBasedirRelativePath(),
+        			outputRelativeToTargetSite,
+        			context.getParserId(),
+        			context.getExtension(),
+        			context.isEditable(),
+        			context.getGenerator()
+        		);
+
+        	// Create a sink for this sub-page, based on this new context
+            MultiPageSubSink sink = new MultiPageSubSink( outputDir, outputName, newContext );
+
+            // Add it to the list of sinks associated to this report
             sinks.add( sink );
+
             return sink;
         }
 
-        public Sink createSink( File arg0, String arg1, String arg2 )
+        @Override
+		public Sink createSink( File arg0, String arg1, String arg2 )
             throws IOException
         {
             // Not used
             return null;
         }
 
-        public Sink createSink( OutputStream arg0 )
+        @Override
+		public Sink createSink( OutputStream arg0 )
             throws IOException
         {
             // Not used
             return null;
         }
 
-        public Sink createSink( OutputStream arg0, String arg1 )
+        @Override
+		public Sink createSink( OutputStream arg0, String arg1 )
             throws IOException
         {
             // Not used
@@ -198,7 +235,8 @@ public class ReportDocumentRenderer
         }
     }
 
-    public void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
+    @Override
+	public void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
         throws RendererException, FileNotFoundException
     {
         Locale locale = siteRenderingContext.getLocale();
@@ -213,7 +251,7 @@ public class ReportDocumentRenderer
         // main sink
         SiteRendererSink mainSink = new SiteRendererSink( renderingContext );
         // sink factory, for multi-page reports that need sub-sinks
-        MultiPageSinkFactory multiPageSinkFactory = new MultiPageSinkFactory( renderingContext );
+        MultiPageSinkFactory multiPageSinkFactory = new MultiPageSinkFactory( report, renderingContext );
 
         ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
         try
@@ -288,6 +326,11 @@ public class ReportDocumentRenderer
                 outputName = mySink.getOutputName();
                 log.debug( "  Rendering " + outputName );
 
+                // Create directories if necessary
+                if (!mySink.getOutputDir().exists()) {
+                	mySink.getOutputDir().mkdirs();
+                }
+
                 File outputFile = new File( mySink.getOutputDir(), outputName );
 
                 try ( Writer out = WriterFactory.newWriter( outputFile, siteRenderingContext.getOutputEncoding() ) )
@@ -344,17 +387,20 @@ public class ReportDocumentRenderer
         }
     }
 
-    public String getOutputName()
+    @Override
+	public String getOutputName()
     {
         return renderingContext.getOutputName();
     }
 
-    public RenderingContext getRenderingContext()
+    @Override
+	public RenderingContext getRenderingContext()
     {
         return renderingContext;
     }
 
-    public boolean isOverwrite()
+    @Override
+	public boolean isOverwrite()
     {
         // TODO: would be nice to query the report to see if it is modified
         return true;
@@ -363,7 +409,8 @@ public class ReportDocumentRenderer
     /**
      * @return true if the current report is external, false otherwise
      */
-    public boolean isExternalReport()
+    @Override
+	public boolean isExternalReport()
     {
         return report.isExternalReport();
     }
