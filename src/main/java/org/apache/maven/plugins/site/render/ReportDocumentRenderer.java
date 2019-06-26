@@ -66,7 +66,7 @@ public class ReportDocumentRenderer
     private final String reportMojoInfo;
 
     private final ClassLoader classLoader;
-    
+
     private final Log log;
 
     public ReportDocumentRenderer( MavenReportExecution mavenReportExecution, RenderingContext renderingContext,
@@ -96,7 +96,7 @@ public class ReportDocumentRenderer
 
     /**
      * Get plugin information from report's Manifest.
-     * 
+     *
      * @param report the Maven report
      * @return plugin information as Specification Title followed by Specification Version if set in Manifest and
      *         supported by JVM
@@ -109,7 +109,7 @@ public class ReportDocumentRenderer
         {
             String title = pkg.getSpecificationTitle();
             String version = pkg.getSpecificationVersion();
-            
+
             if ( title == null )
             {
                 return version;
@@ -173,31 +173,31 @@ public class ReportDocumentRenderer
 
         MultiPageSinkFactory( MavenReport report, RenderingContext ctx )
         {
-        	this.report = report;
+            this.report = report;
             this.context = ctx;
         }
 
         @Override
-		public Sink createSink( File outputDir, String outputName )
+        public Sink createSink( File outputDir, String outputName )
         {
-        	// Create a new context, similar to the main one, but with a different output name
-        	String outputRelativeToTargetSite = PathTool.getRelativeFilePath(
-					report.getReportOutputDirectory().getPath(),
-					new File( outputDir, outputName ).getPath()
-				);
+            // Create a new context, similar to the main one, but with a different output name
+            String outputRelativeToTargetSite = PathTool.getRelativeFilePath(
+                report.getReportOutputDirectory().getPath(),
+                new File( outputDir, outputName ).getPath()
+            );
 
-        	RenderingContext newContext = new RenderingContext(
-        			context.getBasedir(),
-        			context.getBasedirRelativePath(),
-        			outputRelativeToTargetSite,
-        			context.getParserId(),
-        			context.getExtension(),
-        			context.isEditable(),
-        			context.getGenerator()
-        		);
+            RenderingContext subSinkContext = new RenderingContext(
+                context.getBasedir(),
+                context.getBasedirRelativePath(),
+                outputRelativeToTargetSite,
+                context.getParserId(),
+                context.getExtension(),
+                context.isEditable(),
+                context.getGenerator()
+            );
 
-        	// Create a sink for this sub-page, based on this new context
-            MultiPageSubSink sink = new MultiPageSubSink( outputDir, outputName, newContext );
+            // Create a sink for this sub-page, based on this new context
+            MultiPageSubSink sink = new MultiPageSubSink( outputDir, outputName, subSinkContext );
 
             // Add it to the list of sinks associated to this report
             sinks.add( sink );
@@ -206,7 +206,7 @@ public class ReportDocumentRenderer
         }
 
         @Override
-		public Sink createSink( File arg0, String arg1, String arg2 )
+        public Sink createSink( File arg0, String arg1, String arg2 )
             throws IOException
         {
             // Not used
@@ -214,7 +214,7 @@ public class ReportDocumentRenderer
         }
 
         @Override
-		public Sink createSink( OutputStream arg0 )
+        public Sink createSink( OutputStream arg0 )
             throws IOException
         {
             // Not used
@@ -222,7 +222,7 @@ public class ReportDocumentRenderer
         }
 
         @Override
-		public Sink createSink( OutputStream arg0, String arg1 )
+        public Sink createSink( OutputStream arg0, String arg1 )
             throws IOException
         {
             // Not used
@@ -236,7 +236,7 @@ public class ReportDocumentRenderer
     }
 
     @Override
-	public void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
+    public void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
         throws RendererException, FileNotFoundException
     {
         Locale locale = siteRenderingContext.getLocale();
@@ -327,8 +327,9 @@ public class ReportDocumentRenderer
                 log.debug( "  Rendering " + outputName );
 
                 // Create directories if necessary
-                if (!mySink.getOutputDir().exists()) {
-                	mySink.getOutputDir().mkdirs();
+                if ( !mySink.getOutputDir().exists() )
+                {
+                    mySink.getOutputDir().mkdirs();
                 }
 
                 File outputFile = new File( mySink.getOutputDir(), outputName );
@@ -356,7 +357,7 @@ public class ReportDocumentRenderer
 
     /**
      * Try to generate report with extended multi-page API.
-     * 
+     *
      * @return <code>true</code> if the report was compatible with the extended API
      */
     private boolean generateMultiPage( Locale locale, SinkFactory sf, Sink sink )
@@ -388,19 +389,19 @@ public class ReportDocumentRenderer
     }
 
     @Override
-	public String getOutputName()
+    public String getOutputName()
     {
         return renderingContext.getOutputName();
     }
 
     @Override
-	public RenderingContext getRenderingContext()
+    public RenderingContext getRenderingContext()
     {
         return renderingContext;
     }
 
     @Override
-	public boolean isOverwrite()
+    public boolean isOverwrite()
     {
         // TODO: would be nice to query the report to see if it is modified
         return true;
@@ -410,7 +411,7 @@ public class ReportDocumentRenderer
      * @return true if the current report is external, false otherwise
      */
     @Override
-	public boolean isExternalReport()
+    public boolean isExternalReport()
     {
         return report.isExternalReport();
     }
