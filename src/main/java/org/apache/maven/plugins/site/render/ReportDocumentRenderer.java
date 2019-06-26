@@ -66,7 +66,7 @@ public class ReportDocumentRenderer
     private final String reportMojoInfo;
 
     private final ClassLoader classLoader;
-
+    
     private final Log log;
 
     public ReportDocumentRenderer( MavenReportExecution mavenReportExecution, RenderingContext renderingContext,
@@ -96,7 +96,7 @@ public class ReportDocumentRenderer
 
     /**
      * Get plugin information from report's Manifest.
-     *
+     * 
      * @param report the Maven report
      * @return plugin information as Specification Title followed by Specification Version if set in Manifest and
      *         supported by JVM
@@ -109,7 +109,7 @@ public class ReportDocumentRenderer
         {
             String title = pkg.getSpecificationTitle();
             String version = pkg.getSpecificationVersion();
-
+            
             if ( title == null )
             {
                 return version;
@@ -357,7 +357,7 @@ public class ReportDocumentRenderer
 
     /**
      * Try to generate report with extended multi-page API.
-     *
+     * 
      * @return <code>true</code> if the report was compatible with the extended API
      */
     private boolean generateMultiPage( Locale locale, SinkFactory sf, Sink sink )
@@ -388,20 +388,20 @@ public class ReportDocumentRenderer
         }
     }
 
-    @Override
     public String getOutputName()
+    @Override
     {
         return renderingContext.getOutputName();
     }
 
-    @Override
     public RenderingContext getRenderingContext()
+    @Override
     {
         return renderingContext;
     }
 
-    @Override
     public boolean isOverwrite()
+    @Override
     {
         // TODO: would be nice to query the report to see if it is modified
         return true;
@@ -410,8 +410,8 @@ public class ReportDocumentRenderer
     /**
      * @return true if the current report is external, false otherwise
      */
-    @Override
     public boolean isExternalReport()
+    @Override
     {
         return report.isExternalReport();
     }
