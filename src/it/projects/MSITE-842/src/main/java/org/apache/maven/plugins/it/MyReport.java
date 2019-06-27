@@ -55,37 +55,46 @@ public class MyReport
     @Override
     protected void executeReport( Locale locale ) throws MavenReportException
     {
-    	// Main Sink
-    	Sink mainSink = getSink();
-    	if (mainSink == null) {
-    		throw new MavenReportException("Could not get the main Sink");
-    	}
+        // Main Sink
+        Sink mainSink = getSink();
+        if (mainSink == null)
+        {
+            throw new MavenReportException("Could not get the main Sink");
+        }
 
-    	// Write to the main Sink
-    	mainSink.text("Main Sink");
+        // Write to the main Sink
+        mainSink.text("Main Sink");
 
-		// Create a new sink!
-		Sink anotherSink;
-		try {
-			anotherSink = getSinkFactory().createSink(outputDirectory, "another-page.html");
-		} catch (IOException e) {
-			throw new MavenReportException("Could not create sink for another-page.html in " + outputDirectory.getAbsolutePath(), e);
-		}
+        // Create a new sink!
+        Sink anotherSink;
+        try
+        {
+            anotherSink = getSinkFactory().createSink(outputDirectory, "another-page.html");
+        }
+        catch (IOException e)
+        {
+            throw new MavenReportException("Could not create sink for another-page.html in " +
+                    outputDirectory.getAbsolutePath(), e);
+        }
 
-		// Write to the other Sink
-		anotherSink.text("Another Sink");
+        // Write to the other Sink
+        anotherSink.text("Another Sink");
 
-		// Create a new sink, in a subdirectory
-		File subDirectory = new File(outputDirectory, "sub");
-		Sink subDirectorySink;
-		try {
-			subDirectorySink = getSinkFactory().createSink(subDirectory, "sub.html");
-		} catch (IOException e) {
-			throw new MavenReportException("Could not create sink for sub.html in " + subDirectory.getAbsolutePath(), e);
-		}
+        // Create a new sink, in a subdirectory
+        File subDirectory = new File(outputDirectory, "sub");
+        Sink subDirectorySink;
+        try
+        {
+            subDirectorySink = getSinkFactory().createSink(subDirectory, "sub.html");
+        }
+        catch (IOException e)
+        {
+            throw new MavenReportException("Could not create sink for sub.html in " +
+                    subDirectory.getAbsolutePath(), e);
+        }
 
-		// Write to the sink in the subdirectory
-		subDirectorySink.text("Subdirectory Sink");
+        // Write to the sink in the subdirectory
+        subDirectorySink.text("Subdirectory Sink");
 
     }
 }
