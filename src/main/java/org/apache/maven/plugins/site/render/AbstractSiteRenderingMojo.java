@@ -61,7 +61,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -231,8 +230,7 @@ public abstract class AbstractSiteRenderingMojo
     protected List<MavenReportExecution> getReports()
         throws MojoExecutionException
     {
-        List<MavenReportExecution> allReports;
-
+        final List<MavenReportExecution> allReports;
         if ( isMaven3OrMore() )
         {
             // Maven 3
@@ -257,18 +255,24 @@ public abstract class AbstractSiteRenderingMojo
         else
         {
             // Maven 2
-            // [olamy] do we still need Maven2 support??
-            allReports = reports.stream()
-                .map( report -> new MavenReportExecution( report ) )
-                .collect( Collectors.toList() );
+            allReports = new ArrayList<>( reports.size() );
+            for ( MavenReport report : reports )
+            {
+                allReports.add( new MavenReportExecution( report ) );
+            }
         }
 
         // filter out reports that can't be generated
-
-        return allReports.stream() //
-            .filter( mavenReportExecution -> mavenReportExecution.canGenerateReport() ) //
-            .collect( Collectors.toList() );
-
+        // todo Lambda Java 1.8
+        List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
+        for ( MavenReportExecution exec : allReports )
+        {
+            if ( exec.canGenerateReport() )
+            {
+                reportExecutions.add( exec );
+            }
+        }
+        return reportExecutions;
     }
 
     /**

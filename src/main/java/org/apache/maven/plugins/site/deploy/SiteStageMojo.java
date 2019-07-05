@@ -164,10 +164,14 @@ public class SiteStageMojo
             return null;
         }
 
-        return reactorProjects //
-            .stream() //
-            .filter( mavenProject -> mavenProject.isExecutionRoot() ) //
-            .findFirst().get();
-
+        // todo Lambda Java 1.8
+        for ( MavenProject reactorProject : reactorProjects )
+        {
+            if ( reactorProject.isExecutionRoot() )
+            {
+                return reactorProject;
+            }
+        }
+        return null;
     }
 }

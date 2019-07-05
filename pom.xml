@@ -196,7 +196,7 @@ under the License.
 
   <properties>
     <mavenVersion>3.0</mavenVersion>
-    <javaVersion>8</javaVersion>
+    <javaVersion>7</javaVersion>
     <!-- for dependencies -->
     <doxiaVersion>1.9</doxiaVersion>
     <doxiaSitetoolsVersion>1.9.1</doxiaSitetoolsVersion>
