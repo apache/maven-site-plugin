@@ -61,7 +61,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -231,44 +230,35 @@ public abstract class AbstractSiteRenderingMojo
     protected List<MavenReportExecution> getReports()
         throws MojoExecutionException
     {
-        List<MavenReportExecution> allReports;
+        MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
+        mavenReportExecutorRequest.setLocalRepository( localRepository );
+        mavenReportExecutorRequest.setMavenSession( mavenSession );
+        mavenReportExecutorRequest.setProject( project );
+        mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
 
-        if ( isMaven3OrMore() )
+        MavenReportExecutor mavenReportExecutor;
+        try
         {
-            // Maven 3
-            MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
-            mavenReportExecutorRequest.setLocalRepository( localRepository );
-            mavenReportExecutorRequest.setMavenSession( mavenSession );
-            mavenReportExecutorRequest.setProject( project );
-            mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
-
-            MavenReportExecutor mavenReportExecutor;
-            try
-            {
-                mavenReportExecutor = container.lookup( MavenReportExecutor.class );
-            }
-            catch ( ComponentLookupException e )
-            {
-                throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
-            }
-
-            allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
+            mavenReportExecutor = container.lookup( MavenReportExecutor.class );
         }
-        else
+        catch ( ComponentLookupException e )
         {
-            // Maven 2
-            // [olamy] do we still need Maven2 support??
-            allReports = reports.stream()
-                .map( report -> new MavenReportExecution( report ) )
-                .collect( Collectors.toList() );
+            throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
         }
+
+        List<MavenReportExecution> allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
 
         // filter out reports that can't be generated
-
-        return allReports.stream() //
-            .filter( mavenReportExecution -> mavenReportExecution.canGenerateReport() ) //
-            .collect( Collectors.toList() );
-
+        // todo Lambda Java 1.8
+        List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
+        for ( MavenReportExecution exec : allReports )
+        {
+            if ( exec.canGenerateReport() )
+            {
+                reportExecutions.add( exec );
+            }
+        }
+        return reportExecutions;
     }
 
     /**
