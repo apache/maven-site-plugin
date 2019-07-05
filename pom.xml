@@ -200,7 +200,7 @@ under the License.
     <!-- for dependencies -->
     <doxiaVersion>1.9</doxiaVersion>
     <doxiaSitetoolsVersion>1.9.1</doxiaSitetoolsVersion>
-    <jettyVersion>9.4.12.v20180830</jettyVersion>
+    <jettyVersion>9.2.28.v20190418</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
     <wagonVersion>3.3.1</wagonVersion>
