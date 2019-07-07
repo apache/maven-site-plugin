@@ -210,6 +210,7 @@ under the License.
     <pmdPluginVersion>3.11.0</pmdPluginVersion>
     <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
     <surefirePluginVersion>2.22.1</surefirePluginVersion>
+    <failsafePluginVersion>2.22.2</failsafePluginVersion>
   </properties>
 
   <dependencies>
