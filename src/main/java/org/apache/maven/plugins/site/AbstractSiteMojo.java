@@ -20,7 +20,6 @@ package org.apache.maven.plugins.site;
  */
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Component;
@@ -88,14 +87,6 @@ public abstract class AbstractSiteMojo
      */
     @Parameter( defaultValue = "${reactorProjects}", required = true, readonly = true )
     protected List<MavenProject> reactorProjects;
-
-    /**
-     * Check the current Maven version to see if it's Maven 3.0 or newer.
-     */
-    protected static boolean isMaven3OrMore()
-    {
-        return new ComparableVersion( getMavenVersion() ).compareTo( new ComparableVersion( "3.0" ) ) >= 0;
-    }
 
     protected static String getMavenVersion()
     {

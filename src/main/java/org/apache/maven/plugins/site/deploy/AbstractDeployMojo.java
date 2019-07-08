@@ -51,7 +51,6 @@ import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.observers.Debug;
 import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.repository.Repository;
-import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
@@ -67,7 +66,6 @@ import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -306,36 +304,10 @@ public abstract class AbstractDeployMojo
         try
         {
             configureWagon( wagon, repository.getId(), settings, container, getLog() );
-        }
-        catch ( TransferFailedException e )
-        {
-            throw new MojoExecutionException( "Unable to configure Wagon: '" + repository.getProtocol() + "'", e );
-        }
 
-        try
-        {
-            final ProxyInfo proxyInfo;
-            if ( !isMaven3OrMore() )
-            {
-                proxyInfo = getProxyInfo( repository, wagonManager );
-            }
-            else
-            {
-                try
-                {
-                    // The cast does not make sense, however I get when compiled with maven 3.5.4:
-                    // error: incompatible types: Object cannot be converted to SettingsDecrypter
-                    // The cast is not necessary with maven 3.3.9
-                    SettingsDecrypter settingsDecrypter =
-                            (SettingsDecrypter) container.lookup( SettingsDecrypter.class );
+            SettingsDecrypter settingsDecrypter = container.lookup( SettingsDecrypter.class );
 
-                    proxyInfo = getProxy( repository, settingsDecrypter );
-                }
-                catch ( ComponentLookupException cle )
-                {
-                    throw new MojoExecutionException( "Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle );
-                }
-            }
+            ProxyInfo proxyInfo = getProxy( repository, settingsDecrypter );
 
             push( directory, repository, wagon, proxyInfo, getLocales(), getDeployModuleDirectory() );
 
@@ -343,6 +315,14 @@ public abstract class AbstractDeployMojo
             {
                 chmod( wagon, repository, chmodOptions, chmodMode );
             }
+        }
+        catch ( ComponentLookupException cle )
+        {
+            throw new MojoExecutionException( "Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle );
+        }
+        catch ( TransferFailedException e )
+        {
+            throw new MojoExecutionException( "Unable to configure Wagon: '" + repository.getProtocol() + "'", e );
         }
         finally
         {
@@ -496,75 +476,14 @@ public abstract class AbstractDeployMojo
     }
 
     /**
+     * Get proxy information for Maven 3.
      * <p>
      * Get the <code>ProxyInfo</code> of the proxy associated with the <code>host</code>
      * and the <code>protocol</code> of the given <code>repository</code>.
-     * </p>
-     * <p>
-     * Extract from <a href="http://java.sun.com/j2se/1.5.0/docs/guide/net/properties.html">
-     * J2SE Doc : Networking Properties - nonProxyHosts</a> : "The value can be a list of hosts,
-     * each separated by a |, and in addition a wildcard character (*) can be used for matching"
-     * </p>
-     * <p>
-     * Defensively support for comma (",") and semi colon (";") in addition to pipe ("|") as separator.
-     * </p>
      *
-     * @param repository   the Repository to extract the ProxyInfo from.
-     * @param wagonManager the WagonManager used to connect to the Repository.
-     * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found
-     */
-    public static ProxyInfo getProxyInfo( Repository repository, WagonManager wagonManager )
-    {
-        ProxyInfo proxyInfo = wagonManager.getProxy( repository.getProtocol() );
-
-        if ( proxyInfo == null )
-        {
-            return null;
-        }
-
-        String host = repository.getHost();
-        String nonProxyHostsAsString = proxyInfo.getNonProxyHosts();
-        for ( String nonProxyHost : StringUtils.split( nonProxyHostsAsString, ",;|" ) )
-        {
-            if ( StringUtils.contains( nonProxyHost, "*" ) )
-            {
-                // Handle wildcard at the end, beginning or middle of the nonProxyHost
-                final int pos = nonProxyHost.indexOf( '*' );
-                String nonProxyHostPrefix = nonProxyHost.substring( 0, pos );
-                String nonProxyHostSuffix = nonProxyHost.substring( pos + 1 );
-                // prefix*
-                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
-                    && StringUtils.isEmpty( nonProxyHostSuffix ) )
-                {
-                    return null;
-                }
-                // *suffix
-                if ( StringUtils.isEmpty( nonProxyHostPrefix ) && StringUtils.isNotEmpty( nonProxyHostSuffix )
-                    && host.endsWith( nonProxyHostSuffix ) )
-                {
-                    return null;
-                }
-                // prefix*suffix
-                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
-                    && StringUtils.isNotEmpty( nonProxyHostSuffix ) && host.endsWith( nonProxyHostSuffix ) )
-                {
-                    return null;
-                }
-            }
-            else if ( host.equals( nonProxyHost ) )
-            {
-                return null;
-            }
-        }
-        return proxyInfo;
-    }
-
-    /**
-     * Get proxy information for Maven 3.
-     *
-     * @param repository
-     * @param settingsDecrypter
-     * @return
+     * @param repository        the Repository to extract the ProxyInfo from.
+     * @param settingsDecrypter settings password decrypter.
+     * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found.
      */
     private ProxyInfo getProxy( Repository repository, SettingsDecrypter settingsDecrypter )
     {
@@ -593,13 +512,13 @@ public abstract class AbstractDeployMojo
                 {
                     getLog().warn( "fail to build URL with " + url );
                 }
-
             }
         }
         else
         {
             getLog().debug( "getProxy 'protocol': " + protocol );
         }
+
         if ( mavenSession != null && protocol != null )
         {
             MavenExecutionRequest request = mavenSession.getRequest();
@@ -677,15 +596,8 @@ public abstract class AbstractDeployMojo
                 {
                     componentConfigurator =
                         (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE, "basic" );
-                    if ( isMaven3OrMore() )
-                    {
-                        componentConfigurator.configureComponent( wagon, plexusConf,
-                                                                  container.getContainerRealm() );
-                    }
-                    else
-                    {
-                        configureWagonWithMaven2( componentConfigurator, wagon, plexusConf, container );
-                    }
+
+                    componentConfigurator.configureComponent( wagon, plexusConf, container.getContainerRealm() );
                 }
                 catch ( final ComponentLookupException e )
                 {
@@ -713,33 +625,6 @@ public abstract class AbstractDeployMojo
                     }
                 }
             }
-        }
-    }
-
-    private static void configureWagonWithMaven2( ComponentConfigurator componentConfigurator, Wagon wagon,
-                                                  PlexusConfiguration plexusConf, PlexusContainer container )
-        throws ComponentConfigurationException
-    {
-        // in Maven 2.x   :
-        // * container.getContainerRealm() -> org.codehaus.classworlds.ClassRealm
-        // * componentConfiguration 3rd param is org.codehaus.classworlds.ClassRealm
-        // so use some reflection see MSITE-609
-        try
-        {
-            Method methodContainerRealm = container.getClass().getMethod( "getContainerRealm" );
-            ClassRealm realm = (ClassRealm) methodContainerRealm.invoke( container );
-
-            Method methodConfigure = componentConfigurator.getClass().getMethod( "configureComponent",
-                                                                                 new Class[]{ Object.class,
-                                                                                     PlexusConfiguration.class,
-                                                                                     ClassRealm.class } );
-
-            methodConfigure.invoke( componentConfigurator, wagon, plexusConf, realm );
-        }
-        catch ( Exception e )
-        {
-            throw new ComponentConfigurationException(
-                "Failed to configure wagon component for a Maven2 use " + e.getMessage(), e );
         }
     }
 
