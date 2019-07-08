@@ -230,49 +230,34 @@ public abstract class AbstractSiteRenderingMojo
     protected List<MavenReportExecution> getReports()
         throws MojoExecutionException
     {
-        final List<MavenReportExecution> allReports;
-        if ( isMaven3OrMore() )
+        try
         {
-            // Maven 3
+            MavenReportExecutor mavenReportExecutor = container.lookup( MavenReportExecutor.class );
+
             MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
             mavenReportExecutorRequest.setLocalRepository( localRepository );
             mavenReportExecutorRequest.setMavenSession( mavenSession );
             mavenReportExecutorRequest.setProject( project );
             mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
 
-            MavenReportExecutor mavenReportExecutor;
-            try
-            {
-                mavenReportExecutor = container.lookup( MavenReportExecutor.class );
-            }
-            catch ( ComponentLookupException e )
-            {
-                throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
-            }
+            List<MavenReportExecution> allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
 
-            allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
-        }
-        else
-        {
-            // Maven 2
-            allReports = new ArrayList<>( reports.size() );
-            for ( MavenReport report : reports )
+            // filter out reports that can't be generated
+            // todo Lambda Java 1.8
+            List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
+            for ( MavenReportExecution exec : allReports )
             {
-                allReports.add( new MavenReportExecution( report ) );
+                if ( exec.canGenerateReport() )
+                {
+                    reportExecutions.add( exec );
+                }
             }
+            return reportExecutions;
         }
-
-        // filter out reports that can't be generated
-        // todo Lambda Java 1.8
-        List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
-        for ( MavenReportExecution exec : allReports )
+        catch ( ComponentLookupException e )
         {
-            if ( exec.canGenerateReport() )
-            {
-                reportExecutions.add( exec );
-            }
+            throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
         }
-        return reportExecutions;
     }
 
     /**
