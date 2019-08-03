@@ -346,7 +346,7 @@ Configuring the Site Descriptor
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>
-    <version>1.5</version>
+    <version>1.8</version>
   </skin>
   ...
 </project>
@@ -402,4 +402,6 @@ Configuring the Site Descriptor
 
   <<Note:>> Support for some expressions, like <<<$\{project.name\}>>> is present in
   version 2.0-beta-5 of this plugin. Full support is available since version
-  2.0-beta-6.
+  2.0-beta-6. Also, there are additional restrictions on using dotted project properties
+  in content pages. See {{{./creating-content.html#Filtering}Filtering}} for details
+  on injecting properties into content pages.
