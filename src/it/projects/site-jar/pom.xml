@@ -34,6 +34,7 @@ under the License.
   <properties>
     <currentVersion>2.0.7</currentVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.outputTimestamp>2019-11-02T17:48:12Z</project.build.outputTimestamp>
   </properties>
 
   <distributionManagement>

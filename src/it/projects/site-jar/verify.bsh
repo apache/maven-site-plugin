@@ -50,6 +50,11 @@ try
     while ( jarEntries.hasMoreElements() )
     {
         JarEntry entry = (JarEntry) jarEntries.nextElement();
+        if ( entry.getTime() != 1572713292000L )
+        {
+            System.out.println( "wrong entry time for " + entry.getName() + ": " + entry.getTime() );
+            return false;
+        }
         if ( !entry.isDirectory() )
         {
             // Only compare files

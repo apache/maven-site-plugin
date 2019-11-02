@@ -116,6 +116,16 @@ public class SiteJarMojo
     private String[] archiveExcludes;
 
     /**
+     * Timestamp for reproducible output archive entries, either formatted as ISO 8601
+     * <code>yyyy-MM-dd'T'HH:mm:ssXXX</code> or as an int representing seconds since the epoch (like
+     * <a href="https://reproducible-builds.org/docs/source-date-epoch/">SOURCE_DATE_EPOCH</a>).
+     *
+     * @since 3.9.0
+     */
+    @Parameter( defaultValue = "${project.build.outputTimestamp}" )
+    private String outputTimestamp;
+
+    /**
      * @see org.apache.maven.plugin.Mojo#execute()
      */
     public void execute()
@@ -179,14 +189,18 @@ public class SiteJarMojo
         File siteJar = new File( jarOutputDirectory, jarFilename );
 
         MavenArchiver archiver = new MavenArchiver();
+        archiver.setCreatedBy( "Maven Site Plugin", "org.apache.maven.plugins", "maven-site-plugin" );
 
         archiver.setArchiver( this.jarArchiver );
 
         archiver.setOutputFile( siteJar );
 
+        // configure for Reproducible Builds based on outputTimestamp value
+        archiver.configureReproducible( outputTimestamp );
+
         if ( !siteDirectory.isDirectory() )
         {
-            getLog().warn( "JAR will be empty - no content was marked for inclusion !" );
+            getLog().warn( "JAR will be empty - no content was marked for inclusion!" );
         }
         else
         {
