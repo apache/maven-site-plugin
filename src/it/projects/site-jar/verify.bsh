@@ -47,12 +47,17 @@ try
 
     JarFile jar = new JarFile( siteJar );
     Enumeration jarEntries = jar.entries();
+    long timestamp = -1;
     while ( jarEntries.hasMoreElements() )
     {
         JarEntry entry = (JarEntry) jarEntries.nextElement();
-        if ( entry.getTime() != 1572713292000L )
+        if ( timestamp == -1 )
         {
-            System.out.println( "wrong entry time for " + entry.getName() + ": " + entry.getTime() );
+            timestamp = entry.getTime(); // reproducible timestamp in jar file cause local timestamp depending on timezone
+        }
+        if ( entry.getTime() != timestamp )
+        {
+            System.out.println( "wrong entry time for " + entry.getName() + ": " + entry.getTime() + " instead of " + timestamp );
             return false;
         }
         if ( !entry.isDirectory() )
