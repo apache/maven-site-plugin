@@ -22,7 +22,9 @@ content = new File( basedir, 'target/site/markdown.html' ).text;
 
 assert content.contains( 'Markdown Format works' );
 
-assert !content.contains( ' quotes and double quotes were stripped' );
+assert !content.contains( ' quotes and double quotes were stripped' ); // DOXIA-473
+//assert content.contains( '<code>monospaced</code> support' ); // DOXIA-597
+//assert content.contains( '<div class="source"><pre class="prettyprint linenums">code block' ); // DOXIA-571
 
 assert !content.contains( 'MACRO' );
 assert content.contains( 'href="#Subsection"' );
