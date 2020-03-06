@@ -30,7 +30,7 @@ under the License.
   </parent>
 
   <artifactId>maven-site-plugin</artifactId>
-  <version>3.9.0</version>
+  <version>3.9.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Apache Maven Site Plugin</name>
@@ -177,7 +177,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-site-plugin.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-site-plugin.git</developerConnection>
     <url>https://github.com/apache/maven-site-plugin/tree/${project.scm.tag}</url>
-    <tag>maven-site-plugin-3.9.0</tag>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>JIRA</system>
@@ -210,7 +210,7 @@ under the License.
     <pmdPluginVersion>3.11.0</pmdPluginVersion>
     <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
     <surefirePluginVersion>2.22.1</surefirePluginVersion>
-    <project.build.outputTimestamp>2020-03-06T20:49:21Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2020-03-06T20:49:49Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
