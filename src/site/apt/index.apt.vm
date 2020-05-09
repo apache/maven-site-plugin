@@ -91,17 +91,25 @@ ${project.name}
 
    * {{{./examples/sitedescriptor.html}Configuring the Site Descriptor}}
 
-   * {{{./examples/configuring-reports.html}Configuring Reports}}
-
-   * {{{./examples/adding-deploy-protocol.html}Adding a Protocol to Deploy the Site}}
-
    * {{{./examples/siterun.html}Configuring Site Run}}
-
-   * {{{./examples/templatefile.html}Changing the Template File}}
-
-   * {{{./examples/creatingskins.html}Creating Skins}}
 
    * {{{./examples/moduleexcludes.html}Excluding Document Formats}}
 
-   * {{{./examples/site-deploy-to-sourceforge.net.html}Deploying to sourceforge.net}}
+** Reports
+
+   * {{{./examples/configuring-reports.html}Configuring Reports}}
+
+   * {{{./i18n.html}Reports Internationalization}}
+
+** Site Template
+
+     * {{{./examples/templatefile.html}Changing the Template File}}
+
+     * {{{./examples/creatingskins.html}Creating Skins}}
+
+** Deploying
+
+     * {{{./examples/adding-deploy-protocol.html}Adding a Protocol to Deploy the Site}}
+
+     * {{{./examples/site-deploy-to-sourceforge.net.html}Deploying to sourceforge.net}}
 

@@ -34,21 +34,27 @@ under the License.
       <item name="License" href="http://www.apache.org/licenses/"/>
       <item name="Download" href="download.html"/>
     </menu>
-    <menu name="Configuration">
-      <item name="Internationalization" href="i18n.html"/>
-      <item name="Site Descriptor" href="../../doxia/doxia-sitetools/doxia-decoration-model/decoration.html"/>
-    </menu>
 
     <menu name="Examples">
       <item name="Creating Content" href="/examples/creating-content.html"/>
       <item name="Configuring the Site Descriptor" href="/examples/sitedescriptor.html"/>
       <item name="Building a multi-module site" href="/examples/multimodule.html"/>
-      <item name="Configuring Reports" href="/examples/configuring-reports.html"/>
       <item name="Configuring Site Run" href="/examples/siterun.html"/>
-      <item name="Adding a Protocol to Deploy the Site" href="/examples/adding-deploy-protocol.html"/>
+      <item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
+    </menu>
+
+    <menu name="Reports">
+      <item name="Configuring Reports" href="/examples/configuring-reports.html"/>
+      <item name="Reports Internationalization" href="i18n.html"/>
+    </menu>
+
+    <menu name="Site Template">
       <item name="Changing the Template File" href="/examples/templatefile.html"/>
       <item name="Creating Skins" href="/examples/creatingskins.html"/>
-      <item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
+    </menu>
+
+    <menu name="Deploying">
+      <item name="Adding a Protocol to Deploy the Site" href="/examples/adding-deploy-protocol.html"/>
       <item name="Deploying to sourceforge.net" href="/examples/site-deploy-to-sourceforge.net.html"/>
     </menu>
   </body>
