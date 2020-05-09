@@ -46,6 +46,8 @@ Maven Site Plugin History
 
   []
 
+[developer-overview.png] Developer Overview
+
 * Maven Site Plugin vs Doxia vs Doxia Sitetools
 
   Given this layered approach, rendering issues reported to {{{https://issues.apache.org/jira/projects/MSITE}MSITE Maven Site Plugin issue tracker}}
