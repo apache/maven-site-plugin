@@ -49,7 +49,7 @@ ssh -t <username>,<project name>@shell.sf.net create
 
   * Use <<<shell.sourceforge.net>>> (instead of <<<web.sourceforge.net>>>) in you site URL
 
----
++---
   ...
   <distributionManagement>
     ...
@@ -58,7 +58,7 @@ ssh -t <username>,<project name>@shell.sf.net create
       <url>scp://shell.sourceforge.net/home/project-web/your_project/htdocs</url>
     </site>
   </distributionManagement>
----
++---
 
   * Run <<<mvn site:deploy>>>
 
@@ -73,7 +73,7 @@ ssh -t <username>,<project name>@shell.sf.net create
 
 ** Create a shell on <<<shell.sourceforge.net>>> with your username and project group
 
-+---+
+-----
 $ ssh -t barrie,qifcon@shell.sf.net create
 barrie,qifcon@shell.sf.net's password:
 
@@ -86,7 +86,7 @@ Use the "shutdown" command to destroy the shell before the time limit.
 For path information and login help, type "sf-help".
 
 -bash-3.2$
-+---+
+-----
 
 ** Use <<<shell.sourceforge.net>>> (instead of <<<web.sourceforge.net>>>) in you site URL
 
@@ -106,7 +106,7 @@ For path information and login help, type "sf-help".
 
 ** Run <<<mvn site:deploy>>>
 
-+---+
+-----
 C:\ide\Finance\qifcon\site>mvn site:deploy
 [INFO] Scanning for projects...
 [INFO] Searching repository for plugin with prefix: 'site'.
@@ -135,7 +135,7 @@ scp://shell.sourceforge.net/home/groups/q/qi/qifcon/htdocs - Session: Disconnect
 [INFO] Finished at: Sat Nov 08 08:09:40 CST 2008
 [INFO] Final Memory: 6M/11M
 [INFO] ------------------------------------------------------------------------
-+---+
+-----
 
 ** Verify you have a working web site
 
@@ -160,7 +160,7 @@ scp://shell.sourceforge.net/home/groups/q/qi/qifcon/htdocs - Session: Disconnect
 
     An example of this error:
 
-+---+
+-----
 C:\ide\Finance\qifcon\site>mvn site:deploy
 [INFO] Scanning for projects...
 [INFO] Searching repository for plugin with prefix: 'site'.
@@ -189,14 +189,14 @@ Embedded error: SCP terminated with error: 'scp: /home/groups/q/qi/qifcon/htdocs
 [INFO] Finished at: Sat Nov 08 07:27:34 CST 2008
 [INFO] Final Memory: 6M/11M
 [INFO] ------------------------------------------------------------------------
-+---+
+-----
 
   [[2]] Unable to unzip the zip file created by Wagon
 
     If the directory exists then the Wagon zip file can be uploaded and <<<site:deploy>>> will appear to
     succeed, but the web site will not work since the Wagon zip file can not be unzipped.
 
-+---+
+-----
 C:\ide\Finance\qifcon\site>mvn site:deploy
 [INFO] Scanning for projects...
 [INFO] Searching repository for plugin with prefix: 'site'.
@@ -225,7 +225,7 @@ scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconn
 [INFO] Finished at: Sat Nov 08 07:51:04 CST 2008
 [INFO] Final Memory: 6M/11M
 [INFO] ------------------------------------------------------------------------
-+---+
+-----
 
   []
 
@@ -233,7 +233,7 @@ scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconn
 
   If you try to run <<<ssh>>> without first creating a shell you will get the following error:
 
-+---+
+-----
 $ ssh barrie,qifcon@shell.sf.net
 barrie,qifcon@shell.sf.net's password:
 Logging in to your interactive shell...
@@ -250,4 +250,4 @@ ready for use.  An example create that enters the shell when ready:
     ssh -t USER,PROJECT@shell.sourceforge.net create
 
 Connection to shell.sf.net closed.
-+---+
+-----

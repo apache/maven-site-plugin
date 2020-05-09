@@ -33,7 +33,7 @@ Excluding Document Formats
 
   For example, you have the following site content in your POM
 
-+-----+
+-----
 Module1
 |-- src
 |   |-- main
@@ -43,7 +43,7 @@ Module1
 |       `-- fml
 |           `-- sample-fml.fml
 `-- pom.xml
-+-----+
+-----
 
   and you want to exclude all the documents in the fml format from the
   generated site, you need to set the following in your POM and then execute

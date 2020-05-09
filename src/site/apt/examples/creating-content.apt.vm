@@ -207,7 +207,7 @@ Creating Content
   To enable multiple locales, or languages, add a configuration similar to the
   following to your POM:
 
--------------------
++------------------
 <project>
   ...
   <build>
@@ -224,7 +224,7 @@ Creating Content
   </build>
   ...
 </project>
--------------------
++------------------
 
   This will generate both an English and a French version of the site. If
   <<<en>>> is your current locale, then it will be generated at the root of the

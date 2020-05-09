@@ -86,9 +86,9 @@ Changing the Template File
 
   Then you execute the site goal from your project:
 
-+-----+
+------
 mvn site
-+-----+
+------
 
   If you do not want to start from scratch you can start with the
   {{{https://github.com/apache/maven-doxia-sitetools/blob/master/doxia-site-renderer/src/main/resources/org/apache/maven/doxia/siterenderer/resources/default-site.vm}default template}}
