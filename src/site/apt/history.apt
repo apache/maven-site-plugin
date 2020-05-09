@@ -29,6 +29,8 @@
 
 Maven Site Plugin History
 
+* Overview
+
  Maven Site Plugin uses:
 
   * {{{/doxia/}Doxia}} to parse {{{/doxia/references/}many markup languages}} then render HTML: see
@@ -44,7 +46,9 @@ Maven Site Plugin History
 
   []
 
-  Then rendering issues reported to {{{https://issues.apache.org/jira/projects/MSITE}Maven Site Plugin issue tracker}}
+* Maven Site Plugin vs Doxia vs Doxia Sitetools
+
+  Given this layered approach, rendering issues reported to {{{https://issues.apache.org/jira/projects/MSITE}MSITE Maven Site Plugin issue tracker}}
   are often translated to {{{https://issues.apache.org/jira/projects/DOXIA}Doxia}} or
   {{{https://issues.apache.org/jira/projects/DOXIASITETOOLS}Doxia Sitetools}}, and issues fixed in
   Doxia or Doxia Sitetools benefit to maven-site-plugin once dependency is upgraded.
@@ -56,7 +60,9 @@ Maven Site Plugin History
 *-----------------*--------------------*--------*------------------*--------------------*---------------*
 || relelease date || maven-site-plugin || {{{/doxia/}Doxia}} || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} || Comment 
 *-----------------*--------------------*--------*------------------*--------------------*---------------*
-| 2019-06         | 3.8                | 1.9    | 1.9.1            | 1.4                | addition of confluence/docbook/twiki support by default
+| 2020-03         | 3.9.0              | 1.9.1  | 1.9.2            | 1.4                |
+*-----------------*--------------------*--------*------------------*--------------------*---------------*
+| 2019-07         | 3.8.2              | 1.9    | 1.9.1            | 1.4                | addition of confluence/docbook/twiki support by default
 *-----------------*--------------------*--------*------------------*--------------------*---------------*
 | 2018-04         | 3.7.1              | 1.8    | 1.8.1            | 1.4                |
 *-----------------*--------------------*--------*------------------*--------------------*---------------*
