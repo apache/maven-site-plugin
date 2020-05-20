@@ -31,6 +31,8 @@ import org.codehaus.plexus.util.IOUtil;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -81,7 +83,7 @@ public class SiteRunMojo
 
         server.setHandler( webapp );
 
-        getLog().info( "Starting Jetty on http://localhost:" + port + "/" );
+        getLog().info( buffer().a( "Starting Jetty on " ).strong( "http://localhost:" + port + "/" ).toString() );
         try
         {
             server.start();
