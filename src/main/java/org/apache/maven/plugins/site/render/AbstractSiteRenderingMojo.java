@@ -230,40 +230,25 @@ public abstract class AbstractSiteRenderingMojo
     protected List<MavenReportExecution> getReports()
         throws MojoExecutionException
     {
-        final List<MavenReportExecution> allReports;
-        if ( isMaven3OrMore() )
-        {
-            // Maven 3
-            MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
-            mavenReportExecutorRequest.setLocalRepository( localRepository );
-            mavenReportExecutorRequest.setMavenSession( mavenSession );
-            mavenReportExecutorRequest.setProject( project );
-            mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
+        MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
+        mavenReportExecutorRequest.setLocalRepository( localRepository );
+        mavenReportExecutorRequest.setMavenSession( mavenSession );
+        mavenReportExecutorRequest.setProject( project );
+        mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
 
-            MavenReportExecutor mavenReportExecutor;
-            try
-            {
-                mavenReportExecutor = container.lookup( MavenReportExecutor.class );
-            }
-            catch ( ComponentLookupException e )
-            {
-                throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
-            }
-
-            allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
-        }
-        else
+        MavenReportExecutor mavenReportExecutor;
+        try
         {
-            // Maven 2
-            allReports = new ArrayList<>( reports.size() );
-            for ( MavenReport report : reports )
-            {
-                allReports.add( new MavenReportExecution( report ) );
-            }
+            mavenReportExecutor = container.lookup( MavenReportExecutor.class );
         }
+        catch ( ComponentLookupException e )
+        {
+            throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
+        }
+
+        List<MavenReportExecution>  allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
 
         // filter out reports that can't be generated
-        // todo Lambda Java 1.8
         List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
         for ( MavenReportExecution exec : allReports )
         {
@@ -276,7 +261,7 @@ public abstract class AbstractSiteRenderingMojo
     }
 
     /**
-     * Get the report plugins from reporting section, adding if necessary (ni.e. not excluded)
+     * Get the report plugins from reporting section, adding if necessary (i.e. not excluded)
      * default reports (i.e. maven-project-info-reports)
      *
      * @return the effective list of reports
