@@ -65,8 +65,6 @@ public class SiteRunMojo
     @Parameter( property = "port", defaultValue = "8080" )
     private int port;
 
-    private static final int MAX_IDLE_TIME = 30000;
-
     /**
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
