@@ -25,13 +25,11 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.rtinfo.RuntimeInformation;
 import org.codehaus.plexus.i18n.I18N;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 
 /**
  * Base class for site mojos.
@@ -88,25 +86,13 @@ public abstract class AbstractSiteMojo
     @Parameter( defaultValue = "${reactorProjects}", required = true, readonly = true )
     protected List<MavenProject> reactorProjects;
 
-    protected static String getMavenVersion()
+    @Component
+    protected RuntimeInformation runtimeInformation;
+
+    @Deprecated
+    protected String getMavenVersion()
     {
-        // This relies on the fact that MavenProject is the in core classloader
-        // and that the core classloader is for the maven-core artifact
-        // and that should have a pom.properties file
-        // if this ever changes, we will have to revisit this code.
-        final Properties properties = new Properties();
-        final String corePomProperties = "META-INF/maven/org.apache.maven/maven-core/pom.properties";
-
-        try ( InputStream in = MavenProject.class.getClassLoader().getResourceAsStream( corePomProperties ) )
-        {
-            properties.load( in );
-        }
-        catch ( IOException ioe )
-        {
-            return "";
-        }
-
-        return properties.getProperty( "version" ).trim();
+        return runtimeInformation.getMavenVersion();
     }
 
     protected List<Locale> getLocales()

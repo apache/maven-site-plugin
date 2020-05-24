@@ -42,12 +42,6 @@ import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -70,8 +64,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  *
  */
-public abstract class AbstractSiteRenderingMojo
-    extends AbstractSiteDescriptorMojo implements Contextualizable
+public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMojo
 {
     /**
      * Module type exclusion mappings
@@ -156,8 +149,6 @@ public abstract class AbstractSiteRenderingMojo
     @Parameter( defaultValue = "${project.reporting}", readonly = true )
     private Reporting reporting;
 
-    private PlexusContainer container;
-
     /**
      * Whether to generate the summary page for project reports: project-info.html.
      *
@@ -181,6 +172,9 @@ public abstract class AbstractSiteRenderingMojo
      */
     @Parameter( property = "outputEncoding", defaultValue = "${project.reporting.outputEncoding}" )
     private String outputEncoding;
+
+    @Component
+    protected MavenReportExecutor mavenReportExecutor;
 
     /**
      * Gets the input files encoding.
@@ -211,13 +205,6 @@ public abstract class AbstractSiteRenderingMojo
     @Parameter
     private boolean saveProcessedContent;
 
-    /** {@inheritDoc} */
-    public void contextualize( Context context )
-        throws ContextException
-    {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-    }
-
     protected void checkInputEncoding()
     {
         if ( StringUtils.isEmpty( inputEncoding ) )
@@ -230,34 +217,25 @@ public abstract class AbstractSiteRenderingMojo
     protected List<MavenReportExecution> getReports()
         throws MojoExecutionException
     {
-        try
+        MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
+        mavenReportExecutorRequest.setLocalRepository( localRepository );
+        mavenReportExecutorRequest.setMavenSession( mavenSession );
+        mavenReportExecutorRequest.setProject( project );
+        mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
+
+        List<MavenReportExecution> allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
+
+        // filter out reports that can't be generated
+        // todo Lambda Java 1.8
+        List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
+        for ( MavenReportExecution exec : allReports )
         {
-            MavenReportExecutor mavenReportExecutor = container.lookup( MavenReportExecutor.class );
-
-            MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
-            mavenReportExecutorRequest.setLocalRepository( localRepository );
-            mavenReportExecutorRequest.setMavenSession( mavenSession );
-            mavenReportExecutorRequest.setProject( project );
-            mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
-
-            List<MavenReportExecution> allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
-
-            // filter out reports that can't be generated
-            // todo Lambda Java 1.8
-            List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
-            for ( MavenReportExecution exec : allReports )
+            if ( exec.canGenerateReport() )
             {
-                if ( exec.canGenerateReport() )
-                {
-                    reportExecutions.add( exec );
-                }
+                reportExecutions.add( exec );
             }
-            return reportExecutions;
         }
-        catch ( ComponentLookupException e )
-        {
-            throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
-        }
+        return reportExecutions;
     }
 
     /**

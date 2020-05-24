@@ -30,7 +30,6 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
-import org.apache.maven.plugins.site.deploy.wagon.BugFixedRepository;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Server;
@@ -129,7 +128,7 @@ public abstract class AbstractDeployMojo
     /**
      */
     @Component
-    private WagonManager wagonManager;
+    private WagonManager wagonManager; // maven-compat
 
     /**
      * The current user system settings for use in Maven.
@@ -167,7 +166,7 @@ public abstract class AbstractDeployMojo
             return;
         }
 
-        deployTo( new BugFixedRepository( getDeploySite().getId(), getDeploySite().getUrl() ) );
+        deployTo( new Repository( getDeploySite().getId(), getDeploySite().getUrl() ) );
     }
 
     /**
