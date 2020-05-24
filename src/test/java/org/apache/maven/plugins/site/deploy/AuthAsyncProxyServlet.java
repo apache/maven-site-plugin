@@ -31,9 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.jetty.util.B64Code;
-import org.eclipse.jetty.proxy.AsyncProxyServlet;
 import org.eclipse.jetty.proxy.AsyncProxyServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +40,6 @@ import org.apache.maven.plugins.site.deploy.HttpRequest;
 
 /**
  * @author Olivier Lamy
- * @since 
- *
  */
 public class AuthAsyncProxyServlet
     extends AsyncProxyServlet
@@ -154,8 +150,6 @@ public class AuthAsyncProxyServlet
                         log.info( "writing file " + targetFile.getPath() );
                         FileUtils.writeByteArrayToFile( targetFile, IOUtils.toByteArray( request.getInputStream() ) );
                     }
-
-                    //PrintWriter writer = response.getWriter();
 
                     response.setStatus( HttpServletResponse.SC_OK );
                     return;
