@@ -171,11 +171,11 @@ public abstract class AbstractDeployMojo
     }
 
     /**
-     * Make sure the given url ends with a slash.
+     * Make sure the given URL ends with a slash.
      *
-     * @param url a String.
-     * @return if url already ends with '/' it is returned unchanged,
-     *         otherwise a '/' character is appended.
+     * @param url a String
+     * @return if url already ends with '/' it is returned unchanged.
+     *         Otherwise a '/' character is appended.
      */
     protected static String appendSlash( final String url )
     {
@@ -476,11 +476,10 @@ public abstract class AbstractDeployMojo
     }
 
     /**
-     * Get proxy information for Maven 3.
+     * Get proxy information.
      * <p>
      * Get the <code>ProxyInfo</code> of the proxy associated with the <code>host</code>
      * and the <code>protocol</code> of the given <code>repository</code>.
-<<<<<<< HEAD
      * </p>
      * <p>
      * Extract from <a href="https://docs.oracle.com/javase/1.5.0/docs/guide/net/properties.html">
@@ -543,12 +542,10 @@ public abstract class AbstractDeployMojo
 
     /**
      * Get proxy information.
-=======
      *
-     * @param repository        the Repository to extract the ProxyInfo from.
-     * @param settingsDecrypter settings password decrypter.
+     * @param repository        the Repository to extract the ProxyInfo from
+     * @param settingsDecrypter settings password decrypter
      * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found.
->>>>>>> master
      */
     private ProxyInfo getProxy( Repository repository, SettingsDecrypter settingsDecrypter )
     {
@@ -790,7 +787,7 @@ public abstract class AbstractDeployMojo
         private static final String MARK = "-_.!~*'()";
         private static final String RESERVED = ";/?:@&=+$,";
 
-        public static String encodeURI( final String uriString )
+        private static String encodeURI( final String uriString )
         {
             final char[] chars = uriString.toCharArray();
             final StringBuilder uri = new StringBuilder( chars.length );
