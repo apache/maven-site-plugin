@@ -304,36 +304,10 @@ public abstract class AbstractDeployMojo
         try
         {
             configureWagon( wagon, repository.getId(), settings, container, getLog() );
-        }
-        catch ( TransferFailedException e )
-        {
-            throw new MojoExecutionException( "Unable to configure Wagon: '" + repository.getProtocol() + "'", e );
-        }
 
-        try
-        {
-            final ProxyInfo proxyInfo;
-            if ( !isMaven3OrMore() )
-            {
-                proxyInfo = getProxyInfo( repository, wagonManager );
-            }
-            else
-            {
-                try
-                {
-                    // The cast does not make sense, however I get when compiled with maven 3.5.4:
-                    // error: incompatible types: Object cannot be converted to SettingsDecrypter
-                    // The cast is not necessary with maven 3.3.9
-                    SettingsDecrypter settingsDecrypter =
-                            (SettingsDecrypter) container.lookup( SettingsDecrypter.class );
+            SettingsDecrypter settingsDecrypter = container.lookup( SettingsDecrypter.class );
 
-                    proxyInfo = getProxy( repository, settingsDecrypter );
-                }
-                catch ( ComponentLookupException cle )
-                {
-                    throw new MojoExecutionException( "Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle );
-                }
-            }
+            ProxyInfo proxyInfo = getProxy( repository, settingsDecrypter );
 
             push( directory, repository, wagon, proxyInfo, getLocales(), getDeployModuleDirectory() );
 
@@ -341,6 +315,14 @@ public abstract class AbstractDeployMojo
             {
                 chmod( wagon, repository, chmodOptions, chmodMode );
             }
+        }
+        catch ( ComponentLookupException cle )
+        {
+            throw new MojoExecutionException( "Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle );
+        }
+        catch ( TransferFailedException e )
+        {
+            throw new MojoExecutionException( "Unable to configure Wagon: '" + repository.getProtocol() + "'", e );
         }
         finally
         {
@@ -494,9 +476,11 @@ public abstract class AbstractDeployMojo
     }
 
     /**
+     * Get proxy information for Maven 3.
      * <p>
      * Get the <code>ProxyInfo</code> of the proxy associated with the <code>host</code>
      * and the <code>protocol</code> of the given <code>repository</code>.
+<<<<<<< HEAD
      * </p>
      * <p>
      * Extract from <a href="https://docs.oracle.com/javase/1.5.0/docs/guide/net/properties.html">
@@ -559,6 +543,12 @@ public abstract class AbstractDeployMojo
 
     /**
      * Get proxy information.
+=======
+     *
+     * @param repository        the Repository to extract the ProxyInfo from.
+     * @param settingsDecrypter settings password decrypter.
+     * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found.
+>>>>>>> master
      */
     private ProxyInfo getProxy( Repository repository, SettingsDecrypter settingsDecrypter )
     {
@@ -587,13 +577,13 @@ public abstract class AbstractDeployMojo
                 {
                     getLog().warn( "fail to build URL with " + url );
                 }
-
             }
         }
         else
         {
             getLog().debug( "getProxy 'protocol': " + protocol );
         }
+
         if ( mavenSession != null && protocol != null )
         {
             MavenExecutionRequest request = mavenSession.getRequest();
@@ -665,8 +655,7 @@ public abstract class AbstractDeployMojo
                 {
                     componentConfigurator =
                         (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE, "basic" );
-                    componentConfigurator.configureComponent( wagon, plexusConf,
-                                                                  container.getContainerRealm() );
+                    componentConfigurator.configureComponent( wagon, plexusConf, container.getContainerRealm() );
                 }
                 catch ( final ComponentLookupException e )
                 {

@@ -236,28 +236,27 @@ public abstract class AbstractSiteRenderingMojo
         mavenReportExecutorRequest.setProject( project );
         mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
 
-        MavenReportExecutor mavenReportExecutor;
         try
         {
-            mavenReportExecutor = container.lookup( MavenReportExecutor.class );
+            MavenReportExecutor mavenReportExecutor = container.lookup( MavenReportExecutor.class );
+
+            List<MavenReportExecution> allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
+
+            // filter out reports that can't be generated
+            List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
+            for ( MavenReportExecution exec : allReports )
+            {
+                if ( exec.canGenerateReport() )
+                {
+                    reportExecutions.add( exec );
+                }
+            }
+            return reportExecutions;
         }
         catch ( ComponentLookupException e )
         {
             throw new MojoExecutionException( "could not get MavenReportExecutor component", e );
         }
-
-        List<MavenReportExecution>  allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
-
-        // filter out reports that can't be generated
-        List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
-        for ( MavenReportExecution exec : allReports )
-        {
-            if ( exec.canGenerateReport() )
-            {
-                reportExecutions.add( exec );
-            }
-        }
-        return reportExecutions;
     }
 
     /**
