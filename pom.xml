@@ -215,17 +215,7 @@ under the License.
 
   <dependencies>
     <!-- exclude obsolete runtime artifact included by transitive dependencies (pulled by doxia-site-renderer) -->
-    <dependency>
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
-      <version>1.1</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+
 
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
