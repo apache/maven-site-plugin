@@ -29,8 +29,7 @@
 
 Adding a Protocol to Deploy the Site
 
-  Out of the box, Maven 3 only supports <<<file:>>>, <<<http:>>> and <<<https:>>> as transport protocols.
-  Maven 2 adds <<<scp:>>> to this list.
+  Out of the box, Maven only supports <<<file:>>>, <<<http:>>>, <<<https:>>>, and <<<scp:>>> as transport protocols.
 
   If you try to deploy a site with an unsupported protocol, you'll get an error:
 
