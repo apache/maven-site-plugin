@@ -353,7 +353,7 @@ public abstract class AbstractDeployMojo
             String longMessage =
                 "\n" + shortMessage + "\n" + "Currently supported protocols are: " + getSupportedProtocols() + ".\n"
                     + "    Protocols may be added through wagon providers.\n" + "    For more information, see "
-                    + "http://maven.apache.org/plugins/maven-site-plugin/examples/adding-deploy-protocol.html";
+                    + "https://maven.apache.org/plugins/maven-site-plugin/examples/adding-deploy-protocol.html";
 
             getLog().error( longMessage );
 
