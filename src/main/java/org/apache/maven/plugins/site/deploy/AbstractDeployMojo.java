@@ -171,11 +171,11 @@ public abstract class AbstractDeployMojo
     }
 
     /**
-     * Make sure the given url ends with a slash.
+     * Make sure the given URL ends with a slash.
      *
-     * @param url a String.
-     * @return if url already ends with '/' it is returned unchanged,
-     *         otherwise a '/' character is appended.
+     * @param url a String
+     * @return if url already ends with '/' it is returned unchanged.
+     *         Otherwise a '/' character is appended.
      */
     protected static String appendSlash( final String url )
     {
@@ -476,13 +476,75 @@ public abstract class AbstractDeployMojo
     }
 
     /**
-     * Get proxy information for Maven 3.
+     * Get proxy information.
      * <p>
      * Get the <code>ProxyInfo</code> of the proxy associated with the <code>host</code>
      * and the <code>protocol</code> of the given <code>repository</code>.
+     * </p>
+     * <p>
+     * Extract from <a href="https://docs.oracle.com/javase/1.5.0/docs/guide/net/properties.html">
+     * J2SE Doc : Networking Properties - nonProxyHosts</a> : "The value can be a list of hosts,
+     * each separated by a |, and in addition a wildcard character (*) can be used for matching"
+     * </p>
+     * <p>
+     * Defensively support comma (",") and semi colon (";") in addition to pipe ("|") as separator.
+     * </p>
      *
-     * @param repository        the Repository to extract the ProxyInfo from.
-     * @param settingsDecrypter settings password decrypter.
+     * @param repository   the Repository to extract the ProxyInfo from
+     * @param wagonManager the WagonManager used to connect to the Repository
+     * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found
+     */
+    public static ProxyInfo getProxyInfo( Repository repository, WagonManager wagonManager )
+    {
+        ProxyInfo proxyInfo = wagonManager.getProxy( repository.getProtocol() );
+
+        if ( proxyInfo == null )
+        {
+            return null;
+        }
+
+        String host = repository.getHost();
+        String nonProxyHostsAsString = proxyInfo.getNonProxyHosts();
+        for ( String nonProxyHost : StringUtils.split( nonProxyHostsAsString, ",;|" ) )
+        {
+            if ( StringUtils.contains( nonProxyHost, "*" ) )
+            {
+                // Handle wildcard at the end, beginning or middle of the nonProxyHost
+                final int pos = nonProxyHost.indexOf( '*' );
+                String nonProxyHostPrefix = nonProxyHost.substring( 0, pos );
+                String nonProxyHostSuffix = nonProxyHost.substring( pos + 1 );
+                // prefix*
+                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
+                    && StringUtils.isEmpty( nonProxyHostSuffix ) )
+                {
+                    return null;
+                }
+                // *suffix
+                if ( StringUtils.isEmpty( nonProxyHostPrefix ) && StringUtils.isNotEmpty( nonProxyHostSuffix )
+                    && host.endsWith( nonProxyHostSuffix ) )
+                {
+                    return null;
+                }
+                // prefix*suffix
+                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
+                    && StringUtils.isNotEmpty( nonProxyHostSuffix ) && host.endsWith( nonProxyHostSuffix ) )
+                {
+                    return null;
+                }
+            }
+            else if ( host.equals( nonProxyHost ) )
+            {
+                return null;
+            }
+        }
+        return proxyInfo;
+    }
+
+    /**
+     * Get proxy information.
+     *
+     * @param repository        the Repository to extract the ProxyInfo from
+     * @param settingsDecrypter settings password decrypter
      * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found.
      */
     private ProxyInfo getProxy( Repository repository, SettingsDecrypter settingsDecrypter )
@@ -565,12 +627,6 @@ public abstract class AbstractDeployMojo
     /**
      * Configure the Wagon with the information from serverConfigurationMap ( which comes from settings.xml )
      *
-     * @param wagon
-     * @param repositoryId
-     * @param settings
-     * @param container
-     * @param log
-     * @throws TransferFailedException
      * @todo Remove when {@link WagonManager#getWagon(Repository) is available}. It's available in Maven 2.0.5.
      */
     private static void configureWagon( Wagon wagon, String repositoryId, Settings settings, PlexusContainer container,
@@ -596,7 +652,6 @@ public abstract class AbstractDeployMojo
                 {
                     componentConfigurator =
                         (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE, "basic" );
-
                     componentConfigurator.configureComponent( wagon, plexusConf, container.getContainerRealm() );
                 }
                 catch ( final ComponentLookupException e )
@@ -732,7 +787,7 @@ public abstract class AbstractDeployMojo
         private static final String MARK = "-_.!~*'()";
         private static final String RESERVED = ";/?:@&=+$,";
 
-        public static String encodeURI( final String uriString )
+        private static String encodeURI( final String uriString )
         {
             final char[] chars = uriString.toCharArray();
             final StringBuilder uri = new StringBuilder( chars.length );

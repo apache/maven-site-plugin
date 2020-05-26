@@ -76,55 +76,14 @@ public class ReportDocumentRenderer
 
         this.renderingContext = renderingContext;
 
-        if ( mavenReportExecution.getPlugin() == null )
-        {
-            // Maven 2: report has been prepared in Maven Core, MavenReportExecution contains only the report
-            this.reportMojoInfo = getPluginInfo( report );
-        }
-        else
-        {
-            // Maven 3: full MavenReportExecution prepared by maven-reporting-impl
-            this.reportMojoInfo =
-                mavenReportExecution.getPlugin().getArtifactId() + ':' + mavenReportExecution.getPlugin().getVersion()
-                    + ':' + mavenReportExecution.getGoal();
-        }
+        // full MavenReportExecution prepared by maven-reporting-impl
+        this.reportMojoInfo =
+            mavenReportExecution.getPlugin().getArtifactId() + ':' + mavenReportExecution.getPlugin().getVersion()
+                + ':' + mavenReportExecution.getGoal();
 
         this.classLoader = mavenReportExecution.getClassLoader();
 
         this.log = log;
-    }
-
-    /**
-     * Get plugin information from report's Manifest.
-     *
-     * @param report the Maven report
-     * @return plugin information as Specification Title followed by Specification Version if set in Manifest and
-     *         supported by JVM
-     */
-    private String getPluginInfo( MavenReport report )
-    {
-        Package pkg = report.getClass().getPackage();
-
-        if ( pkg != null )
-        {
-            String title = pkg.getSpecificationTitle();
-            String version = pkg.getSpecificationVersion();
-
-            if ( title == null )
-            {
-                return version;
-            }
-            else if ( version == null )
-            {
-                return title;
-            }
-            else
-            {
-                return title + ' ' + version;
-            }
-        }
-
-        return null;
     }
 
     private static class MultiPageSubSink

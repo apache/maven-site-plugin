@@ -323,12 +323,6 @@ under the License.
       <version>3.3.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-classworlds</artifactId>
-      <version>2.5.2</version>
-    </dependency>
-
     <!-- Doxia -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>

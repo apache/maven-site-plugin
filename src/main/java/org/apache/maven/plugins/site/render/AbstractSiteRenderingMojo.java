@@ -230,20 +230,19 @@ public abstract class AbstractSiteRenderingMojo
     protected List<MavenReportExecution> getReports()
         throws MojoExecutionException
     {
+        MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
+        mavenReportExecutorRequest.setLocalRepository( localRepository );
+        mavenReportExecutorRequest.setMavenSession( mavenSession );
+        mavenReportExecutorRequest.setProject( project );
+        mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
+
         try
         {
             MavenReportExecutor mavenReportExecutor = container.lookup( MavenReportExecutor.class );
 
-            MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
-            mavenReportExecutorRequest.setLocalRepository( localRepository );
-            mavenReportExecutorRequest.setMavenSession( mavenSession );
-            mavenReportExecutorRequest.setProject( project );
-            mavenReportExecutorRequest.setReportPlugins( getReportingPlugins() );
-
             List<MavenReportExecution> allReports = mavenReportExecutor.buildMavenReports( mavenReportExecutorRequest );
 
             // filter out reports that can't be generated
-            // todo Lambda Java 1.8
             List<MavenReportExecution> reportExecutions = new ArrayList<>( allReports.size() );
             for ( MavenReportExecution exec : allReports )
             {
@@ -261,7 +260,7 @@ public abstract class AbstractSiteRenderingMojo
     }
 
     /**
-     * Get the report plugins from reporting section, adding if necessary (ni.e. not excluded)
+     * Get the report plugins from reporting section, adding if necessary (i.e. not excluded)
      * default reports (i.e. maven-project-info-reports)
      *
      * @return the effective list of reports
