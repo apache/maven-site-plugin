@@ -23,10 +23,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.execution.MavenExecutionRequest;
@@ -39,6 +36,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
+import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
@@ -48,7 +46,6 @@ import org.apache.maven.wagon.CommandExecutor;
 import org.apache.maven.wagon.ConnectionException;
 import org.apache.maven.wagon.ResourceDoesNotExistException;
 import org.apache.maven.wagon.TransferFailedException;
-import org.apache.maven.wagon.UnsupportedProtocolException;
 import org.apache.maven.wagon.Wagon;
 import org.apache.maven.wagon.authentication.AuthenticationException;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
@@ -56,12 +53,8 @@ import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.observers.Debug;
 import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.repository.Repository;
-import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
 /**
  * Abstract base class for deploy mojos.
@@ -70,7 +63,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
  * @author ltheussl
  * @since 2.3
  */
-public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Contextualizable {
+public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     /**
      * Directory containing the generated project sites and report distributions.
      *
@@ -115,11 +108,6 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
     private boolean skipDeploy;
 
     /**
-     */
-    @Component
-    private WagonManager wagonManager; // maven-compat
-
-    /**
      * The current user system settings for use in Maven.
      */
     @Parameter(defaultValue = "${settings}", readonly = true)
@@ -135,7 +123,11 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
 
     private Site deploySite;
 
+    @Component
     private PlexusContainer container;
+
+    @Component
+    SettingsDecrypter settingsDecrypter;
 
     /**
      * {@inheritDoc}
@@ -261,11 +253,9 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
 
     private void deploy(final File directory, final Repository repository) throws MojoExecutionException {
         // TODO: work on moving this into the deployer like the other deploy methods
-        final Wagon wagon = getWagon(repository, wagonManager);
+        final Wagon wagon = getWagon(repository);
 
         try {
-            SettingsDecrypter settingsDecrypter = container.lookup(SettingsDecrypter.class);
-
             ProxyInfo proxyInfo = getProxy(repository, settingsDecrypter);
 
             push(directory, repository, wagon, proxyInfo, getLocales(), getDeployModuleDirectory());
@@ -273,8 +263,6 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
             if (chmod) {
                 chmod(wagon, repository, chmodOptions, chmodMode);
             }
-        } catch (ComponentLookupException cle) {
-            throw new MojoExecutionException("Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle);
         } finally {
             try {
                 wagon.disconnect();
@@ -284,44 +272,47 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
         }
     }
 
-    private Wagon getWagon(final Repository repository, final WagonManager manager) throws MojoExecutionException {
-        final Wagon wagon;
-
+    private Wagon getWagon(final Repository repository) throws MojoExecutionException {
+        String protocol = repository.getProtocol();
+        if (protocol == null) {
+            throw new MojoExecutionException("Unspecified protocol");
+        }
         try {
-            wagon = manager.getWagon(repository);
-        } catch (UnsupportedProtocolException e) {
-            String shortMessage = "Unsupported protocol: '" + repository.getProtocol() + "' for site deployment to "
-                    + "distributionManagement.site.url=" + repository.getUrl() + ".";
-            String longMessage =
-                    "\n" + shortMessage + "\n" + "Currently supported protocols are: " + getSupportedProtocols() + ".\n"
-                            + "    Protocols may be added through wagon providers.\n" + "    For more information, see "
-                            + "https://maven.apache.org/plugins/maven-site-plugin/examples/adding-deploy-protocol.html";
-
-            getLog().error(longMessage);
-
-            throw new MojoExecutionException(shortMessage);
-        } catch (TransferFailedException e) {
-            throw new MojoExecutionException("Unable to configure Wagon: '" + repository.getProtocol() + "'", e);
+            Wagon wagon = container.lookup(Wagon.class, protocol.toLowerCase(Locale.ROOT));
+            if (!wagon.supportsDirectoryCopy()) {
+                throw new MojoExecutionException(
+                        "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
+            }
+            return wagon;
+        } catch (ComponentLookupException e) {
+            throw new MojoExecutionException("Cannot find wagon which supports the requested protocol: " + protocol, e);
         }
-
-        if (!wagon.supportsDirectoryCopy()) {
-            throw new MojoExecutionException(
-                    "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
-        }
-
-        return wagon;
     }
 
-    private String getSupportedProtocols() {
-        try {
-            Set<String> protocols = container.lookupMap(Wagon.class).keySet();
+    public AuthenticationInfo getAuthenticationInfo(String id) {
+        if (id != null) {
+            List<Server> servers = settings.getServers();
 
-            return StringUtils.join(protocols.iterator(), ", ");
-        } catch (ComponentLookupException e) {
-            // in the unexpected case there is a problem when instantiating a wagon provider
-            getLog().error(e);
+            if (servers != null) {
+                for (Server server : servers) {
+                    if (id.equalsIgnoreCase(server.getId())) {
+                        SettingsDecryptionResult result =
+                                settingsDecrypter.decrypt(new DefaultSettingsDecryptionRequest(server));
+                        server = result.getServer();
+
+                        AuthenticationInfo authInfo = new AuthenticationInfo();
+                        authInfo.setUserName(server.getUsername());
+                        authInfo.setPassword(server.getPassword());
+                        authInfo.setPrivateKey(server.getPrivateKey());
+                        authInfo.setPassphrase(server.getPassphrase());
+
+                        return authInfo;
+                    }
+                }
+            }
         }
-        return "";
+
+        return null;
     }
 
     private void push(
@@ -332,9 +323,10 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
             final List<Locale> localesList,
             final String relativeDir)
             throws MojoExecutionException {
-        AuthenticationInfo authenticationInfo = wagonManager.getAuthenticationInfo(repository.getId());
-        getLog().debug("authenticationInfo with id '" + repository.getId() + "': "
-                + ((authenticationInfo == null) ? "-" : authenticationInfo.getUserName()));
+        AuthenticationInfo authenticationInfo = getAuthenticationInfo(repository.getId());
+        if (authenticationInfo != null) {
+            getLog().debug("authenticationInfo with id '" + repository.getId() + "'");
+        }
 
         try {
             if (getLog().isDebugEnabled()) {
@@ -348,7 +340,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
             if (proxyInfo != null) {
                 getLog().debug("connect with proxyInfo");
                 wagon.connect(repository, authenticationInfo, proxyInfo);
-            } else if (proxyInfo == null && authenticationInfo != null) {
+            } else if (authenticationInfo != null) {
                 getLog().debug("connect with authenticationInfo and without proxyInfo");
                 wagon.connect(repository, authenticationInfo);
             } else {
@@ -396,66 +388,6 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
 
     /**
      * Get proxy information.
-     * <p>
-     * Get the <code>ProxyInfo</code> of the proxy associated with the <code>host</code>
-     * and the <code>protocol</code> of the given <code>repository</code>.
-     * </p>
-     * <p>
-     * Extract from <a href="https://docs.oracle.com/javase/1.5.0/docs/guide/net/properties.html">
-     * J2SE Doc : Networking Properties - nonProxyHosts</a> : "The value can be a list of hosts,
-     * each separated by a |, and in addition a wildcard character (*) can be used for matching"
-     * </p>
-     * <p>
-     * Defensively support comma (",") and semi colon (";") in addition to pipe ("|") as separator.
-     * </p>
-     *
-     * @param repository   the Repository to extract the ProxyInfo from
-     * @param wagonManager the WagonManager used to connect to the Repository
-     * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found
-     */
-    public static ProxyInfo getProxyInfo(Repository repository, WagonManager wagonManager) {
-        ProxyInfo proxyInfo = wagonManager.getProxy(repository.getProtocol());
-
-        if (proxyInfo == null) {
-            return null;
-        }
-
-        String host = repository.getHost();
-        String nonProxyHostsAsString = proxyInfo.getNonProxyHosts();
-        for (String nonProxyHost : StringUtils.split(nonProxyHostsAsString, ",;|")) {
-            if (StringUtils.contains(nonProxyHost, "*")) {
-                // Handle wildcard at the end, beginning or middle of the nonProxyHost
-                final int pos = nonProxyHost.indexOf('*');
-                String nonProxyHostPrefix = nonProxyHost.substring(0, pos);
-                String nonProxyHostSuffix = nonProxyHost.substring(pos + 1);
-                // prefix*
-                if ((nonProxyHostPrefix != null && !nonProxyHostPrefix.isEmpty())
-                        && host.startsWith(nonProxyHostPrefix)
-                        && (nonProxyHostSuffix == null || nonProxyHostSuffix.isEmpty())) {
-                    return null;
-                }
-                // *suffix
-                if ((nonProxyHostPrefix == null || nonProxyHostPrefix.isEmpty())
-                        && (nonProxyHostSuffix != null && !nonProxyHostSuffix.isEmpty())
-                        && host.endsWith(nonProxyHostSuffix)) {
-                    return null;
-                }
-                // prefix*suffix
-                if ((nonProxyHostPrefix != null && !nonProxyHostPrefix.isEmpty())
-                        && host.startsWith(nonProxyHostPrefix)
-                        && (nonProxyHostSuffix != null && !nonProxyHostSuffix.isEmpty())
-                        && host.endsWith(nonProxyHostSuffix)) {
-                    return null;
-                }
-            } else if (host.equals(nonProxyHost)) {
-                return null;
-            }
-        }
-        return proxyInfo;
-    }
-
-    /**
-     * Get proxy information.
      *
      * @param repository        the Repository to extract the ProxyInfo from
      * @param settingsDecrypter settings password decrypter
@@ -472,7 +404,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
         // but the real protocol (transport layer) is http(s)
         // and it's the one use in wagon to find the proxy arghhh
         // so we will check both
-        if (StringUtils.equalsIgnoreCase("dav", protocol) && url.startsWith("dav:")) {
+        if ("dav".equalsIgnoreCase(protocol) && url.startsWith("dav:")) {
             url = url.substring(4);
             if (url.startsWith("http")) {
                 try {
@@ -524,13 +456,6 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
         }
         getLog().debug("getProxy 'protocol': " + protocol + " no ProxyInfo found");
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void contextualize(Context context) throws ContextException {
-        container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
 
     /**
