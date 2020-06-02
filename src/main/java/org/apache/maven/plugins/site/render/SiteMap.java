@@ -172,9 +172,13 @@ public class SiteMap
         for ( MenuItem item : items )
         {
             sink.listItem();
-            sink.link( relativePath( item.getHref() ) );
-            sink.text( item.getName() );
-            sink.link_();
+            if ( item.getHref() != null )
+            {
+                sink.link( relativePath( item.getHref() ) );
+                sink.text( item.getName() );
+                sink.link_();
+            }
+
             extractItems( item.getItems(), sink );
             sink.listItem_();
         }
