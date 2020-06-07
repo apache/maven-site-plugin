@@ -196,11 +196,12 @@ under the License.
 
   <properties>
     <mavenVersion>3.0.5</mavenVersion>
-    <javaVersion>7</javaVersion>
+    <javaVersion>8</javaVersion>
+
     <!-- for dependencies -->
     <doxiaVersion>1.11.1</doxiaVersion>
     <doxiaSitetoolsVersion>1.11.1</doxiaSitetoolsVersion>
-    <jettyVersion>9.2.29.v20191105</jettyVersion>
+    <jettyVersion>9.4.43.v20210629</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
     <wagonVersion>3.3.1</wagonVersion>
@@ -214,6 +215,7 @@ under the License.
     <surefirePluginVersion>2.22.2</surefirePluginVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2022-02-13T11:25:26Z</project.build.outputTimestamp>
+
   </properties>
 
   <dependencies>
@@ -384,7 +386,6 @@ under the License.
       <version>${doxiaVersion}</version>
       <scope>runtime</scope>
     </dependency>
-
     <!-- Doxia Sitetools -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
@@ -533,6 +534,7 @@ under the License.
                 <maven.compiler.source>${maven.compiler.source}</maven.compiler.source>
                 <maven.compiler.target>${maven.compiler.target}</maven.compiler.target>
               </properties>
+              <javaHome>${java.home}</javaHome>
             </configuration>
           </plugin>
           <plugin>
