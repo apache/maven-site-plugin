@@ -374,4 +374,9 @@ public class ReportDocumentRenderer
     {
         return report.isExternalReport();
     }
+
+    public String getReportMojoInfo()
+    {
+        return reportMojoInfo;
+    }
 }
