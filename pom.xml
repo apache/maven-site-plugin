@@ -222,7 +222,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-exec</artifactId>
-      <version>1.4</version>
+      <version>1.5-SNAPSHOT</version><!-- MSITE-863/MSHARED-921 -->
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
