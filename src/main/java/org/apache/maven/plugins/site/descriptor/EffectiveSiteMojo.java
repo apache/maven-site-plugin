@@ -51,8 +51,9 @@ public class EffectiveSiteMojo
 {
     /**
      * Optional parameter to write the output of this help in a given file, instead of writing to the console.
-     * <br/>
+     * <p>
      * <b>Note</b>: Could be a relative path.
+     * </p>
      */
     @Parameter( property = "output" )
     protected File output;

@@ -202,7 +202,7 @@ public abstract class AbstractDeployMojo
      * can tweak algorithm to determine this top site by implementing determineTopDistributionManagementSiteUrl().
      *
      * @return the site for deployment
-     * @throws MojoExecutionException
+     * @throws MojoExecutionException in case of issue
      * @see #determineTopDistributionManagementSiteUrl()
      */
     protected String getTopDistributionManagementSiteUrl()
@@ -229,7 +229,7 @@ public abstract class AbstractDeployMojo
      * can tweak algorithm to determine this deploy site by implementing determineDeploySite().
      *
      * @return the site for deployment
-     * @throws MojoExecutionException
+     * @throws MojoExecutionException in case of issue
      * @see #determineDeploySite()
      */
     protected Site getDeploySite()
@@ -249,7 +249,7 @@ public abstract class AbstractDeployMojo
      * Find the relative path between the distribution URLs of the top site and the current project.
      *
      * @return the relative path or "./" if the two URLs are the same.
-     * @throws MojoExecutionException
+     * @throws MojoExecutionException in case of issue
      */
     protected String getDeployModuleDirectory()
         throws MojoExecutionException

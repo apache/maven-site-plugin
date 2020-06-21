@@ -49,7 +49,7 @@ public abstract class AbstractSiteDescriptorMojo
     /**
      * Remote repositories used for the project.
      *
-     * @todo this is used for site descriptor resolution - it should relate to the actual project but for some reason
+     * todo this is used for site descriptor resolution - it should relate to the actual project but for some reason
      *       they are not always filled in
      */
     @Parameter( defaultValue = "${project.remoteArtifactRepositories}", readonly = true )

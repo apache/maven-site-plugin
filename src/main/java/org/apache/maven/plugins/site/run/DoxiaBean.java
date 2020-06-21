@@ -39,9 +39,9 @@ public class DoxiaBean
     private SiteRenderingContext generatedSiteContext;
 
     /**
-     * @param context
-     * @param documents
-     * @param generatedSiteDirectory
+     * @param context context
+     * @param documents documents
+     * @param generatedSiteContext context of generated content
      */
     public DoxiaBean( SiteRenderingContext context, Map<String, DocumentRenderer> documents,
                       SiteRenderingContext generatedSiteContext )

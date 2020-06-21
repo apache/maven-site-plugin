@@ -91,11 +91,7 @@ public class SiteMojo
     private boolean validate;
 
     /**
-     * {@inheritDoc} Generate the project site
-     * <p/>
-     * throws MojoExecutionException if any
-     *
-     * @see org.apache.maven.plugin.Mojo#execute()
+     * {@inheritDoc}
      */
     public void execute()
         throws MojoExecutionException, MojoFailureException

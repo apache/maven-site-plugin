@@ -128,7 +128,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * This directory is expected to have the same structure as <code>siteDirectory</code>
      * (ie. one directory per Doxia-source-supported markup types).
      *
-     * @todo should we deprecate in favour of reports directly using Doxia Sink API, without this Doxia source
+     * todo should we deprecate in favour of reports directly using Doxia Sink API, without this Doxia source
      * intermediate step?
      */
     @Parameter( alias = "workingDirectory", defaultValue = "${project.build.directory}/generated-site" )
@@ -448,6 +448,13 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * <li>reports,</li>
      * <li>"Project Information" and "Project Reports" category summaries.</li>
      * </ul>
+     *
+     * @param context the site context
+     * @param reports the documents
+     * @param locale the locale
+     * @return the documents and their renderers
+     * @throws IOException in case of file reading issue
+     * @throws RendererException in case of Doxia rendering issue
      * @see CategorySummaryDocumentRenderer
      */
     protected Map<String, DocumentRenderer> locateDocuments( SiteRenderingContext context,
