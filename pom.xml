@@ -528,42 +528,6 @@ under the License.
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.2</version><!-- TODO remove when upgrading parent to 35 -->
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>org.apache.maven.reporting:maven-reporting-api</include>
-                  <include>org.apache.maven:maven-artifact</include>
-                </includes>
-              </artifactSet>
-              <filters>
-                <filter>
-                  <artifact>org.apache.maven.reporting:maven-reporting-api</artifact>
-                  <includes><!-- class not included in maven-reporting-api from Maven 2.2 -->
-                    <include>**/MavenMultiPageReport.class</include>
-                  </includes>
-                </filter>
-                <filter>
-                  <artifact>org.apache.maven:maven-artifact</artifact>
-                  <includes>
-                    <include>**/ComparableVersion.class</include>
-                    <include>**/ComparableVersion$*.class</include>
-                  </includes>
-                </filter>
-              </filters>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <executions>
           <execution>
