@@ -209,7 +209,7 @@ under the License.
     <javadocPluginVersion>3.0.1</javadocPluginVersion>
     <pmdPluginVersion>3.11.0</pmdPluginVersion>
     <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
-    <surefirePluginVersion>2.22.1</surefirePluginVersion>
+    <surefirePluginVersion>2.22.2</surefirePluginVersion>
     <project.build.outputTimestamp>2020-06-21T16:21:18Z</project.build.outputTimestamp>
   </properties>
 
