@@ -17,13 +17,12 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-
-Markdown Format works
----------------
-
-But 'quotes' and "double quotes" were stripped from HTML result with DOXIA 1.3:
-see [DOXIA-473](https://issues.apache.org/jira/browse/DOXIA-473).
+# Markdown Format works
 
 <!-- MACRO{toc|fromDepth=1|toDepth=2} -->
 
-### Subsection
+## Subsection
+
+This is the subsection.
+
+Content for verify.groovy

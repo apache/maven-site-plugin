@@ -28,7 +28,6 @@
 
 Macros in APT
 
-~~ START SNIPPET: macros
 * TOC Macro
 
 %{toc}
@@ -39,5 +38,6 @@ Macros in APT
 
 * Snippet Macro
 
-%{snippet|id=macros|file=src/site/apt/apt-macro.apt}
-~~ END SNIPPET: macros
+%{snippet|id=macros|file=src/main/java/org/apache/maven/plugins/site/it/CustomVelocityTool.java}
+
+Content for verify.groovy

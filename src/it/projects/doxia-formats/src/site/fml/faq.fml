@@ -50,10 +50,10 @@ under the License.
           Test nested <code>&lt;source&gt;&lt;/source&gt;</code> tags (DOXIA-16):
         </p>
         <source><![CDATA[<source>1.5</source>]]></source>
+        <p>Content for verify.groovy</p>
       </answer>
     </faq>
 
   </part>
 
 </faqs>
-
