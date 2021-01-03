@@ -40,3 +40,19 @@ Java version: 1.8.0_232, vendor: AdoptOpenJDK, runtime: C:\Program Files\AdoptOp
 Default locale: en_US, platform encoding: Cp1250
 OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 ```
+
+Reverted to standard `<pre><code>`, wrapped in `<div class="source">` for fenced code blocks,
+with properly exposed language [DOXIA-616](https://issues.apache.org/jira/browse/DOXIA-616):
+
+```perl
+#!/usr/bin/perl
+#
+# The traditional first program.
+
+# Strict and warnings are recommended.
+use strict;
+use warnings;
+
+# Print a message.
+print "Hello, World!\n";
+```
