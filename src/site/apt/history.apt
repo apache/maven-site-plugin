@@ -41,7 +41,7 @@ Maven Site Plugin History
   a template packaged as a skin: see {{{./examples/creatingskins.html}Creating Skins}} documentation for more details,
 
   * {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} to manage reports execution (since Maven 3; reports execution
-  was managed by Maven itself in Maven 2: see {{{./maven-3.html}Using maven-site-plugin with Maven3}} documentation for
+  was managed by Maven itself in Maven 2: see old {{{https://maven.apache.org/plugins-archives/maven-site-plugin-3.9.0/maven-3.html}Using maven-site-plugin with Maven3}} documentation for
   more details).
 
   []
