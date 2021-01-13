@@ -18,33 +18,51 @@
  * under the License.
  */
 
-content = new File( basedir, 'target/site/markdown.html' ).text;
+// These files must have been generated
+[
+  'apt-macro.html',
+  'index.html',
+  'velocity-context.html',
+  'velocity-include-parse.html',
+  'confluence.html',
+  'docbook.html',
+  'faq-macro.html',
+  'faq.html',
+  'markdown-macro.html',
+  'markdown.html',
+  'markdown2.html',
+  'twiki.html',
+  'xdoc.html',
+  'xdoc-macro.html',
+  'xhtml.html',
+  'xhtml-macro.html'
+].each {
 
-assert content.contains( 'Markdown Format works' );
+  // File exists
+  def verifiedFile = new File( basedir, "target/site/$it" )
+  assert verifiedFile.exists() : "$it must have been generated"
 
-assert !content.contains( ' quotes and double quotes were stripped' ); // DOXIA-473
-assert content.contains( '<code>monospaced</code> support' ); // DOXIA-597
-assert content.contains( '<div class="source"><pre class="prettyprint linenums"><code>code block' ); // DOXIA-571 + DOXIA-616
-assert content.contains( '<div class="source"><pre class="prettyprint linenums"><code class="language-perl">#!/usr/bin/perl' ); // DOXIA-616
+  // File contains the content marker 'Content for verify.groovy'
+  def verifiedContent = verifiedFile.text
+  assert verifiedContent.contains( 'Content for verify.groovy' ) : "$it must have content from the source ('Content for verify.groovy')"
 
-assert !content.contains( 'MACRO' );
-assert content.contains( 'href="#Subsection"' );
+  // File does NOT contain src/site.
+  // This means that the SNIPPET macro has been properly processed
+  // and no source file is referenced in the produced HTML.
+	// This test can be run in all files produced, even those with no macros.
+	assert !verifiedContent.contains( 'src/site' ) : "Macros must have processed in $it and SNIPPET source file removed"
 
-ignore = new File( basedir, 'target/site/ignore.txt' );
-assert !ignore.exists();
+}
 
-velocity = new File( basedir, 'target/generated-site/processed/velocity-context.apt' );
-assert velocity.exists();
-content = velocity.text;
+// ignore.txt must NOT have been generated
+assert !( new File( basedir, 'target/site/ignore.txt' ).exists() ) : "ignore.txt does not end up in the generated content"
+assert !( new File( basedir, 'target/site/ignore.html' ).exists() ) : "ignore.txt does not produce ignore.html"
 
-assert content.contains( '= <<<val1>>>' ); // MSITE-550
+// .vm files must have been processed with Velocity
+def velocity = new File( basedir, 'target/generated-site/processed/velocity-context.apt' )
+assert velocity.exists() : "*.vm files must be processed with Velocity and stored in target/generated-site"
 
-assert !content.replace('<<<$value', '').contains( '<<<$' );
+def content = velocity.text
+assert content.contains( '= <<<val1>>>' ) : "Velocity-processed content must conform to MSITE-550"
 
-assert new File( basedir, 'target/site/markdown2.html' ).exists(); // DOXIA-535
-
-assert new File( basedir, 'target/site/confluence.html' ).exists(); // MSITE-838
-assert new File( basedir, 'target/site/docbook.html' ).exists(); //MSITE-838
-assert new File( basedir, 'target/site/twiki.html' ).exists(); //MSITE-838
-
-return true;
+assert !( content.replace('<<<$value', '').contains( '<<<$' ) ) : 'Velocity-processed content must not contain any veloci-macro reference'

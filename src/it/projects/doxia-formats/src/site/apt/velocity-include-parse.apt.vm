@@ -41,3 +41,5 @@ Doxia Site Renderer Velocity ${esc.h}parse and ${esc.h}include
 +---------------+
 #include( "../../../pom.xml" )
 +---------------+
+
+Content for verify.groovy

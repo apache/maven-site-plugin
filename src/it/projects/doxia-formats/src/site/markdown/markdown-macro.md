@@ -28,8 +28,10 @@ Macros in Markdown
 ### Echo Macro
 
 <!-- MACRO{echo|param1=value1|param2=value2} -->
+<!-- END SNIPPET: macros -->
 
 ### Snippet Macro
 
 <!-- MACRO{snippet|id=macros|file=src/site/markdown/markdown-macro.md} -->
-<!-- END SNIPPET: macros -->
+
+Content for verify.groovy

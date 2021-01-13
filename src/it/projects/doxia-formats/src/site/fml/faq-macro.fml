@@ -43,6 +43,7 @@ under the License.
         </macro>
       </answer>
     </faq>
+    <!-- END SNIPPET: macros -->
 
     <faq id="snippet">
       <question>Is Snippet Macro supported?</question>
@@ -51,10 +52,9 @@ under the License.
           <param name="id" value="macros"/>
           <param name="file" value="src/site/fml/faq-macro.fml"/>
         </macro>
+        <p>Content for verify.groovy</p>
       </answer>
     </faq>
-    <!-- END SNIPPET: macros -->
   </part>
 
 </faqs>
-

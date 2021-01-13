@@ -37,7 +37,7 @@ Doxia Site Renderer Velocity Context
 *-----------------------+-------------------------------------------------------+-----+
 #foreach( $key in $sorter.sort( $context.keys ) )
 #set( $value = $context.get($key) )
-| <<<$key>>>            | <<<#if ($value)$value.class.name#else?#end>>> | #if ($key != "decoration")<<<$value>>>#end |  
+| <<<$key>>>            | <<<#if ($value)$value.class.name#else?#end>>> | #if ($key != "decoration")<<<$value>>>#end |
 *-----------------------+-------------------------------------------------------+-----+
 #end
 
@@ -150,3 +150,5 @@ Doxia Site Renderer Velocity Context
  <<<custom>>> = <<<$custom>>>
 
  <<<custom.test()>>> = <<<$custom.test()>>>
+
+Content for verify.groovy
