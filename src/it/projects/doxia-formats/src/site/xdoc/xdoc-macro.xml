@@ -27,7 +27,6 @@ under the License.
   </properties>
   <body>
     <section name="Macros in Xdoc">
-    <!-- START SNIPPET: macros -->
     <subsection name="TOC">
       <macro name="toc">
       </macro>
@@ -38,11 +37,10 @@ under the License.
         <param name="param2" value="value2"/>
       </macro>
     </subsection>
-      <!-- END SNIPPET: macros -->
     <subsection name="Snippet">
       <macro name="snippet">
         <param name="id" value="macros"/>
-        <param name="file" value="src/site/xdoc/xdoc-macro.xml"/>
+        <param name="file" value="src/main/java/org/apache/maven/plugins/site/it/CustomVelocityTool.java" />
       </macro>
       <p>Content for verify.groovy</p>
     </subsection>

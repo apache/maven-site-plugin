@@ -44,19 +44,22 @@
 
   // File contains the content marker 'Content for verify.groovy'
   def verifiedContent = verifiedFile.text
-  assert verifiedContent.contains( 'Content for verify.groovy' ) : "$it must have content from the source ('Content for verify.groovy')"
+  assert verifiedContent.contains( 'Content for verify.groovy' ) :
+    "$it must have content from the source ('Content for verify.groovy')"
 
-  // File does NOT contain src/site.
-  // This means that the SNIPPET macro has been properly processed
-  // and no source file is referenced in the produced HTML.
-	// This test can be run in all files produced, even those with no macros.
-	assert !verifiedContent.contains( 'src/site' ) : "Macros must have processed in $it and SNIPPET source file removed"
+  // File does NOT contain the path to the source file referenced by the SNIPPET macro.
+  // This means that the SNIPPET macro has been properly processed.
+  // This test can be run in all files produced, even those with no macros.
+  assert !verifiedContent.contains( 'src/main/java/org/apache/maven/plugins/site/it/CustomVelocityTool.java' ) :
+    "Macros must have been processed in $it and SNIPPET source file path removed"
 
 }
 
 // ignore.txt must NOT have been generated
-assert !( new File( basedir, 'target/site/ignore.txt' ).exists() ) : "ignore.txt does not end up in the generated content"
-assert !( new File( basedir, 'target/site/ignore.html' ).exists() ) : "ignore.txt does not produce ignore.html"
+assert !( new File( basedir, 'target/site/ignore.txt' ).exists() ) :
+  "ignore.txt does not end up in the generated content"
+assert !( new File( basedir, 'target/site/ignore.html' ).exists() ) :
+  "ignore.txt does not produce ignore.html"
 
 // .vm files must have been processed with Velocity
 def velocity = new File( basedir, 'target/generated-site/processed/velocity-context.apt' )
@@ -65,4 +68,5 @@ assert velocity.exists() : "*.vm files must be processed with Velocity and store
 def content = velocity.text
 assert content.contains( '= <<<val1>>>' ) : "Velocity-processed content must conform to MSITE-550"
 
-assert !( content.replace('<<<$value', '').contains( '<<<$' ) ) : 'Velocity-processed content must not contain any veloci-macro reference'
+assert !( content.replace('<<<$value', '').contains( '<<<$' ) ) :
+  'Velocity-processed content must not contain any veloci-macro reference'

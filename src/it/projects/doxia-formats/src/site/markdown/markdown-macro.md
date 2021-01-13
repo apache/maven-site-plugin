@@ -20,7 +20,6 @@ under the License.
 Macros in Markdown
 ----------------
 
-<!-- START SNIPPET: macros -->
 ### TOC Macro
 
 <!-- MACRO{toc} -->
@@ -28,10 +27,9 @@ Macros in Markdown
 ### Echo Macro
 
 <!-- MACRO{echo|param1=value1|param2=value2} -->
-<!-- END SNIPPET: macros -->
 
 ### Snippet Macro
 
-<!-- MACRO{snippet|id=macros|file=src/site/markdown/markdown-macro.md} -->
+<!-- MACRO{snippet|id=macros|file=src/main/java/org/apache/maven/plugins/site/it/CustomVelocityTool.java} -->
 
 Content for verify.groovy

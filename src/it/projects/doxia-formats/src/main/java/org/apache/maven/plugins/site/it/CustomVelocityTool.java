@@ -21,6 +21,7 @@ package org.apache.maven.plugins.site.it;
 
 import org.apache.velocity.tools.config.DefaultKey;
 
+// START SNIPPET: macros
 @DefaultKey("custom")
 public class CustomVelocityTool
 {
@@ -29,3 +30,4 @@ public class CustomVelocityTool
         return "ok";
     }
 }
+// END SNIPPET: macros
