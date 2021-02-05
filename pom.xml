@@ -196,14 +196,16 @@ under the License.
 
   <properties>
     <mavenVersion>3.0.5</mavenVersion>
-    <javaVersion>7</javaVersion>
+    <javaVersion>8</javaVersion>
+
     <!-- for dependencies -->
     <doxiaVersion>1.9.1</doxiaVersion>
     <doxiaSitetoolsVersion>1.9.2</doxiaSitetoolsVersion>
-    <jettyVersion>9.2.29.v20191105</jettyVersion>
+    <jettyVersion>9.4.28.v20200408</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
     <wagonVersion>3.3.1</wagonVersion>
+    <slf4jVersion>1.7.29</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
     <javadocPluginVersion>3.0.1</javadocPluginVersion>
@@ -373,7 +375,6 @@ under the License.
       <version>${doxiaVersion}</version>
       <scope>runtime</scope>
     </dependency>
-
     <!-- Doxia Sitetools -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
@@ -454,21 +455,21 @@ under the License.
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.5.3</version>
+      <version>${slf4jVersion}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.5.3</version>
+      <version>${slf4jVersion}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <version>1.6.1</version>
+      <version>${slf4jVersion}</version>
       <scope>test</scope>
     </dependency>
 
@@ -521,6 +522,7 @@ under the License.
                 <maven.compiler.source>${maven.compiler.source}</maven.compiler.source>
                 <maven.compiler.target>${maven.compiler.target}</maven.compiler.target>
               </properties>
+              <javaHome>${java.home}</javaHome>
             </configuration>
           </plugin>
           <plugin>
