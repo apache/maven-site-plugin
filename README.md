@@ -74,7 +74,7 @@ If you plan to contribute on a regular basis, please consider filing a [contribu
 Making Trivial Changes
 ----------------------
 
-For changes of a trivial nature to comments and documentation, it is not always
+For trivial changes to comments and documentation, it is not always
 necessary to create a new ticket in JIRA.  In this case, it is appropriate to
 start the first line of a commit with '(doc)' instead of a ticket number.
 
