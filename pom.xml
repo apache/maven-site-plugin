@@ -204,6 +204,7 @@ under the License.
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
     <wagonVersion>3.3.1</wagonVersion>
+    <slf4jVersion>1.7.30</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
     <javadocPluginVersion>3.0.1</javadocPluginVersion>
@@ -462,21 +463,21 @@ under the License.
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4jVersion}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4jVersion}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <version>1.7.30</version>
+      <version>${slf4jVersion}</version>
       <scope>test</scope>
     </dependency>
 
