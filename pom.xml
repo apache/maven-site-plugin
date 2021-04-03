@@ -207,7 +207,7 @@ under the License.
     <slf4jVersion>1.7.29</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
-    <javadocPluginVersion>3.0.1</javadocPluginVersion>
+    <javadocPluginVersion>3.2.0</javadocPluginVersion>
     <pmdPluginVersion>3.11.0</pmdPluginVersion>
     <projectInfoReportsPluginVersion>2.7</projectInfoReportsPluginVersion>
     <surefirePluginVersion>2.22.1</surefirePluginVersion>
