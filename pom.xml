@@ -203,7 +203,7 @@ under the License.
     <jettyVersion>9.2.29.v20191105</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
-    <wagonVersion>3.3.1</wagonVersion>
+    <wagonVersion>3.4.3</wagonVersion>
     <slf4jVersion>1.7.29</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
