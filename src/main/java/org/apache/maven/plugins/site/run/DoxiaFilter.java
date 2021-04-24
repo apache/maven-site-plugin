@@ -117,7 +117,7 @@ public class DoxiaFilter
             }
         }
         // Set the contentType for the response
-        servletResponse.setContentType(Files.probeContentType((new File(path)).toPath()));
+        servletResponse.setContentType( Files.probeContentType( ( new File ( path ) ).toPath( ) ) );
 
         if ( languageWanted == null )
         {
