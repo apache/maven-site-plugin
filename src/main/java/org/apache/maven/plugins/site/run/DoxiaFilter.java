@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -117,7 +118,19 @@ public class DoxiaFilter
             }
         }
         // Set the contentType for the response
-        servletResponse.setContentType( Files.probeContentType( ( new File ( path ) ).toPath( ) ) );
+        if ( null != servletResponse ) 
+        {
+            File file  = new File ( path );
+            Path apath = file.toPath();
+            if ( null != apath ) 
+            {
+                String contenttype = Files.probeContentType( apath );
+                if ( null != contenttype )
+                {
+                    servletResponse.setContentType( contenttype );
+                }
+            }
+        }
 
         if ( languageWanted == null )
         {
