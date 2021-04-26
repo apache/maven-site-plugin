@@ -118,7 +118,7 @@ public class DoxiaFilter
             }
         }
         // Set the contentType for the response
-        Path aPath =  (new File ( path ) ).toPath();
+        Path aPath =  ( new File ( path ) ).toPath();
         if ( null != aPath ) 
         {
             String contentType = Files.probeContentType( aPath );
