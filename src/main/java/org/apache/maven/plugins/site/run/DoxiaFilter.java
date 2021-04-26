@@ -37,7 +37,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -118,7 +117,7 @@ public class DoxiaFilter
             }
         }
         // Set the contentType for the response
-        Path aPath =  ( new File ( path ) ).toPath();
+        Path aPath =  Paths.get( path );
         if ( null != aPath ) 
         {
             String contentType = Files.probeContentType( aPath );
