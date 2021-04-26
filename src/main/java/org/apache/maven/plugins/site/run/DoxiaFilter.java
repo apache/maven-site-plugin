@@ -118,17 +118,14 @@ public class DoxiaFilter
             }
         }
         // Set the contentType for the response
-        if ( null != servletResponse ) 
+        File file  = new File ( path );
+        Path aPath = file.toPath();
+        if ( null != aPath ) 
         {
-            File file  = new File ( path );
-            Path apath = file.toPath();
-            if ( null != apath ) 
+            String contentType = Files.probeContentType( aPath );
+            if ( null != contentType )
             {
-                String contenttype = Files.probeContentType( apath );
-                if ( null != contenttype )
-                {
-                    servletResponse.setContentType( contenttype );
-                }
+                servletResponse.setContentType( contentType );
             }
         }
 
