@@ -100,20 +100,21 @@ public class SiteRunMSITE872Test {
         DoxiaFilter          leDoxiaFilter          = new DoxiaFilter();
         
         String[][] ltTests = new String[][] {
-            {"./rrr/bb/index.html" , "text/html"              , "text/html"}
+            {"./rrr/bb/index.html" , "text/html"              , ""                , ""}
             ,
-            {"./zz/toto.css"       , "text/css"               , "text/css"}  
+            {"./zz/toto.css"       , "text/css"               , ""                , ""}  
             ,
-            {"./zz/toto.js"        , "application/javascript" , "text/javascript"}   
+            {"./zz/toto.js"        , "application/javascript" , "text/javascript" , "text/plain"}   
             ,
-            {"./zz/toto.png"       , "image/png"              , "image/png"}   
+            {"./zz/toto.png"       , "image/png"              , ""                , ""}   
             ,
-            {"./zz/toto.jpeg"      , "image/jpeg"             , "image/jpeg"}   
+            {"./zz/toto.jpeg"      , "image/jpeg"             , ""                , ""}   
         };
         for ( String[] ltDet : ltTests) { 
             String lsPath    = ltDet[0];
             String lsResult1 = ltDet[1]; 
             String lsResult2 = ltDet[2]; 
+            String lsResult3 = ltDet[3]; 
 
             InnerFilterConfig leFilterConfig = new InnerFilterConfig();
             leDoxiaFilter.init( leFilterConfig ); 
@@ -125,10 +126,12 @@ public class SiteRunMSITE872Test {
             leInnerHttpServletRequest.setServletPath(lsPath);
             leDoxiaFilter.doFilter( leInnerHttpServletRequest, leServletResponse, leFilterChain );
             String lsFct = leServletResponse.getContentType();
-            Assert.assertTrue( "ContentType is wrong, expected " + lsResult1 + " or " + lsResult2 + " but result is " + lsFct, 
+            Assert.assertTrue( "ContentType is wrong, expected " + lsResult1 + " or " + lsResult2 + " or " + lsResult3 + " but result is " + lsFct, 
                     lsFct.contentEquals( lsResult1 )
                     ||
                     lsFct.contentEquals( lsResult2 )
+                    ||
+                    lsFct.contentEquals( lsResult3 )
                     ||
                     lsFct.isEmpty()
             );
