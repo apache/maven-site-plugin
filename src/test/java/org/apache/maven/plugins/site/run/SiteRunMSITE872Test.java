@@ -100,19 +100,20 @@ public class SiteRunMSITE872Test {
         DoxiaFilter          leDoxiaFilter          = new DoxiaFilter();
         
         String[][] ltTests = new String[][] {
-            {"./rrr/bb/index.html" , "text/html"}
+            {"./rrr/bb/index.html" , "text/html"              , "text/html"}
             ,
-            {"./zz/toto.css"       , "text/css"}  
+            {"./zz/toto.css"       , "text/css"               , "text/css"}  
             ,
-            {"./zz/toto.js"        , "application/javascript"}   
+            {"./zz/toto.js"        , "application/javascript" , "text/javascript"}   
             ,
-            {"./zz/toto.png"       , "image/png"}   
+            {"./zz/toto.png"       , "image/png"              , "image/png"}   
             ,
-            {"./zz/toto.jpeg"      , "image/jpeg"}   
+            {"./zz/toto.jpeg"      , "image/jpeg"             , "image/jpeg"}   
         };
         for ( String[] ltDet : ltTests) { 
-            String lsPath   = ltDet[0];
-            String lsResult = ltDet[1]; 
+            String lsPath    = ltDet[0];
+            String lsResult1 = ltDet[1]; 
+            String lsResult2 = ltDet[2]; 
 
             InnerFilterConfig leFilterConfig = new InnerFilterConfig();
             leDoxiaFilter.init( leFilterConfig ); 
@@ -124,8 +125,10 @@ public class SiteRunMSITE872Test {
             leInnerHttpServletRequest.setServletPath(lsPath);
             leDoxiaFilter.doFilter( leInnerHttpServletRequest, leServletResponse, leFilterChain );
             String lsFct = leServletResponse.getContentType();
-            Assert.assertTrue( "ContentType is wrong, expected " + lsResult + " but result is " + lsFct, 
-                    lsFct.contentEquals( lsResult )
+            Assert.assertTrue( "ContentType is wrong, expected " + lsResult1 + " or " + lsResult2 + " but result is " + lsFct, 
+                    lsFct.contentEquals( lsResult1 )
+                    ||
+                    lsFct.contentEquals( lsResult2 )
                     ||
                     lsFct.isEmpty()
             );
