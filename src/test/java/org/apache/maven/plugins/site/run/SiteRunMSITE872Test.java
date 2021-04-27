@@ -123,10 +123,11 @@ public class SiteRunMSITE872Test {
 
             leInnerHttpServletRequest.setServletPath(lsPath);
             leDoxiaFilter.doFilter( leInnerHttpServletRequest, leServletResponse, leFilterChain );
-            Assert.assertTrue( "ContentType is wrong, expected " + lsResult , 
-                    leServletResponse.getContentType().contentEquals( lsResult )
+            String lsFct = leServletResponse.getContentType();
+            Assert.assertTrue( "ContentType is wrong, expected " + lsResult + " but result is " + lsFct, 
+                    lsFct.contentEquals( lsResult )
                     ||
-                    leServletResponse.getContentType().isEmpty()
+                    lsFct.isEmpty()
             );
         }
     }
