@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.plugins.site.run;
+package org.apache.maven.plugins.site.run; 
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -75,43 +75,19 @@ import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 import static org.apache.maven.plugins.site.run.DoxiaFilter.I18N_DOXIA_CONTEXTS_KEY;
 import static org.apache.maven.plugins.site.run.DoxiaFilter.LOCALES_LIST_KEY;
 import static org.apache.maven.plugins.site.run.DoxiaFilter.SITE_RENDERER_KEY;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- *
- * @author D. CRUETTE / QualiteSys 2021 04 26
+ * Bug fix for MSITE-872
  * Check that the response contenttype is set according to the request ressource type
  *
  */
 public class SiteRunMSITE872Test {
     
-    public SiteRunMSITE872Test() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
     final String MYLOCALE = "default";
     
     @Test
-    public void testCall() 
+    public void testCall () throws Exception 
     {
 
         SiteRenderingContext          leContext              = new SiteRenderingContext();
@@ -123,139 +99,134 @@ public class SiteRunMSITE872Test {
         leI18nDoxiaContexts.put(MYLOCALE, leDoxiaBean);
         DoxiaFilter          leDoxiaFilter          = new DoxiaFilter();
         
-        try {
-            try {
-                // Force ServletPath
-                String[][] ltTests = new String[][] {
-                    {"./rrr/bb/index.html" , "text/html"}
-                    ,
-                    {"./zz/toto.css"       , "text/css"}  
-                    ,
-                    {"./zz/toto.js"        , "application/javascript"}   
-                    ,
-                    {"./zz/toto.png"       , "image/png"}   
-                    ,
-                    {"./zz/toto.jpeg"      , "image/jpeg"}   
-                };
-                for ( String[] ltDet : ltTests) { 
-                    String lsPath   = ltDet[0];
-                    String lsResult = ltDet[1]; 
-                    
-                    InnerFilterConfig leFilterConfig = new InnerFilterConfig();
-                    leDoxiaFilter.init( leFilterConfig ); 
+        String[][] ltTests = new String[][] {
+            {"./rrr/bb/index.html" , "text/html"}
+            ,
+            {"./zz/toto.css"       , "text/css"}  
+            ,
+            {"./zz/toto.js"        , "application/javascript"}   
+            ,
+            {"./zz/toto.png"       , "image/png"}   
+            ,
+            {"./zz/toto.jpeg"      , "image/jpeg"}   
+        };
+        for ( String[] ltDet : ltTests) { 
+            String lsPath   = ltDet[0];
+            String lsResult = ltDet[1]; 
 
-                    InnerHttpServletRequest  leInnerHttpServletRequest  = new InnerHttpServletRequest();
-                    InnerServletResponse     leServletResponse          = new InnerServletResponse();
-                    InnerFilterChain         leFilterChain              = new InnerFilterChain();
-                    
-                    leInnerHttpServletRequest.setServletPath(lsPath);
-                    leDoxiaFilter.doFilter( leInnerHttpServletRequest, leServletResponse, leFilterChain );
-                    Assert.assertTrue( "ContentType is wrong, expected " + lsResult , 
-                            leServletResponse.getContentType().contentEquals( lsResult )
-                            ||
-                            leServletResponse.getContentType().isEmpty()
-                    );
-                }
-            } catch ( Exception ex )  
-            {
-                ex.printStackTrace();
-            }
-        } catch ( Exception ex )  
-        {
-            ex.printStackTrace();
+            InnerFilterConfig leFilterConfig = new InnerFilterConfig();
+            leDoxiaFilter.init( leFilterConfig ); 
+
+            InnerHttpServletRequest  leInnerHttpServletRequest  = new InnerHttpServletRequest();
+            InnerServletResponse     leServletResponse          = new InnerServletResponse();
+            InnerFilterChain         leFilterChain              = new InnerFilterChain();
+
+            leInnerHttpServletRequest.setServletPath(lsPath);
+            leDoxiaFilter.doFilter( leInnerHttpServletRequest, leServletResponse, leFilterChain );
+            Assert.assertTrue( "ContentType is wrong, expected " + lsResult , 
+                    leServletResponse.getContentType().contentEquals( lsResult )
+                    ||
+                    leServletResponse.getContentType().isEmpty()
+            );
         }
     }
         
     private class InnerHttpServletRequest implements HttpServletRequest 
     {
         @Override
-        public String getAuthType() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest getAuthType Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        public String getAuthType() 
+        {
+            return "";
         }
 
         @Override
-        public Cookie[] getCookies() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest getCookies Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        public Cookie[] getCookies() 
+        {
+            return ( new Cookie[0] );
         }
 
         @Override
-        public long getDateHeader(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest getDateHeader Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        public long getDateHeader(String string) 
+        {
+            return 0;
         }
 
         @Override
-        public String getHeader(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest getHeader Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        public String getHeader(String string) 
+        {
+            return "";
         }
 
         @Override
-        public Enumeration<String> getHeaders(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest getHeaders Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        public Enumeration<String> getHeaders(String string) 
+        {
+            return null;
         }
 
         @Override
-        public Enumeration<String> getHeaderNames() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        public Enumeration<String> getHeaderNames() 
+        {
+            return null;
         }
 
         @Override
         public int getIntHeader(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public String getMethod() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getPathInfo() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getPathTranslated() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getContextPath() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getQueryString() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getRemoteUser() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public boolean isUserInRole(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public Principal getUserPrincipal() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String getRequestedSessionId() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getRequestURI() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public StringBuffer getRequestURL() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
         private String path = "";
         public void setServletPath(String asPath) {
@@ -268,67 +239,65 @@ public class SiteRunMSITE872Test {
 
         @Override
         public HttpSession getSession(boolean bln) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public HttpSession getSession() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String changeSessionId() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public boolean isRequestedSessionIdValid() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public boolean isRequestedSessionIdFromCookie() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public boolean isRequestedSessionIdFromURL() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public boolean isRequestedSessionIdFromUrl() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public boolean authenticate(HttpServletResponse hsr) throws IOException, ServletException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public void login(String string, String string1) throws ServletException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void logout() throws ServletException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public Collection<Part> getParts() throws IOException, ServletException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Part getPart(String string) throws IOException, ServletException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public <T extends HttpUpgradeHandler> T upgrade(Class<T> type) throws IOException, ServletException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest upgrade Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
@@ -338,147 +307,144 @@ public class SiteRunMSITE872Test {
 
         @Override
         public Enumeration<String> getAttributeNames() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String getCharacterEncoding() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public void setCharacterEncoding(String string) throws UnsupportedEncodingException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public int getContentLength() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public long getContentLengthLong() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public String getContentType() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest getContentType Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public ServletInputStream getInputStream() throws IOException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String getParameter(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public Enumeration<String> getParameterNames() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String[] getParameterValues(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Map<String, String[]> getParameterMap() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String getProtocol() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getScheme() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getServerName() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public int getServerPort() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public BufferedReader getReader() throws IOException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String getRemoteAddr() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getRemoteHost() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public void setAttribute(String string, Object o) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void removeAttribute(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public Locale getLocale() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Enumeration<Locale> getLocales() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public boolean isSecure() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public RequestDispatcher getRequestDispatcher(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public String getRealPath(String string) {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public int getRemotePort() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public String getLocalName() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getLocalAddr() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public int getLocalPort() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
@@ -489,32 +455,32 @@ public class SiteRunMSITE872Test {
 
         @Override
         public AsyncContext startAsync() throws IllegalStateException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public AsyncContext startAsync(ServletRequest sr, ServletResponse sr1) throws IllegalStateException {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public boolean isAsyncStarted() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public boolean isAsyncSupported() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public AsyncContext getAsyncContext() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public DispatcherType getDispatcherType() {
-            throw new UnsupportedOperationException( "InnerHttpServletRequest Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
     }
     private class InnerServletResponse implements ServletResponse
@@ -522,7 +488,7 @@ public class SiteRunMSITE872Test {
         private String contentType = ""; 
         @Override
         public String getCharacterEncoding() {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
@@ -532,73 +498,64 @@ public class SiteRunMSITE872Test {
 
         @Override
         public ServletOutputStream getOutputStream() throws IOException {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public PrintWriter getWriter() throws IOException {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void setCharacterEncoding(String string) {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void setContentLength(int i) {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override 
         public void setContentLengthLong(long l) {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void setContentType(String string) { 
             contentType = string;
-            //System.out.println( "InnerServletResponse setContentType is set to "+contentType);
         }
 
         @Override
         public void setBufferSize(int i) {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public int getBufferSize() {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public void flushBuffer() throws IOException {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void resetBuffer() {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public boolean isCommitted() {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public void reset() {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void setLocale(Locale locale) {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public Locale getLocale() {
-            throw new UnsupportedOperationException( "InnerServletResponse Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
         
     }
@@ -607,7 +564,6 @@ public class SiteRunMSITE872Test {
 
         @Override
         public void doFilter(ServletRequest sr, ServletResponse sr1) throws IOException, ServletException {
-            //System.out.println( "InnerFilterChain doFilter done" );
         }
 
     }
@@ -616,7 +572,7 @@ public class SiteRunMSITE872Test {
 
         @Override
         public String getFilterName() {
-            throw new UnsupportedOperationException( "InnerFilterConfig getFilterName Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
@@ -627,12 +583,12 @@ public class SiteRunMSITE872Test {
 
         @Override
         public String getInitParameter(String string) {
-            throw new UnsupportedOperationException( "InnerFilterConfig getInitParameter Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public Enumeration<String> getInitParameterNames() {
-            throw new UnsupportedOperationException( "InnerFilterConfig getInitParameterNames Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
     }
@@ -641,117 +597,114 @@ public class SiteRunMSITE872Test {
 
         @Override
         public String getContextPath() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public ServletContext getContext(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public int getMajorVersion() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public int getMinorVersion() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public int getEffectiveMajorVersion() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public int getEffectiveMinorVersion() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return 0;
         }
 
         @Override
         public String getMimeType(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public Set<String> getResourcePaths(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public URL getResource(String string) throws MalformedURLException {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public InputStream getResourceAsStream(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public RequestDispatcher getRequestDispatcher(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public RequestDispatcher getNamedDispatcher(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Servlet getServlet(String string) throws ServletException {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Enumeration<Servlet> getServlets() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Enumeration<String> getServletNames() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void log(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void log(Exception excptn, String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void log(String string, Throwable thrwbl) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public String getRealPath(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getServerInfo() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public String getInitParameter(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public Enumeration<String> getInitParameterNames() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override 
         public boolean setInitParameter(String string, String string1) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
@@ -781,142 +734,136 @@ public class SiteRunMSITE872Test {
 
         @Override
         public Enumeration<String> getAttributeNames() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void setAttribute(String string, Object o) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void removeAttribute(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public String getServletContextName() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public ServletRegistration.Dynamic addServlet(String string, String string1) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public ServletRegistration.Dynamic addServlet(String string, Servlet srvlt) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public ServletRegistration.Dynamic addServlet(String string, Class<? extends Servlet> type) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public <T extends Servlet> T createServlet(Class<T> type) throws ServletException {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public ServletRegistration getServletRegistration(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Map<String, ? extends ServletRegistration> getServletRegistrations() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public FilterRegistration.Dynamic addFilter(String string, String string1) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public FilterRegistration.Dynamic addFilter(String string, Filter filter) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public FilterRegistration.Dynamic addFilter(String string, Class<? extends Filter> type) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public <T extends Filter> T createFilter(Class<T> type) throws ServletException {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public FilterRegistration getFilterRegistration(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Map<String, ? extends FilterRegistration> getFilterRegistrations() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public SessionCookieConfig getSessionCookieConfig() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void setSessionTrackingModes(Set<SessionTrackingMode> set) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public Set<SessionTrackingMode> getDefaultSessionTrackingModes() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public Set<SessionTrackingMode> getEffectiveSessionTrackingModes() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void addListener(String string) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public <T extends EventListener> void addListener(T t) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return;
         }
 
         @Override
         public void addListener(Class<? extends EventListener> type) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public <T extends EventListener> T createListener(Class<T> type) throws ServletException {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public JspConfigDescriptor getJspConfigDescriptor() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public ClassLoader getClassLoader() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void declareRoles(String... strings) {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public String getVirtualServerName() {
-            throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
         
     }
@@ -925,37 +872,32 @@ public class SiteRunMSITE872Test {
 
         @Override
         public void render(Collection<DocumentRenderer> clctn, SiteRenderingContext src, File file) throws RendererException, IOException {
-            throw new UnsupportedOperationException( "InnerRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void generateDocument(Writer writer, SiteRendererSink srs, SiteRenderingContext src) throws RendererException {
-            throw new UnsupportedOperationException( "InnerRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void mergeDocumentIntoSite(Writer writer, DocumentContent dc, SiteRenderingContext src) throws RendererException {
-            throw new UnsupportedOperationException( "InnerRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public SiteRenderingContext createContextForSkin(Artifact artfct, Map<String, ?> map, DecorationModel dm, String string, Locale locale) throws RendererException, IOException {
-            throw new UnsupportedOperationException( "InnerRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public SiteRenderingContext createContextForTemplate(File file, Map<String, ?> map, DecorationModel dm, String string, Locale locale) throws MalformedURLException {
-            throw new UnsupportedOperationException( "InnerRenderer createContextForTemplate Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void copyResources(SiteRenderingContext src, File file, File file1) throws IOException {
-            throw new UnsupportedOperationException( "InnerRenderer copyResources Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public void copyResources(SiteRenderingContext src, File file) throws IOException {
-            throw new UnsupportedOperationException( "InnerRenderer copyResources Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         } 
 
         @Override
@@ -968,12 +910,11 @@ public class SiteRunMSITE872Test {
 
         @Override
         public Map<String, DocumentRenderer> locateDocumentFiles(SiteRenderingContext src, boolean bln) throws IOException, RendererException {
-            throw new UnsupportedOperationException( "InnerRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public void renderDocument(Writer writer, RenderingContext rc, SiteRenderingContext src) throws RendererException, FileNotFoundException, UnsupportedEncodingException {
-            throw new UnsupportedOperationException( "InnerRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
         
     }
@@ -982,27 +923,26 @@ public class SiteRunMSITE872Test {
 
         @Override
         public void renderDocument(Writer writer, Renderer rndr, SiteRenderingContext src) throws RendererException, FileNotFoundException, UnsupportedEncodingException {
-            throw new UnsupportedOperationException( "InnerDocumentRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
         }
 
         @Override
         public String getOutputName() {
-            throw new UnsupportedOperationException( "InnerDocumentRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return "";
         }
 
         @Override
         public RenderingContext getRenderingContext() {
-            throw new UnsupportedOperationException( "InnerDocumentRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return null;
         }
 
         @Override
         public boolean isOverwrite() {
-            throw new UnsupportedOperationException( "InnerDocumentRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
         @Override
         public boolean isExternalReport() {
-            throw new UnsupportedOperationException( "InnerDocumentRenderer Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+            return false;
         }
 
     }
