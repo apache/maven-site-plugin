@@ -199,7 +199,7 @@ under the License.
     <javaVersion>7</javaVersion>
     <!-- for dependencies -->
     <doxiaVersion>1.9.1</doxiaVersion>
-    <doxiaSitetoolsVersion>1.9.2</doxiaSitetoolsVersion>
+    <doxiaSitetoolsVersion>1.10</doxiaSitetoolsVersion>
     <jettyVersion>9.2.29.v20191105</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
