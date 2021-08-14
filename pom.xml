@@ -198,13 +198,13 @@ under the License.
     <mavenVersion>3.0.5</mavenVersion>
     <javaVersion>7</javaVersion>
     <!-- for dependencies -->
-    <doxiaVersion>1.9.1</doxiaVersion>
-    <doxiaSitetoolsVersion>1.9.2</doxiaSitetoolsVersion>
+    <doxiaVersion>1.10</doxiaVersion>
+    <doxiaSitetoolsVersion>1.10</doxiaSitetoolsVersion>
     <jettyVersion>9.2.29.v20191105</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
     <wagonVersion>3.3.1</wagonVersion>
-    <slf4jVersion>1.7.29</slf4jVersion>
+    <slf4jVersion>1.7.32</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
     <javadocPluginVersion>3.2.0</javadocPluginVersion>
@@ -229,7 +229,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
-      <version>3.3.3</version>
+      <version>3.3.4</version>
     </dependency>
 
     <!-- Maven -->
@@ -300,7 +300,7 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-archiver</artifactId>
-      <version>4.2.4</version>
+      <version>4.2.5</version>
     </dependency>
 
     <dependency>
