@@ -195,7 +195,7 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <mavenVersion>3.0.5</mavenVersion>
+    <mavenVersion>3.6.1</mavenVersion><!-- require Maven 3.6.1 for Wagon 3.3.1 (https://issues.apache.org/jira/browse/MNG-6526) -->
     <javaVersion>7</javaVersion>
     <!-- for dependencies -->
     <doxiaVersion>1.10</doxiaVersion>
