@@ -201,7 +201,8 @@ under the License.
     <!-- for dependencies -->
     <doxiaVersion>1.11.1</doxiaVersion>
     <doxiaSitetoolsVersion>1.11.1</doxiaSitetoolsVersion>
-    <jettyVersion>9.4.43.v20210629</jettyVersion>
+    <jettyVersion>9.4.44.v20210927</jettyVersion>
+
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
     <wagonVersion>3.3.1</wagonVersion>
