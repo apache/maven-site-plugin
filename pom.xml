@@ -408,6 +408,7 @@ under the License.
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-api</artifactId>
       <version>${wagonVersion}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
