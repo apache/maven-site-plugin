@@ -20,6 +20,9 @@
 
 sitedir = new File( basedir, 'target/site' );
 
+assert new File( sitedir, 'dependency-info.html' ).exists();
 assert new File( sitedir, 'index.html' ).exists();
-assert new File( sitedir, 'team-list.html' ).exists();
-assert new File( sitedir, 'dependencies.html' ).exists();
+assert new File( sitedir, 'plugin-management.html' ).exists();
+assert new File( sitedir, 'plugins.html' ).exists();
+assert new File( sitedir, 'project-info.html' ).exists();
+assert new File( sitedir, 'summary.html' ).exists();

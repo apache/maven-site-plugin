@@ -38,7 +38,7 @@ assert new File( sitedir, 'xref/index.html' ).exists();
 assert new File( sitedir, 'xref-test/index.html' ).exists();
 
 assert new File( sitedir, 'taglist.html' ).exists();
-assert new File( sitedir, 'team-list.html' ).exists();
+assert new File( sitedir, 'team.html' ).exists();
 
 assert new File( sitedir, 'dependencies.html' ).exists();
 content = new File( sitedir, 'dependencies.html' ).text;
@@ -46,14 +46,14 @@ assert content.contains( 'junit:junit:jar:3.8.2' );
 
 // check reports order
 String[] reports = [ 'index',                  // <report>index</report>
-                     'project-summary',        // <report>summary</report>
-                     'license',                // <report>license</report>
-                     'team-list',              // <report>project-team</report>
-                     'source-repository',      // <report>scm</report>
-                     'issue-tracking',         // <report>issue-tracking</report>
-                     'mail-lists',             // <report>mailing-list</report>
+                     'summary',                // <report>summary</report>
+                     'licenses',               // <report>licenses</report>
+                     'team',                   // <report>team</report>
+                     'scm',                    // <report>scm</report>
+                     'issue-management',       // <report>issue-management</report>
+                     'mailing-lists',          // <report>mailing-lists</report>
                      'dependencies',           // <report>dependencies</report>
-                     'integration',            // <report>cim</report>
+                     'ci-management',          // <report>ci-management</report>
                      'plugin-management',      // <report>plugin-management</report>
                      'plugins'                 // <report>plugins</report>
                    ];

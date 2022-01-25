@@ -47,7 +47,7 @@
   </issueManagement>
 
   <properties>
-    <changesPluginVersion>2.1</changesPluginVersion>
+    <changesPluginVersion>2.12.1</changesPluginVersion>
   </properties>
 
   <build>
@@ -57,9 +57,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-changes-plugin</artifactId>
           <version>${changesPluginVersion}</version>
-          <configuration>
-            <issueLinkTemplate>http://myjira/browse/%ISSUE%</issueLinkTemplate>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -96,9 +93,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
         <version>${changesPluginVersion}</version>
-        <configuration>
-          <issueLinkTemplate>http://myjira/browse/%ISSUE%</issueLinkTemplate>
-        </configuration>
         <reportSets>
           <reportSet>
             <reports>

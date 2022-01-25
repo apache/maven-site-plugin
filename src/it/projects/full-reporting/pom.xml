@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>31</version>
+    <version>34</version>
   </parent>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>
@@ -33,6 +33,11 @@ under the License.
   <version>1.0-SNAPSHOT</version>
 
   <name>maven-site-plugin IT: full reporting</name>
+
+  <issueManagement>
+    <system>default</system>
+    <url>http://localhost/issues</url>
+  </issueManagement>
 
   <dependencies>
     <dependency>
@@ -93,13 +98,13 @@ under the License.
             <reports>
               <report>index</report>
               <report>summary</report>
-              <report>license</report>
-              <report>project-team</report>
+              <report>licenses</report>
+              <report>team</report>
               <report>scm</report>
-              <report>issue-tracking</report>
-              <report>mailing-list</report>
+              <report>issue-management</report>
+              <report>mailing-lists</report>
               <report>dependencies</report>
-              <report>cim</report>
+              <report>ci-management</report>
               <report>plugin-management</report>
               <report>plugins</report>
             </reports>
@@ -123,6 +128,11 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>@checkstylePluginVersion@</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>3.0.0</version>
       </plugin>
     </plugins>
   </reporting>

@@ -75,10 +75,10 @@ under the License.
           <reportSet>
             <reports>
               <report>index</report>
-              <report>license</report>
+              <report>licenses</report>
             </reports>
           </reportSet>
-        </reportSets>              
+        </reportSets>
       </plugin>
     </plugins>
   </reporting>

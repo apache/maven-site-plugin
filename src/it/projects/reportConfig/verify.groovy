@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-File f = new File( basedir, 'target/site/license.html' )
+File f = new File( basedir, 'target/site/licenses.html' )
 assert f.exists();
 
 content = f.text;
