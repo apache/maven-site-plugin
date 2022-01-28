@@ -32,7 +32,6 @@ import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.RenderingContext;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
-import org.apache.maven.doxia.tools.MojoLogWrapper;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.reporting.MavenReport;
 import org.codehaus.plexus.i18n.I18N;
@@ -81,11 +80,6 @@ public class CategorySummaryDocumentRenderer
         throws RendererException, FileNotFoundException
     {
         SiteRendererSink sink = new SiteRendererSink( renderingContext );
-
-        if ( log != null )
-        {
-            sink.enableLogging( new MojoLogWrapper( log ) );
-        }
 
         sink.head();
 

@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
-    <version>34</version>
+    <version>35-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -195,15 +195,15 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <mavenVersion>3.0.5</mavenVersion>
-    <javaVersion>7</javaVersion>
+    <mavenVersion>4.0.0-alpha-1-SNAPSHOT</mavenVersion>
+    <javaVersion>8</javaVersion>
     <!-- for dependencies -->
-    <doxiaVersion>1.11.1</doxiaVersion>
-    <doxiaSitetoolsVersion>1.11.1</doxiaSitetoolsVersion>
+    <doxiaVersion>2.0.0-M2-SNAPSHOT</doxiaVersion>
+    <doxiaSitetoolsVersion>2.0.0-M1-SNAPSHOT</doxiaSitetoolsVersion>
     <jettyVersion>9.2.29.v20191105</jettyVersion>
     <plexusVersion>1.5.4</plexusVersion>
-    <scmVersion>1.4</scmVersion>
-    <wagonVersion>3.3.1</wagonVersion>
+    <scmVersion>2.0.0-M2-SNAPSHOT</scmVersion>
+    <wagonVersion>3.5.2-SNAPSHOT</wagonVersion>
     <slf4jVersion>1.7.32</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
@@ -219,7 +219,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-api</artifactId>
-      <version>3.0</version>
+      <version>3.1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
@@ -229,7 +229,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
-      <version>3.3.4</version>
+      <version>4.0.0-SNAPSHOT</version>
     </dependency>
 
     <!-- Maven -->
@@ -365,24 +365,6 @@ under the License.
       <version>${doxiaVersion}</version>
       <scope>runtime</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-confluence</artifactId>
-      <version>${doxiaVersion}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-docbook-simple</artifactId>
-      <version>${doxiaVersion}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-twiki</artifactId>
-      <version>${doxiaVersion}</version>
-      <scope>runtime</scope>
-    </dependency>
 
     <!-- Doxia Sitetools -->
     <dependency>
@@ -499,7 +481,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
-      <version>2.1</version>
+      <version>3.4.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
     <dependency>
