@@ -21,7 +21,7 @@ package org.apache.maven.plugins.site.deploy;
 
 import org.apache.maven.artifact.manager.WagonManager;
 //import org.apache.maven.wagon.repository.Repository;
-import org.codehaus.plexus.PlexusTestCase;
+import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ import org.junit.runners.JUnit4;
  */
 @RunWith( JUnit4.class )
 public class SiteDeployMojoTest
-    extends PlexusTestCase
+        extends AbstractMojoTestCase
 {
     private WagonManager wagonManager;
 
