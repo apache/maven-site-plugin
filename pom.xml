@@ -195,7 +195,7 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <mavenVersion>3.0.5</mavenVersion>
+    <mavenVersion>3.2.5</mavenVersion>
     <javaVersion>8</javaVersion>
 
     <!-- for dependencies -->
@@ -249,6 +249,12 @@ under the License.
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
+      <version>${mavenVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-aether-provider</artifactId>
       <version>${mavenVersion}</version>
       <scope>provided</scope>
     </dependency>
@@ -401,6 +407,12 @@ under the License.
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-integration-tools</artifactId>
       <version>${doxiaSitetoolsVersion}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-container-default</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Wagon -->
@@ -501,7 +513,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
-      <version>2.1</version>
+      <version>3.3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
