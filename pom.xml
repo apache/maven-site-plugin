@@ -206,7 +206,7 @@ under the License.
     <plexusVersion>1.5.4</plexusVersion>
     <scmVersion>1.4</scmVersion>
     <wagonVersion>3.3.1</wagonVersion>
-    <slf4jVersion>1.7.32</slf4jVersion>
+    <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
     <javadocPluginVersion>3.3.2</javadocPluginVersion>
