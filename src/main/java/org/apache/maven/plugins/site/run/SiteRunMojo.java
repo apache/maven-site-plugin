@@ -22,7 +22,6 @@ package org.apache.maven.plugins.site.run;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
@@ -69,7 +68,7 @@ public class SiteRunMojo
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute()
-        throws MojoExecutionException, MojoFailureException
+        throws MojoExecutionException
     {
         checkInputEncoding();
 

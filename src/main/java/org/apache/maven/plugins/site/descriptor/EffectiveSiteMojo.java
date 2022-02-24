@@ -23,7 +23,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Writer;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.StringUtils;
@@ -62,7 +61,7 @@ public class EffectiveSiteMojo
      * {@inheritDoc}
      */
     public void execute()
-        throws MojoExecutionException, MojoFailureException
+        throws MojoExecutionException
     {
         DecorationModel decorationModel = prepareDecorationModel( getLocales().get( 0 ) );
 
