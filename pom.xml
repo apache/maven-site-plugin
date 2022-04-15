@@ -195,7 +195,7 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <mavenVersion>3.0.5</mavenVersion>
+    <mavenVersion>3.8.5</mavenVersion>
     <javaVersion>8</javaVersion>
 
     <!-- for dependencies -->
