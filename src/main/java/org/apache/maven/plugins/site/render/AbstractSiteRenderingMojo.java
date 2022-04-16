@@ -90,8 +90,10 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * are disabled. It is highly recommended that you package this as a skin instead.
      *
      * @since 2.0-beta-5
+     * @deprecated Upcoming major Doxia version removes support for template files in favor of skins.
      */
     @Parameter( property = "templateFile" )
+    @Deprecated
     private File templateFile;
 
     /**
