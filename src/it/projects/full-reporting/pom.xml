@@ -69,6 +69,9 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>@checkstylePluginVersion@</version>
+        <configuration>
+          <configLocation>sun_checks.xml</configLocation>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -128,6 +131,9 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>@checkstylePluginVersion@</version>
+        <configuration>
+          <configLocation>sun_checks.xml</configLocation>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

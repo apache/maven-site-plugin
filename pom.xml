@@ -205,11 +205,11 @@ under the License.
     <wagonVersion>3.5.1</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
-    <checkstylePluginVersion>2.9.1</checkstylePluginVersion>
+    <checkstylePluginVersion>3.1.2</checkstylePluginVersion>
     <javadocPluginVersion>3.3.2</javadocPluginVersion>
-    <pmdPluginVersion>3.11.0</pmdPluginVersion>
-    <jxrPluginVersion>3.1.1</jxrPluginVersion>
-    <projectInfoReportsPluginVersion>3.2.1</projectInfoReportsPluginVersion>
+    <pmdPluginVersion>3.16.0</pmdPluginVersion>
+    <jxrPluginVersion>3.2.0</jxrPluginVersion>
+    <projectInfoReportsPluginVersion>3.2.2</projectInfoReportsPluginVersion>
     <surefirePluginVersion>2.22.2</surefirePluginVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2022-02-13T11:25:26Z</project.build.outputTimestamp>
