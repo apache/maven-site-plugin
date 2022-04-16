@@ -202,9 +202,6 @@ under the License.
     <doxiaVersion>1.11.1</doxiaVersion>
     <doxiaSitetoolsVersion>1.11.1</doxiaSitetoolsVersion>
     <jettyVersion>9.4.44.v20210927</jettyVersion>
-
-    <plexusVersion>1.5.4</plexusVersion>
-    <scmVersion>1.4</scmVersion>
     <wagonVersion>3.5.1</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
