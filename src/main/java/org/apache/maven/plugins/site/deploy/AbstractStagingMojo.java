@@ -19,10 +19,10 @@ package org.apache.maven.plugins.site.deploy;
  * under the License.
  */
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.utils.StringUtils;
 
 /**
  * Abstract base class for staging mojos.

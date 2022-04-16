@@ -19,8 +19,6 @@ package org.apache.maven.plugins.site.deploy;
  * under the License.
  */
 
-import org.apache.commons.lang3.SystemUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +39,11 @@ class HttpRequest
     public String toString()
     {
         StringBuilder sb = new StringBuilder( method ).append( " path " ).append( path )
-                .append( SystemUtils.LINE_SEPARATOR );
+                .append( System.lineSeparator() );
         for ( Map.Entry<String, String> entry : headers.entrySet() )
         {
             sb.append( entry.getKey() ).append( " : " ).append( entry.getValue() )
-                    .append( SystemUtils.LINE_SEPARATOR );
+                    .append( System.lineSeparator() );
         }
         return sb.toString();
     }

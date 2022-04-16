@@ -20,7 +20,6 @@ package org.apache.maven.plugins.site.deploy;
  */
 
 import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginManagement;
@@ -30,6 +29,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.utils.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 /**
