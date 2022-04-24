@@ -197,10 +197,9 @@ under the License.
   <properties>
     <mavenVersion>3.2.5</mavenVersion>
     <javaVersion>8</javaVersion>
-
     <!-- for dependencies -->
-    <doxiaVersion>1.11.1</doxiaVersion>
-    <doxiaSitetoolsVersion>1.11.1</doxiaSitetoolsVersion>
+    <doxiaVersion>2.0.0-M2</doxiaVersion>
+    <doxiaSitetoolsVersion>2.0.0-M2</doxiaSitetoolsVersion>
     <jettyVersion>9.4.46.v20220331</jettyVersion>
     <wagonVersion>3.5.1</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
@@ -372,24 +371,7 @@ under the License.
       <version>${doxiaVersion}</version>
       <scope>runtime</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-confluence</artifactId>
-      <version>${doxiaVersion}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-docbook-simple</artifactId>
-      <version>${doxiaVersion}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven.doxia</groupId>
-      <artifactId>doxia-module-twiki</artifactId>
-      <version>${doxiaVersion}</version>
-      <scope>runtime</scope>
-    </dependency>
+
     <!-- Doxia Sitetools -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
@@ -407,12 +389,6 @@ under the License.
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-integration-tools</artifactId>
       <version>${doxiaSitetoolsVersion}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.codehaus.plexus</groupId>
-          <artifactId>plexus-container-default</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- Wagon -->

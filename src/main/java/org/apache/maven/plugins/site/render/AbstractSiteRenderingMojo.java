@@ -86,17 +86,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     private Map<String, String> moduleExcludes;
 
     /**
-     * The location of a Velocity template file to use. When used, skins and the default templates, CSS and images
-     * are disabled. It is highly recommended that you package this as a skin instead.
-     *
-     * @since 2.0-beta-5
-     * @deprecated Upcoming major Doxia version removes support for template files in favor of skins.
-     */
-    @Parameter( property = "templateFile" )
-    @Deprecated
-    private File templateFile;
-
-    /**
      * Additional template properties for rendering the site. See
      * <a href="/doxia/doxia-sitetools/doxia-site-renderer/">Doxia Site Renderer</a>.
      */
@@ -302,40 +291,25 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         }
 
         SiteRenderingContext context;
-        if ( templateFile != null )
+        try
         {
-            getLog().info( buffer().a( "Rendering content with " ).strong( templateFile
-                + " template file" ).a( '.' ).toString() );
+           Artifact skinArtifact =
+               siteTool.getSkinArtifactFromRepository( localRepository, repositories, decorationModel );
 
-            if ( !templateFile.exists() )
-            {
-                throw new MojoFailureException( "Template file '" + templateFile + "' does not exist" );
-            }
-            context = siteRenderer.createContextForTemplate( templateFile, attributes, decorationModel,
-                                                             project.getName(), locale );
+            getLog().info( buffer().a( "Rendering content with " ).strong( skinArtifact.getId()
+                + " skin" ).a( '.' ).toString() );
+
+            context = siteRenderer.createContextForSkin( skinArtifact, attributes, decorationModel,
+                                                         project.getName(), locale );
         }
-        else
+        catch ( SiteToolException e )
         {
-            try
-            {
-                Artifact skinArtifact =
-                    siteTool.getSkinArtifactFromRepository( localRepository, repositories, decorationModel );
-
-                getLog().info( buffer().a( "Rendering content with " ).strong( skinArtifact.getId()
-                    + " skin" ).a( '.' ).toString() );
-
-                context = siteRenderer.createContextForSkin( skinArtifact, attributes, decorationModel,
-                                                             project.getName(), locale );
-            }
-            catch ( SiteToolException e )
-            {
-                throw new MojoExecutionException( "SiteToolException while preparing skin: " + e.getMessage(), e );
-            }
-            catch ( RendererException e )
-            {
-                throw new MojoExecutionException( "RendererException while preparing context for skin: "
-                    + e.getMessage(), e );
-            }
+            throw new MojoExecutionException( "SiteToolException while preparing skin: " + e.getMessage(), e );
+        }
+        catch ( RendererException e )
+        {
+            throw new MojoExecutionException( "RendererException while preparing context for skin: "
+                + e.getMessage(), e );
         }
 
         // Generate static site

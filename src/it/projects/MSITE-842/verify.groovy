@@ -22,22 +22,22 @@ File resultFile;
 File expectedFile;
 
 // Check MSITE-842.html (must exist and be exactly like the model
-resultFile = new File(basedir, "target/site/MSITE-842.html");
-expectedFile = new File(basedir, "src/it/MSITE-842.html");
+resultFile = new File(basedir, "project/target/site/MSITE-842.html");
+expectedFile = new File(basedir, "project/src/it/MSITE-842.html");
 
 assert resultFile.exists() && resultFile.isFile()
 assert resultFile.text.normalize().equals(expectedFile.text.normalize())
 
 // Check another-page.html (must exist and be exactly like the model
-resultFile = new File(basedir, "target/site/another-page.html");
-expectedFile = new File(basedir, "src/it/another-page.html");
+resultFile = new File(basedir, "project/target/site/another-page.html");
+expectedFile = new File(basedir, "project/src/it/another-page.html");
 
 assert resultFile.exists() && resultFile.isFile()
 assert resultFile.text.normalize().equals(expectedFile.text.normalize())
 
 // Check sub/sub.html (must exist and be exactly like the model
-resultFile = new File(basedir, "target/site/sub/sub.html");
-expectedFile = new File(basedir, "src/it/sub/sub.html");
+resultFile = new File(basedir, "project/target/site/sub/sub.html");
+expectedFile = new File(basedir, "project/src/it/sub/sub.html");
 
 assert resultFile.exists() && resultFile.isFile()
 assert resultFile.text.normalize().equals(expectedFile.text.normalize())

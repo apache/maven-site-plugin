@@ -40,7 +40,6 @@ import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.RenderingContext;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
-import org.apache.maven.doxia.tools.MojoLogWrapper;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.reporting.MavenMultiPageReport;
 import org.apache.maven.reporting.MavenReport;
@@ -280,8 +279,6 @@ public class ReportDocumentRenderer
 
             for ( MultiPageSubSink mySink : sinks )
             {
-                mySink.enableLogging( new MojoLogWrapper( log ) );
-
                 outputName = mySink.getOutputName();
                 log.debug( "  Rendering " + outputName );
 
