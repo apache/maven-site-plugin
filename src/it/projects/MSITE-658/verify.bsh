@@ -33,18 +33,18 @@ try
         result = false;
     }
 
-    File license = new File( siteDirectory, "license.html" );
-    if ( !license.exists() || license.isDirectory() )
+    File licenses = new File( siteDirectory, "licenses.html" );
+    if ( !licenses.exists() || licenses.isDirectory() )
     {
-        System.err.println( "no license file or is a directory." );
+        System.err.println( "no licenses file or is a directory." );
         result = false;
     }
 
-    String content = FileUtils.fileRead( license, "UTF-8" );
+    String content = FileUtils.fileRead( licenses, "UTF-8" );
     int index = content.indexOf( "<a href=\"index.html\" title=\"Home\">Home</a>" );
     if ( index < 0 )
     {
-        System.err.println( "license.html has incorrect links!" );
+        System.err.println( "licenses.html has incorrect links!" );
         result = false;
     }
 
@@ -57,18 +57,18 @@ try
         result = false;
     }
 
-    license = new File( deDirectory, "license.html" );
-    if ( !license.exists() || license.isDirectory() )
+    licenses = new File( deDirectory, "licenses.html" );
+    if ( !licenses.exists() || licenses.isDirectory() )
     {
-        System.err.println( "no license file or is a directory." );
+        System.err.println( "no licenses file or is a directory." );
         result = false;
     }
 
-    content = FileUtils.fileRead( license, "UTF-8" );
+    content = FileUtils.fileRead( licenses, "UTF-8" );
     int index = content.indexOf( "<a href=\"index.html\" title=\"Heim\">Heim</a>" );
     if ( index < 0 )
     {
-        System.err.println( "license.html has incorrect links!" );
+        System.err.println( "licenses.html has incorrect links!" );
         result = false;
     }
 }

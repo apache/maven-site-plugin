@@ -32,7 +32,7 @@ under the License.
   <name>site-deploy IT</name>
 
   <properties>
-    <currentVersion>3.0.5</currentVersion>
+    <currentVersion>@mavenVersion@</currentVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -58,7 +58,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1.2</version>
+        <version>@projectInfoReportsPluginVersion@</version>
         <reportSets>
           <reportSet>
             <reports>

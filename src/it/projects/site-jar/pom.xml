@@ -32,7 +32,7 @@ under the License.
   <name>site-jar IT</name>
 
   <properties>
-    <currentVersion>3.0.5</currentVersion>
+    <currentVersion>@mavenVersion@</currentVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2019-11-02T17:48:12Z</project.build.outputTimestamp>
   </properties>
@@ -66,7 +66,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.1.2</version>
+        <version>@projectInfoReportsPluginVersion@</version>
         <reportSets>
           <reportSet>
             <reports>

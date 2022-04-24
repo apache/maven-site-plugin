@@ -208,8 +208,10 @@ under the License.
     <javadocPluginVersion>3.3.2</javadocPluginVersion>
     <pmdPluginVersion>3.16.0</pmdPluginVersion>
     <jxrPluginVersion>3.2.0</jxrPluginVersion>
-    <projectInfoReportsPluginVersion>3.2.2</projectInfoReportsPluginVersion>
+    <projectInfoReportsPluginVersion>3.3.0</projectInfoReportsPluginVersion>
     <surefirePluginVersion>2.22.2</surefirePluginVersion>
+    <mavenPluginPluginVersion>3.6.4</mavenPluginPluginVersion>
+    <mavenReportingImplVersion>4.0.0-M1</mavenReportingImplVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2022-07-31T18:59:15Z</project.build.outputTimestamp>
 

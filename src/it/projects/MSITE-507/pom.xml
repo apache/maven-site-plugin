@@ -22,81 +22,81 @@ under the License.
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <groupId>my.group.id</groupId>
   <artifactId>my-artifact-id</artifactId>
   <version>1.0-SNAPSHOT</version>
-  
-  <properties> 
-    <maven.skin.version>1.1.8</maven.skin.version> 
-  </properties>   
-  
-  <build> 
-    <pluginManagement> 
-      <plugins> 
-        <plugin> 
-          <groupId>org.apache.maven.plugins</groupId> 
-          <artifactId>maven-site-plugin</artifactId> 
+
+  <properties>
+    <maven.skin.version>1.1.8</maven.skin.version>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
           <version>@pom.version@</version>
-        </plugin> 
-        <plugin> 
-          <groupId>org.apache.maven.plugins</groupId> 
-          <artifactId>maven-project-info-reports-plugin</artifactId> 
-          <version>2.2</version> 
-        </plugin> 
-        <plugin> 
-          <groupId>org.apache.maven.plugins</groupId> 
-          <artifactId>maven-jxr-plugin</artifactId> 
-          <version>2.2</version> 
-          <configuration> 
-            <aggregate>true</aggregate> 
-            <inputEncoding>utf-8</inputEncoding> 
-            <outputEncoding>utf-8</outputEncoding> 
-            <stylesheet>xref/cedarsoft.css</stylesheet> 
-          </configuration> 
-          <dependencies> 
-            <dependency> 
-              <groupId>com.cedarsoft.maven</groupId> 
-              <artifactId>cedarsoft-skin</artifactId> 
-              <version>${maven.skin.version}</version> 
-            </dependency> 
-          </dependencies> 
-        </plugin> 
-      </plugins> 
-    </pluginManagement> 
-    
-    <plugins> 
-      <!--This is a duplicate definition to avoid problems with the jxr plugin that else can't resolve the style sheet--> 
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId> 
-        <artifactId>maven-jxr-plugin</artifactId> 
-        <dependencies> 
-          <dependency> 
-            <groupId>com.cedarsoft.maven</groupId> 
-            <artifactId>cedarsoft-skin</artifactId> 
-            <version>${maven.skin.version}</version> 
-          </dependency> 
-        </dependencies> 
-      </plugin> 
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>@projectInfoReportsPluginVersion@</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jxr-plugin</artifactId>
+          <version>3.2.0</version>
+          <configuration>
+            <aggregate>true</aggregate>
+            <inputEncoding>utf-8</inputEncoding>
+            <outputEncoding>utf-8</outputEncoding>
+            <stylesheet>xref/cedarsoft.css</stylesheet>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.cedarsoft.maven</groupId>
+              <artifactId>cedarsoft-skin</artifactId>
+              <version>${maven.skin.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!--This is a duplicate definition to avoid problems with the jxr plugin that else can't resolve the style sheet-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>com.cedarsoft.maven</groupId>
+            <artifactId>cedarsoft-skin</artifactId>
+            <version>${maven.skin.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
        <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-      </plugin>      
-    </plugins> 
-  </build>     
-  
+      </plugin>
+    </plugins>
+  </build>
+
   <reporting>
-    <plugins> 
-      <plugin> 
-        <groupId>org.apache.maven.plugins</groupId> 
-        <artifactId>maven-jxr-plugin</artifactId> 
-        <configuration> 
-          <aggregate>true</aggregate> 
-          <inputEncoding>utf-8</inputEncoding> 
-          <outputEncoding>utf-8</outputEncoding> 
-          <stylesheet>xref/cedarsoft.css</stylesheet> 
-        </configuration> 
-      </plugin> 
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+          <inputEncoding>utf-8</inputEncoding>
+          <outputEncoding>utf-8</outputEncoding>
+          <stylesheet>xref/cedarsoft.css</stylesheet>
+        </configuration>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -108,7 +108,7 @@ under the License.
             </reports>
           </reportSet>
         </reportSets>
-      </plugin>       
-    </plugins> 
+      </plugin>
+    </plugins>
   </reporting>
 </project>
