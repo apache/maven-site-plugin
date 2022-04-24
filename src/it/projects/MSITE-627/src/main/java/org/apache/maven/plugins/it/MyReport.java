@@ -20,7 +20,7 @@ package org.apache.maven.plugins.it;
  */
 
 import org.apache.maven.doxia.sink.Sink;
-import org.apache.maven.doxia.sink.SinkAdapter;
+import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
@@ -30,7 +30,7 @@ import java.util.Locale;
 
 /**
  * Goal which creates a sink in a report.
- * 
+ *
  * @goal test
  * @phase site
  */

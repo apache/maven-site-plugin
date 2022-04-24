@@ -54,28 +54,10 @@ under the License.
 
   <profiles>
     <profile>
-      <id>use-template</id>
+      <id>use-skin</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <artifactId>maven-site-plugin</artifactId>
-              <configuration>
-                <templateFile>${basedir}/src/main/resources/META-INF/maven/site.vm</templateFile>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
-    </profile>
-    <profile>
-      <id>use-skin</id>
-      <reporting>
-        <outputDirectory>${project.build.directory}/site-skin</outputDirectory>
-      </reporting>
     </profile>
   </profiles>
 </project>

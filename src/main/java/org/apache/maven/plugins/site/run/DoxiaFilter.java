@@ -177,7 +177,7 @@ public class DoxiaFilter
             try
             {
                 Map<String, DocumentRenderer> locateDocuments =
-                    siteRenderer.locateDocumentFiles( generatedSiteContext );
+                    siteRenderer.locateDocumentFiles( generatedSiteContext, false );
 
                 if ( locateDocuments.containsKey( path ) )
                 {

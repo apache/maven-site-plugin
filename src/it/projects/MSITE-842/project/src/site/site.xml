@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -19,22 +19,21 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project name="Maven" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+  <skin>
+    <groupId>org.apache.maven.plugins.site.its</groupId>
+    <artifactId>MSITE-842-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
 
-  <groupId>org.apache.maven.plugins.site.its</groupId>
-  <artifactId>MSITE-842-aggregator</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
+  <body>
+    <links>
+      <item name="Maven" href="http://maven.apache.org/"/>
+    </links>
 
-  <name>it-plugin-test Maven Mojo</name>
-  <url>http://maven.apache.org</url>
-
-  <modules>
-    <module>skin</module>
-    <module>project</module>
-  </modules>
-
+    <menu name="Documentation">
+      <!--<item name="Xdoc Example" href="xdoc.html"/>-->
+    </menu>
+  </body>
 </project>
