@@ -40,7 +40,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-impl</artifactId>
-      <version>4.0.0-M1</version>
+      <version>@mavenReportingImplVersion@</version>
     </dependency>
   </dependencies>
 
@@ -60,7 +60,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.6.4</version>
+        <version>@mavenPluginPluginVersion@</version>
       </plugin>
     </plugins>
 
