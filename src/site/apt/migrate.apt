@@ -32,7 +32,8 @@ Migrate
 
   The Site Plugin has had a couple of upgrades that requires the user to make
   adjustments to their environment, documents or configuration. Below is a list
-  of these changes and what you as a user need to be aware of.
+  of key changes and what updates you as a user need to be aware of: you can have
+  a look at {{{./history.html} history}} for precise details of internal components updates.
 
 * From 3.4 to 3.5.1
 
