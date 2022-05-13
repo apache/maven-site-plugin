@@ -195,7 +195,7 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <mavenVersion>3.2.5</mavenVersion>
+    <mavenVersion>3.3.9</mavenVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
     <doxiaVersion>2.0.0-M2</doxiaVersion>
