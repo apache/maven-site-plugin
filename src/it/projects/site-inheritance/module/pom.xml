@@ -30,6 +30,11 @@ under the License.
   <name>Module</name>
   <url>http://webhost.company.com/www/website/module</url>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <distributionManagement>
     <site>
       <id>website</id>
@@ -70,7 +75,4 @@ under the License.
     <module>../sub_module</module>
   </modules>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 </project>

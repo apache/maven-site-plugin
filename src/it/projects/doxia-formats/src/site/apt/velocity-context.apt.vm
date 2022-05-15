@@ -37,7 +37,7 @@ Doxia Site Renderer Velocity Context
 *-----------------------+-------------------------------------------------------+-----+
 #foreach( $key in $sorter.sort( $context.keys ) )
 #set( $value = $context.get($key) )
-| <<<$key>>>            | <<<#if ($value)$value.class.name#else?#end>>> | #if ($key != "decoration")<<<$value>>>#end |
+| <<<$key>>>            | <<<#if ($value)$value.class.name#else?#end>>> | #if ($key != "decoration" && $key != "link")#if ($value)<<<$StringUtils.replace($value, '\' , '\\')>>>#end#end|
 *-----------------------+-------------------------------------------------------+-----+
 #end
 
@@ -50,7 +50,7 @@ Doxia Site Renderer Velocity Context
 *-----------------------+-------------------------------------------------------+
 | <<<alignedFileName>>> | = <<<$alignedFileName>>>
 *-----------------------+-------------------------------------------------------+
-| <<<decoration>>>      | <<<decoration.name>>> = <<< $decoration.name>>>
+| <<<decoration>>>      | <<<decoration.name>>> = <<<$decoration.name>>>
 *-----------------------+-------------------------------------------------------+
 | <<<currentFileName>>> | = <<<$currentFileName>>>
 *-----------------------+-------------------------------------------------------+
@@ -75,7 +75,7 @@ Doxia Site Renderer Velocity Context
 | <<<StringUtils>>>     | = <<<$StringUtils>>>
 *-----------------------+-------------------------------------------------------+
 | <<<plexus>>>          | = <<<$plexus>>> \
-|                       | plexus.lookup("org.apache.maven.Maven") = <<<$plexus.lookup("org.apache.maven.Maven")>>>
+|                       | <<<plexus.lookup("org.apache.maven.Maven")>>> = <<<$plexus.lookup("org.apache.maven.Maven")>>>
 *-----------------------+-------------------------------------------------------+
 
 * Maven Site Plugin
@@ -87,10 +87,10 @@ Doxia Site Renderer Velocity Context
 *-----------------------+-------------------------------------------------------+
 | <<<outputEncoding>>>  | = <<<$outputEncoding>>>
 *-----------------------+-------------------------------------------------------+
-| <<<project>>>         | = <<<$project>>>, \
+| <<<project>>>         | = <<<$StringUtils.replace($project, '\' , '\\')>>>, \
 |                       | <<<project.version>>> = <<<$project.version>>>
 *-----------------------+-------------------------------------------------------+
-| <<<property-project-version>>> | = <<<${property-project-version}>>>
+| <<<property-project-version>>> | = <<<$context.get('property-project-version')>>>
 *-----------------------+-------------------------------------------------------+
 | (attributes) <<<att1>>> | = <<<${att1}>>>
 *-----------------------+-------------------------------------------------------+
@@ -109,7 +109,7 @@ Doxia Site Renderer Velocity Context
 | <<<convert>>>         | = <<<$convert>>>
 *-----------------------+-------------------------------------------------------+
 | <<<date>>>            | = <<<$date>>> \
-|                       | <<< \$date.format('yyyy-MM-dd', \$currentDate) = $date.format('yyyy-MM-dd', $currentDate)>>>
+|                       | <<< \$date.get('d MMM yyyy')>>> = <<<$date.get('d MMM yyyy')>>>
 *-----------------------+-------------------------------------------------------+
 | <<<display>>>         | = <<<$display>>>
 *-----------------------+-------------------------------------------------------+
@@ -119,7 +119,7 @@ Doxia Site Renderer Velocity Context
 *-----------------------+-------------------------------------------------------+
 | <<<loop>>>            | = <<<$loop>>>
 *-----------------------+-------------------------------------------------------+
-| <<<link>>>            | = <<< \$link.relative('MyPage.vm') = >>><<<$link.relative('MyPage.vm')>>>
+| <<<link>>>            | = <<< \$link.relative('MyPage.vm')>>> = <<<$link.relative('MyPage.vm')>>>
 *-----------------------+-------------------------------------------------------+
 | <<<math>>>            | = <<<$math>>>
 *-----------------------+-------------------------------------------------------+

@@ -30,6 +30,10 @@ under the License.
   <name>Top</name>
   <url>http://webhost.company.com/junk/</url>
 
+  <properties>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <distributionManagement>
     <site>
       <id>website</id>

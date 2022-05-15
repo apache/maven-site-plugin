@@ -31,6 +31,10 @@ under the License.
 
   <url>http://my.url.com/</url>
 
+  <properties>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <distributionManagement>
     <site>
       <id>website</id>

@@ -18,17 +18,17 @@ under the License.
 -->
 
 Macros in Markdown
-----------------
+==================
 
-### TOC Macro
+## TOC Macro
 
 <!-- MACRO{toc} -->
 
-### Echo Macro
+## Echo Macro
 
 <!-- MACRO{echo|param1=value1|param2=value2} -->
 
-### Snippet Macro
+## Snippet Macro
 
 <!-- MACRO{snippet|id=macros|file=src/main/java/org/apache/maven/plugins/site/it/CustomVelocityTool.java} -->
 

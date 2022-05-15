@@ -37,6 +37,10 @@ under the License.
 
   <name>site:effective-site IT</name>
 
+  <properties>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <build>
     <plugins>
       <plugin>

@@ -30,6 +30,10 @@ under the License.
   <name>Parent As Ref</name>
   <url>http://example.com/</url>
 
+  <properties>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <distributionManagement>
     <site>
       <id>website</id>

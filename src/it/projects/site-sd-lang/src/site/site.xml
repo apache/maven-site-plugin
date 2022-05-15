@@ -20,6 +20,11 @@ under the License.
 -->
 
 <project name="${project.name}">
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>${fluidoSkinVersion}</version>
+  </skin>
 	<version position="left" />
 	
 	<body>

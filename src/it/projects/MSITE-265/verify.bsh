@@ -71,9 +71,9 @@ try
         System.err.println( "download.html doesn't contain Download Maven 3.0.5" );
         return false;
     }
-    if ( downloadContent.indexOf( "charset=UTF-8" ) < 0 )
+    if ( downloadContent.indexOf( "charset=\"UTF-8\"" ) < 0 )
     {
-        System.err.println( "download.html doesn't contain 'charset=UTF-8' directive" );
+        System.err.println( "download.html doesn't contain 'charset=\"UTF-8\"' directive" );
         return false;
     }
     if ( downloadContent.indexOf( "demo character: &#x20ac; (euro)" ) < 0 )

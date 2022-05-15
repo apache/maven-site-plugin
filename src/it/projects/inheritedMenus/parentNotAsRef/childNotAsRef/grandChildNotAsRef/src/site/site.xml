@@ -20,6 +20,11 @@ under the License.
 -->
 
 <project name="Grand Child Not As Ref Site">
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>${fluidoSkinVersion}</version>
+  </skin>
 
   <body>
 

@@ -35,6 +35,10 @@ under the License.
     repo-parent is expected to be only available in repo (installed before execution)
   </description>
 
+  <properties>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <modules>
     <module>reactor-parent</module>
     <module>child</module>
