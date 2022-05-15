@@ -55,10 +55,7 @@ Creating Content
       |  +- other.xml
       |
       +- xhtml/
-      |  +- xhtml-too.xhtml
-      |
-      +- xhtml5/
-      |  +- xhtml5-content.xhtml5
+      |  +- xhtml-content.xhtml
       |
       +- site.xml
 --------------------
@@ -116,8 +113,7 @@ Creating Content
       +- general.html
       +- faq.html
       +- other.html
-      +- xhtml-too.html
-      +- xhtml5-content.html
+      +- xhtml-content.html
 --------------------
 
   This means that <<</src/site/apt/index.apt>>> will be available in the site as
@@ -189,12 +185,12 @@ Creating Content
   * <<Markdown conflict with Velocity on ${esc.h}${esc.h} syntax>>:
 
   Since <<<${esc.h}${esc.h}>>> denotes a
-  {{{http://velocity.apache.org/engine/1.7/vtl-reference.html#single-line-comments}single line comment}} in Velocity,
+  {{{https://velocity.apache.org/engine/2.3/vtl-reference.html#single-line-comments}single line comment}} in Velocity,
   Markdown headers using this syntax are suppressed from generated content.
 
-  You can use {{{http://velocity.apache.org/engine/1.7/vtl-reference.html#unparsed-content}unparsed content syntax}}
+  You can use {{{https://velocity.apache.org/engine/2.3/vtl-reference.html#unparsed-content}unparsed content syntax}}
   <<<${esc.h}[[#[[##]]#]]${esc.h}>>> or
-  {{{http://velocity.apache.org/tools/2.0/apidocs/org/apache/velocity/tools/generic/EscapeTool.html}escape tool}}
+  {{{https://velocity.apache.org/tools/3.1/apidocs/org/apache/velocity/tools/generic/EscapeTool.html}escape tool}}
   like <<<${esc.d}\{esc.h\}${esc.d}\{esc.h\}>>>.
 
 * Internationalization

@@ -86,8 +86,8 @@ Creating Skins
   modify it to your needs.
 
   For more information about how to write Velocity templates see the
-  {{{http://velocity.apache.org/engine/releases/velocity-1.7/user-guide.html}Velocity User Guide}}
+  {{{https://velocity.apache.org/engine/2.3/user-guide.html}Velocity User Guide}}
   and
-  {{{http://velocity.apache.org/engine/releases/velocity-1.7/vtl-reference-guide.html}Velocity Template Language Reference Guide}}.
+  {{{https://velocity.apache.org/engine/2.3/vtl-reference.html}Velocity Template Language Reference Guide}}.
 
-  Notice that Velocity 1.7 is used since Maven Site Plugin 3.5, but version 1.5 was used previously.
+  Notice that Velocity 2.3 is used since Maven Site Plugin 4.0.0-M2, but version 1.7 was used previously.

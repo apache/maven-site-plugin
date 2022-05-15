@@ -26,6 +26,12 @@ under the License.
     <name>project.artifactId = ${project.artifactId}</name>
   </bannerLeft>
 
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>${fluidoSkinVersion}</version>
+  </skin>
+
   <body>
     <breadcrumbs>
       <item name="Maven"  href="http://maven.apache.org/index.html" />

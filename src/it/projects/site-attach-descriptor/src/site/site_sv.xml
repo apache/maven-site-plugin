@@ -26,8 +26,8 @@ under the License.
   <version position="left"/>
   <skin>
     <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-stylus-skin</artifactId>
-    <version>1.5</version>
+    <artifactId>maven-fluido-skin</artifactId>
+    <version>${fluidoSkinVersion}</version>
   </skin>
   <body>
     <breadcrumbs>

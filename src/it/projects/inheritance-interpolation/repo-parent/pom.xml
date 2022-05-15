@@ -41,6 +41,7 @@ under the License.
     <distUrl>scp://from.repo/dist</distUrl>
     <msite604.siteRepositoryId>repo-parent-id</msite604.siteRepositoryId>
     <msite604.siteRepositoryBase>default-repository-base-from-repo-parent</msite604.siteRepositoryBase>
+    <fluidoSkinVersion>1.11.0</fluidoSkinVersion><!-- invoker interpolation doesn't apply here: but version is not important at this level -->
   </properties>
 
   <distributionManagement>

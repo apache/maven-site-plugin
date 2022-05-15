@@ -29,6 +29,10 @@ under the License.
   <packaging>pom</packaging>
   <name>MSITE-856</name>
 
+  <properties>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <build>
     <pluginManagement>
       <plugins>

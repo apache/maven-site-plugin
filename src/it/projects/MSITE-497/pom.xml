@@ -28,6 +28,10 @@ under the License.
   <packaging>pom</packaging>
   <name>parent</name>
 
+  <properties>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+  </properties>
+
   <modules>
     <module>apps</module>
   </modules>

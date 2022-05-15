@@ -198,8 +198,8 @@ under the License.
     <mavenVersion>3.2.5</mavenVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
-    <doxiaVersion>2.0.0-M2</doxiaVersion>
-    <doxiaSitetoolsVersion>2.0.0-M2</doxiaSitetoolsVersion>
+    <doxiaVersion>2.0.0-M3</doxiaVersion>
+    <doxiaSitetoolsVersion>2.0.0-M3</doxiaSitetoolsVersion>
     <jettyVersion>9.4.46.v20220331</jettyVersion>
     <wagonVersion>3.5.1</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
@@ -212,6 +212,7 @@ under the License.
     <surefirePluginVersion>2.22.2</surefirePluginVersion>
     <mavenPluginPluginVersion>3.6.4</mavenPluginPluginVersion>
     <mavenReportingImplVersion>4.0.0-M1</mavenReportingImplVersion>
+    <fluidoSkinVersion>1.11.0</fluidoSkinVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2022-07-31T18:59:15Z</project.build.outputTimestamp>
 

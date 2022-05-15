@@ -41,7 +41,7 @@ try
         return false;
     }
 
-    String[] fileNames =  new String[] { "images/h3.jpg", "download.html", "index.html", "releases/release1.6.html" };
+    String[] fileNames =  new String[] { "download.html", "index.html", "releases/release1.6.html" };
 
     Set contents = new HashSet();
 

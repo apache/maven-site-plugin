@@ -36,9 +36,9 @@
 
     <section name="Section title">
       <subsection name="Sub-section title">
-        <h4>Sub-sub-section title</h4>
-        <h5>Sub-sub-sub-section</h5>
-        <h6>Sub-sub-sub-sub-section</h6>
+        <h3>Sub-sub-section title</h3>
+        <h4>Sub-sub-sub-section</h4>
+        <h5>Sub-sub-sub-sub-section</h5>
 
         <ul>
           <li>List item 1.</li>

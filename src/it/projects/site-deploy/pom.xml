@@ -34,6 +34,7 @@ under the License.
   <properties>
     <currentVersion>@mavenVersion@</currentVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
   </properties>
 
   <distributionManagement>
