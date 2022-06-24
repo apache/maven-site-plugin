@@ -30,7 +30,7 @@ under the License.
   </parent>
 
   <artifactId>maven-site-plugin</artifactId>
-  <version>4.0.0-M2</version>
+  <version>4.0.0-M3-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Apache Maven Site Plugin</name>
@@ -177,7 +177,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-site-plugin.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-site-plugin.git</developerConnection>
     <url>https://github.com/apache/maven-site-plugin/tree/${project.scm.tag}</url>
-    <tag>maven-site-plugin-4.0.0-M2</tag>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>JIRA</system>
@@ -214,7 +214,7 @@ under the License.
     <mavenReportingImplVersion>4.0.0-M1</mavenReportingImplVersion>
     <fluidoSkinVersion>1.11.0</fluidoSkinVersion>
     <surefire.version>2.22.2</surefire.version>
-    <project.build.outputTimestamp>2022-06-24T06:11:44Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2022-06-24T06:12:22Z</project.build.outputTimestamp>
 
   </properties>
 
