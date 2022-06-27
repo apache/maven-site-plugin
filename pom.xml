@@ -201,7 +201,7 @@ under the License.
     <doxiaVersion>2.0.0-M3</doxiaVersion>
     <doxiaSitetoolsVersion>2.0.0-M3</doxiaSitetoolsVersion>
     <jettyVersion>9.4.46.v20220331</jettyVersion>
-    <wagonVersion>3.5.1</wagonVersion>
+    <wagonVersion>3.5.2</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>3.1.2</checkstylePluginVersion>
