@@ -222,7 +222,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-api</artifactId>
-      <version>4.0.0-M1</version>
+      <version>4.0.0-M2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
