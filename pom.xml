@@ -200,7 +200,7 @@ under the License.
     <!-- for dependencies -->
     <doxiaVersion>2.0.0-M3</doxiaVersion>
     <doxiaSitetoolsVersion>2.0.0-M3</doxiaSitetoolsVersion>
-    <jettyVersion>9.4.48.v20220622</jettyVersion>
+    <jettyVersion>11.0.12</jettyVersion>
     <wagonVersion>3.5.2</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
