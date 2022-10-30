@@ -396,8 +396,6 @@ Configuring the Site Descriptor
 
   []
 
-  <<Note:>> Support for some expressions, like <<<$\{project.name\}>>> is present in
-  version 2.0-beta-5 of this plugin. Full support is available since version
-  2.0-beta-6. Also, there are additional restrictions on using dotted project properties
+  <<Note:>>There are additional restrictions on using dotted project properties
   in content pages. See {{{./creating-content.html#Filtering}Filtering}} for details
   on injecting properties into content pages.
