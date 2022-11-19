@@ -26,6 +26,64 @@ boolean result = true;
 
 try
 {
+    // SITE
+
+    File topLevelDirectory = new File( basedir, "target/site" );
+    if ( !topLevelDirectory.exists() || !topLevelDirectory.isDirectory() )
+    {
+        System.err.println( "Site directory '" + topLevelDirectory + "' is missing or not a directory." );
+        return false;
+    }
+
+    File moduleDirectory = new File( basedir, "mymodule/target/site" );
+    if ( !moduleDirectory.exists() || !moduleDirectory.isDirectory() )
+    {
+        System.err.println( "Site module directory '" + moduleDirectory + "' is missing or not a directory." );
+        return false;
+    }
+
+    File projectInfoDirectory = new File( topLevelDirectory, "project-info.html" );
+    if ( !projectInfoDirectory.exists() || !projectInfoDirectory.isFile() )
+    {
+        System.err.println( "Site project-info.html '" + projectInfoDirectory + "' is missing or not a file." );
+        return false;
+    }
+
+    File frDirectory = new File( topLevelDirectory, "fr" );
+    if ( !frDirectory.exists() || !frDirectory.isDirectory() )
+    {
+        System.err.println( "Site fr directory '" + frDirectory + "' is missing or not a directory." );
+        return false;
+    }
+
+    File frProjectInfoDirectory = new File( frDirectory, "project-info.html" );
+    if ( !frProjectInfoDirectory.exists() || !frProjectInfoDirectory.isFile() )
+    {
+        System.err.println( "Site fr project-info.html '" + frProjectInfoDirectory + "' is missing or not a file." );
+        return false;
+    }
+
+    File frModuleDirectory = new File( moduleDirectory, "fr" );
+    if ( !frModuleDirectory.exists() || !frModuleDirectory.isDirectory() )
+    {
+        System.err.println( "Site fr module directory '" + frModuleDirectory + "' is missing or not a directory." );
+        return false;
+    }
+
+    File moduleProjectInfoDirectory = new File( moduleDirectory, "project-info.html" );
+    if ( !moduleProjectInfoDirectory.exists() || !moduleProjectInfoDirectory.isFile() )
+    {
+        System.err.println( "Site module project-info.html '" + moduleProjectInfoDirectory + "' is missing or not a file." );
+        return false;
+    }
+
+    File frModuleProjectInfoDirectory = new File( frModuleDirectory, "project-info.html" );
+    if ( !frModuleProjectInfoDirectory.exists() || !frModuleProjectInfoDirectory.isFile() )
+    {
+        System.err.println( "Site fr module project-info.html '" + frModuleProjectInfoDirectory + "' is missing or not a file." );
+        return false;
+    }
+
     // STAGING
 
     File topLevelDirectory = new File( basedir, "target/staging" );
