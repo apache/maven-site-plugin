@@ -19,6 +19,7 @@
  */
 
 import java.io.*;
+import org.codehaus.plexus.util.*;
 
 boolean result = true;
 
@@ -42,10 +43,23 @@ try
         return false;
     }
 
-    File projectInfoDirectory = new File( topLevelDirectory, "project-info.html" );
-    if ( !projectInfoDirectory.exists() || !projectInfoDirectory.isFile() )
+    File indexFile = new File( topLevelDirectory, "index.html" );
+    if ( !indexFile.exists() || !indexFile.isFile() )
     {
-        System.err.println( "Site project-info.html '" + projectInfoDirectory + "' is missing or not a file." );
+        System.err.println( "Site index.html '" + indexFile + "' is missing or not a file." );
+        return false;
+    }
+    String content = FileUtils.fileRead( indexFile, "UTF-8" );
+    if ( !content.contains( "the following locales are supported: [en, fr]" ) )
+    {
+        System.err.println( "index.html does not contain supported locales" );
+        return false;
+    }
+
+    File projectInfoFile = new File( topLevelDirectory, "project-info.html" );
+    if ( !projectInfoFile.exists() || !projectInfoFile.isFile() )
+    {
+        System.err.println( "Site project-info.html '" + projectInfoFile + "' is missing or not a file." );
         return false;
     }
 
@@ -56,10 +70,10 @@ try
         return false;
     }
 
-    File frProjectInfoDirectory = new File( frDirectory, "project-info.html" );
-    if ( !frProjectInfoDirectory.exists() || !frProjectInfoDirectory.isFile() )
+    File frProjectInfoFile = new File( frDirectory, "project-info.html" );
+    if ( !frProjectInfoFile.exists() || !frProjectInfoFile.isFile() )
     {
-        System.err.println( "Site fr project-info.html '" + frProjectInfoDirectory + "' is missing or not a file." );
+        System.err.println( "Site fr project-info.html '" + frProjectInfoFile + "' is missing or not a file." );
         return false;
     }
 
@@ -70,17 +84,17 @@ try
         return false;
     }
 
-    File moduleProjectInfoDirectory = new File( moduleDirectory, "project-info.html" );
-    if ( !moduleProjectInfoDirectory.exists() || !moduleProjectInfoDirectory.isFile() )
+    File moduleProjectInfoFile = new File( moduleDirectory, "project-info.html" );
+    if ( !moduleProjectInfoFile.exists() || !moduleProjectInfoFile.isFile() )
     {
-        System.err.println( "Site module project-info.html '" + moduleProjectInfoDirectory + "' is missing or not a file." );
+        System.err.println( "Site module project-info.html '" + moduleProjectInfoFile + "' is missing or not a file." );
         return false;
     }
 
-    File frModuleProjectInfoDirectory = new File( frModuleDirectory, "project-info.html" );
-    if ( !frModuleProjectInfoDirectory.exists() || !frModuleProjectInfoDirectory.isFile() )
+    File frModuleProjectInfoFile = new File( frModuleDirectory, "project-info.html" );
+    if ( !frModuleProjectInfoFile.exists() || !frModuleProjectInfoFile.isFile() )
     {
-        System.err.println( "Site fr module project-info.html '" + frModuleProjectInfoDirectory + "' is missing or not a file." );
+        System.err.println( "Site fr module project-info.html '" + frModuleProjectInfoFile + "' is missing or not a file." );
         return false;
     }
 

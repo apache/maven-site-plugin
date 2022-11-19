@@ -140,7 +140,7 @@ public class SiteMojo
                     getLog().info( buffer().strong( "Rendering localized site for " + locale.getDisplayName() + " ("
                         + locale + ")" ).toString() );
                 }
-                renderLocale( locale, reports );
+                renderLocale( locale, reports, localesList );
             }
         }
         catch ( RendererException e )
@@ -158,10 +158,11 @@ public class SiteMojo
         }
     }
 
-    private void renderLocale( Locale locale, List<MavenReportExecution> reports )
+    private void renderLocale( Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales )
         throws IOException, RendererException, MojoFailureException, MojoExecutionException
     {
         SiteRenderingContext context = createSiteRenderingContext( locale );
+        context.addSiteLocales( supportedLocales );
         // MSITE-723 add generated site directory, in case some content has been put in pre-site phase
         context.addSiteDirectory( generatedSiteDirectory );
 
@@ -216,7 +217,7 @@ public class SiteMojo
 
     /**
      * Render Doxia documents from the list given, but not reports.
-     * 
+     *
      * @param documents a collection of documents containing both Doxia source files and reports
      * @return the sublist of documents that are not Doxia source files
      */
