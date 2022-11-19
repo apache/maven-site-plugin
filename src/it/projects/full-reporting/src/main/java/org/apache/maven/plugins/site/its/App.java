@@ -23,14 +23,21 @@ package org.apache.maven.plugins.site.its;
  * Hello world!
  *
  */
-public class App 
+public class App
 {
+    /**
+     * main
+     */
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
     }
 
-    public void foo(){
+    /**
+     * foo
+     */
+    public void foo()
+    {
         System.out.println( "foo" );
     }
 }

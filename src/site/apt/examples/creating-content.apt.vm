@@ -213,7 +213,7 @@ Creating Content
         <artifactId>maven-site-plugin</artifactId>
         <version>${project.version}</version>
         <configuration>
-          <locales>en,fr</locales>
+          <locales>default,fr</locales>
         </configuration>
       </plugin>
     </plugins>
@@ -222,10 +222,9 @@ Creating Content
 </project>
 +------------------
 
-  This will generate both an English and a French version of the site. If
-  <<<en>>> is your current locale, then it will be generated at the root of the
-  site, with a copy of the French translation of the site in the <<<fr/>>>
-  subdirectory.
+  This will generate both a default (<<<Locale#ROOT>>>) and a French version of the site.
+  It will be generated at the root of the site, with a copy of the French
+  translation of the site in the <<<fr/>>> subdirectory.
 
   To add your own content for that translation instead of using the default,
   create a subdirectory with that locale's name in your site directory and

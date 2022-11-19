@@ -139,7 +139,6 @@ public class SiteRunMojo
 
         // Default is first in the list
         Locale defaultLocale = localesList.get( 0 );
-        Locale.setDefault( defaultLocale );
 
         try
         {
@@ -166,11 +165,11 @@ public class SiteRunMojo
                 else
                 {
                     i18nGeneratedSiteContext.addSiteDirectory( new File( generatedSiteDirectory,
-                                                                         locale.getLanguage() ) );
+                                                                         locale.toString() ) );
                     doxiaBean = new DoxiaBean( i18nContext, i18nDocuments, i18nGeneratedSiteContext );
                 }
 
-                i18nDoxiaContexts.put( locale.getLanguage(), doxiaBean );
+                i18nDoxiaContexts.put( locale.toString(), doxiaBean );
                 if ( defaultLocale.equals( locale ) )
                 {
                     i18nDoxiaContexts.put( "default", doxiaBean );
@@ -182,7 +181,7 @@ public class SiteRunMojo
                 }
                 else
                 {
-                    siteRenderer.copyResources( i18nContext, new File( tempWebappDirectory, locale.getLanguage() ) );
+                    siteRenderer.copyResources( i18nContext, new File( tempWebappDirectory, locale.toString() ) );
                 }
             }
 
