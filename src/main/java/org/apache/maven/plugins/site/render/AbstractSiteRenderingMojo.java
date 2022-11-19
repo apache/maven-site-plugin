@@ -356,11 +356,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected Map<String, MavenReport> locateReports( List<MavenReportExecution> reports,
                                                       Map<String, DocumentRenderer> documents, Locale locale )
     {
-        // copy Collection to prevent ConcurrentModificationException
-        List<MavenReportExecution> filtered = new ArrayList<>( reports );
-
         Map<String, MavenReport> reportsByOutputName = new LinkedHashMap<>();
-        for ( MavenReportExecution mavenReportExecution : filtered )
+        for ( MavenReportExecution mavenReportExecution : reports )
         {
             MavenReport report = mavenReportExecution.getMavenReport();
 
@@ -378,8 +375,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
                 getLog().info( "Skipped \"" + report.getName( locale ) + "\" report" + reportMojoInfo + ", file \""
                                    + outputName + "\" already exists." );
-
-                reports.remove( mavenReportExecution );
             }
             else
             {
