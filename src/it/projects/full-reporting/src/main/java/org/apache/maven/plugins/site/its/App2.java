@@ -25,12 +25,19 @@ package org.apache.maven.plugins.site.its;
  */
 public class App2
 {
+    /**
+     * main
+     */
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
     }
 
-    public void foo(){
+    /**
+     * foo
+     */
+    public void foo()
+    {
         System.out.println( "foo" );
     }
 }

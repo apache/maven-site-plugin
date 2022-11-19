@@ -69,7 +69,7 @@ under the License.
         <artifactId>maven-site-plugin</artifactId>
         <version>@project.version@</version>
         <configuration>
-          <locales>en,sv</locales>
+          <locales>default,en,sv</locales>
         </configuration>
         <executions>
           <execution>

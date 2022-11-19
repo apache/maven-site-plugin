@@ -40,8 +40,8 @@ try
     }
 
     String content = FileUtils.fileRead( parentIndex, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"child/index.html\" title=\"MSITE-456 - child\">MSITE-456 - child</a>" );
-    int index2 = content.indexOf( "<a href=\"project-info.html\" title=\"Project Information\">Project Information</a>" );
+    int index1 = content.indexOf( "<a href=\"child/index.html\" title=\"MSITE-456 - child\"><span class=\"none\"></span>MSITE-456 - child</a>" );
+    int index2 = content.indexOf( "<a href=\"project-info.html\" title=\"Project Information\"><span class=\"icon-chevron-down\"></span>Project Information</a>" );
 
 
     if ( index1 < 0 || index2 < 0 )
@@ -75,8 +75,8 @@ try
     }
 
     content = FileUtils.fileRead( childIndex, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../index.html\" title=\"MSITE-456 - parent\">MSITE-456 - parent</a>" );
-    index2 = content.indexOf( "<a href=\"project-info.html\" title=\"Project Information\">Project Information</a>" );
+    index1 = content.indexOf( "<a href=\"../index.html\" title=\"MSITE-456 - parent\"><span class=\"none\"></span>MSITE-456 - parent</a>" );
+    index2 = content.indexOf( "<a href=\"project-info.html\" title=\"Project Information\"><span class=\"icon-chevron-down\"></span>Project Information</a>" );
 
     if ( index1 < 0 || index2 < 0 )
     {

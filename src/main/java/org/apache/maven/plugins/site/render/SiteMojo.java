@@ -32,6 +32,7 @@ import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DoxiaDocumentRenderer;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -125,21 +126,12 @@ public class SiteMojo
 
             // Default is first in the list
             Locale defaultLocale = localesList.get( 0 );
-            Locale.setDefault( defaultLocale );
 
             for ( Locale locale : localesList )
             {
-                if ( locale == defaultLocale )
-                {
-                    getLog().info( buffer().strong( "Rendering site with default locale " + locale.getDisplayName()
-                        + " (" + locale + ")" ).toString() );
-                }
-                else
-                {
-                    getLog().info( "" );
-                    getLog().info( buffer().strong( "Rendering localized site for " + locale.getDisplayName() + " ("
-                        + locale + ")" ).toString() );
-                }
+                getLog().info( "Rendering site for "
+                    + buffer().strong( ( locale.equals( defaultLocale )
+                        ? "default locale" : "locale '" + locale + "'" ) ).toString() );
                 renderLocale( locale, reports, localesList );
             }
         }
@@ -293,13 +285,13 @@ public class SiteMojo
     private File getOutputDirectory( Locale locale )
     {
         File file;
-        if ( locale.getLanguage().equals( Locale.getDefault().getLanguage() ) )
+        if ( locale.equals( SiteTool.DEFAULT_LOCALE ) )
         {
             file = outputDirectory;
         }
         else
         {
-            file = new File( outputDirectory, locale.getLanguage() );
+            file = new File( outputDirectory, locale.toString() );
         }
 
         // Safety

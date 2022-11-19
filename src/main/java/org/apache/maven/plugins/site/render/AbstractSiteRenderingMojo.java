@@ -28,6 +28,7 @@ import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.RenderingContext;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
@@ -314,11 +315,11 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         // Generate static site
         context.setRootDirectory( project.getBasedir() );
-        if ( !locale.getLanguage().equals( Locale.getDefault().getLanguage() ) )
+        if ( !locale.equals( SiteTool.DEFAULT_LOCALE ) )
         {
-            context.addSiteDirectory( new File( siteDirectory, locale.getLanguage() ) );
-            context.addModuleDirectory( new File( xdocDirectory, locale.getLanguage() ), "xdoc" );
-            context.addModuleDirectory( new File( xdocDirectory, locale.getLanguage() ), "fml" );
+            context.addSiteDirectory( new File( siteDirectory, locale.toString() ) );
+            context.addModuleDirectory( new File( xdocDirectory, locale.toString() ), "xdoc" );
+            context.addModuleDirectory( new File( xdocDirectory, locale.toString() ), "fml" );
         }
         else
         {

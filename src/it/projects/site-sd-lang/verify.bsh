@@ -50,7 +50,7 @@ try
         return false;
     }
     String content = FileUtils.fileRead( indexFile, "UTF-8" );
-    if ( !content.contains( "the following locales are supported: [en, fr]" ) )
+    if ( !content.contains( "the following locales are supported: [, en, fr, de, de_DE, de_AT, zh_TW]" ) )
     {
         System.err.println( "index.html does not contain supported locales" );
         return false;
