@@ -28,7 +28,7 @@ under the License.
 
 		<section name="first section">
 			<p>
-				 this is the multimodule page in english 
+				This is the multimodule page in English and the following locales are supported: $supportedLocales.
 			</p>
 		</section>
 
