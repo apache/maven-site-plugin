@@ -198,7 +198,7 @@ under the License.
     <mavenVersion>3.2.5</mavenVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
-    <jettyVersion>9.4.48.v20220622</jettyVersion>
+    <jettyVersion>9.4.49.v20220914</jettyVersion>
     <doxiaVersion>2.0.0-M4</doxiaVersion>
     <doxiaSitetoolsVersion>2.0.0-M4</doxiaSitetoolsVersion>
     <wagonVersion>3.5.2</wagonVersion>
@@ -206,12 +206,12 @@ under the License.
     <!-- for ITs -->
     <checkstylePluginVersion>3.2.0</checkstylePluginVersion>
     <javadocPluginVersion>3.3.2</javadocPluginVersion>
-    <pmdPluginVersion>3.16.0</pmdPluginVersion>
-    <jxrPluginVersion>3.2.0</jxrPluginVersion>
-    <projectInfoReportsPluginVersion>3.4.0</projectInfoReportsPluginVersion>
-    <surefirePluginVersion>2.22.2</surefirePluginVersion>
+    <pmdPluginVersion>3.19.0</pmdPluginVersion>
+    <jxrPluginVersion>3.3.0</jxrPluginVersion>
+    <projectInfoReportsPluginVersion>3.4.1</projectInfoReportsPluginVersion>
+    <surefirePluginVersion>3.0.0-M7</surefirePluginVersion>
     <mavenPluginPluginVersion>3.6.4</mavenPluginPluginVersion>
-    <mavenReportingImplVersion>4.0.0-M2</mavenReportingImplVersion>
+    <mavenReportingImplVersion>4.0.0-M3</mavenReportingImplVersion>
     <fluidoSkinVersion>1.11.1</fluidoSkinVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2022-07-22T17:08:11Z</project.build.outputTimestamp>
@@ -335,7 +335,6 @@ under the License.
       <artifactId>doxia-sink-api</artifactId>
       <version>${doxiaVersion}</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
