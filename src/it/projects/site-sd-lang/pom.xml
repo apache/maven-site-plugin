@@ -50,7 +50,7 @@ under the License.
           <artifactId>maven-site-plugin</artifactId>
           <version>@project.version@</version>
           <configuration>
-            <locales>default,en,fr,de,de_DE,de_AT,zh_TW,ru_UA</locales>
+            <locales>default,en,fr,de,de_DE,de_AT,zh_TW,eo_EU</locales>
           </configuration>
         </plugin>
       </plugins>
