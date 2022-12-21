@@ -34,4 +34,13 @@ under the License.
       <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
     </fluidoSkin>
   </custom>
+
+  <publishDate position="right" />
+  <version position="right" />
+
+  <body>
+    <breadcrumbs>
+      <item name="Doxia Formats IT" href="index.html" />
+    </breadcrumbs>
+  </body>
 </project>
