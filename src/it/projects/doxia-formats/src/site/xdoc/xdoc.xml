@@ -22,14 +22,16 @@
   xsi:schemaLocation="http://maven.apache.org/xsd/xdoc-2.0.xsd">
 
   <properties>
-    <title>Title</title>
+    <title>Title (required)</title>
     <author>Author</author>
-    <date>Date</date>
+    <author>Author #2</author>
+    <date>Date (optional)</date>
+    <!-- no other properties supported in xdoc format: https://maven.apache.org/doxia/references/xdoc-format.html -->
   </properties>
 
   <body>
 
-    <section name="Some Paragraph">
+    <section name="Some Paragraphs">
       <p>Paragraph 1, line 1. Paragraph 1, line 2.</p>
       <p>Paragraph 2, line 1. Paragraph 2, line 2.</p>
     </section>

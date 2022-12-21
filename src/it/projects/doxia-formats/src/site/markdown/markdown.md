@@ -1,3 +1,8 @@
+title: Markdown Title Metadata
+author: Author Metadata
+date: Date Metadata
+description: Markdown description metadata, not known from Doxia API as title, author and date are
+
 <!---
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
