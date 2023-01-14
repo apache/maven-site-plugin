@@ -26,13 +26,11 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Site;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Proxy;
-import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.crypto.DefaultSettingsDecryptionRequest;
 import org.apache.maven.settings.crypto.SettingsDecrypter;
@@ -52,17 +50,11 @@ import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.repository.Repository;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
-import org.codehaus.plexus.component.configurator.ComponentConfigurator;
-import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -302,8 +294,6 @@ public abstract class AbstractDeployMojo
 
         try
         {
-            configureWagon( wagon, repository.getId(), settings, container, getLog() );
-
             SettingsDecrypter settingsDecrypter = container.lookup( SettingsDecrypter.class );
 
             ProxyInfo proxyInfo = getProxy( repository, settingsDecrypter );
@@ -318,10 +308,6 @@ public abstract class AbstractDeployMojo
         catch ( ComponentLookupException cle )
         {
             throw new MojoExecutionException( "Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle );
-        }
-        catch ( TransferFailedException e )
-        {
-            throw new MojoExecutionException( "Unable to configure Wagon: '" + repository.getProtocol() + "'", e );
         }
         finally
         {
@@ -621,65 +607,6 @@ public abstract class AbstractDeployMojo
         }
         getLog().debug( "getProxy 'protocol': " + protocol + " no ProxyInfo found" );
         return null;
-    }
-
-    /**
-     * Configure the Wagon with the information from serverConfigurationMap ( which comes from settings.xml )
-     *
-     * @todo Remove when {@link WagonManager#getWagon(Repository) is available}. It's available in Maven 2.0.5.
-     */
-    private static void configureWagon( Wagon wagon, String repositoryId, Settings settings, PlexusContainer container,
-                                        Log log )
-        throws TransferFailedException
-    {
-        log.debug( " configureWagon " );
-
-        // MSITE-25: Make sure that the server settings are inserted
-        for ( Server server : settings.getServers() )
-        {
-            String id = server.getId();
-
-            log.debug( "configureWagon server " + id );
-
-            if ( id != null && id.equals( repositoryId ) && ( server.getConfiguration() != null ) )
-            {
-                final PlexusConfiguration plexusConf =
-                    new XmlPlexusConfiguration( (Xpp3Dom) server.getConfiguration() );
-
-                ComponentConfigurator componentConfigurator = null;
-                try
-                {
-                    componentConfigurator =
-                        (ComponentConfigurator) container.lookup( ComponentConfigurator.ROLE, "basic" );
-                    componentConfigurator.configureComponent( wagon, plexusConf, container.getContainerRealm() );
-                }
-                catch ( final ComponentLookupException e )
-                {
-                    throw new TransferFailedException(
-                        "While configuring wagon for \'" + repositoryId + "\': Unable to lookup wagon configurator."
-                            + " Wagon configuration cannot be applied.", e );
-                }
-                catch ( ComponentConfigurationException e )
-                {
-                    throw new TransferFailedException( "While configuring wagon for \'" + repositoryId
-                                                           + "\': Unable to apply wagon configuration.", e );
-                }
-                finally
-                {
-                    if ( componentConfigurator != null )
-                    {
-                        try
-                        {
-                            container.release( componentConfigurator );
-                        }
-                        catch ( ComponentLifecycleException e )
-                        {
-                            log.error( "Problem releasing configurator - ignoring: " + e.getMessage() );
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**

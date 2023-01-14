@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.List;
@@ -224,10 +222,6 @@ public class ReportDocumentRenderer
                 // extended multi-page API
                 ( (MavenMultiPageReport) report ).generate( mainSink, multiPageSinkFactory, locale );
             }
-            else if ( generateMultiPage( locale, multiPageSinkFactory, mainSink ) )
-            {
-                // extended multi-page API for Maven 2.2, only accessible by reflection API
-            }
             else
             {
                 // old single-page-only API
@@ -308,39 +302,6 @@ public class ReportDocumentRenderer
         catch ( IOException e )
         {
             throw new RendererException( "Cannot create writer to " + outputName, e );
-        }
-    }
-
-    /**
-     * Try to generate report with extended multi-page API.
-     *
-     * @return <code>true</code> if the report was compatible with the extended API
-     */
-    private boolean generateMultiPage( Locale locale, SinkFactory sf, Sink sink )
-        throws MavenReportException
-    {
-        try
-        {
-            // MavenMultiPageReport is not in Maven Core, then the class is different in site plugin and in each report
-            // plugin: only reflection can let us invoke its method
-            Method generate =
-                report.getClass().getMethod( "generate", Sink.class, SinkFactory.class, Locale.class );
-
-            generate.invoke( report, sink, sf, locale );
-
-            return true;
-        }
-        catch ( SecurityException se )
-        {
-            return false;
-        }
-        catch ( NoSuchMethodException nsme )
-        {
-            return false;
-        }
-        catch ( IllegalArgumentException | IllegalAccessException | InvocationTargetException ite )
-        {
-            throw new MavenReportException( "error while invoking generate on " + report.getClass(), ite );
         }
     }
 
