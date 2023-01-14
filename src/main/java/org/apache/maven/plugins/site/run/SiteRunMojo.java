@@ -25,6 +25,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.codehaus.plexus.util.IOUtil;
@@ -49,7 +50,7 @@ import java.util.Map;
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  *
  */
-@Mojo( name = "run", aggregator = true, requiresReports = true )
+@Mojo( name = "run", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true )
 public class SiteRunMojo
     extends AbstractSiteRenderingMojo
 {
@@ -122,6 +123,7 @@ public class SiteRunMojo
         WebAppContext webapp = new WebAppContext();
         webapp.setContextPath( "/" );
         webapp.setResourceBase( tempWebappDirectory.getAbsolutePath() );
+        webapp.setAttribute( DoxiaFilter.OUTPUT_DIRECTORY_KEY, tempWebappDirectory );
         webapp.setAttribute( DoxiaFilter.SITE_RENDERER_KEY, siteRenderer );
         webapp.getInitParams().put( "org.mortbay.jetty.servlet.Default.useFileMappedBuffer", "false" );
 

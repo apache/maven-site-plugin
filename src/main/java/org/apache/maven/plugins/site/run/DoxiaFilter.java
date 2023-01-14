@@ -37,7 +37,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -50,6 +53,8 @@ import java.util.Map;
 public class DoxiaFilter
     implements Filter
 {
+    public static final String OUTPUT_DIRECTORY_KEY = "outputDirectory";
+
     public static final String SITE_RENDERER_KEY = "siteRenderer";
 
     public static final String I18N_DOXIA_CONTEXTS_KEY = "i18nDoxiaContexts";
@@ -57,6 +62,8 @@ public class DoxiaFilter
     public static final String LOCALES_LIST_KEY = "localesList";
 
     private ServletContext servletContext;
+
+    private File outputDirectory;
 
     private Renderer siteRenderer;
 
@@ -71,6 +78,8 @@ public class DoxiaFilter
         throws ServletException
     {
         servletContext = filterConfig.getServletContext();
+
+        outputDirectory = (File) servletContext.getAttribute( OUTPUT_DIRECTORY_KEY );
 
         siteRenderer = (Renderer) servletContext.getAttribute( SITE_RENDERER_KEY );
 
@@ -154,14 +163,9 @@ public class DoxiaFilter
                     ReportDocumentRenderer reportDocumentRenderer = (ReportDocumentRenderer) renderer;
                     if ( reportDocumentRenderer.isExternalReport() )
                     {
-                        try
-                        {
-                            filterChain.doFilter( servletRequest, servletResponse );
-                        }
-                        catch ( Exception e )
-                        {
-                            throw new ServletException( e );
-                        }
+                        Path externalReportFile = outputDirectory.toPath().resolve( renderer.getOutputName() );
+                        servletResponse.reset();
+                        Files.copy( externalReportFile, servletResponse.getOutputStream() );
                     }
                 }
 
