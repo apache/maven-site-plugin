@@ -193,7 +193,7 @@ public class SiteJarMojo
         archiver.setOutputFile( siteJar );
 
         // configure for Reproducible Builds based on outputTimestamp value
-        archiver.configureReproducible( outputTimestamp );
+        archiver.configureReproducibleBuild( outputTimestamp );
 
         if ( !siteDirectory.isDirectory() )
         {
