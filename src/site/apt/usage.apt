@@ -181,3 +181,16 @@ mvn site:run
 
   <<Note:>> Running a site only works for single-module sites.
   To preview a multi-module site one should use <<<site:stage>>>.
+
+* Rebuilding a Published (Released) Site
+
+  In general, site documentation is published as part of a release. This means that changes
+  to the documentation depend on a new release before being visible <or> you must accept
+  that the documentation refers to a snapshot version instead of the latest release version.
+  To solve that problem, you first of all need to configure your project for reproducibility
+  by setting the <<<project.build.outputTimestamp>>> model property. Then branch off from the
+  SCM tag you want to modify, perform the changes, commit them and then rebuild, finally
+  publish updated site. The underlying Maven Doxia Sitetools will automatically inject that
+  property as <<<publishDate>>> Velocity context property into the site and the skin won't
+  render a newer (current) date, but use this one. Checkout the <<<publishDate>>> IT for
+  configuration details.
