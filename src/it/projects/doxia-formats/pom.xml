@@ -32,6 +32,7 @@ under the License.
   <properties>
     <property-project-version>@project.version@</property-project-version>
     <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+    <project.build.outputTimestamp>@project.build.outputTimestamp@</project.build.outputTimestamp>
   </properties>
 
   <dependencies>

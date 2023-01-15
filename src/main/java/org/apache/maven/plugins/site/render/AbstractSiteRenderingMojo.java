@@ -19,6 +19,7 @@ package org.apache.maven.plugins.site.render;
  * under the License.
  */
 
+import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.Menu;
@@ -39,6 +40,7 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
+import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
@@ -50,6 +52,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -312,6 +315,15 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             throw new MojoExecutionException( "RendererException while preparing context for skin: "
                 + e.getMessage(), e );
         }
+
+        // Add publish date
+        MavenProject p = attributes.get( "project" ) != null ? (MavenProject) attributes.get( "project" ) : project;
+        String outputTimestamp = p.getProperties().getProperty( "project.build.outputTimestamp" );
+        MavenArchiver.parseBuildOutputTimestamp( outputTimestamp ).ifPresent( v ->
+            {
+                context.setPublishDate( Date.from( v ) );
+            }
+        );
 
         // Generate static site
         context.setRootDirectory( project.getBasedir() );
