@@ -48,85 +48,85 @@ public class SiteDeployMojoTest extends AbstractMojoTestCase {
     }
 
     /**
-    FIXME find a way to restore those tests as wagonManager.addProxy is not anymore available in maven 3.
-    public void testGetProxyInfoNoProxyForRepositoryProtocol()
-    {
-        wagonManager.addProxy( "http", "proxy-host", 8080, "my-user", "my-password", null );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNull( "ProxyInfo must be null because http != scp", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostExactlyMatchesNonProxyHosts()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password",
-                               "a-host,repository-host;another-host" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardMatchNonProxyHosts1()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "a-host|repository*|another-host" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardMatchNonProxyHosts2()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "*host" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardMatchNonProxyHosts3()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "repository*host" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts1()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "mycompany*" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts2()
-    {
-        wagonManager.
-
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "*mycompany" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts3()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "repository*mycompany" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts4()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "mycompany*host" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts5()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "mycompany*mycompany" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
-    }
-
-    public void testGetProxyInfoFound()
-    {
-        wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "an-host|another-host" );
-        ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
-        assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
-    }
-    **/
+     * FIXME find a way to restore those tests as wagonManager.addProxy is not anymore available in maven 3.
+     * public void testGetProxyInfoNoProxyForRepositoryProtocol()
+     * {
+     * wagonManager.addProxy( "http", "proxy-host", 8080, "my-user", "my-password", null );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNull( "ProxyInfo must be null because http != scp", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostExactlyMatchesNonProxyHosts()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password",
+     * "a-host,repository-host;another-host" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardMatchNonProxyHosts1()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "a-host|repository*|another-host" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardMatchNonProxyHosts2()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "*host" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardMatchNonProxyHosts3()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "repository*host" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNull( "ProxyInfo must be null because 'repository-host' in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts1()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "mycompany*" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts2()
+     * {
+     * wagonManager.
+     *
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "*mycompany" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts3()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "repository*mycompany" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts4()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "mycompany*host" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoForRepositoryHostWildcardNoMatchNonProxyHosts5()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "mycompany*mycompany" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
+     * }
+     *
+     * public void testGetProxyInfoFound()
+     * {
+     * wagonManager.addProxy( "scp", "localhost", 8080, "my-user", "my-password", "an-host|another-host" );
+     * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
+     * assertNotNull( "ProxyInfo must be found because 'repository-host' not in nonProxyHosts list", proxyInfo );
+     * }
+     **/
 }
