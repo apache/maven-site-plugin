@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.descriptor;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.site.descriptor;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.descriptor;
 
 import java.io.File;
 import java.util.List;
@@ -37,9 +36,7 @@ import org.apache.maven.plugins.site.AbstractSiteMojo;
  *
  * @since 3.5
  */
-public abstract class AbstractSiteDescriptorMojo
-    extends AbstractSiteMojo
-{
+public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
     /**
      * The component for assembling site decoration model inheritance.
      */
@@ -52,7 +49,7 @@ public abstract class AbstractSiteDescriptorMojo
      * todo this is used for site descriptor resolution - it should relate to the actual project but for some reason
      *       they are not always filled in
      */
-    @Parameter( defaultValue = "${project.remoteArtifactRepositories}", readonly = true )
+    @Parameter(defaultValue = "${project.remoteArtifactRepositories}", readonly = true)
     protected List<ArtifactRepository> repositories;
 
     /**
@@ -62,7 +59,7 @@ public abstract class AbstractSiteDescriptorMojo
      *
      * @since 2.3
      */
-    @Parameter( defaultValue = "${basedir}/src/site" )
+    @Parameter(defaultValue = "${basedir}/src/site")
     protected File siteDirectory;
 
     /**
@@ -74,50 +71,40 @@ public abstract class AbstractSiteDescriptorMojo
      *
      * @since 2.3
      */
-    @Parameter( property = "relativizeDecorationLinks", defaultValue = "true" )
+    @Parameter(property = "relativizeDecorationLinks", defaultValue = "true")
     private boolean relativizeDecorationLinks;
 
-    protected DecorationModel prepareDecorationModel( Locale locale )
-        throws MojoExecutionException
-    {
+    protected DecorationModel prepareDecorationModel(Locale locale) throws MojoExecutionException {
         DecorationModel decorationModel;
-        try
-        {
-            decorationModel = siteTool.getDecorationModel( siteDirectory, locale, project, reactorProjects,
-                                                           localRepository, repositories );
-        }
-        catch ( SiteToolException e )
-        {
-            throw new MojoExecutionException( "SiteToolException: " + e.getMessage(), e );
+        try {
+            decorationModel = siteTool.getDecorationModel(
+                    siteDirectory, locale, project, reactorProjects, localRepository, repositories);
+        } catch (SiteToolException e) {
+            throw new MojoExecutionException("SiteToolException: " + e.getMessage(), e);
         }
 
-        if ( relativizeDecorationLinks )
-        {
+        if (relativizeDecorationLinks) {
             final String url = project.getUrl();
 
-            if ( url == null )
-            {
-                getLog().warn( "No project URL defined - decoration links will not be relativized!" );
-            }
-            else
-            {
+            if (url == null) {
+                getLog().warn("No project URL defined - decoration links will not be relativized!");
+            } else {
                 List<Locale> localesList = getLocales();
 
                 // Default is first in the list
-                Locale defaultLocale = localesList.get( 0 );
+                Locale defaultLocale = localesList.get(0);
 
                 // MSITE-658
-                final String localeUrl = locale.equals( defaultLocale ) ? url : append( url, locale.toString() );
+                final String localeUrl = locale.equals(defaultLocale) ? url : append(url, locale.toString());
 
-                getLog().info( "Relativizing decoration links with respect to localized project URL: " + localeUrl );
-                assembler.resolvePaths( decorationModel, localeUrl );
+                getLog().info("Relativizing decoration links with respect to localized project URL: " + localeUrl);
+                assembler.resolvePaths(decorationModel, localeUrl);
             }
         }
         return decorationModel;
     }
 
-    private String append( String url, String path )
-    {
-        return url.endsWith( "/" ) ? ( url + path ) : ( url + '/' + path );
+    private String append(String url, String path) {
+        return url.endsWith("/") ? (url + path) : (url + '/' + path);
     }
 }

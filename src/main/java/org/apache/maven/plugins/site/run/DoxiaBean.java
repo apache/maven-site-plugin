@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.run;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.site.run;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.run;
 
 import java.util.Map;
 
@@ -30,8 +29,7 @@ import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  *
  */
-public class DoxiaBean
-{
+public class DoxiaBean {
     private SiteRenderingContext context;
 
     private Map<String, DocumentRenderer> documents;
@@ -43,41 +41,36 @@ public class DoxiaBean
      * @param documents documents
      * @param generatedSiteContext context of generated content
      */
-    public DoxiaBean( SiteRenderingContext context, Map<String, DocumentRenderer> documents,
-                      SiteRenderingContext generatedSiteContext )
-    {
+    public DoxiaBean(
+            SiteRenderingContext context,
+            Map<String, DocumentRenderer> documents,
+            SiteRenderingContext generatedSiteContext) {
         this.context = context;
         this.documents = documents;
         this.generatedSiteContext = generatedSiteContext;
     }
 
-    public SiteRenderingContext getContext()
-    {
+    public SiteRenderingContext getContext() {
         return context;
     }
 
-    public void setContext( SiteRenderingContext context )
-    {
+    public void setContext(SiteRenderingContext context) {
         this.context = context;
     }
 
-    public Map<String, DocumentRenderer> getDocuments()
-    {
+    public Map<String, DocumentRenderer> getDocuments() {
         return documents;
     }
 
-    public void setDocuments( Map<String, DocumentRenderer> documents )
-    {
+    public void setDocuments(Map<String, DocumentRenderer> documents) {
         this.documents = documents;
     }
 
-    public SiteRenderingContext getGeneratedSiteContext()
-    {
+    public SiteRenderingContext getGeneratedSiteContext() {
         return generatedSiteContext;
     }
 
-    public void setGeneratedSiteContext( SiteRenderingContext generatedSiteContext )
-    {
+    public void setGeneratedSiteContext(SiteRenderingContext generatedSiteContext) {
         this.generatedSiteContext = generatedSiteContext;
     }
 }

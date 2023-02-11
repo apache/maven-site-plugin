@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,10 @@ package org.apache.maven.plugins.site;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site;
+
+import java.util.List;
+import java.util.Locale;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -28,24 +30,19 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.rtinfo.RuntimeInformation;
 import org.codehaus.plexus.i18n.I18N;
 
-import java.util.List;
-import java.util.Locale;
-
 /**
  * Base class for site mojos.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-public abstract class AbstractSiteMojo
-    extends AbstractMojo
-{
+public abstract class AbstractSiteMojo extends AbstractMojo {
     /**
      * A comma separated list of locales to render. The first valid token will be the default Locale
      * for this site.
      *
      * @since 2.3
      */
-    @Parameter( property = "locales", defaultValue = "default" )
+    @Parameter(property = "locales", defaultValue = "default")
     private String locales;
 
     /**
@@ -53,7 +50,7 @@ public abstract class AbstractSiteMojo
      *
      * @since 3.0
      */
-    @Parameter( property = "maven.site.skip", defaultValue = "false" )
+    @Parameter(property = "maven.site.skip", defaultValue = "false")
     protected boolean skip;
 
     /**
@@ -71,32 +68,30 @@ public abstract class AbstractSiteMojo
     /**
      * The Maven project.
      */
-    @Parameter( defaultValue = "${project}", readonly = true )
+    @Parameter(defaultValue = "${project}", readonly = true)
     protected MavenProject project;
 
     /**
      * The local repository.
      */
-    @Parameter( defaultValue = "${localRepository}", readonly = true )
+    @Parameter(defaultValue = "${localRepository}", readonly = true)
     protected ArtifactRepository localRepository;
 
     /**
      * The reactor projects.
      */
-    @Parameter( defaultValue = "${reactorProjects}", required = true, readonly = true )
+    @Parameter(defaultValue = "${reactorProjects}", required = true, readonly = true)
     protected List<MavenProject> reactorProjects;
 
     @Component
     protected RuntimeInformation runtimeInformation;
 
     @Deprecated
-    protected String getMavenVersion()
-    {
+    protected String getMavenVersion() {
         return runtimeInformation.getMavenVersion();
     }
 
-    protected List<Locale> getLocales()
-    {
-        return siteTool.getSiteLocales( locales );
+    protected List<Locale> getLocales() {
+        return siteTool.getSiteLocales(locales);
     }
 }

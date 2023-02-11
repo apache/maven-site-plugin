@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.stubs;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.site.stubs;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.stubs;
 
 import java.io.File;
 import java.util.Properties;
@@ -34,67 +33,54 @@ import org.codehaus.plexus.util.xml.XmlStreamReader;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  *
  */
-public class SiteMavenProjectStub
-    extends MavenProjectStub
-{
+public class SiteMavenProjectStub extends MavenProjectStub {
     private File basedir;
 
     DistributionManagement distributionManagement = new DistributionManagement();
-    
-    public SiteMavenProjectStub( String projectName )
-    {
-        basedir = new File( super.getBasedir() + "/src/test/resources/unit/" + projectName );
+
+    public SiteMavenProjectStub(String projectName) {
+        basedir = new File(super.getBasedir() + "/src/test/resources/unit/" + projectName);
 
         XmlStreamReader reader = null;
-        try
-        {
-            reader = ReaderFactory.newXmlReader( new File( getBasedir(), "pom.xml" ) );
-            setModel( new MavenXpp3Reader().read( reader ) );
+        try {
+            reader = ReaderFactory.newXmlReader(new File(getBasedir(), "pom.xml"));
+            setModel(new MavenXpp3Reader().read(reader));
             reader.close();
-        }
-        catch ( Exception e )
-        {
-            throw new RuntimeException( e );
-        }
-        finally
-        {
-            IOUtil.close( reader);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            IOUtil.close(reader);
         }
         Site site = new Site();
-        site.setId( "localhost" );
-        distributionManagement.setSite( site );
+        site.setId("localhost");
+        distributionManagement.setSite(site);
     }
 
     /**
      * @see org.apache.maven.project.MavenProject#getName()
      */
-    public String getName()
-    {
+    public String getName() {
         return getModel().getName();
     }
 
     /**
      * @see org.apache.maven.project.MavenProject#getProperties()
      */
-    public Properties getProperties()
-    {
+    public Properties getProperties() {
         return new Properties();
     }
 
     @Override
-    public DistributionManagement getDistributionManagement()
-    {
+    public DistributionManagement getDistributionManagement() {
         return distributionManagement;
     }
 
     /** {@inheritDoc} */
-    public File getBasedir()
-    {
+    public File getBasedir() {
         return basedir;
     }
 
-    public void setBasedir( File basedir )
-    {
+    public void setBasedir(File basedir) {
         this.basedir = basedir;
     }
 }

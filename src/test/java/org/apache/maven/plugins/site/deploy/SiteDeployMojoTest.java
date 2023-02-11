@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.deploy;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +16,9 @@ package org.apache.maven.plugins.site.deploy;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.deploy;
 
 import org.apache.maven.artifact.manager.WagonManager;
-//import org.apache.maven.wagon.repository.Repository;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,28 +28,23 @@ import org.junit.runners.JUnit4;
 /**
  * @author <a href="mailto:cleclerc@xebia.fr">Cyrille Le Clerc</a>
  */
-@RunWith( JUnit4.class )
-public class SiteDeployMojoTest
-    extends AbstractMojoTestCase
-{
+@RunWith(JUnit4.class)
+public class SiteDeployMojoTest extends AbstractMojoTestCase {
     private WagonManager wagonManager;
 
-    //private Repository repository;
+    // private Repository repository;
 
     @Before
-    public void setUp()
-        throws Exception
-    {
+    public void setUp() throws Exception {
         super.setUp();
-        wagonManager = getContainer().lookup( WagonManager.class );
-        //repository = new Repository( "my-repository", "scp://repository-host/var/maven2" );
+        wagonManager = getContainer().lookup(WagonManager.class);
+        // repository = new Repository( "my-repository", "scp://repository-host/var/maven2" );
     }
 
     @Test
-    public void testFoo()
-    {
+    public void testFoo() {
         // should not fail ;-)
-        assertTrue( true );
+        assertTrue(true);
     }
 
     /**

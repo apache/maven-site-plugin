@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.render;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.site.render;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.render;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,20 +57,18 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  *
  */
-@Mojo( name = "site", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true )
-public class SiteMojo
-    extends AbstractSiteRenderingMojo
-{
+@Mojo(name = "site", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true)
+public class SiteMojo extends AbstractSiteRenderingMojo {
     /**
      * Directory where the project sites and report distributions will be generated (as html/css/...).
      */
-    @Parameter( property = "siteOutputDirectory", defaultValue = "${project.reporting.outputDirectory}" )
+    @Parameter(property = "siteOutputDirectory", defaultValue = "${project.reporting.outputDirectory}")
     protected File outputDirectory;
 
     /**
      * Convenience parameter that allows you to disable report generation.
      */
-    @Parameter( property = "generateReports", defaultValue = "true" )
+    @Parameter(property = "generateReports", defaultValue = "true")
     private boolean generateReports;
 
     /**
@@ -79,7 +76,7 @@ public class SiteMojo
      *
      * @since 2.1
      */
-    @Parameter( property = "generateSitemap", defaultValue = "false" )
+    @Parameter(property = "generateSitemap", defaultValue = "false")
     private boolean generateSitemap;
 
     /**
@@ -88,123 +85,104 @@ public class SiteMojo
      *
      * @since 2.1.1
      */
-    @Parameter( property = "validate", defaultValue = "false" )
+    @Parameter(property = "validate", defaultValue = "false")
     private boolean validate;
 
     /**
      * {@inheritDoc}
      */
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
-        if ( skip )
-        {
-            getLog().info( "maven.site.skip = true: Skipping site generation" );
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        if (skip) {
+            getLog().info("maven.site.skip = true: Skipping site generation");
             return;
         }
 
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( "executing Site Mojo" );
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("executing Site Mojo");
         }
 
         checkInputEncoding();
 
         List<MavenReportExecution> reports;
-        if ( generateReports )
-        {
+        if (generateReports) {
             reports = getReports();
-        }
-        else
-        {
+        } else {
             reports = Collections.emptyList();
         }
 
-        try
-        {
+        try {
             List<Locale> localesList = getLocales();
 
             // Default is first in the list
-            Locale defaultLocale = localesList.get( 0 );
+            Locale defaultLocale = localesList.get(0);
 
-            for ( Locale locale : localesList )
-            {
-                getLog().info( "Rendering site for "
-                    + buffer().strong( ( locale.equals( defaultLocale )
-                        ? "default locale" : "locale '" + locale + "'" ) ).toString() );
-                renderLocale( locale, reports, localesList );
+            for (Locale locale : localesList) {
+                getLog().info("Rendering site for "
+                        + buffer().strong((locale.equals(defaultLocale) ? "default locale" : "locale '" + locale + "'"))
+                                .toString());
+                renderLocale(locale, reports, localesList);
             }
-        }
-        catch ( RendererException e )
-        {
-            if ( e.getCause() instanceof MavenReportException )
-            {
+        } catch (RendererException e) {
+            if (e.getCause() instanceof MavenReportException) {
                 // issue caused by report, not really by Doxia Site Renderer
-                throw new MojoExecutionException( e.getMessage(), e.getCause() );
+                throw new MojoExecutionException(e.getMessage(), e.getCause());
             }
-            throw new MojoExecutionException( e.getMessage(), e );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Error during site generation", e );
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (IOException e) {
+            throw new MojoExecutionException("Error during site generation", e);
         }
     }
 
-    private void renderLocale( Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales )
-        throws IOException, RendererException, MojoFailureException, MojoExecutionException
-    {
-        SiteRenderingContext context = createSiteRenderingContext( locale );
-        context.addSiteLocales( supportedLocales );
+    private void renderLocale(Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales)
+            throws IOException, RendererException, MojoFailureException, MojoExecutionException {
+        SiteRenderingContext context = createSiteRenderingContext(locale);
+        context.addSiteLocales(supportedLocales);
         // MSITE-723 add generated site directory, in case some content has been put in pre-site phase
-        context.addSiteDirectory( generatedSiteDirectory );
+        context.addSiteDirectory(generatedSiteDirectory);
 
-        context.setInputEncoding( getInputEncoding() );
-        context.setOutputEncoding( getOutputEncoding() );
-        context.setValidate( validate );
-        if ( validate )
-        {
-            getLog().info( "Validation is switched on, xml input documents will be validated!" );
+        context.setInputEncoding(getInputEncoding());
+        context.setOutputEncoding(getOutputEncoding());
+        context.setValidate(validate);
+        if (validate) {
+            getLog().info("Validation is switched on, xml input documents will be validated!");
         }
 
-        File outputDir = getOutputDirectory( locale );
+        File outputDir = getOutputDirectory(locale);
 
-        Map<String, DocumentRenderer> documents = locateDocuments( context, reports, locale );
+        Map<String, DocumentRenderer> documents = locateDocuments(context, reports, locale);
 
         // copy resources
-        siteRenderer.copyResources( context, outputDir );
+        siteRenderer.copyResources(context, outputDir);
 
         // 1. render Doxia documents first
-        List<DocumentRenderer> reportDocuments = renderDoxiaDocuments( documents, context, outputDir, false );
+        List<DocumentRenderer> reportDocuments = renderDoxiaDocuments(documents, context, outputDir, false);
 
         // 2. then reports
         // prepare external reports
-        for ( MavenReportExecution mavenReportExecution : reports )
-        {
+        for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
-            report.setReportOutputDirectory( outputDir );
+            report.setReportOutputDirectory(outputDir);
         }
 
-        siteRenderer.render( reportDocuments, context, outputDir );
+        siteRenderer.render(reportDocuments, context, outputDir);
 
-        if ( generateSitemap )
-        {
-            getLog().info( "Generating Sitemap." );
+        if (generateSitemap) {
+            getLog().info("Generating Sitemap.");
 
-            new SiteMap( getOutputEncoding(), i18n ).generate( context.getDecoration(), generatedSiteDirectory,
-                                                               locale );
+            new SiteMap(getOutputEncoding(), i18n).generate(context.getDecoration(), generatedSiteDirectory, locale);
         }
 
         // 3. Generated docs must be (re-)done afterwards as they are often generated by reports
         context.getSiteDirectories().clear();
-        context.addSiteDirectory( generatedSiteDirectory );
+        context.addSiteDirectory(generatedSiteDirectory);
 
         Map<String, DocumentRenderer> generatedDocuments =
-            siteRenderer.locateDocumentFiles( context, false /* not editable */ );
+                siteRenderer.locateDocumentFiles(context, false /* not editable */);
 
-        renderDoxiaDocuments( generatedDocuments, context, outputDir, true );
+        renderDoxiaDocuments(generatedDocuments, context, outputDir, true);
 
         // copy generated resources also
-        siteRenderer.copyResources( context, outputDir );
+        siteRenderer.copyResources(context, outputDir);
     }
 
     /**
@@ -213,103 +191,82 @@ public class SiteMojo
      * @param documents a collection of documents containing both Doxia source files and reports
      * @return the sublist of documents that are not Doxia source files
      */
-    private List<DocumentRenderer> renderDoxiaDocuments( Map<String, DocumentRenderer> documents,
-                                                         SiteRenderingContext context, File outputDir,
-                                                         boolean generated )
-                                                             throws RendererException, IOException
-    {
+    private List<DocumentRenderer> renderDoxiaDocuments(
+            Map<String, DocumentRenderer> documents, SiteRenderingContext context, File outputDir, boolean generated)
+            throws RendererException, IOException {
         Map<String, DocumentRenderer> doxiaDocuments = new TreeMap<>();
         List<DocumentRenderer> nonDoxiaDocuments = new ArrayList<>();
 
         Map<String, Integer> counts = new TreeMap<>();
 
-        for ( Map.Entry<String, DocumentRenderer> entry : documents.entrySet() )
-        {
+        for (Map.Entry<String, DocumentRenderer> entry : documents.entrySet()) {
             DocumentRenderer doc = entry.getValue();
 
-            if ( doc instanceof DoxiaDocumentRenderer )
-            {
-                doxiaDocuments.put( entry.getKey(), doc );
+            if (doc instanceof DoxiaDocumentRenderer) {
+                doxiaDocuments.put(entry.getKey(), doc);
 
                 DoxiaDocumentRenderer doxia = (DoxiaDocumentRenderer) doc;
 
                 // count documents per parserId
                 String parserId = doxia.getRenderingContext().getParserId();
-                Integer count = counts.get( parserId );
-                if ( count == null )
-                {
+                Integer count = counts.get(parserId);
+                if (count == null) {
                     count = 1;
-                }
-                else
-                {
+                } else {
                     count++;
                 }
-                counts.put( parserId, count );
-            }
-            else
-            {
-                nonDoxiaDocuments.add( doc );
+                counts.put(parserId, count);
+            } else {
+                nonDoxiaDocuments.add(doc);
             }
         }
 
-        if ( doxiaDocuments.size() > 0 )
-        {
+        if (doxiaDocuments.size() > 0) {
             MessageBuilder mb = buffer();
-            mb.a( "Rendering " );
-            mb.strong( doxiaDocuments.size() + ( generated ? " generated" : "" ) + " Doxia document"
-                + ( doxiaDocuments.size() > 1 ? "s" : "" ) );
-            mb.a( ": " );
+            mb.a("Rendering ");
+            mb.strong(doxiaDocuments.size() + (generated ? " generated" : "") + " Doxia document"
+                    + (doxiaDocuments.size() > 1 ? "s" : ""));
+            mb.a(": ");
 
             boolean first = true;
-            for ( Map.Entry<String, Integer> entry : counts.entrySet() )
-            {
-                if ( first )
-                {
+            for (Map.Entry<String, Integer> entry : counts.entrySet()) {
+                if (first) {
                     first = false;
+                } else {
+                    mb.a(", ");
                 }
-                else
-                {
-                    mb.a( ", " );
-                }
-                mb.strong( entry.getValue() + " " + entry.getKey() );
+                mb.strong(entry.getValue() + " " + entry.getKey());
             }
 
-            getLog().info( mb.toString() );
+            getLog().info(mb.toString());
 
-            siteRenderer.render( doxiaDocuments.values(), context, outputDir );
+            siteRenderer.render(doxiaDocuments.values(), context, outputDir);
         }
 
         return nonDoxiaDocuments;
     }
 
-    private File getOutputDirectory( Locale locale )
-    {
+    private File getOutputDirectory(Locale locale) {
         File file;
-        if ( locale.equals( SiteTool.DEFAULT_LOCALE ) )
-        {
+        if (locale.equals(SiteTool.DEFAULT_LOCALE)) {
             file = outputDirectory;
-        }
-        else
-        {
-            file = new File( outputDirectory, locale.toString() );
+        } else {
+            file = new File(outputDirectory, locale.toString());
         }
 
         // Safety
-        if ( !file.exists() )
-        {
+        if (!file.exists()) {
             file.mkdirs();
         }
 
         return file;
     }
 
-    public MavenProject getProject()
-    {
+    public MavenProject getProject() {
         return project;
     }
 
-    public MavenSession getSession()
-    {
+    public MavenSession getSession() {
         return mavenSession;
     }
 }

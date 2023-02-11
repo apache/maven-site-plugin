@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.descriptor;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,11 @@ package org.apache.maven.plugins.site.descriptor;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.descriptor;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.metadata.AbstractArtifactMetadata;
@@ -28,95 +31,74 @@ import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Writer;
 import org.codehaus.plexus.util.WriterFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-
 /**
  * Attach a POM to an artifact.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  *
  */
-public class SiteDescriptorArtifactMetadata
-    extends AbstractArtifactMetadata
-{
+public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
     private final DecorationModel decoration;
 
     private final File file;
 
-    public SiteDescriptorArtifactMetadata( Artifact artifact, DecorationModel decoration, File file )
-    {
-        super( artifact );
+    public SiteDescriptorArtifactMetadata(Artifact artifact, DecorationModel decoration, File file) {
+        super(artifact);
 
         this.file = file;
         this.decoration = decoration;
     }
 
-    public String getRemoteFilename()
-    {
+    public String getRemoteFilename() {
         return getFilename();
     }
 
-    public String getLocalFilename( ArtifactRepository repository )
-    {
+    public String getLocalFilename(ArtifactRepository repository) {
         return getFilename();
     }
 
-    private String getFilename()
-    {
+    private String getFilename() {
         return getArtifactId() + "-" + artifact.getVersion() + "-" + file.getName();
     }
 
-    public void storeInLocalRepository( ArtifactRepository localRepository, ArtifactRepository remoteRepository )
-        throws RepositoryMetadataStoreException
-    {
-        File destination = new File( localRepository.getBasedir(),
-                                     localRepository.pathOfLocalRepositoryMetadata( this, remoteRepository ) );
+    public void storeInLocalRepository(ArtifactRepository localRepository, ArtifactRepository remoteRepository)
+            throws RepositoryMetadataStoreException {
+        File destination = new File(
+                localRepository.getBasedir(), localRepository.pathOfLocalRepositoryMetadata(this, remoteRepository));
 
         destination.getParentFile().mkdirs();
 
-        try ( Writer writer = WriterFactory.newXmlWriter( destination ) )
-        {
-            new DecorationXpp3Writer().write( writer, decoration );
-        }
-        catch ( IOException e )
-        {
-            throw new RepositoryMetadataStoreException( "Error saving in local repository", e );
+        try (Writer writer = WriterFactory.newXmlWriter(destination)) {
+            new DecorationXpp3Writer().write(writer, decoration);
+        } catch (IOException e) {
+            throw new RepositoryMetadataStoreException("Error saving in local repository", e);
         }
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "site descriptor for " + artifact.getArtifactId() + " " + artifact.getVersion() + " " + file.getName();
     }
 
-    public boolean storedInArtifactVersionDirectory()
-    {
+    public boolean storedInArtifactVersionDirectory() {
         return true;
     }
 
-    public String getBaseVersion()
-    {
+    public String getBaseVersion() {
         return artifact.getBaseVersion();
     }
 
-    public Object getKey()
-    {
+    public Object getKey() {
         return "site descriptor " + artifact.getGroupId() + ":" + artifact.getArtifactId() + " " + file.getName();
     }
 
-    public void merge( ArtifactMetadata metadata )
-    {
+    public void merge(ArtifactMetadata metadata) {
         SiteDescriptorArtifactMetadata m = (SiteDescriptorArtifactMetadata) metadata;
-        if ( !m.file.equals( file ) )
-        {
-            throw new IllegalStateException( "Cannot add two different pieces of metadata for: " + getKey() );
+        if (!m.file.equals(file)) {
+            throw new IllegalStateException("Cannot add two different pieces of metadata for: " + getKey());
         }
     }
 
-    public void merge( org.apache.maven.repository.legacy.metadata.ArtifactMetadata metadata )
-    {
+    public void merge(org.apache.maven.repository.legacy.metadata.ArtifactMetadata metadata) {
         // FIXME what todo here ?
     }
 }

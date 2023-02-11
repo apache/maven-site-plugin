@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.render;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,10 +16,10 @@ package org.apache.maven.plugins.site.render;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.render;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -30,7 +28,6 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.Menu;
 import org.apache.maven.doxia.site.decoration.MenuItem;
-
 import org.codehaus.plexus.i18n.I18N;
 
 /**
@@ -40,8 +37,7 @@ import org.codehaus.plexus.i18n.I18N;
  *
  * @since 2.1
  */
-public class SiteMap
-{
+public class SiteMap {
 
     private String encoding;
     private I18N i18n;
@@ -52,8 +48,7 @@ public class SiteMap
      * @param encoding the default encoding to use when writing the output file.
      * @param i18n the default I18N for translations.
      */
-    public SiteMap( String encoding, I18N i18n )
-    {
+    public SiteMap(String encoding, I18N i18n) {
         this.encoding = encoding;
         this.i18n = i18n;
     }
@@ -63,8 +58,7 @@ public class SiteMap
      *
      * @return the value of i18n.
      */
-    public I18N getI18n()
-    {
+    public I18N getI18n() {
         return i18n;
     }
 
@@ -73,8 +67,7 @@ public class SiteMap
      *
      * @param i18n new value of i18n.
      */
-    public void setI18n( I18N i18n )
-    {
+    public void setI18n(I18N i18n) {
         this.i18n = i18n;
     }
 
@@ -83,8 +76,7 @@ public class SiteMap
      *
      * @return the value of encoding.
      */
-    public String getEncoding()
-    {
+    public String getEncoding() {
         return encoding;
     }
 
@@ -93,8 +85,7 @@ public class SiteMap
      *
      * @param enc new value of encoding.
      */
-    public void setEncoding( String enc )
-    {
+    public void setEncoding(String enc) {
         this.encoding = enc;
     }
 
@@ -109,49 +100,42 @@ public class SiteMap
      *
      * @throws IOException if the file cannot be ceated.
      */
-    public void generate( DecorationModel model, File targetDir, Locale locale )
-            throws IOException
-    {
-        File outputDir = new File( targetDir, "xdoc" );
-        Sink sink = new XdocSinkFactory().createSink( outputDir, "sitemap.xml", encoding );
+    public void generate(DecorationModel model, File targetDir, Locale locale) throws IOException {
+        File outputDir = new File(targetDir, "xdoc");
+        Sink sink = new XdocSinkFactory().createSink(outputDir, "sitemap.xml", encoding);
 
-        try
-        {
-            extract( model, sink, locale );
-        }
-        finally
-        {
+        try {
+            extract(model, sink, locale);
+        } finally {
             sink.close();
         }
     }
 
-    private void extract( DecorationModel decoration, Sink sink, Locale locale )
-    {
+    private void extract(DecorationModel decoration, Sink sink, Locale locale) {
         sink.head();
         sink.title();
-        sink.text( i18n.getString( "site-plugin", locale, "site.sitemap.title" ) );
+        sink.text(i18n.getString("site-plugin", locale, "site.sitemap.title"));
         sink.title_();
         sink.head_();
         sink.body();
 
         sink.section1();
         sink.sectionTitle1();
-        sink.text( i18n.getString( "site-plugin", locale, "site.sitemap.section.title" ) );
+        sink.text(i18n.getString("site-plugin", locale, "site.sitemap.section.title"));
         sink.sectionTitle1_();
 
         sink.paragraph();
-        sink.text( i18n.getString( "site-plugin", locale, "site.sitemap.description" ) );
+        sink.text(i18n.getString("site-plugin", locale, "site.sitemap.description"));
         sink.paragraph_();
 
-        for ( Menu menu : decoration.getMenus() )
-        {
+        for (Menu menu : decoration.getMenus()) {
             sink.section3();
             sink.sectionTitle3();
-            sink.text( menu.getName() );
+            sink.text(menu.getName());
             sink.sectionTitle3_();
             sink.horizontalRule();
 
-            extractItems( menu.getItems(), sink );
+            extractItems(menu.getItems(), sink);
 
             sink.section3_();
         }
@@ -160,26 +144,22 @@ public class SiteMap
         sink.body_();
     }
 
-    private static void extractItems( List<MenuItem> items, Sink sink )
-    {
-        if ( items == null || items.isEmpty() )
-        {
+    private static void extractItems(List<MenuItem> items, Sink sink) {
+        if (items == null || items.isEmpty()) {
             return;
         }
 
         sink.list();
 
-        for ( MenuItem item : items )
-        {
+        for (MenuItem item : items) {
             sink.listItem();
-            if ( item.getHref() != null )
-            {
-                sink.link( relativePath( item.getHref() ) );
-                sink.text( item.getName() );
+            if (item.getHref() != null) {
+                sink.link(relativePath(item.getHref()));
+                sink.text(item.getName());
                 sink.link_();
             }
 
-            extractItems( item.getItems(), sink );
+            extractItems(item.getItems(), sink);
             sink.listItem_();
         }
 
@@ -187,8 +167,7 @@ public class SiteMap
     }
 
     // sitemap.html gets generated into top-level so we only have to check leading slashes
-    private static String relativePath( String href )
-    {
-        return href.startsWith( "/" ) ? "." + href : href;
+    private static String relativePath(String href) {
+        return href.startsWith("/") ? "." + href : href;
     }
 }
