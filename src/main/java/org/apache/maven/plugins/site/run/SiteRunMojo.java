@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -58,6 +59,12 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
     private File tempWebappDirectory;
 
     /**
+     * The host to execute the HTTP server on.
+     */
+    @Parameter(property = "host", defaultValue = "localhost")
+    private String host;
+
+    /**
      * The port to execute the HTTP server on.
      */
     @Parameter(property = "port", defaultValue = "8080")
@@ -69,7 +76,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         checkInputEncoding();
 
-        Server server = new Server(port);
+        Server server = new Server(InetSocketAddress.createUnresolved(host, port));
         server.setStopAtShutdown(true);
 
         WebAppContext webapp = createWebApplication();
@@ -77,14 +84,13 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
 
         server.setHandler(webapp);
 
-        getLog().info(buffer().a("Starting Jetty on ")
-                .strong("http://localhost:" + port + "/")
-                .toString());
         try {
             server.start();
         } catch (Exception e) {
-            throw new MojoExecutionException("Error executing Jetty: " + e.getMessage(), e);
+            throw new MojoExecutionException("Error executing Jetty", e);
         }
+
+        getLog().info(buffer().a("Started Jetty on ").strong(server.getURI()).toString());
 
         // Watch it
         try {
