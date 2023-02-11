@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.deploy;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,32 +16,28 @@ package org.apache.maven.plugins.site.deploy;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.deploy;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class HttpRequest
-{
-    Map<String, String> headers = new HashMap<String,String>();
+class HttpRequest {
+    Map<String, String> headers = new HashMap<String, String>();
 
     String method;
 
     String path;
 
-    HttpRequest()
-    {
+    HttpRequest() {
         // nop
     }
 
     @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder( method ).append( " path " ).append( path )
-                .append( System.lineSeparator() );
-        for ( Map.Entry<String, String> entry : headers.entrySet() )
-        {
-            sb.append( entry.getKey() ).append( " : " ).append( entry.getValue() )
-                    .append( System.lineSeparator() );
+    public String toString() {
+        StringBuilder sb =
+                new StringBuilder(method).append(" path ").append(path).append(System.lineSeparator());
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append(System.lineSeparator());
         }
         return sb.toString();
     }

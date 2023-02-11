@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.deploy;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.site.deploy;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.deploy;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -30,16 +29,14 @@ import org.apache.maven.shared.utils.StringUtils;
  * @author hboutemy
  * @since 3.3
  */
-public abstract class AbstractStagingMojo
-    extends AbstractDeployMojo
-{
+public abstract class AbstractStagingMojo extends AbstractDeployMojo {
     /**
      * Top distribution management site url, for manual configuration when auto-calculated value
      * doesn't match expectations. Relative module directory will be calculated from this url.
      *
      * @since 3.3
      */
-    @Parameter( property = "topSiteURL" )
+    @Parameter(property = "topSiteURL")
     protected String topSiteURL;
 
     /**
@@ -53,22 +50,19 @@ public abstract class AbstractStagingMojo
      * expectations, <code>topSiteURL</code> can be configured: it will be used instead.
      */
     @Override
-    protected String determineTopDistributionManagementSiteUrl()
-        throws MojoExecutionException
-    {
-        if ( StringUtils.isEmpty( topSiteURL ) )
-        {
-            MavenProject topProject = getTopLevelProject( project );
-            String url = getSite( topProject ).getUrl();
+    protected String determineTopDistributionManagementSiteUrl() throws MojoExecutionException {
+        if (StringUtils.isEmpty(topSiteURL)) {
+            MavenProject topProject = getTopLevelProject(project);
+            String url = getSite(topProject).getUrl();
 
-            getLog().debug( "staging top distributionManagement.site.url found in " + topProject.getId()
-                + " with value: " + url );
+            getLog().debug("staging top distributionManagement.site.url found in " + topProject.getId()
+                    + " with value: " + url);
 
             return url;
         }
 
-        getLog().debug( "staging top distributionManagement.site.url configured with topSiteURL parameter: "
-            + topSiteURL );
+        getLog().debug("staging top distributionManagement.site.url configured with topSiteURL parameter: "
+                + topSiteURL);
         return topSiteURL;
     }
 }

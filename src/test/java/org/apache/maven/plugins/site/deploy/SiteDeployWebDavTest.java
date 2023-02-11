@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.deploy;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,32 +16,26 @@ package org.apache.maven.plugins.site.deploy;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.deploy;
 
 import java.io.File;
 
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugins.site.deploy.SiteDeployMojo;
 
 /**
  * @author Olivier Lamy
  * @since 3.0-beta-2
  *
  */
-public class SiteDeployWebDavTest
-    extends AbstractSiteDeployWebDavTest
-{
+public class SiteDeployWebDavTest extends AbstractSiteDeployWebDavTest {
 
     @Override
-    String getMojoName()
-    {
+    String getMojoName() {
         return "deploy";
     }
 
     @Override
-    AbstractMojo getMojo( File pomXmlFile )
-        throws Exception
-    {
-        return (SiteDeployMojo) lookupMojo( getMojoName(), pomXmlFile );
+    AbstractMojo getMojo(File pomXmlFile) throws Exception {
+        return (SiteDeployMojo) lookupMojo(getMojoName(), pomXmlFile);
     }
-
 }

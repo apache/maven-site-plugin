@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.render;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.site.render;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.render;
 
 import java.io.FileNotFoundException;
 import java.io.Writer;
@@ -41,9 +40,7 @@ import org.codehaus.plexus.i18n.I18N;
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-public class CategorySummaryDocumentRenderer
-    implements DocumentRenderer
-{
+public class CategorySummaryDocumentRenderer implements DocumentRenderer {
     private RenderingContext renderingContext;
 
     private String title;
@@ -58,34 +55,42 @@ public class CategorySummaryDocumentRenderer
 
     private final Log log;
 
-    public CategorySummaryDocumentRenderer( RenderingContext renderingContext, String title, String desc1, String desc2,
-                                            I18N i18n, List<MavenReport> categoryReports )
-    {
-        this( renderingContext, title, desc1, desc2, i18n, categoryReports, null );
+    public CategorySummaryDocumentRenderer(
+            RenderingContext renderingContext,
+            String title,
+            String desc1,
+            String desc2,
+            I18N i18n,
+            List<MavenReport> categoryReports) {
+        this(renderingContext, title, desc1, desc2, i18n, categoryReports, null);
     }
 
-    public CategorySummaryDocumentRenderer( RenderingContext renderingContext, String title, String desc1, String desc2,
-                                            I18N i18n, List<MavenReport> categoryReports, Log log )
-    {
+    public CategorySummaryDocumentRenderer(
+            RenderingContext renderingContext,
+            String title,
+            String desc1,
+            String desc2,
+            I18N i18n,
+            List<MavenReport> categoryReports,
+            Log log) {
         this.renderingContext = renderingContext;
         this.title = title;
         this.desc1 = desc1;
         this.desc2 = desc2;
         this.i18n = i18n;
-        this.categoryReports = Collections.unmodifiableList( categoryReports );
+        this.categoryReports = Collections.unmodifiableList(categoryReports);
         this.log = log;
     }
 
-    public void renderDocument( Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext )
-        throws RendererException, FileNotFoundException
-    {
-        SiteRendererSink sink = new SiteRendererSink( renderingContext );
+    public void renderDocument(Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext)
+            throws RendererException, FileNotFoundException {
+        SiteRendererSink sink = new SiteRendererSink(renderingContext);
 
         sink.head();
 
         sink.title();
 
-        sink.text( title );
+        sink.text(title);
 
         sink.title_();
 
@@ -95,58 +100,56 @@ public class CategorySummaryDocumentRenderer
 
         sink.section1();
         sink.sectionTitle1();
-        sink.text( title );
+        sink.text(title);
         sink.sectionTitle1_();
 
         sink.paragraph();
-        sink.text( desc1 + " " );
-        sink.link( "http://maven.apache.org" );
-        sink.text( "Maven" );
+        sink.text(desc1 + " ");
+        sink.link("http://maven.apache.org");
+        sink.text("Maven");
         sink.link_();
-        sink.text( " " + desc2 );
+        sink.text(" " + desc2);
         sink.paragraph_();
 
         sink.section2();
         sink.sectionTitle2();
         Locale locale = siteRenderingContext.getLocale();
-        sink.text( i18n.getString( "site-plugin", locale, "report.category.sectionTitle" ) );
+        sink.text(i18n.getString("site-plugin", locale, "report.category.sectionTitle"));
         sink.sectionTitle2_();
 
         sink.table();
 
-        sink.tableRows( new int[] {Sink.JUSTIFY_LEFT, Sink.JUSTIFY_LEFT}, false );
+        sink.tableRows(new int[] {Sink.JUSTIFY_LEFT, Sink.JUSTIFY_LEFT}, false);
 
-        String name = i18n.getString( "site-plugin", locale, "report.category.column.document" );
-        String description = i18n.getString( "site-plugin", locale, "report.category.column.description" );
+        String name = i18n.getString("site-plugin", locale, "report.category.column.document");
+        String description = i18n.getString("site-plugin", locale, "report.category.column.description");
 
         sink.tableRow();
 
         sink.tableHeaderCell();
 
-        sink.text( name );
+        sink.text(name);
 
         sink.tableHeaderCell_();
 
         sink.tableHeaderCell();
 
-        sink.text( description );
+        sink.text(description);
 
         sink.tableHeaderCell_();
 
         sink.tableRow_();
 
-        if ( categoryReports != null )
-        {
-            for ( MavenReport report : categoryReports )
-            {
+        if (categoryReports != null) {
+            for (MavenReport report : categoryReports) {
                 sink.tableRow();
                 sink.tableCell();
-                sink.link( report.getOutputName() + ".html" );
-                sink.text( report.getName( locale ) );
+                sink.link(report.getOutputName() + ".html");
+                sink.text(report.getName(locale));
                 sink.link_();
                 sink.tableCell_();
                 sink.tableCell();
-                sink.text( report.getDescription( locale ) );
+                sink.text(report.getDescription(locale));
                 sink.tableCell_();
                 sink.tableRow_();
             }
@@ -166,26 +169,22 @@ public class CategorySummaryDocumentRenderer
 
         sink.close();
 
-        renderer.mergeDocumentIntoSite( writer, sink, siteRenderingContext );
+        renderer.mergeDocumentIntoSite(writer, sink, siteRenderingContext);
     }
 
-    public String getOutputName()
-    {
+    public String getOutputName() {
         return renderingContext.getOutputName();
     }
 
-    public RenderingContext getRenderingContext()
-    {
+    public RenderingContext getRenderingContext() {
         return renderingContext;
     }
 
-    public boolean isOverwrite()
-    {
+    public boolean isOverwrite() {
         return true;
     }
-    
-    public boolean isExternalReport()
-    {
+
+    public boolean isExternalReport() {
         return false;
     }
 }

@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.run;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,9 +16,7 @@ package org.apache.maven.plugins.site.run;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+package org.apache.maven.plugins.site.run;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,32 +29,28 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class WebXmlTest
-{
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+public class WebXmlTest {
 
     @Test
-    public void testFilters()
-        throws Exception
-    {
+    public void testFilters() throws Exception {
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = docBuilder.parse( SiteRunMojo.class.getResourceAsStream( "/run/web.xml" ) );
+        Document doc = docBuilder.parse(SiteRunMojo.class.getResourceAsStream("/run/web.xml"));
         XPath xPath = XPathFactory.newInstance().newXPath();
 
         NodeList filterClasses =
-            (NodeList) xPath.compile( "/web-app/filter/filter-class" ).evaluate( doc, XPathConstants.NODESET );
+                (NodeList) xPath.compile("/web-app/filter/filter-class").evaluate(doc, XPathConstants.NODESET);
 
-        assertTrue( "Expected at least one filter", filterClasses.getLength() > 0 );
-        for ( int index = 0; index < filterClasses.getLength(); index++ )
-        {
-            Node filterClass = filterClasses.item( index ).getFirstChild();
-            try
-            {
-                Class.forName( filterClass.getNodeValue() );
-            }
-            catch ( ClassNotFoundException cnfe )
-            {
-                fail( "/web-app/filter[" + index + "]/filter-class refers to " + filterClass.getNodeValue()
-                    + ", which doesn't exist" );
+        assertTrue("Expected at least one filter", filterClasses.getLength() > 0);
+        for (int index = 0; index < filterClasses.getLength(); index++) {
+            Node filterClass = filterClasses.item(index).getFirstChild();
+            try {
+                Class.forName(filterClass.getNodeValue());
+            } catch (ClassNotFoundException cnfe) {
+                fail("/web-app/filter[" + index + "]/filter-class refers to " + filterClass.getNodeValue()
+                        + ", which doesn't exist");
             }
         }
     }

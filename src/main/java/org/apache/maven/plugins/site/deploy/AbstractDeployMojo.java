@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.deploy;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,14 @@ package org.apache.maven.plugins.site.deploy;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.deploy;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.doxia.site.decoration.inheritance.URIPathDescriptor;
@@ -56,13 +62,6 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 /**
  * Abstract base class for deploy mojos.
  * Since 2.3 this includes {@link SiteStageMojo} and {@link SiteStageDeployMojo}.
@@ -70,16 +69,13 @@ import java.util.Set;
  * @author ltheussl
  * @since 2.3
  */
-public abstract class AbstractDeployMojo
-    extends AbstractSiteMojo
-    implements Contextualizable
-{
+public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Contextualizable {
     /**
      * Directory containing the generated project sites and report distributions.
      *
      * @since 2.3
      */
-    @Parameter( alias = "outputDirectory", defaultValue = "${project.reporting.outputDirectory}", required = true )
+    @Parameter(alias = "outputDirectory", defaultValue = "${project.reporting.outputDirectory}", required = true)
     private File inputDirectory;
 
     /**
@@ -88,7 +84,7 @@ public abstract class AbstractDeployMojo
      *
      * @since 2.1
      */
-    @Parameter( property = "maven.site.chmod", defaultValue = "true" )
+    @Parameter(property = "maven.site.chmod", defaultValue = "true")
     private boolean chmod;
 
     /**
@@ -97,7 +93,7 @@ public abstract class AbstractDeployMojo
      *
      * @since 2.1
      */
-    @Parameter( property = "maven.site.chmod.mode", defaultValue = "g+w,a+rX" )
+    @Parameter(property = "maven.site.chmod.mode", defaultValue = "g+w,a+rX")
     private String chmodMode;
 
     /**
@@ -106,7 +102,7 @@ public abstract class AbstractDeployMojo
      *
      * @since 2.1
      */
-    @Parameter( property = "maven.site.chmod.options", defaultValue = "-Rf" )
+    @Parameter(property = "maven.site.chmod.options", defaultValue = "-Rf")
     private String chmodOptions;
 
     /**
@@ -114,7 +110,7 @@ public abstract class AbstractDeployMojo
      *
      * @since 3.0
      */
-    @Parameter( property = "maven.site.deploy.skip", defaultValue = "false" )
+    @Parameter(property = "maven.site.deploy.skip", defaultValue = "false")
     private boolean skipDeploy;
 
     /**
@@ -125,13 +121,13 @@ public abstract class AbstractDeployMojo
     /**
      * The current user system settings for use in Maven.
      */
-    @Parameter( defaultValue = "${settings}", readonly = true )
+    @Parameter(defaultValue = "${settings}", readonly = true)
     private Settings settings;
 
     /**
      * @since 3.0-beta-2
      */
-    @Parameter( defaultValue = "${session}", readonly = true )
+    @Parameter(defaultValue = "${session}", readonly = true)
     protected MavenSession mavenSession;
 
     private String topDistributionManagementSiteUrl;
@@ -143,22 +139,18 @@ public abstract class AbstractDeployMojo
     /**
      * {@inheritDoc}
      */
-    public void execute()
-        throws MojoExecutionException
-    {
-        if ( skip && isDeploy() )
-        {
-            getLog().info( "maven.site.skip = true: Skipping site deployment" );
+    public void execute() throws MojoExecutionException {
+        if (skip && isDeploy()) {
+            getLog().info("maven.site.skip = true: Skipping site deployment");
             return;
         }
 
-        if ( skipDeploy && isDeploy() )
-        {
-            getLog().info( "maven.site.deploy.skip = true: Skipping site deployment" );
+        if (skipDeploy && isDeploy()) {
+            getLog().info("maven.site.deploy.skip = true: Skipping site deployment");
             return;
         }
 
-        deployTo( new Repository( getDeploySite().getId(), getDeploySite().getUrl() ) );
+        deployTo(new Repository(getDeploySite().getId(), getDeploySite().getUrl()));
     }
 
     /**
@@ -168,18 +160,13 @@ public abstract class AbstractDeployMojo
      * @return if url already ends with '/' it is returned unchanged.
      *         Otherwise a '/' character is appended.
      */
-    protected static String appendSlash( final String url )
-    {
-        if ( url.endsWith( "/" ) )
-        {
+    protected static String appendSlash(final String url) {
+        if (url.endsWith("/")) {
             return url;
-        }
-        else
-        {
+        } else {
             return url + "/";
         }
     }
-
 
     /**
      * Detect if the mojo is staging or deploying.
@@ -197,23 +184,18 @@ public abstract class AbstractDeployMojo
      * @throws MojoExecutionException in case of issue
      * @see #determineTopDistributionManagementSiteUrl()
      */
-    protected String getTopDistributionManagementSiteUrl()
-        throws MojoExecutionException
-    {
-        if ( topDistributionManagementSiteUrl == null )
-        {
+    protected String getTopDistributionManagementSiteUrl() throws MojoExecutionException {
+        if (topDistributionManagementSiteUrl == null) {
             topDistributionManagementSiteUrl = determineTopDistributionManagementSiteUrl();
 
-            if ( !isDeploy() )
-            {
-                getLog().debug( "distributionManagement.site.url relative path: " + getDeployModuleDirectory() );
+            if (!isDeploy()) {
+                getLog().debug("distributionManagement.site.url relative path: " + getDeployModuleDirectory());
             }
         }
         return topDistributionManagementSiteUrl;
     }
 
-    protected abstract String determineTopDistributionManagementSiteUrl()
-        throws MojoExecutionException;
+    protected abstract String determineTopDistributionManagementSiteUrl() throws MojoExecutionException;
 
     /**
      * Get the site used for deployment, with its id to look up credential settings and the target URL for the deploy.
@@ -224,18 +206,14 @@ public abstract class AbstractDeployMojo
      * @throws MojoExecutionException in case of issue
      * @see #determineDeploySite()
      */
-    protected Site getDeploySite()
-        throws MojoExecutionException
-    {
-        if ( deploySite == null )
-        {
+    protected Site getDeploySite() throws MojoExecutionException {
+        if (deploySite == null) {
             deploySite = determineDeploySite();
         }
         return deploySite;
     }
 
-    protected abstract Site determineDeploySite()
-        throws MojoExecutionException;
+    protected abstract Site determineDeploySite() throws MojoExecutionException;
 
     /**
      * Find the relative path between the distribution URLs of the top site and the current project.
@@ -243,21 +221,19 @@ public abstract class AbstractDeployMojo
      * @return the relative path or "./" if the two URLs are the same.
      * @throws MojoExecutionException in case of issue
      */
-    protected String getDeployModuleDirectory()
-        throws MojoExecutionException
-    {
-        String to = getSite( project ).getUrl();
+    protected String getDeployModuleDirectory() throws MojoExecutionException {
+        String to = getSite(project).getUrl();
 
-        getLog().debug( "Mapping url source calculation: " );
+        getLog().debug("Mapping url source calculation: ");
         String from = getTopDistributionManagementSiteUrl();
 
-        String relative = siteTool.getRelativePath( to, from );
+        String relative = siteTool.getRelativePath(to, from);
 
         // SiteTool.getRelativePath() uses File.separatorChar,
         // so we need to convert '\' to '/' in order for the URL to be valid for Windows users
-        relative = relative.replace( '\\', '/' );
+        relative = relative.replace('\\', '/');
 
-        return ( "".equals( relative ) ) ? "./" : relative;
+        return ("".equals(relative)) ? "./" : relative;
     }
 
     /**
@@ -269,194 +245,154 @@ public abstract class AbstractDeployMojo
      *                   {@link Repository#getUrl() scm url} to deploy to.
      * @throws MojoExecutionException if the deploy fails.
      */
-    private void deployTo( final Repository repository )
-        throws MojoExecutionException
-    {
-        if ( !inputDirectory.exists() )
-        {
-            throw new MojoExecutionException( "The site does not exist, please run site:site first" );
+    private void deployTo(final Repository repository) throws MojoExecutionException {
+        if (!inputDirectory.exists()) {
+            throw new MojoExecutionException("The site does not exist, please run site:site first");
         }
 
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( "Deploying to '" + repository.getUrl() + "',\n    Using credentials from server id '"
-                                + repository.getId() + "'" );
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Deploying to '" + repository.getUrl() + "',\n    Using credentials from server id '"
+                    + repository.getId() + "'");
         }
 
-        deploy( inputDirectory, repository );
+        deploy(inputDirectory, repository);
     }
 
-    private void deploy( final File directory, final Repository repository )
-        throws MojoExecutionException
-    {
+    private void deploy(final File directory, final Repository repository) throws MojoExecutionException {
         // TODO: work on moving this into the deployer like the other deploy methods
-        final Wagon wagon = getWagon( repository, wagonManager );
+        final Wagon wagon = getWagon(repository, wagonManager);
 
-        try
-        {
-            SettingsDecrypter settingsDecrypter = container.lookup( SettingsDecrypter.class );
+        try {
+            SettingsDecrypter settingsDecrypter = container.lookup(SettingsDecrypter.class);
 
-            ProxyInfo proxyInfo = getProxy( repository, settingsDecrypter );
+            ProxyInfo proxyInfo = getProxy(repository, settingsDecrypter);
 
-            push( directory, repository, wagon, proxyInfo, getLocales(), getDeployModuleDirectory() );
+            push(directory, repository, wagon, proxyInfo, getLocales(), getDeployModuleDirectory());
 
-            if ( chmod )
-            {
-                chmod( wagon, repository, chmodOptions, chmodMode );
+            if (chmod) {
+                chmod(wagon, repository, chmodOptions, chmodMode);
             }
-        }
-        catch ( ComponentLookupException cle )
-        {
-            throw new MojoExecutionException( "Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle );
-        }
-        finally
-        {
-            try
-            {
+        } catch (ComponentLookupException cle) {
+            throw new MojoExecutionException("Unable to lookup SettingsDecrypter: " + cle.getMessage(), cle);
+        } finally {
+            try {
                 wagon.disconnect();
-            }
-            catch ( ConnectionException e )
-            {
-                getLog().error( "Error disconnecting wagon - ignored", e );
+            } catch (ConnectionException e) {
+                getLog().error("Error disconnecting wagon - ignored", e);
             }
         }
     }
 
-    private Wagon getWagon( final Repository repository, final WagonManager manager )
-        throws MojoExecutionException
-    {
+    private Wagon getWagon(final Repository repository, final WagonManager manager) throws MojoExecutionException {
         final Wagon wagon;
 
-        try
-        {
-            wagon = manager.getWagon( repository );
-        }
-        catch ( UnsupportedProtocolException e )
-        {
+        try {
+            wagon = manager.getWagon(repository);
+        } catch (UnsupportedProtocolException e) {
             String shortMessage = "Unsupported protocol: '" + repository.getProtocol() + "' for site deployment to "
-                + "distributionManagement.site.url=" + repository.getUrl() + ".";
+                    + "distributionManagement.site.url=" + repository.getUrl() + ".";
             String longMessage =
-                "\n" + shortMessage + "\n" + "Currently supported protocols are: " + getSupportedProtocols() + ".\n"
-                    + "    Protocols may be added through wagon providers.\n" + "    For more information, see "
-                    + "https://maven.apache.org/plugins/maven-site-plugin/examples/adding-deploy-protocol.html";
+                    "\n" + shortMessage + "\n" + "Currently supported protocols are: " + getSupportedProtocols() + ".\n"
+                            + "    Protocols may be added through wagon providers.\n" + "    For more information, see "
+                            + "https://maven.apache.org/plugins/maven-site-plugin/examples/adding-deploy-protocol.html";
 
-            getLog().error( longMessage );
+            getLog().error(longMessage);
 
-            throw new MojoExecutionException( shortMessage );
-        }
-        catch ( TransferFailedException e )
-        {
-            throw new MojoExecutionException( "Unable to configure Wagon: '" + repository.getProtocol() + "'", e );
+            throw new MojoExecutionException(shortMessage);
+        } catch (TransferFailedException e) {
+            throw new MojoExecutionException("Unable to configure Wagon: '" + repository.getProtocol() + "'", e);
         }
 
-        if ( !wagon.supportsDirectoryCopy() )
-        {
+        if (!wagon.supportsDirectoryCopy()) {
             throw new MojoExecutionException(
-                "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying" );
+                    "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
         }
 
         return wagon;
     }
 
-    private String getSupportedProtocols()
-    {
-        try
-        {
-            Set<String> protocols = container.lookupMap( Wagon.class ).keySet();
+    private String getSupportedProtocols() {
+        try {
+            Set<String> protocols = container.lookupMap(Wagon.class).keySet();
 
-            return StringUtils.join( protocols.iterator(), ", " );
-        }
-        catch ( ComponentLookupException e )
-        {
+            return StringUtils.join(protocols.iterator(), ", ");
+        } catch (ComponentLookupException e) {
             // in the unexpected case there is a problem when instantiating a wagon provider
-            getLog().error( e );
+            getLog().error(e);
         }
         return "";
     }
 
-    private void push( final File inputDirectory, final Repository repository, final Wagon wagon,
-                       final ProxyInfo proxyInfo, final List<Locale> localesList, final String relativeDir )
-        throws MojoExecutionException
-    {
-        AuthenticationInfo authenticationInfo = wagonManager.getAuthenticationInfo( repository.getId() );
-        getLog().debug( "authenticationInfo with id '" + repository.getId() + "': "
-                            + ( ( authenticationInfo == null ) ? "-" : authenticationInfo.getUserName() ) );
+    private void push(
+            final File inputDirectory,
+            final Repository repository,
+            final Wagon wagon,
+            final ProxyInfo proxyInfo,
+            final List<Locale> localesList,
+            final String relativeDir)
+            throws MojoExecutionException {
+        AuthenticationInfo authenticationInfo = wagonManager.getAuthenticationInfo(repository.getId());
+        getLog().debug("authenticationInfo with id '" + repository.getId() + "': "
+                + ((authenticationInfo == null) ? "-" : authenticationInfo.getUserName()));
 
-        try
-        {
-            if ( getLog().isDebugEnabled() )
-            {
+        try {
+            if (getLog().isDebugEnabled()) {
                 Debug debug = new Debug();
 
-                wagon.addSessionListener( debug );
+                wagon.addSessionListener(debug);
 
-                wagon.addTransferListener( debug );
-            }
-
-            if ( proxyInfo != null )
-            {
-                getLog().debug( "connect with proxyInfo" );
-                wagon.connect( repository, authenticationInfo, proxyInfo );
-            }
-            else if ( proxyInfo == null && authenticationInfo != null )
-            {
-                getLog().debug( "connect with authenticationInfo and without proxyInfo" );
-                wagon.connect( repository, authenticationInfo );
-            }
-            else
-            {
-                getLog().debug( "connect without authenticationInfo and without proxyInfo" );
-                wagon.connect( repository );
+                wagon.addTransferListener(debug);
             }
 
-            getLog().info( "Pushing " + inputDirectory );
+            if (proxyInfo != null) {
+                getLog().debug("connect with proxyInfo");
+                wagon.connect(repository, authenticationInfo, proxyInfo);
+            } else if (proxyInfo == null && authenticationInfo != null) {
+                getLog().debug("connect with authenticationInfo and without proxyInfo");
+                wagon.connect(repository, authenticationInfo);
+            } else {
+                getLog().debug("connect without authenticationInfo and without proxyInfo");
+                wagon.connect(repository);
+            }
+
+            getLog().info("Pushing " + inputDirectory);
 
             // Default is first in the list
-            final Locale defaultLocale = localesList.get( 0 );
+            final Locale defaultLocale = localesList.get(0);
 
-            for ( Locale locale : localesList )
-            {
-                if ( locale.equals( defaultLocale ) )
-                {
+            for (Locale locale : localesList) {
+                if (locale.equals(defaultLocale)) {
                     // TODO: this also uploads the non-default locales,
                     // is there a way to exclude directories in wagon?
-                    getLog().info( "   >>> to " + appendSlash( repository.getUrl() ) + relativeDir );
+                    getLog().info("   >>> to " + appendSlash(repository.getUrl()) + relativeDir);
 
-                    wagon.putDirectory( inputDirectory, relativeDir );
-                }
-                else
-                {
-                    getLog().info( "   >>> to " + appendSlash( repository.getUrl() ) + locale + "/"
-                        + relativeDir );
+                    wagon.putDirectory(inputDirectory, relativeDir);
+                } else {
+                    getLog().info("   >>> to " + appendSlash(repository.getUrl()) + locale + "/" + relativeDir);
 
-                    wagon.putDirectory( new File( inputDirectory, locale.toString() ),
-                                        locale + "/" + relativeDir );
+                    wagon.putDirectory(new File(inputDirectory, locale.toString()), locale + "/" + relativeDir);
                 }
             }
-        }
-        catch ( ResourceDoesNotExistException | TransferFailedException | AuthorizationException | ConnectionException
-            |  AuthenticationException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
+        } catch (ResourceDoesNotExistException
+                | TransferFailedException
+                | AuthorizationException
+                | ConnectionException
+                | AuthenticationException e) {
+            throw new MojoExecutionException("Error uploading site", e);
         }
     }
 
-    private static void chmod( final Wagon wagon, final Repository repository, final String chmodOptions,
-                               final String chmodMode )
-        throws MojoExecutionException
-    {
-        try
-        {
-            if ( wagon instanceof CommandExecutor )
-            {
+    private static void chmod(
+            final Wagon wagon, final Repository repository, final String chmodOptions, final String chmodMode)
+            throws MojoExecutionException {
+        try {
+            if (wagon instanceof CommandExecutor) {
                 CommandExecutor exec = (CommandExecutor) wagon;
-                exec.executeCommand( "chmod " + chmodOptions + " " + chmodMode + " " + repository.getBasedir() );
+                exec.executeCommand("chmod " + chmodOptions + " " + chmodMode + " " + repository.getBasedir());
             }
             // else ? silently ignore, FileWagon is not a CommandExecutor!
-        }
-        catch ( CommandExecutionException e )
-        {
-            throw new MojoExecutionException( "Error uploading site", e );
+        } catch (CommandExecutionException e) {
+            throw new MojoExecutionException("Error uploading site", e);
         }
     }
 
@@ -479,46 +415,41 @@ public abstract class AbstractDeployMojo
      * @param wagonManager the WagonManager used to connect to the Repository
      * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found
      */
-    public static ProxyInfo getProxyInfo( Repository repository, WagonManager wagonManager )
-    {
-        ProxyInfo proxyInfo = wagonManager.getProxy( repository.getProtocol() );
+    public static ProxyInfo getProxyInfo(Repository repository, WagonManager wagonManager) {
+        ProxyInfo proxyInfo = wagonManager.getProxy(repository.getProtocol());
 
-        if ( proxyInfo == null )
-        {
+        if (proxyInfo == null) {
             return null;
         }
 
         String host = repository.getHost();
         String nonProxyHostsAsString = proxyInfo.getNonProxyHosts();
-        for ( String nonProxyHost : StringUtils.split( nonProxyHostsAsString, ",;|" ) )
-        {
-            if ( StringUtils.contains( nonProxyHost, "*" ) )
-            {
+        for (String nonProxyHost : StringUtils.split(nonProxyHostsAsString, ",;|")) {
+            if (StringUtils.contains(nonProxyHost, "*")) {
                 // Handle wildcard at the end, beginning or middle of the nonProxyHost
-                final int pos = nonProxyHost.indexOf( '*' );
-                String nonProxyHostPrefix = nonProxyHost.substring( 0, pos );
-                String nonProxyHostSuffix = nonProxyHost.substring( pos + 1 );
+                final int pos = nonProxyHost.indexOf('*');
+                String nonProxyHostPrefix = nonProxyHost.substring(0, pos);
+                String nonProxyHostSuffix = nonProxyHost.substring(pos + 1);
                 // prefix*
-                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
-                    && StringUtils.isEmpty( nonProxyHostSuffix ) )
-                {
+                if (StringUtils.isNotEmpty(nonProxyHostPrefix)
+                        && host.startsWith(nonProxyHostPrefix)
+                        && StringUtils.isEmpty(nonProxyHostSuffix)) {
                     return null;
                 }
                 // *suffix
-                if ( StringUtils.isEmpty( nonProxyHostPrefix ) && StringUtils.isNotEmpty( nonProxyHostSuffix )
-                    && host.endsWith( nonProxyHostSuffix ) )
-                {
+                if (StringUtils.isEmpty(nonProxyHostPrefix)
+                        && StringUtils.isNotEmpty(nonProxyHostSuffix)
+                        && host.endsWith(nonProxyHostSuffix)) {
                     return null;
                 }
                 // prefix*suffix
-                if ( StringUtils.isNotEmpty( nonProxyHostPrefix ) && host.startsWith( nonProxyHostPrefix )
-                    && StringUtils.isNotEmpty( nonProxyHostSuffix ) && host.endsWith( nonProxyHostSuffix ) )
-                {
+                if (StringUtils.isNotEmpty(nonProxyHostPrefix)
+                        && host.startsWith(nonProxyHostPrefix)
+                        && StringUtils.isNotEmpty(nonProxyHostSuffix)
+                        && host.endsWith(nonProxyHostSuffix)) {
                     return null;
                 }
-            }
-            else if ( host.equals( nonProxyHost ) )
-            {
+            } else if (host.equals(nonProxyHost)) {
                 return null;
             }
         }
@@ -532,72 +463,60 @@ public abstract class AbstractDeployMojo
      * @param settingsDecrypter settings password decrypter
      * @return a ProxyInfo object instantiated or <code>null</code> if no matching proxy is found.
      */
-    private ProxyInfo getProxy( Repository repository, SettingsDecrypter settingsDecrypter )
-    {
+    private ProxyInfo getProxy(Repository repository, SettingsDecrypter settingsDecrypter) {
         String protocol = repository.getProtocol();
         String url = repository.getUrl();
 
-        getLog().debug( "repository protocol " + protocol );
+        getLog().debug("repository protocol " + protocol);
 
         String originalProtocol = protocol;
         // olamy: hackish here protocol (wagon hint in fact !) is dav
         // but the real protocol (transport layer) is http(s)
         // and it's the one use in wagon to find the proxy arghhh
         // so we will check both
-        if ( StringUtils.equalsIgnoreCase( "dav", protocol ) && url.startsWith( "dav:" ) )
-        {
-            url = url.substring( 4 );
-            if ( url.startsWith( "http" ) )
-            {
-                try
-                {
-                    URL urlSite = new URL( url );
+        if (StringUtils.equalsIgnoreCase("dav", protocol) && url.startsWith("dav:")) {
+            url = url.substring(4);
+            if (url.startsWith("http")) {
+                try {
+                    URL urlSite = new URL(url);
                     protocol = urlSite.getProtocol();
-                    getLog().debug( "found dav protocol so transform to real transport protocol " + protocol );
-                }
-                catch ( MalformedURLException e )
-                {
-                    getLog().warn( "fail to build URL with " + url );
+                    getLog().debug("found dav protocol so transform to real transport protocol " + protocol);
+                } catch (MalformedURLException e) {
+                    getLog().warn("fail to build URL with " + url);
                 }
             }
-        }
-        else
-        {
-            getLog().debug( "getProxy 'protocol': " + protocol );
+        } else {
+            getLog().debug("getProxy 'protocol': " + protocol);
         }
 
-        if ( mavenSession != null && protocol != null )
-        {
+        if (mavenSession != null && protocol != null) {
             MavenExecutionRequest request = mavenSession.getRequest();
 
-            if ( request != null )
-            {
+            if (request != null) {
                 List<Proxy> proxies = request.getProxies();
 
-                if ( proxies != null )
-                {
-                    for ( Proxy proxy : proxies )
-                    {
-                        if ( proxy.isActive() && ( protocol.equalsIgnoreCase( proxy.getProtocol() )
-                            || originalProtocol.equalsIgnoreCase( proxy.getProtocol() ) ) )
-                        {
+                if (proxies != null) {
+                    for (Proxy proxy : proxies) {
+                        if (proxy.isActive()
+                                && (protocol.equalsIgnoreCase(proxy.getProtocol())
+                                        || originalProtocol.equalsIgnoreCase(proxy.getProtocol()))) {
                             SettingsDecryptionResult result =
-                                settingsDecrypter.decrypt( new DefaultSettingsDecryptionRequest( proxy ) );
+                                    settingsDecrypter.decrypt(new DefaultSettingsDecryptionRequest(proxy));
                             proxy = result.getProxy();
 
                             ProxyInfo proxyInfo = new ProxyInfo();
-                            proxyInfo.setHost( proxy.getHost() );
+                            proxyInfo.setHost(proxy.getHost());
                             // so hackish for wagon the protocol is https for site dav:
                             // dav:https://dav.codehaus.org/mojo/
-                            proxyInfo.setType( protocol ); //proxy.getProtocol() );
-                            proxyInfo.setPort( proxy.getPort() );
-                            proxyInfo.setNonProxyHosts( proxy.getNonProxyHosts() );
-                            proxyInfo.setUserName( proxy.getUsername() );
-                            proxyInfo.setPassword( proxy.getPassword() );
+                            proxyInfo.setType(protocol); // proxy.getProtocol() );
+                            proxyInfo.setPort(proxy.getPort());
+                            proxyInfo.setNonProxyHosts(proxy.getNonProxyHosts());
+                            proxyInfo.setUserName(proxy.getUsername());
+                            proxyInfo.setPassword(proxy.getPassword());
 
-                            getLog().debug( "found proxyInfo "
-                                                + ( "host:port " + proxyInfo.getHost() + ":" + proxyInfo.getPort()
-                                                    + ", " + proxyInfo.getUserName() ) );
+                            getLog().debug("found proxyInfo "
+                                    + ("host:port " + proxyInfo.getHost() + ":" + proxyInfo.getPort() + ", "
+                                            + proxyInfo.getUserName()));
 
                             return proxyInfo;
                         }
@@ -605,17 +524,15 @@ public abstract class AbstractDeployMojo
                 }
             }
         }
-        getLog().debug( "getProxy 'protocol': " + protocol + " no ProxyInfo found" );
+        getLog().debug("getProxy 'protocol': " + protocol + " no ProxyInfo found");
         return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void contextualize( Context context )
-        throws ContextException
-    {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    public void contextualize(Context context) throws ContextException {
+        container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
     }
 
     /**
@@ -626,37 +543,31 @@ public abstract class AbstractDeployMojo
      *         Also site.getUrl() and site.getId() are guaranteed to be not null.
      * @throws MojoExecutionException if any of the site info is missing.
      */
-    protected static Site getSite( final MavenProject project )
-        throws MojoExecutionException
-    {
+    protected static Site getSite(final MavenProject project) throws MojoExecutionException {
         final DistributionManagement distributionManagement = project.getDistributionManagement();
 
-        if ( distributionManagement == null )
-        {
-            throw new MojoExecutionException( "Missing distribution management in project " + getFullName( project ) );
+        if (distributionManagement == null) {
+            throw new MojoExecutionException("Missing distribution management in project " + getFullName(project));
         }
 
         final Site site = distributionManagement.getSite();
 
-        if ( site == null )
-        {
-            throw new MojoExecutionException( "Missing site information in the distribution management of the project "
-                + getFullName( project ) );
+        if (site == null) {
+            throw new MojoExecutionException(
+                    "Missing site information in the distribution management of the project " + getFullName(project));
         }
 
-        if ( site.getUrl() == null || site.getId() == null )
-        {
-            throw new MojoExecutionException( "Missing site data: specify url and id for project "
-                + getFullName( project ) );
+        if (site.getUrl() == null || site.getId() == null) {
+            throw new MojoExecutionException(
+                    "Missing site data: specify url and id for project " + getFullName(project));
         }
 
         return site;
     }
 
-    private static String getFullName( MavenProject project )
-    {
+    private static String getFullName(MavenProject project) {
         return project.getName() + " (" + project.getGroupId() + ':' + project.getArtifactId() + ':'
-            + project.getVersion() + ')';
+                + project.getVersion() + ')';
     }
 
     /**
@@ -671,36 +582,29 @@ public abstract class AbstractDeployMojo
      * @throws MojoExecutionException if no site info is found in the tree.
      * @see URIPathDescriptor#sameSite(java.net.URI)
      */
-    protected MavenProject getTopLevelProject( MavenProject project )
-        throws MojoExecutionException
-    {
-        Site site = getSite( project );
+    protected MavenProject getTopLevelProject(MavenProject project) throws MojoExecutionException {
+        Site site = getSite(project);
 
         MavenProject parent = project;
 
-        while ( parent.getParent() != null )
-        {
+        while (parent.getParent() != null) {
             MavenProject oldProject = parent;
             // MSITE-585, MNG-1943
-            parent = siteTool.getParentProject( parent, reactorProjects, localRepository );
+            parent = siteTool.getParentProject(parent, reactorProjects, localRepository);
 
             Site oldSite = site;
 
-            try
-            {
-                site = getSite( parent );
-            }
-            catch ( MojoExecutionException e )
-            {
+            try {
+                site = getSite(parent);
+            } catch (MojoExecutionException e) {
                 return oldProject;
             }
 
             // MSITE-600
-            URIPathDescriptor siteURI = new URIPathDescriptor( URIEncoder.encodeURI( site.getUrl() ), "" );
-            URIPathDescriptor oldSiteURI = new URIPathDescriptor( URIEncoder.encodeURI( oldSite.getUrl() ), "" );
+            URIPathDescriptor siteURI = new URIPathDescriptor(URIEncoder.encodeURI(site.getUrl()), "");
+            URIPathDescriptor oldSiteURI = new URIPathDescriptor(URIEncoder.encodeURI(oldSite.getUrl()), "");
 
-            if ( !siteURI.sameSite( oldSiteURI.getBaseURI() ) )
-            {
+            if (!siteURI.sameSite(oldSiteURI.getBaseURI())) {
                 return oldProject;
             }
         }
@@ -708,34 +612,30 @@ public abstract class AbstractDeployMojo
         return parent;
     }
 
-    private static class URIEncoder
-    {
+    private static class URIEncoder {
         private static final String MARK = "-_.!~*'()";
         private static final String RESERVED = ";/?:@&=+$,";
 
-        private static String encodeURI( final String uriString )
-        {
+        private static String encodeURI(final String uriString) {
             final char[] chars = uriString.toCharArray();
-            final StringBuilder uri = new StringBuilder( chars.length );
+            final StringBuilder uri = new StringBuilder(chars.length);
 
             // MSITE-750: wagon dav: pseudo-protocol
-            if ( uriString.startsWith( "dav:http" ) )
-            {
+            if (uriString.startsWith("dav:http")) {
                 // transform dav:http to dav-http
                 chars[3] = '-';
             }
 
-            for ( char c : chars )
-            {
-                if ( ( c >= '0' && c <= '9' ) || ( c >= 'a' && c <= 'z' ) || ( c >= 'A' && c <= 'Z' )
-                        || MARK.indexOf( c ) != -1  || RESERVED.indexOf( c ) != -1 )
-                {
-                    uri.append( c );
-                }
-                else
-                {
-                    uri.append( '%' );
-                    uri.append( Integer.toHexString( (int) c ) );
+            for (char c : chars) {
+                if ((c >= '0' && c <= '9')
+                        || (c >= 'a' && c <= 'z')
+                        || (c >= 'A' && c <= 'Z')
+                        || MARK.indexOf(c) != -1
+                        || RESERVED.indexOf(c) != -1) {
+                    uri.append(c);
+                } else {
+                    uri.append('%');
+                    uri.append(Integer.toHexString((int) c));
                 }
             }
             return uri.toString();

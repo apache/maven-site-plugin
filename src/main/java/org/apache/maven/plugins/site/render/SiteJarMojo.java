@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.render;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.plugins.site.render;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.render;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,26 +45,27 @@ import org.codehaus.plexus.archiver.jar.ManifestException;
  * @since 2.0-beta-6
  */
 // MSITE-665: requiresDependencyResolution workaround for MPLUGIN-253
-@Mojo( name = "jar", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.TEST,
-       requiresReports = true )
-public class SiteJarMojo
-    extends SiteMojo
-{
-    private static final String[] DEFAULT_ARCHIVE_EXCLUDES = new String[]{ };
+@Mojo(
+        name = "jar",
+        defaultPhase = LifecyclePhase.PACKAGE,
+        requiresDependencyResolution = ResolutionScope.TEST,
+        requiresReports = true)
+public class SiteJarMojo extends SiteMojo {
+    private static final String[] DEFAULT_ARCHIVE_EXCLUDES = new String[] {};
 
-    private static final String[] DEFAULT_ARCHIVE_INCLUDES = new String[]{ "**/**" };
+    private static final String[] DEFAULT_ARCHIVE_INCLUDES = new String[] {"**/**"};
 
     /**
      * Specifies the directory where the generated jar file will be put.
      */
-    @Parameter( property = "project.build.directory", required = true )
+    @Parameter(property = "project.build.directory", required = true)
     private String jarOutputDirectory;
 
     /**
      * Specifies the filename that will be used for the generated jar file.
      * Please note that "-site" will be appended to the file name.
      */
-    @Parameter( property = "project.build.finalName", required = true )
+    @Parameter(property = "project.build.finalName", required = true)
     private String finalName;
 
     /**
@@ -77,7 +77,7 @@ public class SiteJarMojo
     /**
      * Specifies whether to attach the generated artifact to the project.
      */
-    @Parameter( property = "site.attach", defaultValue = "true" )
+    @Parameter(property = "site.attach", defaultValue = "true")
     private boolean attach;
 
     /**
@@ -85,7 +85,7 @@ public class SiteJarMojo
      *
      * @since 3.1
      */
-    @Component( role = Archiver.class, hint = "jar" )
+    @Component(role = Archiver.class, hint = "jar")
     private JarArchiver jarArchiver;
 
     /**
@@ -122,50 +122,39 @@ public class SiteJarMojo
      *
      * @since 3.9.0
      */
-    @Parameter( defaultValue = "${project.build.outputTimestamp}" )
+    @Parameter(defaultValue = "${project.build.outputTimestamp}")
     private String outputTimestamp;
 
     /**
      * @see org.apache.maven.plugin.Mojo#execute()
      */
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
-    {
-        if ( skip )
-        {
-            getLog().info( "maven.site.skip = true: Skipping jar generation" );
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        if (skip) {
+            getLog().info("maven.site.skip = true: Skipping jar generation");
             return;
         }
 
         super.execute();
 
-        try
-        {
-            File outputFile = createArchive( outputDirectory,
-                                             finalName + "-" + getClassifier() + "." + getArtifactType() );
+        try {
+            File outputFile =
+                    createArchive(outputDirectory, finalName + "-" + getClassifier() + "." + getArtifactType());
 
-            if ( attach )
-            {
-                projectHelper.attachArtifact( project, getArtifactType(), getClassifier(), outputFile );
+            if (attach) {
+                projectHelper.attachArtifact(project, getArtifactType(), getClassifier(), outputFile);
+            } else {
+                getLog().info("NOT adding site jar to the list of attached artifacts.");
             }
-            else
-            {
-                getLog().info( "NOT adding site jar to the list of attached artifacts." );
-            }
-        }
-        catch ( ArchiverException | IOException | ManifestException | DependencyResolutionRequiredException e )
-        {
-            throw new MojoExecutionException( "Error while creating archive.", e );
+        } catch (ArchiverException | IOException | ManifestException | DependencyResolutionRequiredException e) {
+            throw new MojoExecutionException("Error while creating archive.", e);
         }
     }
 
-    protected String getArtifactType()
-    {
+    protected String getArtifactType() {
         return "jar";
     }
 
-    protected String getClassifier()
-    {
+    protected String getClassifier() {
         return "site";
     }
 
@@ -180,49 +169,41 @@ public class SiteJarMojo
      * @throws ManifestException
      * @throws DependencyResolutionRequiredException
      */
-    private File createArchive( File siteDirectory, String jarFilename )
-        throws ArchiverException, IOException, ManifestException, DependencyResolutionRequiredException
-    {
-        File siteJar = new File( jarOutputDirectory, jarFilename );
+    private File createArchive(File siteDirectory, String jarFilename)
+            throws ArchiverException, IOException, ManifestException, DependencyResolutionRequiredException {
+        File siteJar = new File(jarOutputDirectory, jarFilename);
 
         MavenArchiver archiver = new MavenArchiver();
-        archiver.setCreatedBy( "Maven Site Plugin", "org.apache.maven.plugins", "maven-site-plugin" );
+        archiver.setCreatedBy("Maven Site Plugin", "org.apache.maven.plugins", "maven-site-plugin");
 
-        archiver.setArchiver( this.jarArchiver );
+        archiver.setArchiver(this.jarArchiver);
 
-        archiver.setOutputFile( siteJar );
+        archiver.setOutputFile(siteJar);
 
         // configure for Reproducible Builds based on outputTimestamp value
-        archiver.configureReproducibleBuild( outputTimestamp );
+        archiver.configureReproducibleBuild(outputTimestamp);
 
-        if ( !siteDirectory.isDirectory() )
-        {
-            getLog().warn( "JAR will be empty - no content was marked for inclusion!" );
-        }
-        else
-        {
-            archiver.getArchiver().addDirectory( siteDirectory, getArchiveIncludes(), getArchiveExcludes() );
+        if (!siteDirectory.isDirectory()) {
+            getLog().warn("JAR will be empty - no content was marked for inclusion!");
+        } else {
+            archiver.getArchiver().addDirectory(siteDirectory, getArchiveIncludes(), getArchiveExcludes());
         }
 
-        archiver.createArchive( getSession(), getProject(), archive );
+        archiver.createArchive(getSession(), getProject(), archive);
 
         return siteJar;
     }
 
-    private String[] getArchiveIncludes()
-    {
-        if ( this.archiveIncludes != null && this.archiveIncludes.length > 0 )
-        {
+    private String[] getArchiveIncludes() {
+        if (this.archiveIncludes != null && this.archiveIncludes.length > 0) {
             return this.archiveIncludes;
         }
 
         return DEFAULT_ARCHIVE_INCLUDES;
     }
 
-    private String[] getArchiveExcludes()
-    {
-        if ( this.archiveExcludes != null && this.archiveExcludes.length > 0 )
-        {
+    private String[] getArchiveExcludes() {
+        if (this.archiveExcludes != null && this.archiveExcludes.length > 0) {
             return this.archiveExcludes;
         }
         return DEFAULT_ARCHIVE_EXCLUDES;
