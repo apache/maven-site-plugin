@@ -41,6 +41,7 @@ import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.plugins.site.render.ReportDocumentRenderer;
+import org.eclipse.jetty.http.MimeTypes;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -140,13 +141,21 @@ public class DoxiaFilter implements Filter {
             try {
                 DocumentRenderer renderer = documents.get(path);
                 logDocumentRenderer(path, renderer);
+                String outputName = renderer.getOutputName();
+                String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
+                if (contentType != null) {
+                    servletResponse.setContentType(contentType);
+                }
                 renderer.renderDocument(servletResponse.getWriter(), siteRenderer, context);
 
                 if (renderer instanceof ReportDocumentRenderer) {
                     ReportDocumentRenderer reportDocumentRenderer = (ReportDocumentRenderer) renderer;
                     if (reportDocumentRenderer.isExternalReport()) {
-                        Path externalReportFile = outputDirectory.toPath().resolve(renderer.getOutputName());
+                        Path externalReportFile = outputDirectory.toPath().resolve(outputName);
                         servletResponse.reset();
+                        if (contentType != null) {
+                            servletResponse.setContentType(contentType);
+                        }
                         Files.copy(externalReportFile, servletResponse.getOutputStream());
                     }
                 }
@@ -163,6 +172,11 @@ public class DoxiaFilter implements Filter {
                 if (locateDocuments.containsKey(path)) {
                     DocumentRenderer renderer = locateDocuments.get(path);
                     logDocumentRenderer(path, renderer);
+                    String outputName = renderer.getOutputName();
+                    String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
+                    if (contentType != null) {
+                        servletResponse.setContentType(contentType);
+                    }
                     renderer.renderDocument(servletResponse.getWriter(), siteRenderer, generatedSiteContext);
 
                     return;
@@ -173,8 +187,6 @@ public class DoxiaFilter implements Filter {
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
-
-        servletContext.log(path);
     }
 
     private void logDocumentRenderer(String path, DocumentRenderer renderer) {
