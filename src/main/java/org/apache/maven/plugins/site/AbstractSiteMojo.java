@@ -27,7 +27,6 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.rtinfo.RuntimeInformation;
 import org.codehaus.plexus.i18n.I18N;
 
 /**
@@ -82,14 +81,6 @@ public abstract class AbstractSiteMojo extends AbstractMojo {
      */
     @Parameter(defaultValue = "${reactorProjects}", required = true, readonly = true)
     protected List<MavenProject> reactorProjects;
-
-    @Component
-    protected RuntimeInformation runtimeInformation;
-
-    @Deprecated
-    protected String getMavenVersion() {
-        return runtimeInformation.getMavenVersion();
-    }
 
     protected List<Locale> getLocales() {
         return siteTool.getSiteLocales(locales);
