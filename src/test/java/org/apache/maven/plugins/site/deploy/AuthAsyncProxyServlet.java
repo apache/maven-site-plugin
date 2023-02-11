@@ -31,7 +31,6 @@ import java.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.proxy.AsyncProxyServlet;
-import org.eclipse.jetty.util.B64Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +91,7 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
             String proxyAuthorization = request.getHeader("Proxy-Authorization");
             if (proxyAuthorization != null && proxyAuthorization.startsWith("Basic ")) {
                 String proxyAuth = proxyAuthorization.substring(6);
-                String authorization = new String(B64Code.decode(proxyAuth));
+                String authorization = new String(Base64.getDecoder().decode(proxyAuth));
                 String[] authTokens = authorization.split(":");
                 String user = authTokens[0];
                 String password = authTokens[1];
