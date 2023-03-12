@@ -247,7 +247,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             mpir.setArtifactId("maven-project-info-reports-plugin");
             reportingPlugins.add(mpir);
         }
-        return reportingPlugins.toArray(new ReportPlugin[reportingPlugins.size()]);
+        return reportingPlugins.toArray(new ReportPlugin[0]);
     }
 
     protected SiteRenderingContext createSiteRenderingContext(Locale locale)
