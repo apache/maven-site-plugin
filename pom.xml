@@ -203,16 +203,16 @@ under the License.
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
     <checkstylePluginVersion>3.2.1</checkstylePluginVersion>
-    <javadocPluginVersion>3.4.1</javadocPluginVersion>
+    <javadocPluginVersion>3.5.0</javadocPluginVersion>
     <pmdPluginVersion>3.20.0</pmdPluginVersion>
     <jxrPluginVersion>3.3.0</jxrPluginVersion>
     <projectInfoReportsPluginVersion>3.4.2</projectInfoReportsPluginVersion>
-    <surefirePluginVersion>3.0.0-M8</surefirePluginVersion>
-    <mavenPluginPluginVersion>3.7.1</mavenPluginPluginVersion>
+    <surefirePluginVersion>3.0.0</surefirePluginVersion>
+    <mavenPluginPluginVersion>3.8.1</mavenPluginPluginVersion>
     <mavenReportingImplVersion>4.0.0-M4</mavenReportingImplVersion>
-    <fluidoSkinVersion>2.0.0-M2</fluidoSkinVersion>
-    <surefire.version>3.0.0-M8</surefire.version>
-    <project.build.outputTimestamp>2022-12-02T20:25:50Z</project.build.outputTimestamp>
+    <fluidoSkinVersion>2.0.0-M3</fluidoSkinVersion>
+    <surefire.version>3.0.0</surefire.version>
+    <project.build.outputTimestamp>2023-02-11T20:25:37Z</project.build.outputTimestamp>
 
   </properties>
 
@@ -307,7 +307,7 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-archiver</artifactId>
-      <version>4.6.1</version>
+      <version>4.6.2</version>
     </dependency>
 
     <dependency>
@@ -324,7 +324,7 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.5.0</version>
+      <version>3.5.1</version>
     </dependency>
 
     <!-- Doxia -->
