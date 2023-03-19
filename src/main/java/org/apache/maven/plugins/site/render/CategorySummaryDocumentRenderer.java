@@ -41,7 +41,7 @@ import org.codehaus.plexus.i18n.I18N;
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
 public class CategorySummaryDocumentRenderer implements DocumentRenderer {
-    private RenderingContext renderingContext;
+    private RenderingContext docRenderingContext;
 
     private String title;
 
@@ -56,24 +56,24 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
     private final Log log;
 
     public CategorySummaryDocumentRenderer(
-            RenderingContext renderingContext,
+            RenderingContext docRenderingContext,
             String title,
             String desc1,
             String desc2,
             I18N i18n,
             List<MavenReport> categoryReports) {
-        this(renderingContext, title, desc1, desc2, i18n, categoryReports, null);
+        this(docRenderingContext, title, desc1, desc2, i18n, categoryReports, null);
     }
 
     public CategorySummaryDocumentRenderer(
-            RenderingContext renderingContext,
+            RenderingContext docRenderingContext,
             String title,
             String desc1,
             String desc2,
             I18N i18n,
             List<MavenReport> categoryReports,
             Log log) {
-        this.renderingContext = renderingContext;
+        this.docRenderingContext = docRenderingContext;
         this.title = title;
         this.desc1 = desc1;
         this.desc2 = desc2;
@@ -82,9 +82,9 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
         this.log = log;
     }
 
-    public void renderDocument(Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext)
+    public void renderDocument(Writer writer, Renderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, FileNotFoundException {
-        SiteRendererSink sink = new SiteRendererSink(renderingContext);
+        SiteRendererSink sink = new SiteRendererSink(docRenderingContext);
 
         sink.head();
 
@@ -169,15 +169,15 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
 
         sink.close();
 
-        renderer.mergeDocumentIntoSite(writer, sink, siteRenderingContext);
+        siteRenderer.mergeDocumentIntoSite(writer, sink, siteRenderingContext);
     }
 
     public String getOutputName() {
-        return renderingContext.getOutputName();
+        return docRenderingContext.getOutputName();
     }
 
     public RenderingContext getRenderingContext() {
-        return renderingContext;
+        return docRenderingContext;
     }
 
     public boolean isOverwrite() {

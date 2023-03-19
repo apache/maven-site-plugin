@@ -365,10 +365,10 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                         + mavenReportExecution.getPlugin().getVersion()
                         + ':'
                         + mavenReportExecution.getGoal();
-                RenderingContext renderingContext = new RenderingContext(siteDirectory, outputName, reportMojoInfo);
-                DocumentRenderer renderer =
-                        new ReportDocumentRenderer(mavenReportExecution, renderingContext, getLog());
-                documents.put(outputName, renderer);
+                RenderingContext docRenderingContext = new RenderingContext(siteDirectory, outputName, reportMojoInfo);
+                DocumentRenderer docRenderer =
+                        new ReportDocumentRenderer(mavenReportExecution, docRenderingContext, getLog());
+                documents.put(outputName, docRenderer);
             }
         }
         return reportsByOutputName;
@@ -426,36 +426,36 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             // add "Project Information" category summary document
             List<MavenReport> categoryReports = categories.get(MavenReport.CATEGORY_PROJECT_INFORMATION);
 
-            RenderingContext renderingContext = new RenderingContext(
+            RenderingContext docRenderingContext = new RenderingContext(
                     siteDirectory, "project-info.html", getSitePluginInfo() + ":CategorySummaryDocumentRenderer");
             String title = i18n.getString("site-plugin", locale, "report.information.title");
             String desc1 = i18n.getString("site-plugin", locale, "report.information.description1");
             String desc2 = i18n.getString("site-plugin", locale, "report.information.description2");
-            DocumentRenderer renderer = new CategorySummaryDocumentRenderer(
-                    renderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
+            DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
+                    docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            if (!documents.containsKey(renderer.getOutputName())) {
-                documents.put(renderer.getOutputName(), renderer);
+            if (!documents.containsKey(docRenderer.getOutputName())) {
+                documents.put(docRenderer.getOutputName(), docRenderer);
             } else {
-                getLog().info("Category summary '" + renderer.getOutputName() + "' skipped; already exists");
+                getLog().info("Category summary '" + docRenderer.getOutputName() + "' skipped; already exists");
             }
         }
 
         if (categories.containsKey(MavenReport.CATEGORY_PROJECT_REPORTS)) {
             // add "Project Reports" category summary document
             List<MavenReport> categoryReports = categories.get(MavenReport.CATEGORY_PROJECT_REPORTS);
-            RenderingContext renderingContext = new RenderingContext(
+            RenderingContext docRenderingContext = new RenderingContext(
                     siteDirectory, "project-reports.html", getSitePluginInfo() + ":CategorySummaryDocumentRenderer");
             String title = i18n.getString("site-plugin", locale, "report.project.title");
             String desc1 = i18n.getString("site-plugin", locale, "report.project.description1");
             String desc2 = i18n.getString("site-plugin", locale, "report.project.description2");
-            DocumentRenderer renderer = new CategorySummaryDocumentRenderer(
-                    renderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
+            DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
+                    docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            if (!documents.containsKey(renderer.getOutputName())) {
-                documents.put(renderer.getOutputName(), renderer);
+            if (!documents.containsKey(docRenderer.getOutputName())) {
+                documents.put(docRenderer.getOutputName(), docRenderer);
             } else {
-                getLog().info("Category summary '" + renderer.getOutputName() + "' skipped; already exists");
+                getLog().info("Category summary '" + docRenderer.getOutputName() + "' skipped; already exists");
             }
         }
         return documents;

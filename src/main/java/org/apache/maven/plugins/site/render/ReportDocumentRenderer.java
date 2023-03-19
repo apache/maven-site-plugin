@@ -55,7 +55,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 public class ReportDocumentRenderer implements DocumentRenderer {
     private final MavenReport report;
 
-    private final RenderingContext renderingContext;
+    private final RenderingContext docRenderingContext;
 
     private final String reportMojoInfo;
 
@@ -64,10 +64,10 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     private final Log log;
 
     public ReportDocumentRenderer(
-            MavenReportExecution mavenReportExecution, RenderingContext renderingContext, Log log) {
+            MavenReportExecution mavenReportExecution, RenderingContext docRenderingContext, Log log) {
         this.report = mavenReportExecution.getMavenReport();
 
-        this.renderingContext = renderingContext;
+        this.docRenderingContext = docRenderingContext;
 
         // full MavenReportExecution prepared by maven-reporting-impl
         this.reportMojoInfo = mavenReportExecution.getPlugin().getArtifactId()
@@ -86,8 +86,8 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
         private String outputName;
 
-        MultiPageSubSink(File outputDir, String outputName, RenderingContext context) {
-            super(context);
+        MultiPageSubSink(File outputDir, String outputName, RenderingContext docRenderingContext) {
+            super(docRenderingContext);
             this.outputName = outputName;
             this.outputDir = outputDir;
         }
@@ -110,34 +110,34 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         /**
          * The main RenderingContext, which is the base for the RenderingContext of subpages
          */
-        private RenderingContext context;
+        private RenderingContext docRenderingContext;
 
         /**
          * List of sinks (subpages) associated to this report
          */
         private List<MultiPageSubSink> sinks = new ArrayList<MultiPageSubSink>();
 
-        MultiPageSinkFactory(MavenReport report, RenderingContext context) {
+        MultiPageSinkFactory(MavenReport report, RenderingContext docRenderingContext) {
             this.report = report;
-            this.context = context;
+            this.docRenderingContext = docRenderingContext;
         }
 
         @Override
         public Sink createSink(File outputDir, String outputName) {
-            // Create a new context, similar to the main one, but with a different output name
+            // Create a new document rendering context, similar to the main one, but with a different output name
             String outputRelativeToTargetSite = PathTool.getRelativeFilePath(
                     report.getReportOutputDirectory().getPath(), new File(outputDir, outputName).getPath());
 
             RenderingContext subSinkContext = new RenderingContext(
-                    context.getBasedir(),
-                    context.getBasedirRelativePath(),
+                    docRenderingContext.getBasedir(),
+                    docRenderingContext.getBasedirRelativePath(),
                     outputRelativeToTargetSite,
-                    context.getParserId(),
-                    context.getExtension(),
-                    context.isEditable(),
-                    context.getGenerator());
+                    docRenderingContext.getParserId(),
+                    docRenderingContext.getExtension(),
+                    docRenderingContext.isEditable(),
+                    docRenderingContext.getGenerator());
 
-            // Create a sink for this subpage, based on this new context
+            // Create a sink for this subpage, based on this new document rendering context
             MultiPageSubSink sink = new MultiPageSubSink(outputDir, outputName, subSinkContext);
 
             // Add it to the list of sinks associated to this report
@@ -170,7 +170,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     }
 
     @Override
-    public void renderDocument(Writer writer, Renderer renderer, SiteRenderingContext siteRenderingContext)
+    public void renderDocument(Writer writer, Renderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, FileNotFoundException {
         Locale locale = siteRenderingContext.getLocale();
         String localReportName = report.getName(locale);
@@ -185,9 +185,9 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         // CHECKSTYLE_ON: MagicNumber
 
         // main sink
-        SiteRendererSink mainSink = new SiteRendererSink(renderingContext);
+        SiteRendererSink mainSink = new SiteRendererSink(docRenderingContext);
         // sink factory, for multi-page reports that need sub-sinks
-        MultiPageSinkFactory multiPageSinkFactory = new MultiPageSinkFactory(report, renderingContext);
+        MultiPageSinkFactory multiPageSinkFactory = new MultiPageSinkFactory(report, docRenderingContext);
 
         ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
         try {
@@ -228,7 +228,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         }
 
         // render main sink document content
-        renderer.mergeDocumentIntoSite(writer, mainSink, siteRenderingContext);
+        siteRenderer.mergeDocumentIntoSite(writer, mainSink, siteRenderingContext);
 
         // render sub-sinks, eventually created by multi-page reports
         String outputName = "";
@@ -249,7 +249,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
                 File outputFile = new File(mySink.getOutputDir(), outputName);
 
                 try (Writer out = WriterFactory.newWriter(outputFile, siteRenderingContext.getOutputEncoding())) {
-                    renderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
+                    siteRenderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
                     mySink.close();
                     mySink = null;
                 } finally {
@@ -265,12 +265,12 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
     @Override
     public String getOutputName() {
-        return renderingContext.getOutputName();
+        return docRenderingContext.getOutputName();
     }
 
     @Override
     public RenderingContext getRenderingContext() {
-        return renderingContext;
+        return docRenderingContext;
     }
 
     @Override
