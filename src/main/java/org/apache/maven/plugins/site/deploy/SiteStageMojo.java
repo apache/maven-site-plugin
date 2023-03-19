@@ -19,7 +19,6 @@
 package org.apache.maven.plugins.site.deploy;
 
 import java.io.File;
-import java.util.List;
 
 import org.apache.maven.model.Site;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -114,7 +113,7 @@ public class SiteStageMojo extends AbstractStagingMojo {
      */
     protected File getExecutionRootBuildDirectory() {
         // Find the top level project in the reactor
-        final MavenProject executionRootProject = getExecutionRootProject(reactorProjects);
+        final MavenProject executionRootProject = mavenSession.getTopLevelProject();
 
         // Use the top level project's build directory if there is one, otherwise use this project's build directory
         final File buildDirectory;
@@ -131,26 +130,5 @@ public class SiteStageMojo extends AbstractStagingMojo {
         }
 
         return buildDirectory;
-    }
-
-    /**
-     * Find the execution root in the reactor.
-     *
-     * @param reactorProjects The projects in the reactor. May be <code>null</code> in which case <code>null</code> is
-     *            returned.
-     * @return The execution root project in the reactor, or <code>null</code> if none can be found
-     */
-    private static MavenProject getExecutionRootProject(List<MavenProject> reactorProjects) {
-        if (reactorProjects == null) {
-            return null;
-        }
-
-        // todo Lambda Java 1.8
-        for (MavenProject reactorProject : reactorProjects) {
-            if (reactorProject.isExecutionRoot()) {
-                return reactorProject;
-            }
-        }
-        return null;
     }
 }
