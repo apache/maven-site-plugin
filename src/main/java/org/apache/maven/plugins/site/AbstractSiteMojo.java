@@ -21,7 +21,6 @@ package org.apache.maven.plugins.site;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Component;
@@ -69,18 +68,6 @@ public abstract class AbstractSiteMojo extends AbstractMojo {
      */
     @Parameter(defaultValue = "${project}", readonly = true)
     protected MavenProject project;
-
-    /**
-     * The local repository.
-     */
-    @Parameter(defaultValue = "${localRepository}", readonly = true)
-    protected ArtifactRepository localRepository;
-
-    /**
-     * The reactor projects.
-     */
-    @Parameter(defaultValue = "${reactorProjects}", required = true, readonly = true)
-    protected List<MavenProject> reactorProjects;
 
     protected List<Locale> getLocales() {
         return siteTool.getSiteLocales(locales);

@@ -590,7 +590,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
         while (parent.getParent() != null) {
             MavenProject oldProject = parent;
             // MSITE-585, MNG-1943
-            parent = siteTool.getParentProject(parent, reactorProjects, localRepository);
+            parent = parent.getParent();
 
             Site oldSite = site;
 

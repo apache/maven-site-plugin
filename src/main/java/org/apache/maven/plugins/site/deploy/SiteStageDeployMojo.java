@@ -138,8 +138,7 @@ public class SiteStageDeployMojo extends AbstractStagingMojo {
 
         // CHECKSTYLE_OFF: InnerAssignment
         while ( // MSITE-585, MNG-1943
-        (parent = siteTool.getParentProject(current, reactorProjects, localRepository)) != null
-                && stagingSiteURL.equals(getStagingSiteURL(parent))) {
+        (parent = current.getParent()) != null && stagingSiteURL.equals(getStagingSiteURL(parent))) {
             current = parent;
         }
         // CHECKSTYLE_ON: InnerAssignment
