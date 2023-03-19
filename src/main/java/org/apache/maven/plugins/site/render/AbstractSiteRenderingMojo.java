@@ -107,14 +107,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected List<MavenReport> reports;
 
     /**
-     * Alternative directory for xdoc source, useful for m1 to m2 migration
-     *
-     * @deprecated use the standard m2 directory layout
-     */
-    @Parameter(defaultValue = "${basedir}/xdocs")
-    private File xdocDirectory;
-
-    /**
      * Directory containing generated documentation in source format (Doxia supported markup).
      * This is used to pick up other source docs that might have been generated at build time (by reports or any other
      * build time mean).
@@ -205,7 +197,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
     protected List<MavenReportExecution> getReports() throws MojoExecutionException {
         MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
-        mavenReportExecutorRequest.setLocalRepository(localRepository);
         mavenReportExecutorRequest.setMavenSession(mavenSession);
         mavenReportExecutorRequest.setProject(project);
         mavenReportExecutorRequest.setReportPlugins(getReportingPlugins());
@@ -276,8 +267,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         SiteRenderingContext context;
         try {
-            Artifact skinArtifact =
-                    siteTool.getSkinArtifactFromRepository(localRepository, repositories, decorationModel);
+            Artifact skinArtifact = siteTool.getSkinArtifactFromRepository(
+                    repoSession, remoteProjectRepositories, decorationModel.getSkin());
 
             getLog().info(buffer().a("Rendering content with ")
                     .strong(skinArtifact.getId() + " skin")
@@ -304,12 +295,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         context.setRootDirectory(project.getBasedir());
         if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             context.addSiteDirectory(new File(siteDirectory, locale.toString()));
-            context.addModuleDirectory(new File(xdocDirectory, locale.toString()), "xdoc");
-            context.addModuleDirectory(new File(xdocDirectory, locale.toString()), "fml");
         } else {
             context.addSiteDirectory(siteDirectory);
-            context.addModuleDirectory(xdocDirectory, "xdoc");
-            context.addModuleDirectory(xdocDirectory, "fml");
         }
 
         if (moduleExcludes != null) {

@@ -22,7 +22,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.doxia.site.decoration.DecorationModel;
 import org.apache.maven.doxia.site.decoration.inheritance.DecorationModelInheritanceAssembler;
 import org.apache.maven.doxia.tools.SiteToolException;
@@ -30,6 +29,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
+import org.apache.maven.project.MavenProject;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
 
 /**
  * Abstract class to compute effective site decoration model for site descriptors.
@@ -44,13 +46,22 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
     private DecorationModelInheritanceAssembler assembler;
 
     /**
-     * Remote repositories used for the project.
+     * The reactor projects.
+     */
+    @Parameter(defaultValue = "${reactorProjects}", required = true, readonly = true)
+    protected List<MavenProject> reactorProjects;
+
+    @Parameter(defaultValue = "${repositorySystemSession}", required = true, readonly = true)
+    protected RepositorySystemSession repoSession;
+
+    /**
+     * Remote project repositories used for the project.
      *
      * todo this is used for site descriptor resolution - it should relate to the actual project but for some reason
      *       they are not always filled in
      */
-    @Parameter(defaultValue = "${project.remoteArtifactRepositories}", readonly = true)
-    protected List<ArtifactRepository> repositories;
+    @Parameter(defaultValue = "${project.remoteProjectRepositories}", readonly = true)
+    protected List<RemoteRepository> remoteProjectRepositories;
 
     /**
      * Directory containing the <code>site.xml</code> file and the source for hand written docs (one directory
@@ -78,7 +89,7 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
         DecorationModel decorationModel;
         try {
             decorationModel = siteTool.getDecorationModel(
-                    siteDirectory, locale, project, reactorProjects, localRepository, repositories);
+                    siteDirectory, locale, project, reactorProjects, repoSession, remoteProjectRepositories);
         } catch (SiteToolException e) {
             throw new MojoExecutionException("SiteToolException: " + e.getMessage(), e);
         }

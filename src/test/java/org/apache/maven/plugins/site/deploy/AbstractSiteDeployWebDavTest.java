@@ -205,7 +205,7 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
                         artifactRepositoryFactory.createArtifactRepository("local", "foo", "default", null, null));
                 setVariableValueToObject(mojo, "siteTool", getContainer().lookup(SiteTool.class));
                 setVariableValueToObject(mojo, "siteDirectory", new File("foo"));
-                setVariableValueToObject(mojo, "repositories", Collections.emptyList());
+                setVariableValueToObject(mojo, "remoteProjectRepositories", Collections.emptyList());
             }
             mojo.execute();
 
