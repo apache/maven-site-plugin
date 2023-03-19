@@ -44,10 +44,10 @@ try
         result = false;
     }
 
-    File childIndex = new File( childSiteDirectory, "project-summary.html" );
-    if ( !childIndex.exists() )
+    File childSummary = new File( childSiteDirectory, "summary.html" );
+    if ( !childSummary.exists() )
     {
-        System.err.println( "no project-summary file in child." );
+        System.err.println( "no summary file in child." );
         result = false;
     }
 
