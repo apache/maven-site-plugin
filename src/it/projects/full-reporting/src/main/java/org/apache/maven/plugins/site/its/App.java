@@ -1,5 +1,3 @@
-package org.apache.maven.plugins.site.its;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,26 +16,24 @@ package org.apache.maven.plugins.site.its;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.plugins.site.its;
 
 /**
  * Hello world!
  *
  */
-public class App
-{
+public class App {
     /**
      * main
      */
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
     }
 
     /**
      * foo
      */
-    public void foo()
-    {
-        System.out.println( "foo" );
+    public void foo() {
+        System.out.println("foo");
     }
 }
