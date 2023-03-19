@@ -139,17 +139,17 @@ public class DoxiaFilter implements Filter {
         // ----------------------------------------------------------------------
         if (documents.containsKey(path)) {
             try {
-                DocumentRenderer renderer = documents.get(path);
-                logDocumentRenderer(path, renderer);
-                String outputName = renderer.getOutputName();
+                DocumentRenderer docRenderer = documents.get(path);
+                logDocumentRenderer(path, docRenderer);
+                String outputName = docRenderer.getOutputName();
                 String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
                 if (contentType != null) {
                     servletResponse.setContentType(contentType);
                 }
-                renderer.renderDocument(servletResponse.getWriter(), siteRenderer, context);
+                docRenderer.renderDocument(servletResponse.getWriter(), siteRenderer, context);
 
-                if (renderer instanceof ReportDocumentRenderer) {
-                    ReportDocumentRenderer reportDocumentRenderer = (ReportDocumentRenderer) renderer;
+                if (docRenderer instanceof ReportDocumentRenderer) {
+                    ReportDocumentRenderer reportDocumentRenderer = (ReportDocumentRenderer) docRenderer;
                     if (reportDocumentRenderer.isExternalReport()) {
                         Path externalReportFile = outputDirectory.toPath().resolve(outputName);
                         servletResponse.reset();
@@ -170,14 +170,14 @@ public class DoxiaFilter implements Filter {
                         siteRenderer.locateDocumentFiles(generatedSiteContext, false);
 
                 if (locateDocuments.containsKey(path)) {
-                    DocumentRenderer renderer = locateDocuments.get(path);
-                    logDocumentRenderer(path, renderer);
-                    String outputName = renderer.getOutputName();
+                    DocumentRenderer docRenderer = locateDocuments.get(path);
+                    logDocumentRenderer(path, docRenderer);
+                    String outputName = docRenderer.getOutputName();
                     String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
                     if (contentType != null) {
                         servletResponse.setContentType(contentType);
                     }
-                    renderer.renderDocument(servletResponse.getWriter(), siteRenderer, generatedSiteContext);
+                    docRenderer.renderDocument(servletResponse.getWriter(), siteRenderer, generatedSiteContext);
 
                     return;
                 }
@@ -189,16 +189,16 @@ public class DoxiaFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private void logDocumentRenderer(String path, DocumentRenderer renderer) {
+    private void logDocumentRenderer(String path, DocumentRenderer docRenderer) {
         String source;
-        if (renderer instanceof DoxiaDocumentRenderer) {
-            DoxiaDocumentRenderer doxiaDocumentRenderer = (DoxiaDocumentRenderer) renderer;
+        if (docRenderer instanceof DoxiaDocumentRenderer) {
+            DoxiaDocumentRenderer doxiaDocumentRenderer = (DoxiaDocumentRenderer) docRenderer;
             source = doxiaDocumentRenderer.getRenderingContext().getInputName();
-        } else if (renderer instanceof ReportDocumentRenderer) {
-            ReportDocumentRenderer reportDocumentRenderer = (ReportDocumentRenderer) renderer;
+        } else if (docRenderer instanceof ReportDocumentRenderer) {
+            ReportDocumentRenderer reportDocumentRenderer = (ReportDocumentRenderer) docRenderer;
             source = reportDocumentRenderer.getReportMojoInfo();
         } else {
-            source = renderer.getClass().getName();
+            source = docRenderer.getClass().getName();
         }
         servletContext.log(path + " -> " + buffer().strong(source));
     }
