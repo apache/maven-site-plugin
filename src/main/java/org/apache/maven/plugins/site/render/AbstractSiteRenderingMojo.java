@@ -101,12 +101,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected Renderer siteRenderer;
 
     /**
-     * Reports (Maven 2).
-     */
-    @Parameter(defaultValue = "${reports}", required = true, readonly = true)
-    protected List<MavenReport> reports;
-
-    /**
      * Directory containing generated documentation in source format (Doxia supported markup).
      * This is used to pick up other source docs that might have been generated at build time (by reports or any other
      * build time mean).
