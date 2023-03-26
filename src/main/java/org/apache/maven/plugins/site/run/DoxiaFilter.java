@@ -37,8 +37,8 @@ import java.util.Map;
 
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DoxiaDocumentRenderer;
-import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.doxia.siterenderer.RendererException;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugins.site.render.ReportDocumentRenderer;
@@ -64,7 +64,7 @@ public class DoxiaFilter implements Filter {
 
     private File outputDirectory;
 
-    private Renderer siteRenderer;
+    private SiteRenderer siteRenderer;
 
     private Map<String, DoxiaBean> i18nDoxiaContexts;
 
@@ -78,7 +78,7 @@ public class DoxiaFilter implements Filter {
 
         outputDirectory = (File) servletContext.getAttribute(OUTPUT_DIRECTORY_KEY);
 
-        siteRenderer = (Renderer) servletContext.getAttribute(SITE_RENDERER_KEY);
+        siteRenderer = (SiteRenderer) servletContext.getAttribute(SITE_RENDERER_KEY);
 
         i18nDoxiaContexts = (Map<String, DoxiaBean>) servletContext.getAttribute(I18N_DOXIA_CONTEXTS_KEY);
 

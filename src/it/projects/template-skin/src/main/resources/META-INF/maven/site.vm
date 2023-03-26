@@ -36,7 +36,7 @@ locale=$locale
 publishDate=$publishDate
 relativePath=$relativePath
 supportedLocales=$supportedLocales
-decoration=$decoration
+site=$site
 </pre>
 
 <h3>tools</h3>

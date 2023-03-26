@@ -27,8 +27,8 @@ import org.apache.maven.artifact.metadata.AbstractArtifactMetadata;
 import org.apache.maven.artifact.metadata.ArtifactMetadata;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException;
-import org.apache.maven.doxia.site.decoration.DecorationModel;
-import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Writer;
+import org.apache.maven.doxia.site.SiteModel;
+import org.apache.maven.doxia.site.io.xpp3.SiteXpp3Writer;
 import org.codehaus.plexus.util.WriterFactory;
 
 /**
@@ -38,15 +38,15 @@ import org.codehaus.plexus.util.WriterFactory;
  *
  */
 public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
-    private final DecorationModel decoration;
+    private final SiteModel siteModel;
 
     private final File file;
 
-    public SiteDescriptorArtifactMetadata(Artifact artifact, DecorationModel decoration, File file) {
+    public SiteDescriptorArtifactMetadata(Artifact artifact, SiteModel siteModel, File file) {
         super(artifact);
 
         this.file = file;
-        this.decoration = decoration;
+        this.siteModel = siteModel;
     }
 
     public String getRemoteFilename() {
@@ -69,7 +69,7 @@ public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
         destination.getParentFile().mkdirs();
 
         try (Writer writer = WriterFactory.newXmlWriter(destination)) {
-            new DecorationXpp3Writer().write(writer, decoration);
+            new SiteXpp3Writer().write(writer, siteModel);
         } catch (IOException e) {
             throw new RepositoryMetadataStoreException("Error saving in local repository", e);
         }

@@ -26,7 +26,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.apache.maven.artifact.manager.WagonManager;
-import org.apache.maven.doxia.site.decoration.inheritance.URIPathDescriptor;
+import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.DistributionManagement;

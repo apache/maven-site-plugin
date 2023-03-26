@@ -33,7 +33,7 @@ assert content.contains( '<<<http://maven.apache.org/${property}/relative-parent
 assert content.contains( '<<<http://maven.apache.org/prop-value-from-reactor-parent/relative-parent/reactor-parent>>>' ); // reactor-parent
 assert content.contains( '<<<http://maven.apache.org/prop-value-from-child/relative-parent/reactor-parent/child>>>' ); // child
 
-// Site Decoration Model inheritance+interpolation
+// Site Model inheritance+interpolation
 childContent = new File( basedir, 'child/target/site/index.html' ).text;
 
 assert childContent.contains( 'project.artifactId = child' );

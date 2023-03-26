@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.apache.maven.doxia.site.decoration.DecorationModel;
-import org.apache.maven.doxia.site.decoration.io.xpp3.DecorationXpp3Writer;
+import org.apache.maven.doxia.site.SiteModel;
+import org.apache.maven.doxia.site.io.xpp3.SiteXpp3Writer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -58,18 +58,15 @@ public class EffectiveSiteMojo extends AbstractSiteDescriptorMojo {
      * {@inheritDoc}
      */
     public void execute() throws MojoExecutionException, MojoFailureException {
-        DecorationModel decorationModel = prepareDecorationModel(getLocales().get(0));
+        SiteModel siteModel = prepareSiteModel(getLocales().get(0));
 
         StringWriter w = new StringWriter();
         XMLWriter writer = new PrettyPrintXMLWriter(
-                w,
-                StringUtils.repeat(" ", XmlWriterUtil.DEFAULT_INDENTATION_SIZE),
-                decorationModel.getModelEncoding(),
-                null);
+                w, StringUtils.repeat(" ", XmlWriterUtil.DEFAULT_INDENTATION_SIZE), siteModel.getModelEncoding(), null);
 
         writeHeader(writer);
 
-        writeEffectiveSite(decorationModel, writer);
+        writeEffectiveSite(siteModel, writer);
 
         String effectiveSite = w.toString();
 
@@ -128,13 +125,13 @@ public class EffectiveSiteMojo extends AbstractSiteDescriptorMojo {
         XmlWriterUtil.writeLineBreak(writer);
     }
 
-    private void writeEffectiveSite(DecorationModel decorationModel, XMLWriter writer) throws MojoExecutionException {
+    private void writeEffectiveSite(SiteModel siteModel, XMLWriter writer) throws MojoExecutionException {
         String effectiveSite;
 
         StringWriter sWriter = new StringWriter();
-        DecorationXpp3Writer siteWriter = new DecorationXpp3Writer();
+        SiteXpp3Writer siteWriter = new SiteXpp3Writer();
         try {
-            siteWriter.write(sWriter, decorationModel);
+            siteWriter.write(sWriter, siteModel);
         } catch (IOException e) {
             throw new MojoExecutionException("Cannot serialize site descriptor to XML.", e);
         }

@@ -28,7 +28,7 @@
 
 Velocity processing
 
-  See doxia-siterendering: site decoration and documents with file names ending in <<<.vm>>> are processed by Velocity.
+  See doxia-siterendering: site and documents with file names ending in <<<.vm>>> are processed by Velocity.
 
   The velocity context defines some variables:
 
@@ -45,8 +45,6 @@ Velocity processing
 *---------------------------------+--------------------+-------------------------------+
 | <<<bodyContent>>>               | <<<String>>>       | $bodyContent                  |
 *---------------------------------+--------------------+-------------------------------+
-| <<<decoration>>>                | {{{../doxia-decoration-model/apidocs/org/apache/maven/doxia/site/decoration/DecorationModel.html}<<<DecorationModel>>>}} | $decoration.name |
-*---------------------------------+--------------------+-------------------------------+
 | <<<dateCreation>>>              | <<<String>>>       | $dateCreation                 |
 *---------------------------------+--------------------+-------------------------------+
 | <<<dateRevision>>>              | <<<String>>>       | $dateRevision                 |
@@ -62,6 +60,8 @@ Velocity processing
 | <<<locale>>>                    | <<<Locale>>>       | $locale                       |
 *---------------------------------+--------------------+-------------------------------+
 | <<<supportedLocales>>>          | <<<List\<Locale\>>>> | $supportedLocales           |
+*---------------------------------+--------------------+-------------------------------+
+| <<<site>>>                      | {{{../doxia-site-model/apidocs/org/apache/maven/doxia/site/SiteModel.html}<<<SiteModel>>>}} | $site.name |
 *---------------------------------+--------------------+-------------------------------+
 | <template properties>           |                    | Properties defined by caller: see below for properties defined by <<<maven-site-plugin>>>  |
 *---------------------------------+--------------------+-------------------------------+
