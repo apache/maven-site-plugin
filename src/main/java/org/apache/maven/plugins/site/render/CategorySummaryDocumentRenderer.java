@@ -26,9 +26,9 @@ import java.util.Locale;
 
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
-import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
-import org.apache.maven.doxia.siterenderer.RenderingContext;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 import org.apache.maven.plugin.logging.Log;
@@ -41,7 +41,7 @@ import org.codehaus.plexus.i18n.I18N;
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
 public class CategorySummaryDocumentRenderer implements DocumentRenderer {
-    private RenderingContext docRenderingContext;
+    private DocumentRenderingContext docRenderingContext;
 
     private String title;
 
@@ -56,7 +56,7 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
     private final Log log;
 
     public CategorySummaryDocumentRenderer(
-            RenderingContext docRenderingContext,
+            DocumentRenderingContext docRenderingContext,
             String title,
             String desc1,
             String desc2,
@@ -66,7 +66,7 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
     }
 
     public CategorySummaryDocumentRenderer(
-            RenderingContext docRenderingContext,
+            DocumentRenderingContext docRenderingContext,
             String title,
             String desc1,
             String desc2,
@@ -82,7 +82,7 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
         this.log = log;
     }
 
-    public void renderDocument(Writer writer, Renderer siteRenderer, SiteRenderingContext siteRenderingContext)
+    public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, FileNotFoundException {
         SiteRendererSink sink = new SiteRendererSink(docRenderingContext);
 
@@ -176,7 +176,7 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
         return docRenderingContext.getOutputName();
     }
 
-    public RenderingContext getRenderingContext() {
+    public DocumentRenderingContext getRenderingContext() {
         return docRenderingContext;
     }
 

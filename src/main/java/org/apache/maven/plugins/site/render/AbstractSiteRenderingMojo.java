@@ -32,13 +32,13 @@ import java.util.Map;
 
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.doxia.site.decoration.DecorationModel;
-import org.apache.maven.doxia.site.decoration.Menu;
-import org.apache.maven.doxia.site.decoration.MenuItem;
+import org.apache.maven.doxia.site.Menu;
+import org.apache.maven.doxia.site.MenuItem;
+import org.apache.maven.doxia.site.SiteModel;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
-import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
-import org.apache.maven.doxia.siterenderer.RenderingContext;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
@@ -98,7 +98,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * Site renderer.
      */
     @Component
-    protected Renderer siteRenderer;
+    protected SiteRenderer siteRenderer;
 
     /**
      * Directory containing generated documentation in source format (Doxia supported markup).
@@ -237,7 +237,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
     protected SiteRenderingContext createSiteRenderingContext(Locale locale)
             throws MojoExecutionException, IOException, MojoFailureException {
-        DecorationModel decorationModel = prepareDecorationModel(locale);
+        SiteModel siteModel = prepareSiteModel(locale);
         if (attributes == null) {
             attributes = new HashMap<>();
         }
@@ -261,16 +261,15 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         SiteRenderingContext context;
         try {
-            Artifact skinArtifact = siteTool.getSkinArtifactFromRepository(
-                    repoSession, remoteProjectRepositories, decorationModel.getSkin());
+            Artifact skinArtifact =
+                    siteTool.getSkinArtifactFromRepository(repoSession, remoteProjectRepositories, siteModel.getSkin());
 
             getLog().info(buffer().a("Rendering content with ")
                     .strong(skinArtifact.getId() + " skin")
                     .a('.')
                     .toString());
 
-            context = siteRenderer.createContextForSkin(
-                    skinArtifact, attributes, decorationModel, project.getName(), locale);
+            context = siteRenderer.createContextForSkin(skinArtifact, attributes, siteModel, project.getName(), locale);
         } catch (SiteToolException e) {
             throw new MojoExecutionException("SiteToolException while preparing skin: " + e.getMessage(), e);
         } catch (RendererException e) {
@@ -346,7 +345,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                         + mavenReportExecution.getPlugin().getVersion()
                         + ':'
                         + mavenReportExecution.getGoal();
-                RenderingContext docRenderingContext = new RenderingContext(siteDirectory, outputName, reportMojoInfo);
+                DocumentRenderingContext docRenderingContext =
+                        new DocumentRenderingContext(siteDirectory, outputName, reportMojoInfo);
                 DocumentRenderer docRenderer =
                         new ReportDocumentRenderer(mavenReportExecution, docRenderingContext, getLog());
                 documents.put(outputName, docRenderer);
@@ -400,14 +400,14 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         // TODO: I want to get rid of categories eventually. There's no way to add your own in a fully i18n manner
         Map<String, List<MavenReport>> categories = categoriseReports(reportsByOutputName.values());
 
-        siteTool.populateReportsMenu(context.getDecoration(), locale, categories);
-        populateReportItems(context.getDecoration(), locale, reportsByOutputName);
+        siteTool.populateReportsMenu(context.getSiteModel(), locale, categories);
+        populateReportItems(context.getSiteModel(), locale, reportsByOutputName);
 
         if (categories.containsKey(MavenReport.CATEGORY_PROJECT_INFORMATION) && generateProjectInfo) {
             // add "Project Information" category summary document
             List<MavenReport> categoryReports = categories.get(MavenReport.CATEGORY_PROJECT_INFORMATION);
 
-            RenderingContext docRenderingContext = new RenderingContext(
+            DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
                     siteDirectory, "project-info.html", getSitePluginInfo() + ":CategorySummaryDocumentRenderer");
             String title = i18n.getString("site-plugin", locale, "report.information.title");
             String desc1 = i18n.getString("site-plugin", locale, "report.information.description1");
@@ -425,7 +425,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         if (categories.containsKey(MavenReport.CATEGORY_PROJECT_REPORTS)) {
             // add "Project Reports" category summary document
             List<MavenReport> categoryReports = categories.get(MavenReport.CATEGORY_PROJECT_REPORTS);
-            RenderingContext docRenderingContext = new RenderingContext(
+            DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
                     siteDirectory, "project-reports.html", getSitePluginInfo() + ":CategorySummaryDocumentRenderer");
             String title = i18n.getString("site-plugin", locale, "report.project.title");
             String desc1 = i18n.getString("site-plugin", locale, "report.project.description1");
@@ -449,8 +449,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     }
 
     protected void populateReportItems(
-            DecorationModel decorationModel, Locale locale, Map<String, MavenReport> reportsByOutputName) {
-        for (Menu menu : decorationModel.getMenus()) {
+            SiteModel siteModel, Locale locale, Map<String, MavenReport> reportsByOutputName) {
+        for (Menu menu : siteModel.getMenus()) {
             populateItemRefs(menu.getItems(), locale, reportsByOutputName);
         }
     }

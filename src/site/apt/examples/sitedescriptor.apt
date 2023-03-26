@@ -38,7 +38,7 @@ Configuring the Site Descriptor
   a file called <<<site.xml>>> which should be located in your <<<src/site>>> directory.
 
   There is a
-  {{{/doxia/doxia-sitetools/doxia-decoration-model/decoration.html}reference documentation for the site descriptor}}
+  {{{/doxia/doxia-sitetools/doxia-site-model/site.html}reference documentation for the site descriptor}}
   available with its XML Schema.
 
   Have a look at the
@@ -86,7 +86,7 @@ Configuring the Site Descriptor
 +-----+
 
   Refer to the site descriptor
-  {{{/doxia/doxia-sitetools/doxia-decoration-model/decoration.html}reference}}
+  {{{/doxia/doxia-sitetools/doxia-site-model/site.html}reference}}
   for a complete tag description.
 
 

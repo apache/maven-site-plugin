@@ -30,9 +30,9 @@ import java.util.Locale;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkFactory;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
-import org.apache.maven.doxia.siterenderer.Renderer;
+import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
-import org.apache.maven.doxia.siterenderer.RenderingContext;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 import org.apache.maven.plugin.logging.Log;
@@ -55,7 +55,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 public class ReportDocumentRenderer implements DocumentRenderer {
     private final MavenReport report;
 
-    private final RenderingContext docRenderingContext;
+    private final DocumentRenderingContext docRenderingContext;
 
     private final String reportMojoInfo;
 
@@ -64,7 +64,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     private final Log log;
 
     public ReportDocumentRenderer(
-            MavenReportExecution mavenReportExecution, RenderingContext docRenderingContext, Log log) {
+            MavenReportExecution mavenReportExecution, DocumentRenderingContext docRenderingContext, Log log) {
         this.report = mavenReportExecution.getMavenReport();
 
         this.docRenderingContext = docRenderingContext;
@@ -86,7 +86,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
         private String outputName;
 
-        MultiPageSubSink(File outputDir, String outputName, RenderingContext docRenderingContext) {
+        MultiPageSubSink(File outputDir, String outputName, DocumentRenderingContext docRenderingContext) {
             super(docRenderingContext);
             this.outputName = outputName;
             this.outputDir = outputDir;
@@ -108,16 +108,16 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         private MavenReport report;
 
         /**
-         * The main RenderingContext, which is the base for the RenderingContext of subpages
+         * The main DocumentRenderingContext, which is the base for the DocumentRenderingContext of subpages
          */
-        private RenderingContext docRenderingContext;
+        private DocumentRenderingContext docRenderingContext;
 
         /**
          * List of sinks (subpages) associated to this report
          */
         private List<MultiPageSubSink> sinks = new ArrayList<MultiPageSubSink>();
 
-        MultiPageSinkFactory(MavenReport report, RenderingContext docRenderingContext) {
+        MultiPageSinkFactory(MavenReport report, DocumentRenderingContext docRenderingContext) {
             this.report = report;
             this.docRenderingContext = docRenderingContext;
         }
@@ -128,7 +128,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
             String outputRelativeToTargetSite = PathTool.getRelativeFilePath(
                     report.getReportOutputDirectory().getPath(), new File(outputDir, outputName).getPath());
 
-            RenderingContext subSinkContext = new RenderingContext(
+            DocumentRenderingContext subSinkContext = new DocumentRenderingContext(
                     docRenderingContext.getBasedir(),
                     docRenderingContext.getBasedirRelativePath(),
                     outputRelativeToTargetSite,
@@ -170,7 +170,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     }
 
     @Override
-    public void renderDocument(Writer writer, Renderer siteRenderer, SiteRenderingContext siteRenderingContext)
+    public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, FileNotFoundException {
         Locale locale = siteRenderingContext.getLocale();
         String localReportName = report.getName(locale);
@@ -269,7 +269,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     }
 
     @Override
-    public RenderingContext getRenderingContext() {
+    public DocumentRenderingContext getRenderingContext() {
         return docRenderingContext;
     }
 

@@ -22,8 +22,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.maven.doxia.site.decoration.DecorationModel;
-import org.apache.maven.doxia.site.decoration.inheritance.DecorationModelInheritanceAssembler;
+import org.apache.maven.doxia.site.SiteModel;
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
@@ -34,16 +34,16 @@ import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.RemoteRepository;
 
 /**
- * Abstract class to compute effective site decoration model for site descriptors.
+ * Abstract class to compute effective site model for site descriptors.
  *
  * @since 3.5
  */
 public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
     /**
-     * The component for assembling site decoration model inheritance.
+     * The component for assembling site model inheritance.
      */
     @Component
-    private DecorationModelInheritanceAssembler assembler;
+    private SiteModelInheritanceAssembler assembler;
 
     /**
      * The reactor projects.
@@ -82,23 +82,23 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
      *
      * @since 2.3
      */
-    @Parameter(property = "relativizeDecorationLinks", defaultValue = "true")
-    private boolean relativizeDecorationLinks;
+    @Parameter(property = "relativizeSiteLinks", defaultValue = "true")
+    private boolean relativizeSiteLinks;
 
-    protected DecorationModel prepareDecorationModel(Locale locale) throws MojoExecutionException {
-        DecorationModel decorationModel;
+    protected SiteModel prepareSiteModel(Locale locale) throws MojoExecutionException {
+        SiteModel siteModel;
         try {
-            decorationModel = siteTool.getDecorationModel(
+            siteModel = siteTool.getSiteModel(
                     siteDirectory, locale, project, reactorProjects, repoSession, remoteProjectRepositories);
         } catch (SiteToolException e) {
             throw new MojoExecutionException("SiteToolException: " + e.getMessage(), e);
         }
 
-        if (relativizeDecorationLinks) {
+        if (relativizeSiteLinks) {
             final String url = project.getUrl();
 
             if (url == null) {
-                getLog().warn("No project URL defined - decoration links will not be relativized!");
+                getLog().warn("No project URL defined - site links will not be relativized!");
             } else {
                 List<Locale> localesList = getLocales();
 
@@ -108,11 +108,11 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
                 // MSITE-658
                 final String localeUrl = !locale.equals(defaultLocale) ? append(url, locale.toString()) : url;
 
-                getLog().info("Relativizing decoration links with respect to localized project URL: " + localeUrl);
-                assembler.resolvePaths(decorationModel, localeUrl);
+                getLog().info("Relativizing site links with respect to localized project URL: " + localeUrl);
+                assembler.resolvePaths(siteModel, localeUrl);
             }
         }
-        return decorationModel;
+        return siteModel;
     }
 
     private String append(String url, String path) {

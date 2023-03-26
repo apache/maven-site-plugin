@@ -1,5 +1,5 @@
  -----
- POMs and Site Decoration Model Inheritance and Interpolation
+ POMs and Site Model Inheritance and Interpolation
  -----
  Hervé Boutemy
  -----
@@ -26,8 +26,8 @@
 ~~ NOTE: For help with the syntax of this file, see:
 ~~ http://maven.apache.org/doxia/references/apt-format.html
 
-POMs and Site Decoration Model Inheritance and Interpolation
+POMs and Site Model Inheritance and Interpolation
 
   * {{{./pom.html} POM Inheritance and Interpolation}}
-  
-  * Site Decoration Model Inheritance and Interpolation: see this page
+
+  * Site Model Inheritance and Interpolation: see this page

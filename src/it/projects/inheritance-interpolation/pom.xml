@@ -28,7 +28,7 @@ under the License.
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>POM and Site Decoration Model inheritance and interpolation tests</name>
+  <name>POM and Site Model inheritance and interpolation tests</name>
   <description>
     this POM is reactor linking to reactor-accessible poms: child and reactor-parent
     relative-parent is not expected to be in reactor, but accessible from relative path
