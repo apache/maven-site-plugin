@@ -40,6 +40,7 @@ import org.apache.maven.doxia.siterenderer.DoxiaDocumentRenderer;
 import org.apache.maven.doxia.siterenderer.Renderer;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugins.site.render.ReportDocumentRenderer;
 import org.eclipse.jetty.http.MimeTypes;
 
@@ -108,7 +109,7 @@ public class DoxiaFilter implements Filter {
         Map<String, DocumentRenderer> documents;
         SiteRenderingContext generatedSiteContext;
 
-        String localeWanted = null;
+        String localeWanted = "";
         for (Locale locale : localesList) {
             if (path.startsWith(locale + "/")) {
                 localeWanted = locale.toString();
@@ -116,23 +117,21 @@ public class DoxiaFilter implements Filter {
             }
         }
 
-        if (localeWanted == null) {
-            DoxiaBean defaultDoxiaBean = i18nDoxiaContexts.get("default");
-            if (defaultDoxiaBean == null) {
-                throw new ServletException("No doxia bean found for the default locale");
+        DoxiaBean doxiaBean;
+        if (!localeWanted.equals(SiteTool.DEFAULT_LOCALE.toString())) {
+            doxiaBean = i18nDoxiaContexts.get(localeWanted);
+            if (doxiaBean == null) {
+                throw new ServletException("No Doxia bean found for locale '" + localeWanted + "'");
             }
-            context = defaultDoxiaBean.getContext();
-            documents = defaultDoxiaBean.getDocuments();
-            generatedSiteContext = defaultDoxiaBean.getGeneratedSiteContext();
         } else {
-            DoxiaBean i18nDoxiaBean = i18nDoxiaContexts.get(localeWanted);
-            if (i18nDoxiaBean == null) {
-                throw new ServletException("No doxia bean found for locale '" + localeWanted + "'");
+            doxiaBean = i18nDoxiaContexts.get("default");
+            if (doxiaBean == null) {
+                throw new ServletException("No Doxia bean found for the default locale");
             }
-            context = i18nDoxiaBean.getContext();
-            documents = i18nDoxiaBean.getDocuments();
-            generatedSiteContext = i18nDoxiaBean.getGeneratedSiteContext();
         }
+        context = doxiaBean.getContext();
+        documents = doxiaBean.getDocuments();
+        generatedSiteContext = doxiaBean.getGeneratedSiteContext();
 
         // ----------------------------------------------------------------------
         // Handle report and documents

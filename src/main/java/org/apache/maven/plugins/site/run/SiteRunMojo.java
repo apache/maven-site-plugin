@@ -147,24 +147,23 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                 i18nGeneratedSiteContext.getSiteDirectories().clear();
 
                 Map<String, DocumentRenderer> i18nDocuments = locateDocuments(i18nContext, reports, locale);
-                DoxiaBean doxiaBean;
-                if (defaultLocale.equals(locale)) {
-                    i18nGeneratedSiteContext.addSiteDirectory(generatedSiteDirectory);
-                    doxiaBean = new DoxiaBean(i18nContext, i18nDocuments, i18nGeneratedSiteContext);
-                } else {
+                if (!defaultLocale.equals(locale)) {
                     i18nGeneratedSiteContext.addSiteDirectory(new File(generatedSiteDirectory, locale.toString()));
-                    doxiaBean = new DoxiaBean(i18nContext, i18nDocuments, i18nGeneratedSiteContext);
+                } else {
+                    i18nGeneratedSiteContext.addSiteDirectory(generatedSiteDirectory);
                 }
+                DoxiaBean doxiaBean = new DoxiaBean(i18nContext, i18nDocuments, i18nGeneratedSiteContext);
 
-                i18nDoxiaContexts.put(locale.toString(), doxiaBean);
-                if (defaultLocale.equals(locale)) {
+                if (!defaultLocale.equals(locale)) {
+                    i18nDoxiaContexts.put(locale.toString(), doxiaBean);
+                } else {
                     i18nDoxiaContexts.put("default", doxiaBean);
                 }
 
-                if (defaultLocale.equals(locale)) {
-                    siteRenderer.copyResources(i18nContext, tempWebappDirectory);
-                } else {
+                if (!defaultLocale.equals(locale)) {
                     siteRenderer.copyResources(i18nContext, new File(tempWebappDirectory, locale.toString()));
+                } else {
+                    siteRenderer.copyResources(i18nContext, tempWebappDirectory);
                 }
             }
 

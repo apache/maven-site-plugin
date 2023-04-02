@@ -106,7 +106,7 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
                 Locale defaultLocale = localesList.get(0);
 
                 // MSITE-658
-                final String localeUrl = locale.equals(defaultLocale) ? url : append(url, locale.toString());
+                final String localeUrl = !locale.equals(defaultLocale) ? append(url, locale.toString()) : url;
 
                 getLog().info("Relativizing decoration links with respect to localized project URL: " + localeUrl);
                 assembler.resolvePaths(decorationModel, localeUrl);
