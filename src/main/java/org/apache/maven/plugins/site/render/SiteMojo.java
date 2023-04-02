@@ -118,7 +118,8 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
 
             for (Locale locale : localesList) {
                 getLog().info("Rendering site for "
-                        + buffer().strong((locale.equals(defaultLocale) ? "default locale" : "locale '" + locale + "'"))
+                        + buffer().strong(
+                                        (!locale.equals(defaultLocale) ? "locale '" + locale + "'" : "default locale"))
                                 .toString());
                 renderLocale(locale, reports, localesList);
             }
@@ -248,10 +249,10 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
 
     private File getOutputDirectory(Locale locale) {
         File file;
-        if (locale.equals(SiteTool.DEFAULT_LOCALE)) {
-            file = outputDirectory;
-        } else {
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             file = new File(outputDirectory, locale.toString());
+        } else {
+            file = outputDirectory;
         }
 
         // Safety

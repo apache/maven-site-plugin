@@ -361,16 +361,16 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
             final Locale defaultLocale = localesList.get(0);
 
             for (Locale locale : localesList) {
-                if (locale.equals(defaultLocale)) {
+                if (!locale.equals(defaultLocale)) {
+                    getLog().info("   >>> to " + appendSlash(repository.getUrl()) + locale + "/" + relativeDir);
+
+                    wagon.putDirectory(new File(inputDirectory, locale.toString()), locale + "/" + relativeDir);
+                } else {
                     // TODO: this also uploads the non-default locales,
                     // is there a way to exclude directories in wagon?
                     getLog().info("   >>> to " + appendSlash(repository.getUrl()) + relativeDir);
 
                     wagon.putDirectory(inputDirectory, relativeDir);
-                } else {
-                    getLog().info("   >>> to " + appendSlash(repository.getUrl()) + locale + "/" + relativeDir);
-
-                    wagon.putDirectory(new File(inputDirectory, locale.toString()), locale + "/" + relativeDir);
                 }
             }
         } catch (ResourceDoesNotExistException
