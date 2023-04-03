@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
 import org.apache.maven.execution.MavenExecutionRequest;
@@ -60,7 +61,6 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Abstract base class for deploy mojos.
