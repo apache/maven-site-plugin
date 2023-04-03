@@ -129,15 +129,15 @@ public class SiteMap {
         sink.paragraph_();
 
         for (Menu menu : decoration.getMenus()) {
-            sink.section3();
-            sink.sectionTitle3();
+            sink.section2();
+            sink.sectionTitle2();
             sink.text(menu.getName());
-            sink.sectionTitle3_();
+            sink.sectionTitle2_();
             sink.horizontalRule();
 
             extractItems(menu.getItems(), sink);
 
-            sink.section3_();
+            sink.section2_();
         }
 
         sink.section1_();
