@@ -155,7 +155,9 @@ public class SiteMap {
             sink.listItem();
             if (item.getHref() != null) {
                 sink.link(relativePath(item.getHref()));
-                sink.text(item.getName());
+            }
+            sink.text(item.getName());
+            if (item.getHref() != null) {
                 sink.link_();
             }
 
