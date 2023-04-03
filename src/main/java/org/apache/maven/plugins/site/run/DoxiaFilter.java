@@ -139,7 +139,7 @@ public class DoxiaFilter implements Filter {
         if (documents.containsKey(path)) {
             try {
                 DocumentRenderer docRenderer = documents.get(path);
-                logDocumentRenderer(path, docRenderer);
+                logDocumentRenderer(path, localeWanted, docRenderer);
                 String outputName = docRenderer.getOutputName();
                 String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
                 if (contentType != null) {
@@ -170,7 +170,7 @@ public class DoxiaFilter implements Filter {
 
                 if (locateDocuments.containsKey(path)) {
                     DocumentRenderer docRenderer = locateDocuments.get(path);
-                    logDocumentRenderer(path, docRenderer);
+                    logDocumentRenderer(path, localeWanted, docRenderer);
                     String outputName = docRenderer.getOutputName();
                     String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
                     if (contentType != null) {
@@ -188,7 +188,7 @@ public class DoxiaFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private void logDocumentRenderer(String path, DocumentRenderer docRenderer) {
+    private void logDocumentRenderer(String path, String locale, DocumentRenderer docRenderer) {
         String source;
         if (docRenderer instanceof DoxiaDocumentRenderer) {
             DoxiaDocumentRenderer doxiaDocumentRenderer = (DoxiaDocumentRenderer) docRenderer;
@@ -199,7 +199,12 @@ public class DoxiaFilter implements Filter {
         } else {
             source = docRenderer.getClass().getName();
         }
-        servletContext.log(path + " -> " + buffer().strong(source));
+        String localizedPath = !locale.equals(SiteTool.DEFAULT_LOCALE.toString()) ? locale + "/" + path : path;
+        String localizedSource = source
+                + (!locale.equals(SiteTool.DEFAULT_LOCALE.toString())
+                        ? " (locale '" + locale + "')"
+                        : " (default locale)");
+        servletContext.log(localizedPath + " -> " + buffer().strong(localizedSource));
     }
 
     /**
