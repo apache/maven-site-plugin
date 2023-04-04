@@ -168,7 +168,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         siteRenderer.render(reportDocuments, context, outputDir);
 
         if (generateSitemap) {
-            getLog().info("Generating Sitemap.");
+            getLog().info("Generating Sitemap");
 
             new SiteMap(getOutputEncoding(), i18n).generate(context.getSiteModel(), generatedSiteDirectory, locale);
         }
