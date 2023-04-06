@@ -297,7 +297,12 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         }
 
         if (saveProcessedContent) {
-            context.setProcessedContentOutput(new File(generatedSiteDirectory, "processed"));
+            File processedDir = new File(generatedSiteDirectory, "processed");
+            if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+                context.setProcessedContentOutput(new File(processedDir, locale.toString()));
+            } else {
+                context.setProcessedContentOutput(processedDir);
+            }
         }
 
         return context;

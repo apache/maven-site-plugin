@@ -67,3 +67,12 @@ assert content.contains( '= <<<val1>>>' ) : "Velocity-processed content must con
 
 assert !( content.replace('<<<$value', '').contains( '<<<$' ) ) :
   'Velocity-processed content must not contain any veloci-macro reference'
+
+assert content.contains( "Content for verify.groovy" ) : "Velocity-processed content must contain English text for default locale"
+
+// .vm files must have been processed with Velocity
+velocity = new File( basedir, 'target/generated-site/processed/de/velocity-context.apt' )
+assert velocity.exists() : "*.vm files must be processed with Velocity and stored in target/generated-site"
+
+content = velocity.text
+assert content.contains( "Inhalt für verify.groovy" ) : "Velocity-processed content must contain German text for locale 'de'"
