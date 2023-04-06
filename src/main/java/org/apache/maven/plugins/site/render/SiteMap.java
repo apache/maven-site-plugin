@@ -28,6 +28,7 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.site.Menu;
 import org.apache.maven.doxia.site.MenuItem;
 import org.apache.maven.doxia.site.SiteModel;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.codehaus.plexus.i18n.I18N;
 
 /**
@@ -90,18 +91,23 @@ public class SiteMap {
     }
 
     /**
-     * Generates a sitemap.xml in targetDir/xdoc/.
+     * Generates a sitemap.xml in targetDir/(locale/)?xdoc/.
      * This is a valid xdoc document that can be processed by a Doxia parser.
      * The file lists all the menus and menu items of the SiteModel in expanded form.
      *
      * @param siteModel the SiteModel to extract the menus from.
-     * @param targetDir the target output directory. The file will be created in targetDir/xdoc/.
+     * @param targetDir the target output directory. The file will be created in targetDir/(locale/)?xdoc/.
      * @param locale the Locale for the result.
      *
      * @throws IOException if the file cannot be ceated.
      */
     public void generate(SiteModel siteModel, File targetDir, Locale locale) throws IOException {
-        File outputDir = new File(targetDir, "xdoc");
+        File outputDir;
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+            outputDir = new File(new File(targetDir, locale.toString()), "xdoc");
+        } else {
+            outputDir = new File(targetDir, "xdoc");
+        }
         Sink sink = new XdocSinkFactory().createSink(outputDir, "sitemap.xml", encoding);
 
         try {

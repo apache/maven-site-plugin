@@ -41,6 +41,7 @@ under the License.
           <version>@project.version@</version>
           <configuration>
             <generateSitemap>true</generateSitemap>
+            <locales>default,de</locales>
           </configuration>
         </plugin>
       </plugins>
