@@ -119,7 +119,7 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
 
         sink.table();
 
-        sink.tableRows(new int[] {Sink.JUSTIFY_LEFT, Sink.JUSTIFY_LEFT}, false);
+        sink.tableRows();
 
         String name = i18n.getString("site-plugin", locale, "report.category.column.document");
         String description = i18n.getString("site-plugin", locale, "report.category.column.description");
