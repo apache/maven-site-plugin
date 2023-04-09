@@ -105,7 +105,7 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
 
         sink.paragraph();
         sink.text(desc1 + " ");
-        sink.link("http://maven.apache.org");
+        sink.link("https://maven.apache.org");
         sink.text("Maven");
         sink.link_();
         sink.text(" " + desc2);
