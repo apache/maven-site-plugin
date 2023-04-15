@@ -198,7 +198,7 @@ under the License.
     <!-- for dependencies -->
     <jettyVersion>9.4.50.v20221201</jettyVersion>
     <doxiaVersion>2.0.0-M6</doxiaVersion>
-    <doxiaSitetoolsVersion>2.0.0-M7</doxiaSitetoolsVersion>
+    <doxiaSitetoolsVersion>2.0.0-M8</doxiaSitetoolsVersion>
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
@@ -209,7 +209,7 @@ under the License.
     <projectInfoReportsPluginVersion>3.4.2</projectInfoReportsPluginVersion>
     <surefirePluginVersion>3.0.0</surefirePluginVersion>
     <mavenPluginPluginVersion>3.8.1</mavenPluginPluginVersion>
-    <mavenReportingImplVersion>4.0.0-M6</mavenReportingImplVersion>
+    <mavenReportingImplVersion>4.0.0-M7</mavenReportingImplVersion>
     <fluidoSkinVersion>2.0.0-M3</fluidoSkinVersion>
     <surefire.version>3.0.0</surefire.version>
     <project.build.outputTimestamp>2023-04-08T16:17:12Z</project.build.outputTimestamp>
@@ -220,12 +220,12 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-api</artifactId>
-      <version>4.0.0-M5</version>
+      <version>4.0.0-M6</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-exec</artifactId>
-      <version>2.0.0-M6</version>
+      <version>2.0.0-M7</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
