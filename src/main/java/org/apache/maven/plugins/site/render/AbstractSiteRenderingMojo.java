@@ -334,21 +334,21 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
 
-            String outputName = report.getOutputName() + ".html";
+            String outputName = report.getOutputName();
+            String filename = outputName + ".html";
 
             // Always add the report to the menu, see MSITE-150
-            reportsByOutputName.put(report.getOutputName(), report);
+            reportsByOutputName.put(outputName, report);
 
-            if (documents.containsKey(outputName)) {
-                String reportMojoInfo = (mavenReportExecution.getGoal() == null)
+            if (documents.containsKey(filename)) {
+                String reportMojoInfo = mavenReportExecution.getGoal() == null
                         ? ""
-                        : (" ("
-                                + mavenReportExecution.getPlugin().getArtifactId() + ':'
+                        : (" (" + mavenReportExecution.getPlugin().getArtifactId() + ':'
                                 + mavenReportExecution.getPlugin().getVersion() + ':' + mavenReportExecution.getGoal()
                                 + ')');
 
                 getLog().info("Skipped \"" + report.getName(locale) + "\" report" + reportMojoInfo + ", file \""
-                        + outputName + "\" already exists.");
+                        + filename + "\" already exists.");
             } else {
                 String generator = mavenReportExecution.getGoal() == null
                         ? null
@@ -357,7 +357,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                         new DocumentRenderingContext(siteDirectory, outputName, generator);
                 DocumentRenderer docRenderer =
                         new ReportDocumentRenderer(mavenReportExecution, docRenderingContext, getLog());
-                documents.put(outputName, docRenderer);
+                documents.put(filename, docRenderer);
             }
         }
         return reportsByOutputName;
@@ -423,10 +423,11 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
                     docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            if (!documents.containsKey(docRenderer.getOutputName())) {
-                documents.put(docRenderer.getOutputName(), docRenderer);
+            String filename = docRenderer.getOutputName();
+            if (!documents.containsKey(filename)) {
+                documents.put(filename, docRenderer);
             } else {
-                getLog().info("Category summary '" + docRenderer.getOutputName() + "' skipped; already exists");
+                getLog().info("Skipped \"" + title + "\" report; file \"" + filename + "\" already exists.");
             }
         }
 
@@ -441,10 +442,11 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
                     docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            if (!documents.containsKey(docRenderer.getOutputName())) {
-                documents.put(docRenderer.getOutputName(), docRenderer);
+            String filename = docRenderer.getOutputName();
+            if (!documents.containsKey(filename)) {
+                documents.put(filename, docRenderer);
             } else {
-                getLog().info("Category summary '" + docRenderer.getOutputName() + "' skipped; already exists");
+                getLog().info("Skipped \"" + title + "\" report; file \"" + filename + "\" already exists.");
             }
         }
         return documents;
