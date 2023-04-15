@@ -49,7 +49,6 @@ import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
@@ -414,14 +413,17 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         if (categories.containsKey(MavenReport.CATEGORY_PROJECT_INFORMATION) && generateProjectInfo) {
             // add "Project Information" category summary document
             List<MavenReport> categoryReports = categories.get(MavenReport.CATEGORY_PROJECT_INFORMATION);
-
+            MojoExecution subMojoExecution =
+                    new MojoExecution(mojoExecution.getPlugin(), "project-info", mojoExecution.getExecutionId());
             DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
-                    siteDirectory, "project-info.html", getSitePluginInfo() + ":CategorySummaryDocumentRenderer");
+                    siteDirectory,
+                    subMojoExecution.getGoal(),
+                    subMojoExecution.getPlugin().getId() + ':' + subMojoExecution.getGoal());
             String title = i18n.getString("site-plugin", locale, "report.information.title");
             String desc1 = i18n.getString("site-plugin", locale, "report.information.description1");
             String desc2 = i18n.getString("site-plugin", locale, "report.information.description2");
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
-                    docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
+                    subMojoExecution, docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
             String filename = docRenderer.getOutputName();
             if (!documents.containsKey(filename)) {
@@ -434,13 +436,17 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         if (categories.containsKey(MavenReport.CATEGORY_PROJECT_REPORTS)) {
             // add "Project Reports" category summary document
             List<MavenReport> categoryReports = categories.get(MavenReport.CATEGORY_PROJECT_REPORTS);
+            MojoExecution subMojoExecution =
+                    new MojoExecution(mojoExecution.getPlugin(), "project-reports", mojoExecution.getExecutionId());
             DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
-                    siteDirectory, "project-reports.html", getSitePluginInfo() + ":CategorySummaryDocumentRenderer");
+                    siteDirectory,
+                    subMojoExecution.getGoal(),
+                    subMojoExecution.getPlugin().getId() + ':' + subMojoExecution.getGoal());
             String title = i18n.getString("site-plugin", locale, "report.project.title");
             String desc1 = i18n.getString("site-plugin", locale, "report.project.description1");
             String desc2 = i18n.getString("site-plugin", locale, "report.project.description2");
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
-                    docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
+                    subMojoExecution, docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
             String filename = docRenderer.getOutputName();
             if (!documents.containsKey(filename)) {
@@ -450,12 +456,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             }
         }
         return documents;
-    }
-
-    private String getSitePluginInfo() {
-        PluginDescriptor pluginDescriptor =
-                (PluginDescriptor) getPluginContext().get("pluginDescriptor");
-        return pluginDescriptor.getId();
     }
 
     protected void populateReportItems(

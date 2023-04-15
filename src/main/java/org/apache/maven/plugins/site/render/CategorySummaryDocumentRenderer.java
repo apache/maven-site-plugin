@@ -24,12 +24,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.reporting.MavenReport;
 import org.codehaus.plexus.i18n.I18N;
@@ -39,8 +39,10 @@ import org.codehaus.plexus.i18n.I18N;
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  */
-public class CategorySummaryDocumentRenderer implements DocumentRenderer {
+public class CategorySummaryDocumentRenderer implements SitePluginReportDocumentRenderer {
     private DocumentRenderingContext docRenderingContext;
+
+    private final String reportMojoInfo;
 
     private String title;
 
@@ -55,16 +57,7 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
     private final Log log;
 
     public CategorySummaryDocumentRenderer(
-            DocumentRenderingContext docRenderingContext,
-            String title,
-            String desc1,
-            String desc2,
-            I18N i18n,
-            List<MavenReport> categoryReports) {
-        this(docRenderingContext, title, desc1, desc2, i18n, categoryReports, null);
-    }
-
-    public CategorySummaryDocumentRenderer(
+            MojoExecution mojoExecution,
             DocumentRenderingContext docRenderingContext,
             String title,
             String desc1,
@@ -73,6 +66,11 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
             List<MavenReport> categoryReports,
             Log log) {
         this.docRenderingContext = docRenderingContext;
+        this.reportMojoInfo = mojoExecution.getPlugin().getArtifactId()
+                + ':'
+                + mojoExecution.getPlugin().getVersion()
+                + ':'
+                + mojoExecution.getGoal();
         this.title = title;
         this.desc1 = desc1;
         this.desc2 = desc2;
@@ -185,5 +183,10 @@ public class CategorySummaryDocumentRenderer implements DocumentRenderer {
 
     public boolean isExternalReport() {
         return false;
+    }
+
+    @Override
+    public String getReportMojoInfo() {
+        return reportMojoInfo;
     }
 }
