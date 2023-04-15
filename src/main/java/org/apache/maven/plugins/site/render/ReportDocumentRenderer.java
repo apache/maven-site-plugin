@@ -122,13 +122,15 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         @Override
         public Sink createSink(File outputDir, String outputName) {
             // Create a new document rendering context, similar to the main one, but with a different output name
-            String outputRelativeToTargetSite = PathTool.getRelativeFilePath(
+            String document = PathTool.getRelativeFilePath(
                     report.getReportOutputDirectory().getPath(), new File(outputDir, outputName).getPath());
+            // Remove .html suffix since we know that we are in Site Renderer context
+            document = document.substring(0, document.lastIndexOf('.'));
 
             DocumentRenderingContext subSinkContext = new DocumentRenderingContext(
                     docRenderingContext.getBasedir(),
                     docRenderingContext.getBasedirRelativePath(),
-                    outputRelativeToTargetSite,
+                    document,
                     docRenderingContext.getParserId(),
                     docRenderingContext.getExtension(),
                     docRenderingContext.isEditable(),
