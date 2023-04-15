@@ -143,6 +143,14 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     private boolean generateProjectInfo;
 
     /**
+     * Generate a sitemap. The result will be a "sitemap.html" file at the site root.
+     *
+     * @since 2.1
+     */
+    @Parameter(property = "generateSitemap", defaultValue = "false")
+    private boolean generateSitemap;
+
+    /**
      * Specifies the input encoding.
      *
      * @since 2.3
@@ -455,6 +463,26 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                 getLog().info("Skipped \"" + title + "\" report; file \"" + filename + "\" already exists.");
             }
         }
+
+        if (generateSitemap) {
+            MojoExecution subMojoExecution =
+                    new MojoExecution(mojoExecution.getPlugin(), "sitemap", mojoExecution.getExecutionId());
+            DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
+                    siteDirectory,
+                    subMojoExecution.getGoal(),
+                    subMojoExecution.getPlugin().getId() + ':' + subMojoExecution.getGoal());
+            String title = i18n.getString("site-plugin", locale, "site.sitemap.title");
+            DocumentRenderer docRenderer = new SitemapDocumentRenderer(
+                    subMojoExecution, docRenderingContext, title, context.getSiteModel(), i18n, getLog());
+
+            String filename = docRenderer.getOutputName();
+            if (!documents.containsKey(filename)) {
+                documents.put(filename, docRenderer);
+            } else {
+                getLog().info("Skipped \"" + title + "\" report; file \"" + filename + "\" already exists.");
+            }
+        }
+
         return documents;
     }
 

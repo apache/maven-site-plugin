@@ -22,41 +22,6 @@ import org.codehaus.plexus.util.*;
 
 try
 {
-    final File generatedSiteDirectory = new File( basedir, "target/generated-site" );
-    if ( !generatedSiteDirectory.isDirectory() )
-    {
-        System.err.println( "generated-site is missing or not a directory." );
-        return false;
-    }
-
-    File sitemapXdocFile = new File( generatedSiteDirectory, "xdoc/sitemap.xml" );
-    if ( !sitemapXdocFile.isFile() )
-    {
-        System.err.println( "no sitemap.xml!" );
-        return false;
-    }
-
-    String content = FileUtils.fileRead( sitemapXdocFile, "UTF-8" );
-    if ( !content.contains( "<li>My first item</li>" ) )
-    {
-        System.err.println( "\"<li>My first item</li>\" not found in sitemap.xml!" );
-        return false;
-    }
-
-    File sitemapGermanXdocFile = new File( generatedSiteDirectory, "de/xdoc/sitemap.xml" );
-    if ( !sitemapGermanXdocFile.isFile() )
-    {
-        System.err.println( "no German sitemap.xml!" );
-        return false;
-    }
-
-    content = FileUtils.fileRead( sitemapGermanXdocFile, "UTF-8" );
-    if ( !content.contains( "<li>Mein erstes Element</li>" ) )
-    {
-        System.err.println( "\"<li>Mein erstes Element</li>\" not found in German sitemap.xml!" );
-        return false;
-    }
-
     final File siteDirectory = new File( basedir, "target/site" );
     if ( !siteDirectory.isDirectory() )
     {
