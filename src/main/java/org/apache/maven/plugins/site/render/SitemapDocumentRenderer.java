@@ -18,111 +18,87 @@
  */
 package org.apache.maven.plugins.site.render;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.Writer;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.maven.doxia.module.xdoc.XdocSinkFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.site.Menu;
 import org.apache.maven.doxia.site.MenuItem;
 import org.apache.maven.doxia.site.SiteModel;
-import org.apache.maven.doxia.tools.SiteTool;
+import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
+import org.apache.maven.doxia.siterenderer.RendererException;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
+import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
+import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
+import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.i18n.I18N;
 
+import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
+
 /**
- * Generate a sitemap.
+ * Renders a sitemap report.
  *
  * @author ltheussl
  *
  * @since 2.1
  */
-public class SiteMap {
+public class SitemapDocumentRenderer implements SitePluginReportDocumentRenderer {
+    private DocumentRenderingContext docRenderingContext;
 
-    private String encoding;
+    private final String reportMojoInfo;
+
+    String title;
+
+    private SiteModel siteModel;
+
     private I18N i18n;
 
-    /**
-     * Constructor sets default values.
-     *
-     * @param encoding the default encoding to use when writing the output file.
-     * @param i18n the default I18N for translations.
-     */
-    public SiteMap(String encoding, I18N i18n) {
-        this.encoding = encoding;
+    private final Log log;
+
+    public SitemapDocumentRenderer(
+            MojoExecution mojoExecution,
+            DocumentRenderingContext docRenderingContext,
+            String title,
+            SiteModel siteModel,
+            I18N i18n,
+            Log log) {
+        this.docRenderingContext = docRenderingContext;
+        this.reportMojoInfo = mojoExecution.getPlugin().getArtifactId()
+                + ':'
+                + mojoExecution.getPlugin().getVersion()
+                + ':'
+                + mojoExecution.getGoal();
+        this.title = title;
+        this.siteModel = siteModel;
         this.i18n = i18n;
+        this.log = log;
     }
 
-    /**
-     * Get the value of i18n.
-     *
-     * @return the value of i18n.
-     */
-    public I18N getI18n() {
-        return i18n;
-    }
+    public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
+            throws RendererException, FileNotFoundException {
+        Locale locale = siteRenderingContext.getLocale();
 
-    /**
-     * Set the value of i18n.
-     *
-     * @param i18n new value of i18n.
-     */
-    public void setI18n(I18N i18n) {
-        this.i18n = i18n;
-    }
+        String msg = "Generating \"" + buffer().strong(title) + "\" report";
+        // CHECKSTYLE_OFF: MagicNumber
+        log.info((StringUtils.rightPad(msg, 40) + buffer().strong(" --- ").mojo(reportMojoInfo)));
+        // CHECKSTYLE_ON: MagicNumber
 
-    /**
-     * Get the encoding to use when writing the output file.
-     *
-     * @return the value of encoding.
-     */
-    public String getEncoding() {
-        return encoding;
-    }
+        SiteRendererSink sink = new SiteRendererSink(docRenderingContext);
 
-    /**
-     * Set the encoding to use when writing the output file.
-     *
-     * @param enc new value of encoding.
-     */
-    public void setEncoding(String enc) {
-        this.encoding = enc;
-    }
-
-    /**
-     * Generates a sitemap.xml in targetDir/(locale/)?xdoc/.
-     * This is a valid xdoc document that can be processed by a Doxia parser.
-     * The file lists all the menus and menu items of the SiteModel in expanded form.
-     *
-     * @param siteModel the SiteModel to extract the menus from.
-     * @param targetDir the target output directory. The file will be created in targetDir/(locale/)?xdoc/.
-     * @param locale the Locale for the result.
-     *
-     * @throws IOException if the file cannot be ceated.
-     */
-    public void generate(SiteModel siteModel, File targetDir, Locale locale) throws IOException {
-        File outputDir;
-        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
-            outputDir = new File(new File(targetDir, locale.toString()), "xdoc");
-        } else {
-            outputDir = new File(targetDir, "xdoc");
-        }
-        Sink sink = new XdocSinkFactory().createSink(outputDir, "sitemap.xml", encoding);
-
-        try {
-            extract(siteModel, sink, locale);
-        } finally {
-            sink.close();
-        }
-    }
-
-    private void extract(SiteModel siteModel, Sink sink, Locale locale) {
         sink.head();
+
         sink.title();
-        sink.text(i18n.getString("site-plugin", locale, "site.sitemap.title"));
+
+        sink.text(title);
+
         sink.title_();
+
         sink.head_();
+
         sink.body();
 
         sink.section1();
@@ -147,7 +123,14 @@ public class SiteMap {
         }
 
         sink.section1_();
+
         sink.body_();
+
+        sink.flush();
+
+        sink.close();
+
+        siteRenderer.mergeDocumentIntoSite(writer, sink, siteRenderingContext);
     }
 
     private static void extractItems(List<MenuItem> items, Sink sink) {
@@ -177,5 +160,26 @@ public class SiteMap {
     // sitemap.html gets generated into top-level so we only have to check leading slashes
     private static String relativePath(String href) {
         return href.startsWith("/") ? "." + href : href;
+    }
+
+    public String getOutputName() {
+        return docRenderingContext.getOutputName();
+    }
+
+    public DocumentRenderingContext getRenderingContext() {
+        return docRenderingContext;
+    }
+
+    public boolean isOverwrite() {
+        return true;
+    }
+
+    public boolean isExternalReport() {
+        return false;
+    }
+
+    @Override
+    public String getReportMojoInfo() {
+        return reportMojoInfo;
     }
 }

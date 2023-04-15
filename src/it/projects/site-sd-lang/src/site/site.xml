@@ -32,6 +32,7 @@ under the License.
       <item name="Accueil" href="index.html" />
       <item name="Contacts" href="contact.html" />
       <item name="Retour" href="../index.html" />
+      <item name="Sitemap" href="sitemap.html" />
     </menu>
     <menu name="Doc">
       <item name="specs" href="doc.html" />

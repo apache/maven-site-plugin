@@ -32,6 +32,7 @@ under the License.
     <menu name="${project.name}">
       <item name="Einstieg" href="index.html" />
       <item name="Jänner" href="jan.html" />
+      <item name="Navigationsübersicht" href="sitemap.html" />
     </menu>
     <menu ref="reports"/>
   </body>
