@@ -159,16 +159,16 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         siteRenderer.copyResources(context, outputDir);
 
         // 1. render Doxia documents first
-        List<DocumentRenderer> reportDocuments = renderDoxiaDocuments(documents, context, outputDir, false);
+        List<DocumentRenderer> nonDoxiaDocuments = renderDoxiaDocuments(documents, context, outputDir, false);
 
-        // 2. then reports
         // prepare external reports
         for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
             report.setReportOutputDirectory(outputDir);
         }
 
-        siteRenderer.render(reportDocuments, context, outputDir);
+        // 2. then non-Doxia documents (e.g., reports)
+        renderNonDoxiaDocuments(nonDoxiaDocuments, context, outputDir);
 
         if (generateSitemap) {
             getLog().info("Generating Sitemap");
@@ -252,6 +252,48 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         }
 
         return nonDoxiaDocuments;
+    }
+
+    /**
+     * Render non-Doxia documents (e.g., reports) from the list given
+     *
+     * @param documents a collection of documents containing non-Doxia source files
+     */
+    private void renderNonDoxiaDocuments(List<DocumentRenderer> documents, SiteRenderingContext context, File outputDir)
+            throws RendererException, IOException {
+        Map<String, Integer> counts = new TreeMap<>();
+
+        for (DocumentRenderer doc : documents) {
+            String type;
+            if (doc instanceof ReportDocumentRenderer || doc instanceof SitePluginReportDocumentRenderer) {
+                type = "report";
+            } else {
+                type = "other";
+            }
+
+            Integer count = counts.get(type);
+            if (count == null) {
+                count = 1;
+            } else {
+                count++;
+            }
+            counts.put(type, count);
+        }
+
+        if (documents.size() > 0) {
+            for (Map.Entry<String, Integer> entry : counts.entrySet()) {
+                String type = entry.getKey();
+                Integer count = entry.getValue();
+
+                MessageBuilder mb = buffer();
+                mb.a("Rendering ");
+                mb.strong(count + " " + type + " document" + (count > 1 ? "s" : ""));
+
+                getLog().info(mb.toString());
+            }
+
+            siteRenderer.render(documents, context, outputDir);
+        }
     }
 
     private File getOutputDirectory(Locale locale) {
