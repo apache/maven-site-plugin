@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
@@ -33,6 +34,8 @@ import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.reporting.MavenReport;
 import org.codehaus.plexus.i18n.I18N;
+
+import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
 /**
  * Renders a Maven report.
@@ -81,6 +84,11 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
 
     public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, FileNotFoundException {
+        String msg = "Generating \"" + buffer().strong(title) + "\" report";
+        // CHECKSTYLE_OFF: MagicNumber
+        log.info((StringUtils.rightPad(msg, 40) + buffer().strong(" --- ").mojo(reportMojoInfo)));
+        // CHECKSTYLE_ON: MagicNumber
+
         SiteRendererSink sink = new SiteRendererSink(docRenderingContext);
 
         sink.head();
