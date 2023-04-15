@@ -42,6 +42,7 @@ import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugins.site.render.ReportDocumentRenderer;
+import org.apache.maven.plugins.site.render.SitePluginReportDocumentRenderer;
 import org.eclipse.jetty.http.MimeTypes;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
@@ -191,13 +192,18 @@ public class DoxiaFilter implements Filter {
     private void logDocumentRenderer(String path, String locale, DocumentRenderer docRenderer) {
         String source;
         if (docRenderer instanceof DoxiaDocumentRenderer) {
-            DoxiaDocumentRenderer doxiaDocumentRenderer = (DoxiaDocumentRenderer) docRenderer;
-            source = doxiaDocumentRenderer.getRenderingContext().getInputName();
+            source = docRenderer.getRenderingContext().getDoxiaSourcePath();
         } else if (docRenderer instanceof ReportDocumentRenderer) {
-            ReportDocumentRenderer reportDocumentRenderer = (ReportDocumentRenderer) docRenderer;
-            source = reportDocumentRenderer.getReportMojoInfo();
+            source = ((ReportDocumentRenderer) docRenderer).getReportMojoInfo();
+            if (source == null) {
+                source = "(unknown)";
+            }
+        } else if (docRenderer instanceof SitePluginReportDocumentRenderer) {
+            source = ((SitePluginReportDocumentRenderer) docRenderer).getReportMojoInfo();
         } else {
-            source = docRenderer.getClass().getName();
+            source = docRenderer.getRenderingContext().getGenerator() != null
+                    ? docRenderer.getRenderingContext().getGenerator()
+                    : docRenderer.getClass().getName();
         }
         String localizedPath = !locale.equals(SiteTool.DEFAULT_LOCALE.toString()) ? locale + "/" + path : path;
         String localizedSource = source
