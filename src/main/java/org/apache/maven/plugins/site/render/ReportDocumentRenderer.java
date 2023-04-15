@@ -179,7 +179,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         // CHECKSTYLE_OFF: MagicNumber
         log.info(
                 reportMojoInfo == null
-                        ? (msg + '.')
+                        ? msg
                         : (StringUtils.rightPad(msg, 40)
                                 + buffer().strong(" --- ").mojo(reportMojoInfo)));
         // CHECKSTYLE_ON: MagicNumber
