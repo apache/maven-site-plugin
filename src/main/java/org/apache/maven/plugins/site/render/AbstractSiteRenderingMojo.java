@@ -46,6 +46,7 @@ import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Reporting;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
@@ -120,6 +121,12 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected MavenSession mavenSession;
 
     /**
+     * The mojo execution
+     */
+    @Parameter(defaultValue = "${mojoExecution}", readonly = true, required = true)
+    protected MojoExecution mojoExecution;
+
+    /**
      * replaces previous reportPlugins parameter, that was injected by Maven core from
      * reporting section: but this new configuration format has been abandoned.
      *
@@ -192,6 +199,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected List<MavenReportExecution> getReports() throws MojoExecutionException {
         MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
         mavenReportExecutorRequest.setMavenSession(mavenSession);
+        mavenReportExecutorRequest.setExecutionId(mojoExecution.getExecutionId());
         mavenReportExecutorRequest.setProject(project);
         mavenReportExecutorRequest.setReportPlugins(getReportingPlugins());
 
