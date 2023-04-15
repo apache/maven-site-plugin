@@ -266,7 +266,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
             getLog().info(buffer().a("Rendering content with ")
                     .strong(skinArtifact.getId() + " skin")
-                    .a('.')
                     .toString());
 
             context = siteRenderer.createContextForSkin(skinArtifact, attributes, siteModel, project.getName(), locale);
