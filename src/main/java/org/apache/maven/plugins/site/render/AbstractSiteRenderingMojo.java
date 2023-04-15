@@ -350,15 +350,11 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                 getLog().info("Skipped \"" + report.getName(locale) + "\" report" + reportMojoInfo + ", file \""
                         + outputName + "\" already exists.");
             } else {
-                String reportMojoInfo = mavenReportExecution.getPlugin().getGroupId()
-                        + ':'
-                        + mavenReportExecution.getPlugin().getArtifactId()
-                        + ':'
-                        + mavenReportExecution.getPlugin().getVersion()
-                        + ':'
-                        + mavenReportExecution.getGoal();
+                String generator = mavenReportExecution.getGoal() == null
+                        ? null
+                        : mavenReportExecution.getPlugin().getId() + ':' + mavenReportExecution.getGoal();
                 DocumentRenderingContext docRenderingContext =
-                        new DocumentRenderingContext(siteDirectory, outputName, reportMojoInfo);
+                        new DocumentRenderingContext(siteDirectory, outputName, generator);
                 DocumentRenderer docRenderer =
                         new ReportDocumentRenderer(mavenReportExecution, docRenderingContext, getLog());
                 documents.put(outputName, docRenderer);
