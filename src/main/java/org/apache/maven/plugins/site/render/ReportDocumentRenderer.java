@@ -66,18 +66,15 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     public ReportDocumentRenderer(
             MavenReportExecution mavenReportExecution, DocumentRenderingContext docRenderingContext, Log log) {
         this.report = mavenReportExecution.getMavenReport();
-
         this.docRenderingContext = docRenderingContext;
-
-        // full MavenReportExecution prepared by maven-reporting-impl
-        this.reportMojoInfo = mavenReportExecution.getPlugin().getArtifactId()
-                + ':'
-                + mavenReportExecution.getPlugin().getVersion()
-                + ':'
-                + mavenReportExecution.getGoal();
-
+        this.reportMojoInfo = mavenReportExecution.getGoal() == null
+                ? null
+                : mavenReportExecution.getPlugin().getArtifactId()
+                        + ':'
+                        + mavenReportExecution.getPlugin().getVersion()
+                        + ':'
+                        + mavenReportExecution.getGoal();
         this.classLoader = mavenReportExecution.getClassLoader();
-
         this.log = log;
     }
 
