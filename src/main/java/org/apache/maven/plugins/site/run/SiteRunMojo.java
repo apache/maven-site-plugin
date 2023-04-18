@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -130,9 +131,6 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         List<Locale> localesList = getLocales();
         webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
 
-        // Default is first in the list
-        Locale defaultLocale = localesList.get(0);
-
         try {
             Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
 
@@ -147,20 +145,20 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                 i18nGeneratedSiteContext.getSiteDirectories().clear();
 
                 Map<String, DocumentRenderer> i18nDocuments = locateDocuments(i18nContext, reports, locale);
-                if (!defaultLocale.equals(locale)) {
+                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     i18nGeneratedSiteContext.addSiteDirectory(new File(generatedSiteDirectory, locale.toString()));
                 } else {
                     i18nGeneratedSiteContext.addSiteDirectory(generatedSiteDirectory);
                 }
                 DoxiaBean doxiaBean = new DoxiaBean(i18nContext, i18nDocuments, i18nGeneratedSiteContext);
 
-                if (!defaultLocale.equals(locale)) {
+                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     i18nDoxiaContexts.put(locale.toString(), doxiaBean);
                 } else {
                     i18nDoxiaContexts.put("default", doxiaBean);
                 }
 
-                if (!defaultLocale.equals(locale)) {
+                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     siteRenderer.copyResources(i18nContext, new File(tempWebappDirectory, locale.toString()));
                 } else {
                     siteRenderer.copyResources(i18nContext, tempWebappDirectory);

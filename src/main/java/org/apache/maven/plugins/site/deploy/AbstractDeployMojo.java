@@ -28,6 +28,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.DistributionManagement;
@@ -357,11 +358,8 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
 
             getLog().info("Pushing " + inputDirectory);
 
-            // Default is first in the list
-            final Locale defaultLocale = localesList.get(0);
-
             for (Locale locale : localesList) {
-                if (!locale.equals(defaultLocale)) {
+                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     getLog().info("   >>> to " + appendSlash(repository.getUrl()) + locale + "/" + relativeDir);
 
                     wagon.putDirectory(new File(inputDirectory, locale.toString()), locale + "/" + relativeDir);
