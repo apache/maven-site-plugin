@@ -115,8 +115,6 @@ mvn site-deploy
 
 * Staging a Site
 
-  <<Note:>> This goal is available in version 2.0-beta-5 or later of the Site Plugin.
-
   To review/test the generated web site before an official deploy, you can stage the site in
   a specific directory. It will use the <<<\<distributionManagement\>>>> element or the project hierarchy to link the
   project and its modules.
@@ -127,7 +125,7 @@ mvn site-deploy
 mvn site:stage
 +-----+
 
-  <<Note:>> Since version 2.3, a site must be generated first before executing <<<site:stage>>>.
+  <<Note:>> A site must be generated first before executing <<<site:stage>>>.
 
   By default, the site will be staged in a directory <<<target/staging/>>>.
   A different staging location can be chosen
@@ -139,7 +137,7 @@ mvn site:stage -DstagingDirectory=C:\fullsite
 
   <<Note:>> <<<stagingDirectory>>> cannot be dynamic, i.e. <<<stagingDirectory=$\{basedir\}\fullsite>>>
 
-  To stage a site and to deploy it, just execute the
+  To stage a site and deploy it, execute the
   <<<{{{./stage-deploy-mojo.html}site:stage-deploy}}>>> goal from your project
   with the required parameters.
   The <<<site:stage-deploy>>> goal will use the value of <<<distributionManagement.site.id>>> as default id
@@ -158,13 +156,7 @@ mvn site:stage -DstagingDirectory=C:\fullsite
 mvn site:stage-deploy -DstagingSiteURL=scp://www.mycompany.com/www/project/
 +-----+
 
-  <<Note:>> Since version 2.3, a site must be generated first before executing <<<site:stage-deploy>>>.
-
-  <<Note:>> Due to a bug in Wagon, the password is not always picked up when
-  you run the <<<site:stage-deploy>>> goal. The bug has been fixed, but the
-  version of Wagon that is used by the Site Plugin is determined by the version
-  of Maven you use. The current 2.0.x releases of Maven use a version where
-  this bug is still present.
+  <<Note:>>A site must be generated first before executing <<<site:stage-deploy>>>.
 
 * Running a Site
 
@@ -176,7 +168,7 @@ mvn site:run
 +-----+
 
   The server will, by default, be started on <<<http://localhost:8080/>>>. See
-  {{{http://jetty.mortbay.org/}http://jetty.mortbay.org/}} for more information about
+  {{{https://www.eclipse.org/jetty/}https://www.eclipse.org/jetty/}} for more information about
   the Jetty server.
 
   <<Note:>> Running a site only works for single-module sites.
@@ -187,7 +179,7 @@ mvn site:run
   In general, site documentation is published as part of a release. This means that changes
   to the documentation depend on a new release before being visible <or> you must accept
   that the documentation refers to a snapshot version instead of the latest release version.
-  To solve that problem, you first of all need to configure your project for reproducibility
+  To solve that problem, you first need to configure your project for reproducibility
   by setting the <<<project.build.outputTimestamp>>> model property. Then branch off from the
   SCM tag you want to modify, perform the changes, commit them and then rebuild, finally
   publish updated site. The underlying Maven Doxia Sitetools will automatically inject that
