@@ -210,7 +210,7 @@ under the License.
     <surefirePluginVersion>3.0.0</surefirePluginVersion>
     <mavenPluginPluginVersion>3.8.1</mavenPluginPluginVersion>
     <mavenReportingImplVersion>4.0.0-M6</mavenReportingImplVersion>
-    <fluidoSkinVersion>1.11.2</fluidoSkinVersion>
+    <fluidoSkinVersion>1.11.1</fluidoSkinVersion>
     <surefire.version>3.0.0</surefire.version>
     <project.build.outputTimestamp>2023-04-08T16:17:12Z</project.build.outputTimestamp>
 
