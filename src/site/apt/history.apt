@@ -33,7 +33,7 @@ Maven Site Plugin History
 
  Maven Site Plugin uses:
 
-  * {{{/doxia/}Doxia}} to parse {{{/doxia/references/}many markup languages}} then render HTML: see
+  * {{{/doxia/}Doxia}} to parse {{{/doxia/references/}many markup languages}}, then render HTML: see
   {{{./examples/creating-content.html}Creating Content}} documentation for mode details (particularly which markups
   are enabled by default in maven-site-plugin and how to add one),
   
