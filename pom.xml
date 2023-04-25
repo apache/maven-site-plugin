@@ -514,6 +514,35 @@ under the License.
         <plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <!--
+            This is necessary if "mvn site" has been invoked previously with 3.x
+            and leaves 0-byte files in the local repository for MRM Maven Plugin
+            to serve which are broken from a consumer's PoV.
+            -->
+            <executions>
+              <execution>
+                <id>delete-0-byte-site-descriptors</id>
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                  <filesets>
+                    <fileset>
+                      <directory>${settings.localRepository}/org/apache/apache</directory>
+                      <includes>
+                        <include>**/*-site*.xml</include>
+                      </includes>
+                    </fileset>
+                  </filesets>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
             <configuration>
               <projectsDirectory>src/it/projects</projectsDirectory>
