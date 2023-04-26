@@ -19,7 +19,6 @@
 package org.apache.maven.plugins.site.render;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
@@ -170,7 +169,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
     @Override
     public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
-            throws RendererException, FileNotFoundException {
+            throws RendererException, IOException {
         Locale locale = siteRenderingContext.getLocale();
         String localReportName = report.getName(locale);
 
@@ -231,34 +230,30 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
         // render sub-sinks, eventually created by multi-page reports
         String outputName = "";
-        try {
-            List<MultiPageSubSink> sinks = multiPageSinkFactory.sinks();
+        List<MultiPageSubSink> sinks = multiPageSinkFactory.sinks();
 
-            log.debug("Multipage report: " + sinks.size() + " subreports");
+        log.debug("Multipage report: " + sinks.size() + " subreports");
 
-            for (MultiPageSubSink mySink : sinks) {
-                outputName = mySink.getOutputName();
-                log.debug("  Rendering " + outputName);
+        for (MultiPageSubSink mySink : sinks) {
+            outputName = mySink.getOutputName();
+            log.debug("  Rendering " + outputName);
 
-                // Create directories if necessary
-                if (!mySink.getOutputDir().exists()) {
-                    mySink.getOutputDir().mkdirs();
-                }
+            // Create directories if necessary
+            if (!mySink.getOutputDir().exists()) {
+                mySink.getOutputDir().mkdirs();
+            }
 
-                File outputFile = new File(mySink.getOutputDir(), outputName);
+            File outputFile = new File(mySink.getOutputDir(), outputName);
 
-                try (Writer out = WriterFactory.newWriter(outputFile, siteRenderingContext.getOutputEncoding())) {
-                    siteRenderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
+            try (Writer out = WriterFactory.newWriter(outputFile, siteRenderingContext.getOutputEncoding())) {
+                siteRenderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
+                mySink.close();
+                mySink = null;
+            } finally {
+                if (mySink != null) {
                     mySink.close();
-                    mySink = null;
-                } finally {
-                    if (mySink != null) {
-                        mySink.close();
-                    }
                 }
             }
-        } catch (IOException e) {
-            throw new RendererException("Cannot create writer to " + outputName, e);
         }
     }
 

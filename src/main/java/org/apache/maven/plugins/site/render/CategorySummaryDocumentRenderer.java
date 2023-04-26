@@ -18,7 +18,7 @@
  */
 package org.apache.maven.plugins.site.render;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
@@ -83,7 +83,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
     }
 
     public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
-            throws RendererException, FileNotFoundException {
+            throws RendererException, IOException {
         String msg = "Generating \"" + buffer().strong(title) + "\" report";
         // CHECKSTYLE_OFF: MagicNumber
         log.info((StringUtils.rightPad(msg, 40) + buffer().strong(" --- ").mojo(reportMojoInfo)));
