@@ -18,7 +18,7 @@
  */
 package org.apache.maven.plugins.site.render;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 import java.util.Locale;
@@ -79,7 +79,7 @@ public class SitemapDocumentRenderer implements SitePluginReportDocumentRenderer
     }
 
     public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
-            throws RendererException, FileNotFoundException {
+            throws RendererException, IOException {
         Locale locale = siteRenderingContext.getLocale();
 
         String msg = "Generating \"" + buffer().strong(title) + "\" report";

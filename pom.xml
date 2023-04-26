@@ -198,7 +198,7 @@ under the License.
     <!-- for dependencies -->
     <jettyVersion>9.4.50.v20221201</jettyVersion>
     <doxiaVersion>2.0.0-M6</doxiaVersion>
-    <doxiaSitetoolsVersion>2.0.0-M8</doxiaSitetoolsVersion>
+    <doxiaSitetoolsVersion>2.0.0-M10</doxiaSitetoolsVersion>
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
@@ -209,8 +209,8 @@ under the License.
     <projectInfoReportsPluginVersion>3.4.2</projectInfoReportsPluginVersion>
     <surefirePluginVersion>3.0.0</surefirePluginVersion>
     <mavenPluginPluginVersion>3.8.1</mavenPluginPluginVersion>
-    <mavenReportingImplVersion>4.0.0-M7</mavenReportingImplVersion>
-    <testingFluidoSkinVersion>2.0.0-M3</testingFluidoSkinVersion>
+    <mavenReportingImplVersion>4.0.0-M8</mavenReportingImplVersion>
+    <testingFluidoSkinVersion>2.0.0-M6</testingFluidoSkinVersion>
     <surefire.version>3.0.0</surefire.version>
     <project.build.outputTimestamp>2023-02-11T20:25:37Z</project.build.outputTimestamp>
 
@@ -225,7 +225,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-exec</artifactId>
-      <version>2.0.0-M7</version>
+      <version>2.0.0-M8</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
