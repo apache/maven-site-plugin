@@ -49,7 +49,8 @@ import org.codehaus.plexus.archiver.jar.ManifestException;
         name = "jar",
         defaultPhase = LifecyclePhase.PACKAGE,
         requiresDependencyResolution = ResolutionScope.TEST,
-        requiresReports = true)
+        requiresReports = true,
+        threadSafe = true)
 public class SiteJarMojo extends SiteMojo {
     private static final String[] DEFAULT_ARCHIVE_EXCLUDES = new String[] {};
 
