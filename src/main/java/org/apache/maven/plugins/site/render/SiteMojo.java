@@ -57,7 +57,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
  *
  */
-@Mojo(name = "site", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true)
+@Mojo(name = "site", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true, threadSafe = true)
 public class SiteMojo extends AbstractSiteRenderingMojo {
     /**
      * Directory where the project sites and report distributions will be generated (as html/css/...).
