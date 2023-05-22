@@ -429,21 +429,21 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo implements Con
                 String nonProxyHostPrefix = nonProxyHost.substring(0, pos);
                 String nonProxyHostSuffix = nonProxyHost.substring(pos + 1);
                 // prefix*
-                if (StringUtils.isNotEmpty(nonProxyHostPrefix)
+                if ((nonProxyHostPrefix != null && !nonProxyHostPrefix.isEmpty())
                         && host.startsWith(nonProxyHostPrefix)
-                        && StringUtils.isEmpty(nonProxyHostSuffix)) {
+                        && (nonProxyHostSuffix == null || nonProxyHostSuffix.isEmpty())) {
                     return null;
                 }
                 // *suffix
-                if (StringUtils.isEmpty(nonProxyHostPrefix)
-                        && StringUtils.isNotEmpty(nonProxyHostSuffix)
+                if ((nonProxyHostPrefix == null || nonProxyHostPrefix.isEmpty())
+                        && (nonProxyHostSuffix != null && !nonProxyHostSuffix.isEmpty())
                         && host.endsWith(nonProxyHostSuffix)) {
                     return null;
                 }
                 // prefix*suffix
-                if (StringUtils.isNotEmpty(nonProxyHostPrefix)
+                if ((nonProxyHostPrefix != null && !nonProxyHostPrefix.isEmpty())
                         && host.startsWith(nonProxyHostPrefix)
-                        && StringUtils.isNotEmpty(nonProxyHostSuffix)
+                        && (nonProxyHostSuffix != null && !nonProxyHostSuffix.isEmpty())
                         && host.endsWith(nonProxyHostSuffix)) {
                     return null;
                 }
