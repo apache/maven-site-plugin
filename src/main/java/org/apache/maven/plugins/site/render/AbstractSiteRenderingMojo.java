@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.doxia.site.Menu;
@@ -175,7 +174,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * @return The input files encoding, never <code>null</code>.
      */
     protected String getInputEncoding() {
-        return (StringUtils.isEmpty(inputEncoding)) ? ReaderFactory.FILE_ENCODING : inputEncoding;
+        return (inputEncoding == null || inputEncoding.isEmpty()) ? ReaderFactory.FILE_ENCODING : inputEncoding;
     }
 
     /**
@@ -197,7 +196,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     private boolean saveProcessedContent;
 
     protected void checkInputEncoding() {
-        if (StringUtils.isEmpty(inputEncoding)) {
+        if (inputEncoding == null || inputEncoding.isEmpty()) {
             getLog().warn("Input file encoding has not been set, using platform encoding " + ReaderFactory.FILE_ENCODING
                     + ", i.e. build is platform dependent!");
         }

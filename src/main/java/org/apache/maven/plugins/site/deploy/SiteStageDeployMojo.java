@@ -20,7 +20,6 @@ package org.apache.maven.plugins.site.deploy;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginManagement;
@@ -89,13 +88,13 @@ public class SiteStageDeployMojo extends AbstractStagingMojo {
      */
     @Override
     protected String determineTopDistributionManagementSiteUrl() throws MojoExecutionException {
-        if (StringUtils.isNotEmpty(topSiteURL)) {
+        if (topSiteURL != null && !topSiteURL.isEmpty()) {
             getLog().debug("stage-deploy top distributionManagement.site.url configured with topSiteURL parameter: "
                     + topSiteURL);
             return topSiteURL;
         }
 
-        if (StringUtils.isNotEmpty(stagingSiteURL)) {
+        if (stagingSiteURL != null && !stagingSiteURL.isEmpty()) {
             // We need to calculate the first project that supplied same stagingSiteURL
             MavenProject topProject = getTopMostParentWithSameStagingSiteURL();
             String url = getSite(topProject).getUrl();
