@@ -196,23 +196,23 @@ under the License.
     <mavenVersion>3.2.5</mavenVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
-    <jettyVersion>9.4.50.v20221201</jettyVersion>
+    <jettyVersion>9.4.51.v20230217</jettyVersion>
     <doxiaVersion>2.0.0-M6</doxiaVersion>
     <doxiaSitetoolsVersion>2.0.0-M10</doxiaSitetoolsVersion>
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
-    <checkstylePluginVersion>3.2.1</checkstylePluginVersion>
+    <checkstylePluginVersion>3.3.0</checkstylePluginVersion>
     <javadocPluginVersion>3.5.0</javadocPluginVersion>
-    <pmdPluginVersion>3.20.0</pmdPluginVersion>
+    <pmdPluginVersion>3.21.0</pmdPluginVersion>
     <jxrPluginVersion>3.3.0</jxrPluginVersion>
-    <projectInfoReportsPluginVersion>3.4.2</projectInfoReportsPluginVersion>
+    <projectInfoReportsPluginVersion>3.4.5</projectInfoReportsPluginVersion>
     <surefirePluginVersion>3.0.0</surefirePluginVersion>
-    <mavenPluginPluginVersion>3.8.1</mavenPluginPluginVersion>
+    <mavenPluginPluginVersion>3.9.0</mavenPluginPluginVersion>
     <mavenReportingImplVersion>4.0.0-M8</mavenReportingImplVersion>
     <testingFluidoSkinVersion>2.0.0-M6</testingFluidoSkinVersion>
-    <surefire.version>3.0.0</surefire.version>
-    <project.build.outputTimestamp>2023-02-11T20:25:37Z</project.build.outputTimestamp>
+    <surefire.version>3.1.2</surefire.version>
+    <project.build.outputTimestamp>2023-04-29T19:38:51Z</project.build.outputTimestamp>
 
   </properties>
 
@@ -230,7 +230,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
-      <version>3.4.1</version>
+      <version>3.4.2</version>
     </dependency>
 
     <!-- Maven -->
