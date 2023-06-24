@@ -25,7 +25,17 @@ under the License.
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
-      <item name="Goals" href="plugin-info.html"/>
+      <item name="Goals" href="plugin-info.html" collapse="true">
+        <item name="site:site" href="site-mojo.html"/>
+        <item name="site:deploy" href="deploy-mojo.html"/>
+        <item name="site:run" href="run-mojo.html"/>
+        <item name="site:stage" href="stage-mojo.html"/>
+        <item name="site:stage-deploy" href="stage-deploy-mojo.html"/>
+        <item name="site:attach-descriptor" href="attach-descriptor-mojo.html"/>
+        <item name="site:jar" href="jar-mojo.html"/>
+        <item name="site:effective-site" href="effective-site-mojo.html"/>
+        <item name="site:help" href="help-mojo.html"/>
+      </item>
       <item name="Usage" href="usage.html"/>
       <item name="FAQ" href="faq.html"/>
       <item name="History" href="history.html"/>

@@ -507,6 +507,41 @@ under the License.
     </dependency>
   </dependencies>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-report-plugin</artifactId>
+          <configuration>
+            <requirementsHistories>
+              <requirementsHistory>
+                <version>3.11.0</version>
+                <maven>3.0.5</maven>
+                <jdk>1.7</jdk>
+              </requirementsHistory>
+              <requirementsHistory>
+                <version>3.9.0</version>
+                <maven>3.0</maven>
+                <jdk>1.7</jdk>
+              </requirementsHistory>
+              <requirementsHistory>
+                <version>3.7.1</version>
+                <maven>2.2.1</maven>
+                <jdk>1.6</jdk>
+              </requirementsHistory>
+              <requirementsHistory>
+                <version>3.4</version>
+                <maven>2.2.1</maven>
+                <jdk>1.5</jdk>
+              </requirementsHistory>
+            </requirementsHistories>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
   <profiles>
     <profile>
       <id>run-its</id>
