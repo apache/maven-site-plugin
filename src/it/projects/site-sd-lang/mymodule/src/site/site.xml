@@ -19,21 +19,23 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project name="${project.name}">
+<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd"
+  name="${project.name}">
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>
     <version>${fluidoSkinVersion}</version>
   </skin>
-	<version position="left" />
-	<body>
-		<menu name="${project.name}">
-			<item name="Welcome mymodule" href="index.html" />
-			<item name="Contacts" href="contact.html" />
-			<item name="back to multi" href="../index.html" />
-		</menu>
-		<menu name="Java Doc">
-			<item name="javadoc" href="apidocs/index.html" />
-		</menu>
-	</body>
-</project>
+  <version position="left" />
+  <body>
+    <menu name="${project.name}">
+      <item name="Welcome mymodule" href="index.html" />
+      <item name="Contacts" href="contact.html" />
+      <item name="back to multi" href="../index.html" />
+    </menu>
+    <menu name="Java Doc">
+      <item name="javadoc" href="apidocs/index.html" />
+    </menu>
+  </body>
+</site>
