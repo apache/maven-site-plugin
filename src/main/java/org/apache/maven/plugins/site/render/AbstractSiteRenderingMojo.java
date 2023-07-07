@@ -53,6 +53,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.MavenReport;
+import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
@@ -214,8 +215,14 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         // filter out reports that can't be generated
         List<MavenReportExecution> reportExecutions = new ArrayList<>(allReports.size());
         for (MavenReportExecution exec : allReports) {
-            if (exec.canGenerateReport()) {
-                reportExecutions.add(exec);
+            try {
+                if (exec.canGenerateReport()) {
+                    reportExecutions.add(exec);
+                }
+            } catch (MavenReportException e) {
+                String reportMojoInfo = exec.getPlugin().getId() + ":" + exec.getGoal();
+                throw new MojoExecutionException(
+                        String.format("Failed to determine whether report '%s' can be generated", reportMojoInfo), e);
             }
         }
         return reportExecutions;
