@@ -197,8 +197,8 @@ under the License.
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
     <jettyVersion>9.4.51.v20230217</jettyVersion>
-    <doxiaVersion>2.0.0-M6</doxiaVersion>
-    <doxiaSitetoolsVersion>2.0.0-M10</doxiaSitetoolsVersion>
+    <doxiaVersion>2.0.0-M7</doxiaVersion>
+    <doxiaSitetoolsVersion>2.0.0-M11</doxiaSitetoolsVersion>
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
