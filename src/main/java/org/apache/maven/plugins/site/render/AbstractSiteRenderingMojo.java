@@ -269,25 +269,19 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected SiteRenderingContext createSiteRenderingContext(Locale locale)
             throws MojoExecutionException, IOException, MojoFailureException {
         SiteModel siteModel = prepareSiteModel(locale);
-        if (attributes == null) {
-            attributes = new HashMap<>();
-        }
-
-        if (attributes.get("project") == null) {
-            attributes.put("project", project);
-        }
-
-        if (attributes.get("inputEncoding") == null) {
-            attributes.put("inputEncoding", getInputEncoding());
-        }
-
-        if (attributes.get("outputEncoding") == null) {
-            attributes.put("outputEncoding", getOutputEncoding());
-        }
+        Map<String, Object> templateProperties = new HashMap<>();
+        templateProperties.put("project", project);
+        templateProperties.put("inputEncoding", getInputEncoding());
+        templateProperties.put("outputEncoding", getOutputEncoding());
 
         // Put any of the properties in directly into the Velocity context
         for (Map.Entry<Object, Object> entry : project.getProperties().entrySet()) {
-            attributes.put((String) entry.getKey(), entry.getValue());
+            templateProperties.put((String) entry.getKey(), entry.getValue());
+        }
+
+        // Comes last if someone wants to deliberately override any default or model properties
+        if (attributes != null) {
+            templateProperties.putAll(attributes);
         }
 
         SiteRenderingContext context;
@@ -299,7 +293,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                     .strong(skinArtifact.getId() + " skin")
                     .toString());
 
-            context = siteRenderer.createContextForSkin(skinArtifact, attributes, siteModel, project.getName(), locale);
+            context = siteRenderer.createContextForSkin(
+                    skinArtifact, templateProperties, siteModel, project.getName(), locale);
         } catch (SiteToolException e) {
             throw new MojoExecutionException("SiteToolException while preparing skin: " + e.getMessage(), e);
         } catch (RendererException e) {
