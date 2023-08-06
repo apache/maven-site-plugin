@@ -119,7 +119,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                 // issue caused by report, not really by Doxia Site Renderer
                 throw new MojoExecutionException(e.getMessage(), e.getCause());
             }
-            throw new MojoExecutionException(e.getMessage(), e);
+            throw new MojoExecutionException("Failed to render reports", e);
         } catch (IOException e) {
             throw new MojoExecutionException("Error during site generation", e);
         }

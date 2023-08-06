@@ -232,7 +232,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             } catch (MavenReportException e) {
                 String reportMojoInfo = exec.getPlugin().getId() + ":" + exec.getGoal();
                 throw new MojoExecutionException(
-                        String.format("Failed to determine whether report '%s' can be generated", reportMojoInfo), e);
+                        "Failed to determine whether report '" + reportMojoInfo + "' can be generated", e);
             }
         }
         return reportExecutions;
@@ -296,10 +296,10 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             context = siteRenderer.createContextForSkin(
                     skinArtifact, templateProperties, siteModel, project.getName(), locale);
         } catch (SiteToolException e) {
-            throw new MojoExecutionException("SiteToolException while preparing skin: " + e.getMessage(), e);
+            throw new MojoExecutionException("Failed to retrieve skin artifact from repository", e);
         } catch (RendererException e) {
             throw new MojoExecutionException(
-                    "RendererException while preparing context for skin: " + e.getMessage(), e);
+                    "Failed to create context for skin", e);
         }
 
         // Add publish date

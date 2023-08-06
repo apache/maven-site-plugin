@@ -137,7 +137,7 @@ public class SiteJarMojo extends SiteMojo {
                 getLog().info("NOT adding site jar to the list of attached artifacts.");
             }
         } catch (ArchiverException | IOException | ManifestException | DependencyResolutionRequiredException e) {
-            throw new MojoExecutionException("Error while creating archive.", e);
+            throw new MojoExecutionException("Error while creating archive", e);
         }
     }
 
