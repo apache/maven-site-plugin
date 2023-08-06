@@ -51,7 +51,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
@@ -166,6 +165,16 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter(property = "outputEncoding", defaultValue = "${project.reporting.outputEncoding}")
     private String outputEncoding;
+
+    /**
+     * Timestamp for reproducible output archive entries, either formatted as ISO 8601
+     * <code>yyyy-MM-dd'T'HH:mm:ssXXX</code> or as an int representing seconds since the epoch (like
+     * <a href="https://reproducible-builds.org/docs/source-date-epoch/">SOURCE_DATE_EPOCH</a>).
+     *
+     * @since 3.9.0
+     */
+    @Parameter(defaultValue = "${project.build.outputTimestamp}")
+    protected String outputTimestamp;
 
     @Component
     protected MavenReportExecutor mavenReportExecutor;
@@ -299,8 +308,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         }
 
         // Add publish date
-        MavenProject p = attributes.get("project") != null ? (MavenProject) attributes.get("project") : project;
-        String outputTimestamp = p.getProperties().getProperty("project.build.outputTimestamp");
         MavenArchiver.parseBuildOutputTimestamp(outputTimestamp).ifPresent(v -> {
             context.setPublishDate(Date.from(v));
         });
