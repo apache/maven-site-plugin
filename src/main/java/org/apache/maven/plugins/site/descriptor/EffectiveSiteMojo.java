@@ -133,7 +133,7 @@ public class EffectiveSiteMojo extends AbstractSiteDescriptorMojo {
         try {
             siteWriter.write(sWriter, siteModel);
         } catch (IOException e) {
-            throw new MojoExecutionException("Cannot serialize site descriptor to XML.", e);
+            throw new MojoExecutionException("Cannot serialize site descriptor to XML", e);
         }
 
         effectiveSite = sWriter.toString();

@@ -92,7 +92,7 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
             siteModel = siteTool.getSiteModel(
                     siteDirectory, locale, project, reactorProjects, repoSession, remoteProjectRepositories);
         } catch (SiteToolException e) {
-            throw new MojoExecutionException("SiteToolException: " + e.getMessage(), e);
+            throw new MojoExecutionException("Failed to obtain site model", e);
         }
 
         if (relativizeSiteLinks) {
