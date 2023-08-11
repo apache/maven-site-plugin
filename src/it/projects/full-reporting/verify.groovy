@@ -42,7 +42,7 @@ assert new File( sitedir, 'team.html' ).exists();
 
 assert new File( sitedir, 'dependencies.html' ).exists();
 content = new File( sitedir, 'dependencies.html' ).text;
-assert content.contains( 'junit:junit:jar:3.8.2' );
+assert content.contains( 'junit:junit:jar:4.13.2' );
 
 // check reports order
 String[] reports = [ 'index',                  // <report>index</report>
