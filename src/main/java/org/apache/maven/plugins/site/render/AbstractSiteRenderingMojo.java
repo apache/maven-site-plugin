@@ -298,8 +298,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         } catch (SiteToolException e) {
             throw new MojoExecutionException("Failed to retrieve skin artifact from repository", e);
         } catch (RendererException e) {
-            throw new MojoExecutionException(
-                    "Failed to create context for skin", e);
+            throw new MojoExecutionException("Failed to create context for skin", e);
         }
 
         // Add publish date
