@@ -53,7 +53,7 @@ public class SimpleDavServerHandler {
 
     private File siteTargetPath;
 
-    List<HttpRequest> httpRequests = new ArrayList<HttpRequest>();
+    List<HttpRequest> httpRequests = new ArrayList<>();
 
     public SimpleDavServerHandler(final File targetPath) throws Exception {
         this.siteTargetPath = targetPath;
