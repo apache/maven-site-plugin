@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class HttpRequest {
-    Map<String, String> headers = new HashMap<String, String>();
+    Map<String, String> headers = new HashMap<>();
 
     String method;
 

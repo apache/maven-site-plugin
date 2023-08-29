@@ -44,7 +44,7 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    List<HttpRequest> httpRequests = new ArrayList<HttpRequest>();
+    List<HttpRequest> httpRequests = new ArrayList<>();
 
     private File siteTargetPath;
 

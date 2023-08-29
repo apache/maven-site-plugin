@@ -152,7 +152,7 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
         FileUtils.cleanDirectory(siteTargetPath);
         // SimpleDavServerHandler simpleDavServerHandler = new SimpleDavServerHandler( siteTargetPath );
 
-        Map<String, String> authentications = new HashMap<String, String>();
+        Map<String, String> authentications = new HashMap<>();
         authentications.put("foo", "titi");
 
         AuthAsyncProxyServlet servlet = new AuthAsyncProxyServlet(authentications, siteTargetPath);

@@ -111,7 +111,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         /**
          * List of sinks (subpages) associated to this report
          */
-        private List<MultiPageSubSink> sinks = new ArrayList<MultiPageSubSink>();
+        private List<MultiPageSubSink> sinks = new ArrayList<>();
 
         MultiPageSinkFactory(MavenReport report, DocumentRenderingContext docRenderingContext) {
             this.report = report;
