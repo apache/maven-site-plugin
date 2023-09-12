@@ -19,6 +19,7 @@ Contributing to [Apache Maven Site Plugin](https://maven.apache.org/plugins/mave
 
 [![ASF Jira](https://img.shields.io/endpoint?url=https%3A%2F%2Fmaven.apache.org%2Fbadges%2Fasf_jira-MSITE.json)][jira]
 [![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/apache/maven.svg?label=License)][license]
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven.plugins/maven-site-plugin.svg?label=Maven%20Central&versionPrefix=3.)](https://search.maven.org/artifact/org.apache.maven.plugins/maven-site-plugin)
 [![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven.plugins/maven-site-plugin.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.apache.maven.plugins/maven-site-plugin)
 [![Reproducible Builds](https://img.shields.io/badge/Reproducible_Builds-ok-green?labelColor=blue)](https://github.com/jvm-repo-rebuild/reproducible-central/blob/master/content/org/apache/maven/plugins/maven-site-plugin/README.md)
 [![Jenkins Status](https://img.shields.io/jenkins/s/https/ci-maven.apache.org/job/Maven/job/maven-box/job/maven-site-plugin/job/master.svg?)][build]
