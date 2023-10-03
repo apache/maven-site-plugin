@@ -137,7 +137,10 @@ public class EffectiveSiteMojo extends AbstractSiteDescriptorMojo {
         }
 
         effectiveSite = sWriter.toString();
-        effectiveSite = effectiveSite.substring(effectiveSite.indexOf("<project ")); // remove "<?xml" header
+        // remove XML prolog
+        int xmlPrologStart = effectiveSite.indexOf("<?xml");
+        int xmlPrologEnd = effectiveSite.indexOf("?>", xmlPrologStart);
+        effectiveSite = effectiveSite.substring(xmlPrologEnd + 2).trim();
 
         writeComment(writer, "Effective site descriptor for project \'" + project.getId() + "\'");
 

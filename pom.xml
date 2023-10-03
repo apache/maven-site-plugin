@@ -198,7 +198,7 @@ under the License.
     <!-- for dependencies -->
     <jettyVersion>9.4.51.v20230217</jettyVersion>
     <doxiaVersion>2.0.0-M7</doxiaVersion>
-    <doxiaSitetoolsVersion>2.0.0-M11</doxiaSitetoolsVersion>
+    <doxiaSitetoolsVersion>2.0.0-M12</doxiaSitetoolsVersion>
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
@@ -209,7 +209,7 @@ under the License.
     <projectInfoReportsPluginVersion>3.4.5</projectInfoReportsPluginVersion>
     <surefirePluginVersion>3.0.0</surefirePluginVersion>
     <mavenPluginPluginVersion>3.9.0</mavenPluginPluginVersion>
-    <mavenReportingImplVersion>4.0.0-M9</mavenReportingImplVersion>
+    <mavenReportingImplVersion>4.0.0-M10</mavenReportingImplVersion>
     <testingFluidoSkinVersion>2.0.0-M6</testingFluidoSkinVersion>
     <surefire.version>3.1.2</surefire.version>
     <project.build.outputTimestamp>2023-04-29T19:38:51Z</project.build.outputTimestamp>
@@ -225,7 +225,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-exec</artifactId>
-      <version>2.0.0-M9</version>
+      <version>2.0.0-M10</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -286,7 +286,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
-      <version>3.6.0</version>
+      <version>3.6.1</version>
     </dependency>
 
     <!-- dependencies to annotations -->
@@ -410,7 +410,7 @@ under the License.
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
+      <version>3.13.0</version>
     </dependency>
 
     <dependency>
@@ -488,7 +488,7 @@ under the License.
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.11.0</version>
+      <version>2.14.0</version>
       <scope>test</scope>
     </dependency>
 
