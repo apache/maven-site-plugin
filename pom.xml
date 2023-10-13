@@ -209,7 +209,7 @@ under the License.
     <projectInfoReportsPluginVersion>3.4.5</projectInfoReportsPluginVersion>
     <surefirePluginVersion>3.0.0</surefirePluginVersion>
     <mavenPluginPluginVersion>3.9.0</mavenPluginPluginVersion>
-    <mavenReportingImplVersion>4.0.0-M10</mavenReportingImplVersion>
+    <mavenReportingImplVersion>4.0.0-M11</mavenReportingImplVersion>
     <testingFluidoSkinVersion>2.0.0-M6</testingFluidoSkinVersion>
     <surefire.version>3.1.2</surefire.version>
     <project.build.outputTimestamp>2023-10-03T09:04:32Z</project.build.outputTimestamp>
@@ -225,7 +225,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.reporting</groupId>
       <artifactId>maven-reporting-exec</artifactId>
-      <version>2.0.0-M10</version>
+      <version>2.0.0-M11</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
