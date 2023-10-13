@@ -47,10 +47,10 @@ try
     }
 
     String content = FileUtils.fileRead( parentIndex, "UTF-8" );
-    int index1 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Parent Relative Home Inherited</a></li>" );
-    int index2 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Parent Relative Home Inherited with dot</a></li>" );
-    int index3 = content.indexOf( "<li><a href=\"./\" title=\"Parent Absolute Home Inherited\"><span class=\"none\"></span>Parent Absolute Home Inherited</a></li>" );
-    int index4 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Parent Absolute Home Inherited with index</a></li>" );
+    int index1 = content.indexOf( "<li class=\"active\"><a>Parent Relative Home Inherited</a></li>" );
+    int index2 = content.indexOf( "<li class=\"active\"><a>Parent Relative Home Inherited with dot</a></li>" );
+    int index3 = content.indexOf( "<li><a href=\"./\">Parent Absolute Home Inherited</a></li>" );
+    int index4 = content.indexOf( "<li class=\"active\"><a>Parent Absolute Home Inherited with index</a></li>" );
 
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
@@ -58,10 +58,10 @@ try
         result = false;
     }
 
-    index1 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Parent Relative Home Local</a></li>" );
-    index2 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Parent Relative Home Local with dot</a></li>" );
-    index3 = content.indexOf( "<li><a href=\"./\" title=\"Parent Absolute Home Local\"><span class=\"none\"></span>Parent Absolute Home Local</a></li>" );
-    index4 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Parent Absolute Home Local with index</a></li>" );
+    index1 = content.indexOf( "<li class=\"active\"><a>Parent Relative Home Local</a></li>" );
+    index2 = content.indexOf( "<li class=\"active\"><a>Parent Relative Home Local with dot</a></li>" );
+    index3 = content.indexOf( "<li><a href=\"./\">Parent Absolute Home Local</a></li>" );
+    index4 = content.indexOf( "<li class=\"active\"><a>Parent Absolute Home Local with index</a></li>" );
 
     if ( index1 < 0 || index2 < 0 || index4 < 0 )
     {
@@ -69,8 +69,8 @@ try
         result = false;
     }
 
-    index1 = content.indexOf( "<li><a href=\"childNotAsRef/index.html\" title=\"Child Not As Ref\"><span class=\"none\"></span>Child Not As Ref</a></li>" );
-    index2 = content.indexOf( "<li><a href=\"project-info.html\" title=\"Project Information\"><span class=\"icon-chevron-down\"></span>Project Information</a" );
+    index1 = content.indexOf( "<li><a href=\"childNotAsRef/index.html\">Child Not As Ref</a></li>" );
+    index2 = content.indexOf( "<li><a href=\"project-info.html\"><span class=\"icon-chevron-down\"></span>Project Information</a" );
     index3 = content.indexOf( "<li class=\"nav-header\">Parent Project</li>" );
 
     if ( index1 < 0 || index2 < 0 || index3 >= 0 )
@@ -105,10 +105,10 @@ try
     }
 
     content = FileUtils.fileRead( childIndex, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../index.html\" title=\"Parent Relative Home Inherited\"><span class=\"none\"></span>Parent Relative Home Inherited</a>" );
-    index2 = content.indexOf( "<a href=\"../index.html\" title=\"Parent Relative Home Inherited with dot\"><span class=\"none\"></span>Parent Relative Home Inherited with dot</a>" );
-    index3 = content.indexOf( "<a href=\"../\" title=\"Parent Absolute Home Inherited\"><span class=\"none\"></span>Parent Absolute Home Inherited</a>" );
-    index4 = content.indexOf( "<a href=\"../index.html\" title=\"Parent Absolute Home Inherited with index\"><span class=\"none\"></span>Parent Absolute Home Inherited with index</a>" );
+    index1 = content.indexOf( "<a href=\"../index.html\">Parent Relative Home Inherited</a>" );
+    index2 = content.indexOf( "<a href=\"../index.html\">Parent Relative Home Inherited with dot</a>" );
+    index3 = content.indexOf( "<a href=\"../\">Parent Absolute Home Inherited</a>" );
+    index4 = content.indexOf( "<a href=\"../index.html\">Parent Absolute Home Inherited with index</a>" );
 
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
@@ -116,10 +116,10 @@ try
         result = false;
     }
 
-    index1 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Child Relative Home Local</a></li>" );
-    index2 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Child Relative Home Local with dot</a></li>" );
-    index3 = content.indexOf( "<li><a href=\"./\" title=\"Child Absolute Home Local\"><span class=\"none\"></span>Child Absolute Home Local</a></li>" );
-    index4 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Child Absolute Home Local with index</a></li>" );
+    index1 = content.indexOf( "<li class=\"active\"><a>Child Relative Home Local</a></li>" );
+    index2 = content.indexOf( "<li class=\"active\"><a>Child Relative Home Local with dot</a></li>" );
+    index3 = content.indexOf( "<li><a href=\"./\">Child Absolute Home Local</a></li>" );
+    index4 = content.indexOf( "<li class=\"active\"><a>Child Absolute Home Local with index</a></li>" );
 
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
@@ -127,8 +127,8 @@ try
         result = false;
     }
 
-    index1 = content.indexOf( "<a href=\"grandChildNotAsRef/index.html\" title=\"GrandChild Not As Ref\"><span class=\"none\"></span>GrandChild Not As Ref</a>" );
-    index2 = content.indexOf( "<a href=\"../index.html\" title=\"Parent Not As Ref\"><span class=\"none\"></span>Parent Not As Ref</a>" );
+    index1 = content.indexOf( "<a href=\"grandChildNotAsRef/index.html\">GrandChild Not As Ref</a>" );
+    index2 = content.indexOf( "<a href=\"../index.html\">Parent Not As Ref</a>" );
 
     if ( index1 < 0 || index2 < 0 )
     {
@@ -162,10 +162,10 @@ try
     }
 
     content = FileUtils.fileRead( grandChildIndex, "UTF-8" );
-    index1 = content.indexOf( "a href=\"../../index.html\" title=\"Parent Relative Home Inherited\"><span class=\"none\"></span>Parent Relative Home Inherited</a>" );
-    index2 = content.indexOf( "<a href=\"../../index.html\" title=\"Parent Relative Home Inherited with dot\"><span class=\"none\"></span>Parent Relative Home Inherited with dot</a>" );
-    index3 = content.indexOf( "<a href=\"../../\" title=\"Parent Absolute Home Inherited\"><span class=\"none\"></span>Parent Absolute Home Inherited</a>" );
-    index4 = content.indexOf( "<a href=\"../../index.html\" title=\"Parent Absolute Home Inherited with index\"><span class=\"none\"></span>Parent Absolute Home Inherited with index</a>" );
+    index1 = content.indexOf( "a href=\"../../index.html\">Parent Relative Home Inherited</a>" );
+    index2 = content.indexOf( "<a href=\"../../index.html\">Parent Relative Home Inherited with dot</a>" );
+    index3 = content.indexOf( "<a href=\"../../\">Parent Absolute Home Inherited</a>" );
+    index4 = content.indexOf( "<a href=\"../../index.html\">Parent Absolute Home Inherited with index</a>" );
 
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
@@ -173,10 +173,10 @@ try
         result = false;
     }
 
-    index1 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Grand Child Relative Home Local</a></li>" );
-    index2 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Grand Child Relative Home Local with dot</a></li>" );
-    index3 = content.indexOf( "<li><a href=\"./\" title=\"Grand Child Absolute Home Local\"><span class=\"none\"></span>Grand Child Absolute Home Local</a></li>" );
-    index4 = content.indexOf( "<li class=\"active\"><a><span class=\"none\"></span>Grand Child Absolute Home Local with index</a></li>" );
+    index1 = content.indexOf( "<li class=\"active\"><a>Grand Child Relative Home Local</a></li>" );
+    index2 = content.indexOf( "<li class=\"active\"><a>Grand Child Relative Home Local with dot</a></li>" );
+    index3 = content.indexOf( "<li><a href=\"./\">Grand Child Absolute Home Local</a></li>" );
+    index4 = content.indexOf( "<li class=\"active\"><a>Grand Child Absolute Home Local with index</a></li>" );
 
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
@@ -184,7 +184,7 @@ try
         result = false;
     }
 
-    index1 = content.indexOf( "<a href=\"../index.html\" title=\"Child Not As Ref\"><span class=\"none\"></span>Child Not As Ref</a>" );
+    index1 = content.indexOf( "<a href=\"../index.html\">Child Not As Ref</a>" );
 
     if ( index1 < 0 )
     {

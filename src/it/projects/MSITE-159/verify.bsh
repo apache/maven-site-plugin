@@ -41,9 +41,9 @@ try
     }
 
     String content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"http://webhost.company.com/index.html\" class=\"externalLink\" title=\"Breadcrumb\">Breadcrumb</a>" );
-    int index2 = content.indexOf( "<a href=\"http://webhost.company.com/\" class=\"externalLink\" title=\"Link\">Link</a>" );
-    int index3 = content.indexOf( "<a href=\"http://webhost.company.com/\" class=\"externalLink\" title=\"Menu\"><span class=\"none\"></span>Menu</a>" );
+    int index1 = content.indexOf( "<a href=\"http://webhost.company.com/index.html\" class=\"externalLink\">Breadcrumb</a>" );
+    int index2 = content.indexOf( "<a href=\"http://webhost.company.com/\" class=\"externalLink\">Link</a>" );
+    int index3 = content.indexOf( "<a href=\"http://webhost.company.com/\" class=\"externalLink\">Menu</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
         System.err.println( "index.html has incorrect links!" );
