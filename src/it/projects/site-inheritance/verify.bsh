@@ -59,7 +59,7 @@ try
     }
 
     String content = FileUtils.fileRead( index, "UTF-8" );
-    int indexOf = content.indexOf( "<a href=\"../index.html\" title=\"Aggregator\"><span class=\"none\"></span>Aggregator</a>" );
+    int indexOf = content.indexOf( "<a href=\"../index.html\">Aggregator</a>" );
     if ( indexOf < 0 )
     {
         System.err.println( "deployed junk index.html is missing module link!" );
@@ -75,10 +75,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\" title=\"Child and Module\"><span class=\"none\"></span>Child and Module</a></li>" );
-    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\" title=\"Inheriting Child\"><span class=\"none\"></span>Inheriting Child</a>" );
-    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\" title=\"Module\"><span class=\"none\"></span>Module</a>" );
-    int index4 = content.indexOf( "<a href=\"./\" title=\"Aggregator\">Aggregator</a>" );
+    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\">Child and Module</a></li>" );
+    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\">Inheriting Child</a>" );
+    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\">Module</a>" );
+    int index4 = content.indexOf( "<a href=\"./\">Aggregator</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "deploy index.html is missing module link!" );
@@ -116,10 +116,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"breadcrumbs Parent\">breadcrumbs Parent</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs /Child\">breadcrumbs /Child</a>" );
-    index3 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"links ./Parent\">links ./Parent</a>" );
-    index4 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"Parent\"><span class=\"none\"></span>Parent</a>" );
+    index1 = content.indexOf( "<a href=\"../../../../../index.html\">breadcrumbs Parent</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs /Child</a>" );
+    index3 = content.indexOf( "<a href=\"../../../../../index.html\">links ./Parent</a>" );
+    index4 = content.indexOf( "<a href=\"../../../../../index.html\">Parent</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "deployed deepDownBelow index.html is missing links!" );
@@ -142,10 +142,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../index.html\" title=\"breadcrumbs /Parent\">breadcrumbs /Parent</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs ./Child\">breadcrumbs ./Child</a>" );
-    index3 = content.indexOf( "<a href=\"../index.html\" title=\"links Parent\">links Parent</a>" );
-    index4 = content.indexOf( "<a href=\"../index.html\" title=\"Parent\"><span class=\"none\"></span>Parent</a>" );
+    index1 = content.indexOf( "<a href=\"../index.html\">breadcrumbs /Parent</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs ./Child</a>" );
+    index3 = content.indexOf( "<a href=\"../index.html\">links Parent</a>" );
+    index4 = content.indexOf( "<a href=\"../index.html\">Parent</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "deployed inheritingChild index.html is missing links!" );
@@ -168,9 +168,9 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs Module\">breadcrumbs Module</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"links ./Module\">links ./Module</a>" );
-    index3 = content.indexOf( "<a href=\"../sub_module/index.html\" title=\"Sub-Module\"><span class=\"none\"></span>Sub-Module</a>" );
+    index1 = content.indexOf( "<a href=\"index.html\">breadcrumbs Module</a>" );
+    index2 = content.indexOf( "<a>links ./Module</a>" );
+    index3 = content.indexOf( "<a href=\"../sub_module/index.html\">Sub-Module</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
         System.err.println( "deployed moduleDirectory index.html has wrong links!" );
@@ -194,10 +194,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../module/index.html\" title=\"breadcrumbs /Module\">breadcrumbs /Module</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs ./SubModule\">breadcrumbs ./SubModule</a>" );
-    index3 = content.indexOf( "<a href=\"../module/index.html\" title=\"links Module\">links Module</a>" );
-    index4 = content.indexOf( "<a href=\"../module/index.html\" title=\"Module\"><span class=\"none\"></span>Module</a>" );
+    index1 = content.indexOf( "<a href=\"../module/index.html\">breadcrumbs /Module</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs ./SubModule</a>" );
+    index3 = content.indexOf( "<a href=\"../module/index.html\">links Module</a>" );
+    index4 = content.indexOf( "<a href=\"../module/index.html\">Module</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
         System.err.println( "deployed subModuleDirectory index.html has wrong links!" );
@@ -237,7 +237,7 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int indexOf = content.indexOf( "<a href=\"../index.html\" title=\"Aggregator\"><span class=\"none\"></span>Aggregator</a>" );
+    int indexOf = content.indexOf( "<a href=\"../index.html\">Aggregator</a>" );
     if ( indexOf < 0 )
     {
         System.err.println( "staged junk index.html is missing module link!" );
@@ -253,10 +253,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\" title=\"Child and Module\"><span class=\"none\"></span>Child and Module</a>" );
-    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\" title=\"Inheriting Child\"><span class=\"none\"></span>Inheriting Child</a>" );
-    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\" title=\"Module\"><span class=\"none\"></span>Module</a>" );
-    int index4 = content.indexOf( "<a href=\"./\" title=\"Aggregator\">Aggregator</a>" );
+    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\">Child and Module</a>" );
+    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\">Inheriting Child</a>" );
+    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\">Module</a>" );
+    int index4 = content.indexOf( "<a href=\"./\">Aggregator</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "staged index.html is missing module link!" );
@@ -294,10 +294,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"breadcrumbs Parent\">breadcrumbs Parent</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs /Child\">breadcrumbs /Child</a>" );
-    index3 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"links ./Parent\">links ./Parent</a>" );
-    index4 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"Parent\"><span class=\"none\"></span>Parent</a>" );
+    index1 = content.indexOf( "<a href=\"../../../../../index.html\">breadcrumbs Parent</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs /Child</a>" );
+    index3 = content.indexOf( "<a href=\"../../../../../index.html\">links ./Parent</a>" );
+    index4 = content.indexOf( "<a href=\"../../../../../index.html\">Parent</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "staged deepDownBelow index.html is missing links!" );
@@ -320,10 +320,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../index.html\" title=\"breadcrumbs /Parent\">breadcrumbs /Parent</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs ./Child\">breadcrumbs ./Child</a>" );
-    index3 = content.indexOf( "<a href=\"../index.html\" title=\"links Parent\">links Parent</a>" );
-    index4 = content.indexOf( "<a href=\"../index.html\" title=\"Parent\"><span class=\"none\"></span>Parent</a>" );
+    index1 = content.indexOf( "<a href=\"../index.html\">breadcrumbs /Parent</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs ./Child</a>" );
+    index3 = content.indexOf( "<a href=\"../index.html\">links Parent</a>" );
+    index4 = content.indexOf( "<a href=\"../index.html\">Parent</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "staged inheritingChild index.html is missing links!" );
@@ -346,9 +346,9 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs Module\">breadcrumbs Module</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"links ./Module\">links ./Module</a>" );
-    index3 = content.indexOf( "<a href=\"../sub_module/index.html\" title=\"Sub-Module\"><span class=\"none\"></span>Sub-Module</a>" );
+    index1 = content.indexOf( "<a href=\"index.html\">breadcrumbs Module</a>" );
+    index2 = content.indexOf( "<a>links ./Module</a>" );
+    index3 = content.indexOf( "<a href=\"../sub_module/index.html\">Sub-Module</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
         System.err.println( "staged moduleDirectory index.html has wrong links!" );
@@ -372,10 +372,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../module/index.html\" title=\"breadcrumbs /Module\">breadcrumbs /Module</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs ./SubModule\">breadcrumbs ./SubModule</a>" );
-    index3 = content.indexOf( "<a href=\"../module/index.html\" title=\"links Module\">links Module</a>" );
-    index4 = content.indexOf( "<a href=\"../module/index.html\" title=\"Module\"><span class=\"none\"></span>Module</a>" );
+    index1 = content.indexOf( "<a href=\"../module/index.html\">breadcrumbs /Module</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs ./SubModule</a>" );
+    index3 = content.indexOf( "<a href=\"../module/index.html\">links Module</a>" );
+    index4 = content.indexOf( "<a href=\"../module/index.html\">Module</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
         System.err.println( "staged subModuleDirectory index.html has wrong links!" );
@@ -414,7 +414,7 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int indexOf = content.indexOf( "<a href=\"../index.html\" title=\"Aggregator\"><span class=\"none\"></span>Aggregator</a>" );
+    int indexOf = content.indexOf( "<a href=\"../index.html\">Aggregator</a>" );
     if ( indexOf < 0 )
     {
         System.err.println( "stage-deployed junk index.html is missing module link!" );
@@ -430,10 +430,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\" title=\"Child and Module\"><span class=\"none\"></span>Child and Module</a>" );
-    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\" title=\"Inheriting Child\"><span class=\"none\"></span>Inheriting Child</a>" );
-    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\" title=\"Module\"><span class=\"none\"></span>Module</a>" );
-    int index4 = content.indexOf( "<a href=\"./\" title=\"Aggregator\">Aggregator</a>" );
+    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\">Child and Module</a>" );
+    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\">Inheriting Child</a>" );
+    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\">Module</a>" );
+    int index4 = content.indexOf( "<a href=\"./\">Aggregator</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "stage-deployed index.html is missing module link!" );
@@ -471,10 +471,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"breadcrumbs Parent\">breadcrumbs Parent</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs /Child\">breadcrumbs /Child</a>" );
-    index3 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"links ./Parent\">links ./Parent</a>" );
-    index4 = content.indexOf( "<a href=\"../../../../../index.html\" title=\"Parent\"><span class=\"none\"></span>Parent</a>" );
+    index1 = content.indexOf( "<a href=\"../../../../../index.html\">breadcrumbs Parent</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs /Child</a>" );
+    index3 = content.indexOf( "<a href=\"../../../../../index.html\">links ./Parent</a>" );
+    index4 = content.indexOf( "<a href=\"../../../../../index.html\">Parent</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "stage-deployed deepDownBelow index.html is missing links!" );
@@ -497,10 +497,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../index.html\" title=\"breadcrumbs /Parent\">breadcrumbs /Parent</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs ./Child\">breadcrumbs ./Child</a>" );
-    index3 = content.indexOf( "<a href=\"../index.html\" title=\"links Parent\">links Parent</a>" );
-    index4 = content.indexOf( "<a href=\"../index.html\" title=\"Parent\"><span class=\"none\"></span>Parent</a>" );
+    index1 = content.indexOf( "<a href=\"../index.html\">breadcrumbs /Parent</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs ./Child</a>" );
+    index3 = content.indexOf( "<a href=\"../index.html\">links Parent</a>" );
+    index4 = content.indexOf( "<a href=\"../index.html\">Parent</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "stage-deployed inheritingChild index.html is missing links!" );
@@ -523,9 +523,9 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs Module\">breadcrumbs Module</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"links ./Module\">links ./Module</a>" );
-    index3 = content.indexOf( "<a href=\"../sub_module/index.html\" title=\"Sub-Module\"><span class=\"none\"></span>Sub-Module</a>" );
+    index1 = content.indexOf( "<a href=\"index.html\">breadcrumbs Module</a>" );
+    index2 = content.indexOf( "<a>links ./Module</a>" );
+    index3 = content.indexOf( "<a href=\"../sub_module/index.html\">Sub-Module</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
         System.err.println( "stage-deployed moduleDirectory index.html has wrong links!" );
@@ -549,10 +549,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../module/index.html\" title=\"breadcrumbs /Module\">breadcrumbs /Module</a>" );
-    index2 = content.indexOf( "<a href=\"index.html\" title=\"breadcrumbs ./SubModule\">breadcrumbs ./SubModule</a>" );
-    index3 = content.indexOf( "<a href=\"../module/index.html\" title=\"links Module\">links Module</a>" );
-    index4 = content.indexOf( "<a href=\"../module/index.html\" title=\"Module\"><span class=\"none\"></span>Module</a>" );
+    index1 = content.indexOf( "<a href=\"../module/index.html\">breadcrumbs /Module</a>" );
+    index2 = content.indexOf( "<a href=\"index.html\">breadcrumbs ./SubModule</a>" );
+    index3 = content.indexOf( "<a href=\"../module/index.html\">links Module</a>" );
+    index4 = content.indexOf( "<a href=\"../module/index.html\">Module</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
         System.err.println( "stage-deployed subModuleDirectory index.html has wrong links!" );

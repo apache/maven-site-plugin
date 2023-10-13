@@ -41,7 +41,7 @@ try
     }
 
     String content = FileUtils.fileRead( licenses, "UTF-8" );
-    int index = content.indexOf( "<a href=\"index.html\" title=\"Home\"><span class=\"none\"></span>Home</a>" );
+    int index = content.indexOf( "<a href=\"index.html\">Home</a>" );
     if ( index < 0 )
     {
         System.err.println( "licenses.html has incorrect links!" );
@@ -65,7 +65,7 @@ try
     }
 
     content = FileUtils.fileRead( licenses, "UTF-8" );
-    int index = content.indexOf( "<a href=\"index.html\" title=\"Heim\"><span class=\"none\"></span>Heim</a>" );
+    int index = content.indexOf( "<a href=\"index.html\">Heim</a>" );
     if ( index < 0 )
     {
         System.err.println( "licenses.html has incorrect links!" );

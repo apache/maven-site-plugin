@@ -20,7 +20,7 @@
 
 content = new File( basedir, 'child/target/site/index.html' ).text;
 
-assert !content.contains( '<a href="A/B/C/D" title="D">D</a>' );
-assert content.contains( '<a href="A/B/C/M" title="M">M</a>' );
+assert !content.contains( '<a href="A/B/C/D">D</a>' );
+assert content.contains( '<a href="A/B/C/M">M</a>' );
 
 return true;
