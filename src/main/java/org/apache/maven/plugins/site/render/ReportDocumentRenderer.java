@@ -78,22 +78,22 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     }
 
     private static class MultiPageSubSink extends SiteRendererSink {
-        private File outputDir;
+        private File outputDirectory;
 
         private String outputName;
 
-        MultiPageSubSink(File outputDir, String outputName, DocumentRenderingContext docRenderingContext) {
+        MultiPageSubSink(File outputDirectory, String outputName, DocumentRenderingContext docRenderingContext) {
             super(docRenderingContext);
             this.outputName = outputName;
-            this.outputDir = outputDir;
+            this.outputDirectory = outputDirectory;
         }
 
         public String getOutputName() {
             return outputName;
         }
 
-        public File getOutputDir() {
-            return outputDir;
+        public File getOutputDirectory() {
+            return outputDirectory;
         }
     }
 
@@ -119,10 +119,10 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         }
 
         @Override
-        public Sink createSink(File outputDir, String outputName) {
+        public Sink createSink(File outputDirectory, String outputName) {
             // Create a new document rendering context, similar to the main one, but with a different output name
             String document = PathTool.getRelativeFilePath(
-                    report.getReportOutputDirectory().getPath(), new File(outputDir, outputName).getPath());
+                    report.getReportOutputDirectory().getPath(), new File(outputDirectory, outputName).getPath());
             // Remove .html suffix since we know that we are in Site Renderer context
             document = document.substring(0, document.lastIndexOf('.'));
 
@@ -136,7 +136,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
                     docRenderingContext.getGenerator());
 
             // Create a sink for this subpage, based on this new document rendering context
-            MultiPageSubSink sink = new MultiPageSubSink(outputDir, outputName, subSinkContext);
+            MultiPageSubSink sink = new MultiPageSubSink(outputDirectory, outputName, subSinkContext);
 
             // Add it to the list of sinks associated to this report
             sinks.add(sink);
@@ -239,11 +239,11 @@ public class ReportDocumentRenderer implements DocumentRenderer {
             log.debug("  Rendering " + outputName);
 
             // Create directories if necessary
-            if (!mySink.getOutputDir().exists()) {
-                mySink.getOutputDir().mkdirs();
+            if (!mySink.getOutputDirectory().exists()) {
+                mySink.getOutputDirectory().mkdirs();
             }
 
-            File outputFile = new File(mySink.getOutputDir(), outputName);
+            File outputFile = new File(mySink.getOutputDirectory(), outputName);
 
             try (Writer out = WriterFactory.newWriter(outputFile, siteRenderingContext.getOutputEncoding())) {
                 siteRenderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
