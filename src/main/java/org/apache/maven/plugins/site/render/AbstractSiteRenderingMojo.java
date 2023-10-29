@@ -225,12 +225,14 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         // filter out reports that can't be generated
         List<MavenReportExecution> reportExecutions = new ArrayList<>(allReports.size());
         for (MavenReportExecution exec : allReports) {
+            String reportMojoInfo = exec.getPlugin().getId() + ":" + exec.getGoal();
             try {
                 if (exec.canGenerateReport()) {
                     reportExecutions.add(exec);
+                } else if (exec.isUserDefined()) {
+                    getLog().info("Skipping " + reportMojoInfo + " report");
                 }
             } catch (MavenReportException e) {
-                String reportMojoInfo = exec.getPlugin().getId() + ":" + exec.getGoal();
                 throw new MojoExecutionException(
                         "Failed to determine whether report '" + reportMojoInfo + "' can be generated", e);
             }
