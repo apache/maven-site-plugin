@@ -97,7 +97,7 @@ under the License.
           <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
           <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
         </configuration>
-        <reportSets>
+        <reportSets combine.self="override">
           <reportSet>
             <reports>
               <report>index</report>
