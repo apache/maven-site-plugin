@@ -56,7 +56,7 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>@projectInfoReportsPluginVersion@</version>
-        <reportSets>
+        <reportSets combine.self="override">
           <reportSet>
             <reports>
               <report>index</report>
