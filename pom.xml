@@ -202,14 +202,14 @@ under the License.
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
-    <checkstylePluginVersion>3.3.0</checkstylePluginVersion>
-    <javadocPluginVersion>3.5.0</javadocPluginVersion>
-    <pmdPluginVersion>3.21.0</pmdPluginVersion>
-    <jxrPluginVersion>3.3.0</jxrPluginVersion>
-    <projectInfoReportsPluginVersion>3.4.5</projectInfoReportsPluginVersion>
-    <surefirePluginVersion>3.1.2</surefirePluginVersion>
-    <mavenPluginPluginVersion>3.9.0</mavenPluginPluginVersion>
-    <mavenReportingImplVersion>4.0.0-M11</mavenReportingImplVersion>
+    <checkstylePluginVersion>3.3.1</checkstylePluginVersion>
+    <javadocPluginVersion>3.6.2</javadocPluginVersion>
+    <pmdPluginVersion>3.21.2</pmdPluginVersion>
+    <jxrPluginVersion>3.3.1</jxrPluginVersion>
+    <projectInfoReportsPluginVersion>3.5.0</projectInfoReportsPluginVersion>
+    <surefirePluginVersion>3.2.2</surefirePluginVersion>
+    <mavenPluginPluginVersion>3.10.2</mavenPluginPluginVersion>
+    <mavenReportingImplVersion>4.0.0-M12</mavenReportingImplVersion>
     <testingFluidoSkinVersion>2.0.0-M8</testingFluidoSkinVersion>
     <project.build.outputTimestamp>2023-10-13T22:15:31Z</project.build.outputTimestamp>
 
@@ -306,7 +306,7 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-archiver</artifactId>
-      <version>4.8.0</version>
+      <version>4.9.0</version>
     </dependency>
 
     <dependency>
@@ -490,7 +490,7 @@ under the License.
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.14.0</version>
+      <version>2.15.0</version>
       <scope>test</scope>
     </dependency>
 
