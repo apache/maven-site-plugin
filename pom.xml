@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
-    <version>40</version>
+    <version>41</version>
     <relativePath />
   </parent>
 
@@ -211,7 +211,6 @@ under the License.
     <mavenPluginPluginVersion>3.9.0</mavenPluginPluginVersion>
     <mavenReportingImplVersion>4.0.0-M11</mavenReportingImplVersion>
     <testingFluidoSkinVersion>2.0.0-M8</testingFluidoSkinVersion>
-    <surefire.version>3.1.2</surefire.version>
     <project.build.outputTimestamp>2023-10-13T22:15:31Z</project.build.outputTimestamp>
 
   </properties>
@@ -324,7 +323,10 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-xml</artifactId>
     </dependency>
 
     <!-- Doxia -->
