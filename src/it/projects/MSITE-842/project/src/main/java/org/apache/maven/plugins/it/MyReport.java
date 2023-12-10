@@ -69,7 +69,7 @@ public class MyReport
         Sink anotherSink;
         try
         {
-            anotherSink = getSinkFactory().createSink( outputDirectory, "another-page.html" );
+            anotherSink = getSinkFactory().createSink( getReportOutputDirectory(), "another-page.html" );
         }
         catch ( IOException e )
         {
@@ -81,7 +81,7 @@ public class MyReport
         anotherSink.text( "Another Sink" );
 
         // Create a new sink, in a subdirectory
-        File subDirectory = new File( outputDirectory, "sub" );
+        File subDirectory = new File( getReportOutputDirectory(), "sub" );
         Sink subDirectorySink;
         try
         {
