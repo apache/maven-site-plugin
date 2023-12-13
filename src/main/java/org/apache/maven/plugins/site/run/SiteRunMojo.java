@@ -121,12 +121,6 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
 
         // For external reports
         project.getReporting().setOutputDirectory(tempWebappDirectory.getAbsolutePath());
-        for (MavenReportExecution mavenReportExecution : getReports()) {
-            mavenReportExecution.getMavenReport().setReportOutputDirectory(tempWebappDirectory);
-        }
-
-        List<MavenReportExecution> reports =
-                getReports(); // TODO: is it sane to call getReports() method a second time?
 
         List<Locale> localesList = getLocales();
         webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
@@ -143,6 +137,9 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                 i18nGeneratedSiteContext.setInputEncoding(getInputEncoding());
                 i18nGeneratedSiteContext.setOutputEncoding(getOutputEncoding());
                 i18nGeneratedSiteContext.getSiteDirectories().clear();
+
+                File outputDirectory = getOutputDirectory(locale);
+                List<MavenReportExecution> reports = getReports(outputDirectory);
 
                 Map<String, DocumentRenderer> i18nDocuments = locateDocuments(i18nContext, reports, locale);
                 if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
@@ -170,6 +167,22 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
             throw new MojoExecutionException("Unable to set up webapp", e);
         }
         return webapp;
+    }
+
+    private File getOutputDirectory(Locale locale) {
+        File file;
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+            file = new File(tempWebappDirectory, locale.toString());
+        } else {
+            file = tempWebappDirectory;
+        }
+
+        // Safety
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        return file;
     }
 
     public void setTempWebappDirectory(File tempWebappDirectory) {

@@ -71,6 +71,43 @@ under the License.
           </reportSet>
         </reportSets>
       </plugin>
+      <plugin>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>@pmdPluginVersion@</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>pmd</report>
+              <report>cpd</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+        <configuration>
+          <includeXmlInSite>true</includeXmlInSite>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>@jxrPluginVersion@</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jxr-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>@javadocPluginVersion@</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
     </plugins>
   </reporting>
 

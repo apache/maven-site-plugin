@@ -39,7 +39,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.shared.utils.logging.MessageBuilder;
@@ -95,13 +94,6 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
 
         checkInputEncoding();
 
-        List<MavenReportExecution> reports;
-        if (generateReports) {
-            reports = getReports();
-        } else {
-            reports = Collections.emptyList();
-        }
-
         try {
             List<Locale> localesList = getLocales();
 
@@ -112,7 +104,10 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                                                 ? "locale '" + locale + "'"
                                                 : "default locale"))
                                 .toString());
-                renderLocale(locale, reports, localesList);
+                File outputDirectory = getOutputDirectory(locale);
+                List<MavenReportExecution> reports =
+                        generateReports ? getReports(outputDirectory) : Collections.emptyList();
+                renderLocale(locale, reports, localesList, outputDirectory);
             }
         } catch (RendererException e) {
             if (e.getCause() instanceof MavenReportException) {
@@ -125,7 +120,8 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         }
     }
 
-    private void renderLocale(Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales)
+    private void renderLocale(
+            Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales, File outputDirectory)
             throws IOException, RendererException, MojoFailureException, MojoExecutionException {
         SiteRenderingContext context = createSiteRenderingContext(locale);
         context.addSiteLocales(supportedLocales);
@@ -142,8 +138,6 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
             getLog().info("Validation is switched on, xml input documents will be validated!");
         }
 
-        File outputDirectory = getOutputDirectory(locale);
-
         Map<String, DocumentRenderer> documents = locateDocuments(context, reports, locale);
 
         // copy resources
@@ -151,12 +145,6 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
 
         // 1. render Doxia documents first
         List<DocumentRenderer> nonDoxiaDocuments = renderDoxiaDocuments(documents, context, outputDirectory, false);
-
-        // prepare external reports
-        for (MavenReportExecution mavenReportExecution : reports) {
-            MavenReport report = mavenReportExecution.getMavenReport();
-            report.setReportOutputDirectory(outputDirectory);
-        }
 
         // 2. then non-Doxia documents (e.g., reports)
         renderNonDoxiaDocuments(nonDoxiaDocuments, context, outputDirectory);
@@ -185,7 +173,10 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
      * @return the sublist of documents that are not Doxia source files
      */
     private List<DocumentRenderer> renderDoxiaDocuments(
-            Map<String, DocumentRenderer> documents, SiteRenderingContext context, File outputDirectory, boolean generated)
+            Map<String, DocumentRenderer> documents,
+            SiteRenderingContext context,
+            File outputDirectory,
+            boolean generated)
             throws RendererException, IOException {
         Map<String, DocumentRenderer> doxiaDocuments = new TreeMap<>();
         List<DocumentRenderer> nonDoxiaDocuments = new ArrayList<>();
@@ -244,7 +235,8 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
      *
      * @param documents a collection of documents containing non-Doxia source files
      */
-    private void renderNonDoxiaDocuments(List<DocumentRenderer> documents, SiteRenderingContext context, File outputDirectory)
+    private void renderNonDoxiaDocuments(
+            List<DocumentRenderer> documents, SiteRenderingContext context, File outputDirectory)
             throws RendererException, IOException {
         Map<String, Integer> counts = new TreeMap<>();
 
