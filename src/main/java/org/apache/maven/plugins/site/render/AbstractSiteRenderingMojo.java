@@ -213,7 +213,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         }
     }
 
-    protected List<MavenReportExecution> getReports() throws MojoExecutionException {
+    protected List<MavenReportExecution> getReports(File outputDirectory) throws MojoExecutionException {
         MavenReportExecutorRequest mavenReportExecutorRequest = new MavenReportExecutorRequest();
         mavenReportExecutorRequest.setMavenSession(mavenSession);
         mavenReportExecutorRequest.setExecutionId(mojoExecution.getExecutionId());
@@ -226,6 +226,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         List<MavenReportExecution> reportExecutions = new ArrayList<>(allReports.size());
         for (MavenReportExecution exec : allReports) {
             String reportMojoInfo = exec.getPlugin().getId() + ":" + exec.getGoal();
+            exec.getMavenReport().setReportOutputDirectory(outputDirectory);
             try {
                 if (exec.canGenerateReport()) {
                     reportExecutions.add(exec);
