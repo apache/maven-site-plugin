@@ -367,11 +367,17 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                 getLog().info("Skipped \"" + report.getName(locale) + "\" report" + reportMojoInfo + ", file \""
                         + filename + "\" already exists.");
             } else {
+                File localizedSiteDirectory;
+                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+                    localizedSiteDirectory = new File(siteDirectory, locale.toString());
+                } else {
+                    localizedSiteDirectory = siteDirectory;
+                }
                 String generator = mavenReportExecution.getGoal() == null
                         ? null
                         : mavenReportExecution.getPlugin().getId() + ':' + mavenReportExecution.getGoal();
                 DocumentRenderingContext docRenderingContext =
-                        new DocumentRenderingContext(siteDirectory, outputName, generator);
+                        new DocumentRenderingContext(localizedSiteDirectory, outputName, generator);
                 DocumentRenderer docRenderer =
                         new ReportDocumentRenderer(mavenReportExecution, docRenderingContext, getLog());
                 documents.put(filename, docRenderer);
@@ -428,13 +434,20 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         siteTool.populateReportsMenu(context.getSiteModel(), locale, categories);
         populateReportItems(context.getSiteModel(), locale, reportsByOutputName);
 
+        File localizedSiteDirectory;
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+            localizedSiteDirectory = new File(siteDirectory, locale.toString());
+        } else {
+            localizedSiteDirectory = siteDirectory;
+        }
+
         if (categories.containsKey(MavenReport.CATEGORY_PROJECT_INFORMATION) && generateProjectInfo) {
             // add "Project Information" category summary document
             List<MavenReport> categoryReports = categories.get(MavenReport.CATEGORY_PROJECT_INFORMATION);
             MojoExecution subMojoExecution =
                     new MojoExecution(mojoExecution.getPlugin(), "project-info", mojoExecution.getExecutionId());
             DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
-                    siteDirectory,
+                    localizedSiteDirectory,
                     subMojoExecution.getGoal(),
                     subMojoExecution.getPlugin().getId() + ':' + subMojoExecution.getGoal());
             String title = i18n.getString("site-plugin", locale, "report.information.title");
@@ -457,7 +470,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             MojoExecution subMojoExecution =
                     new MojoExecution(mojoExecution.getPlugin(), "project-reports", mojoExecution.getExecutionId());
             DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
-                    siteDirectory,
+                    localizedSiteDirectory,
                     subMojoExecution.getGoal(),
                     subMojoExecution.getPlugin().getId() + ':' + subMojoExecution.getGoal());
             String title = i18n.getString("site-plugin", locale, "report.project.title");
@@ -478,7 +491,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             MojoExecution subMojoExecution =
                     new MojoExecution(mojoExecution.getPlugin(), "sitemap", mojoExecution.getExecutionId());
             DocumentRenderingContext docRenderingContext = new DocumentRenderingContext(
-                    siteDirectory,
+                    localizedSiteDirectory,
                     subMojoExecution.getGoal(),
                     subMojoExecution.getPlugin().getId() + ':' + subMojoExecution.getGoal());
             String title = i18n.getString("site-plugin", locale, "site.sitemap.title");
