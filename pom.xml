@@ -194,6 +194,7 @@ under the License.
 
   <properties>
     <mavenVersion>3.2.5</mavenVersion>
+    <minimalMavenBuildVersion>${mavenVersion}</minimalMavenBuildVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
     <jettyVersion>9.4.53.v20231009</jettyVersion>
@@ -602,12 +603,10 @@ under the License.
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>mrm-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <!-- Do not upgrade since 1.6.0 requires Maven 3.6.3+ to run -->
+            <version>1.5.0</version>
             <configuration>
               <repositories>
-                <mockRepo>
-                  <source>src/it/mrm/repository</source>
-                </mockRepo>
                 <proxyRepo />
               </repositories>
             </configuration>
