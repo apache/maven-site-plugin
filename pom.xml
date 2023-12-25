@@ -193,7 +193,7 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <mavenVersion>3.2.5</mavenVersion>
+    <mavenVersion>3.8.1</mavenVersion>
     <minimalMavenBuildVersion>${mavenVersion}</minimalMavenBuildVersion>
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
