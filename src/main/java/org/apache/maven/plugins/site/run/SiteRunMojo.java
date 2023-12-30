@@ -42,6 +42,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
+import org.apache.maven.plugins.site.render.ParserConfiguratorImpl;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 
@@ -140,7 +141,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
     private Map<String, DoxiaBean> createDoxiaContexts() throws MojoExecutionException {
         Map<String, DoxiaBean> i18nDoxiaContexts;
 
-        try {
+        try (ParserConfiguratorImpl parserConfigurator = createParserConfigurator()) {
             // For external reports
             project.getReporting().setOutputDirectory(tempWebappDirectory.getAbsolutePath());
 
@@ -148,7 +149,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
             i18nDoxiaContexts = new HashMap<>();
 
             for (Locale locale : localesList) {
-                SiteRenderingContext i18nContext = createSiteRenderingContext(locale);
+                SiteRenderingContext i18nContext = createSiteRenderingContext(locale, parserConfigurator);
                 i18nContext.setInputEncoding(getInputEncoding());
                 i18nContext.setOutputEncoding(getOutputEncoding());
 

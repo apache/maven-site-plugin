@@ -183,7 +183,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
         try {
             for (Locale locale : localesList) {
                 File localeOutputDirectory = getOutputDirectory(locale);
-                SiteRenderingContext context = createSiteRenderingContext(locale);
+                SiteRenderingContext context = createSiteRenderingContext(locale, null);
                 context.addSiteLocales(localesList);
                 context.setInputEncoding(getInputEncoding());
                 context.setOutputEncoding(getOutputEncoding());
@@ -239,7 +239,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
         try {
             for (Locale locale : localesList) {
                 File localeOutputDirectory = getOutputDirectory(locale);
-                SiteRenderingContext context = createSiteRenderingContext(locale);
+                SiteRenderingContext context = createSiteRenderingContext(locale, null);
                 context.addSiteLocales(localesList);
                 context.setInputEncoding(getInputEncoding());
                 context.setOutputEncoding(getOutputEncoding());
@@ -277,7 +277,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
     private void renderSite(
             Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales, File outputDirectory)
             throws IOException, RendererException, MojoFailureException, MojoExecutionException {
-        SiteRenderingContext context = createSiteRenderingContext(locale);
+        SiteRenderingContext context = createSiteRenderingContext(locale, null);
         context.addSiteLocales(supportedLocales);
         context.setInputEncoding(getInputEncoding());
         context.setOutputEncoding(getOutputEncoding());
