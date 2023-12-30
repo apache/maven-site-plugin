@@ -131,6 +131,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
                     docRenderingContext.getBasedirRelativePath(),
                     document,
                     docRenderingContext.getParserId(),
+                    docRenderingContext.getParserConfiguration(), // TODO: use another config?
                     docRenderingContext.getExtension(),
                     docRenderingContext.isEditable(),
                     docRenderingContext.getGenerator());
