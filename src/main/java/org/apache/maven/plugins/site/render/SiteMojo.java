@@ -30,6 +30,7 @@ import java.util.TreeMap;
 
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DoxiaDocumentRenderer;
+import org.apache.maven.doxia.siterenderer.ParserConfigurator;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -43,6 +44,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.shared.utils.logging.MessageBuilder;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -95,7 +97,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
 
         checkInputEncoding();
 
-        try {
+        try (ParserConfiguratorImpl parserConfigurator = createParserConfigurator()) {
             List<Locale> localesList = getLocales();
 
             for (Locale locale : localesList) {
@@ -108,7 +110,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                 File outputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports =
                         generateReports ? getReports(outputDirectory) : Collections.emptyList();
-                renderLocale(locale, reports, localesList, outputDirectory);
+                renderLocale(locale, reports, localesList, outputDirectory, parserConfigurator);
             }
         } catch (RendererException e) {
             if (e.getCause() instanceof MavenReportException) {
@@ -118,13 +120,19 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
             throw new MojoExecutionException("Failed to render site", e);
         } catch (IOException e) {
             throw new MojoExecutionException("Error during site generation", e);
+        } catch (ComponentLookupException e) {
+            throw new MojoExecutionException("Cannot lookup ComponentConfigurator for configuration of parsers", e);
         }
     }
 
     private void renderLocale(
-            Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales, File outputDirectory)
+            Locale locale,
+            List<MavenReportExecution> reports,
+            List<Locale> supportedLocales,
+            File outputDirectory,
+            ParserConfigurator parserConfigurator)
             throws IOException, RendererException, MojoFailureException, MojoExecutionException {
-        SiteRenderingContext context = createSiteRenderingContext(locale);
+        SiteRenderingContext context = createSiteRenderingContext(locale, parserConfigurator);
         context.addSiteLocales(supportedLocales);
         context.setInputEncoding(getInputEncoding());
         context.setOutputEncoding(getOutputEncoding());

@@ -209,7 +209,7 @@ under the License.
     <jxrPluginVersion>3.3.2</jxrPluginVersion>
     <projectInfoReportsPluginVersion>3.5.0</projectInfoReportsPluginVersion>
     <surefirePluginVersion>3.2.2</surefirePluginVersion>
-    <mavenPluginPluginVersion>3.12.0</mavenPluginPluginVersion>
+    <mavenPluginPluginVersion>3.13.0</mavenPluginPluginVersion>
     <mavenReportingImplVersion>4.0.0-M14</mavenReportingImplVersion>
     <testingFluidoSkinVersion>2.0.0-M8</testingFluidoSkinVersion>
     <project.build.outputTimestamp>2023-12-14T15:35:29Z</project.build.outputTimestamp>
