@@ -28,7 +28,9 @@ import java.util.stream.Collectors;
 
 import org.apache.maven.doxia.parser.Parser;
 
-/** Configuration for a Doxia {@link Parser} (bound to a specific markup source path pattern) **/
+/** Configuration for a Doxia {@link Parser} (bound to a specific markup source path pattern)
+ * @since 4.0.0
+ **/
 public class ParserConfiguration implements org.apache.maven.doxia.siterenderer.ParserConfiguration {
 
     /**
@@ -56,7 +58,7 @@ public class ParserConfiguration implements org.apache.maven.doxia.siterenderer.
 
     /**
      * Switches the feature {@link Parser#setEmitComments(boolean)} either on or off.
-     * Default is off.
+     * Default (for Doxia Sitetools) is off.
      *
      * @param emitComments {@code true} to switch it on, otherwise leave it off
      * @see Parser#setEmitComments(boolean)
@@ -67,7 +69,7 @@ public class ParserConfiguration implements org.apache.maven.doxia.siterenderer.
 
     /**
      * Switches the feature {@link Parser#setEmitAnchorsForIndexableEntries(boolean)} either on or off.
-     * Default is on.
+     * Default (for Doxia Sitetools) is on.
      *
      * @param emitAnchorsForIndexableEntries {@code true} to switch it on, otherwise leave it off
      * @see Parser#setEmitAnchorsForIndexableEntries(boolean)
@@ -110,8 +112,8 @@ public class ParserConfiguration implements org.apache.maven.doxia.siterenderer.
     }
 
     @Override
-    public void accept(Parser parser) {
+    public void configure(Parser parser) {
         parser.setEmitComments(emitComments);
-        // parser.setEmitAnchorsForIndexableEntries(emitAnchorsForIndexableEntries);
+        parser.setEmitAnchorsForIndexableEntries(emitAnchorsForIndexableEntries);
     }
 }

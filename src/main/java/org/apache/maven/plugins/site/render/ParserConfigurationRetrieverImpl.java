@@ -33,7 +33,10 @@ public class ParserConfigurationRetrieverImpl implements ParserConfigurationRetr
     }
 
     @Override
-    public Optional<ParserConfiguration> apply(Path filePath) {
-        return parserConfigurations.stream().filter(c -> c.matches(filePath)).findFirst();
+    public Optional<org.apache.maven.doxia.siterenderer.ParserConfiguration> retrieve(Path filePath) {
+        return parserConfigurations.stream()
+                .filter(c -> c.matches(filePath))
+                .findFirst()
+                .map(c -> c);
     }
 }

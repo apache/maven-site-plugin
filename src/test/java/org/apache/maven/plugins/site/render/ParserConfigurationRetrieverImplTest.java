@@ -35,7 +35,8 @@ public class ParserConfigurationRetrieverImplTest {
         ParserConfiguration config2 = new ParserConfiguration();
         assertEquals(
                 Optional.empty(),
-                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2)).apply(Paths.get("some", "file")));
+                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2))
+                        .retrieve(Paths.get("some", "file")));
     }
 
     @Test
@@ -45,7 +46,7 @@ public class ParserConfigurationRetrieverImplTest {
         ParserConfigurationRetrieverImpl parserConfigurationRetrieverImpl =
                 new ParserConfigurationRetrieverImpl(Arrays.asList(config1));
         assertThrows(RuntimeException.class, () -> {
-            parserConfigurationRetrieverImpl.apply(Paths.get("some", "file"));
+            parserConfigurationRetrieverImpl.retrieve(Paths.get("some", "file"));
         });
     }
 
@@ -57,7 +58,8 @@ public class ParserConfigurationRetrieverImplTest {
         config2.addPattern("regex:.*\\.apt");
         assertEquals(
                 Optional.empty(),
-                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2)).apply(Paths.get("some", "file")));
+                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2))
+                        .retrieve(Paths.get("some", "file")));
     }
 
     @Test
@@ -68,7 +70,8 @@ public class ParserConfigurationRetrieverImplTest {
         config2.addPattern("glob:**/*");
         assertEquals(
                 Optional.of(config2),
-                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2)).apply(Paths.get("some", "file")));
+                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2))
+                        .retrieve(Paths.get("some", "file")));
     }
 
     @Test
@@ -79,6 +82,7 @@ public class ParserConfigurationRetrieverImplTest {
         config2.addPattern("regex:.*");
         assertEquals(
                 Optional.of(config1),
-                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2)).apply(Paths.get("some", "file")));
+                new ParserConfigurationRetrieverImpl(Arrays.asList(config1, config2))
+                        .retrieve(Paths.get("some", "file")));
     }
 }
