@@ -58,6 +58,15 @@ under the License.
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <configuration>
+          <goalPrefix>MSITE-627</goalPrefix>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <reporting>

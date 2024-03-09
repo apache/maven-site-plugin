@@ -64,14 +64,14 @@ POM Inheritance and Interpolation
   {{{http://maven.apache.org/ref/3-LATEST/maven-model-builder/} reference documentation}}.
 
   Same test with <<<project.url>>>: top parent defines url with a property that is
-  not defined, then property is defined in some childs:
+  not defined, then property is defined in some children:
 
 #set( $p = $project )
 *-------*------*-------*
 || level || artifactId || <<<project.url>>> value ||
 *-------+------+--------+
 #foreach( $i in [1..4] )
-#if( $p )|    $i| <<<$p.artifactId>>> | <<<$p.url>>>
+#if( $p )|    $i| <<<$p.artifactId>>> | <<<$p.url.replace('{', '\{')>>>
 *-------+------+--------+
 #set( $p = $p.parent )#end
 #end

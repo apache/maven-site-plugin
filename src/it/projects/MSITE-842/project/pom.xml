@@ -61,6 +61,9 @@ under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>@mavenPluginPluginVersion@</version>
+        <configuration>
+          <goalPrefix>MSITE-842</goalPrefix>
+        </configuration>
       </plugin>
     </plugins>
 

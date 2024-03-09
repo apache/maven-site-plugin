@@ -28,8 +28,8 @@ assert content.contains( "<<<project.artifactId = 'reactor-parent'>>>" );
 assert content.contains( "<<<project.artifactId = 'child'>>>" );
 
 // url check (with its inheritance)
-assert content.contains( '<<<http://maven.apache.org/${property}>>>' ); // repo-parent
-assert content.contains( '<<<http://maven.apache.org/${property}/relative-parent>>>' ); // relative-parent
+assert content.contains( '<<<http://maven.apache.org/$\\{property}>>>' ); // repo-parent
+assert content.contains( '<<<http://maven.apache.org/$\\{property}/relative-parent>>>' ); // relative-parent
 assert content.contains( '<<<http://maven.apache.org/prop-value-from-reactor-parent/relative-parent/reactor-parent>>>' ); // reactor-parent
 assert content.contains( '<<<http://maven.apache.org/prop-value-from-child/relative-parent/reactor-parent/child>>>' ); // child
 
