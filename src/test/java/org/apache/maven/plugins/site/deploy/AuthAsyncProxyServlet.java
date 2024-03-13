@@ -19,17 +19,18 @@
 package org.apache.maven.plugins.site.deploy;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.proxy.AsyncProxyServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,7 +128,7 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
                     if (request.getMethod().equalsIgnoreCase("PUT") && targetPath != null) {
                         File targetFile = new File(siteTargetPath, targetPath);
                         log.info("writing file " + targetFile.getPath());
-                        FileUtils.writeByteArrayToFile(targetFile, IOUtils.toByteArray(request.getInputStream()));
+                        writeByteArrayToFile(targetFile, request.getInputStream());
                     }
 
                     response.setStatus(HttpServletResponse.SC_OK);
@@ -142,5 +143,17 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
         }
 
         super.service(req, res);
+    }
+
+    private void writeByteArrayToFile(File targetFile, ServletInputStream inputStream) throws IOException {
+        int nRead;
+        byte[] data = new byte[512];
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+        }
+        buffer.flush();
+        targetFile.getParentFile().mkdirs();
+        Files.write(targetFile.toPath(), buffer.toByteArray());
     }
 }
