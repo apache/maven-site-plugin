@@ -20,17 +20,16 @@ package org.apache.maven.plugins.site.deploy;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -78,7 +77,7 @@ public class SimpleDavServerHandler {
                 if (request.getMethod().equalsIgnoreCase("PUT")) {
                     File targetFile = new File(siteTargetPath, targetPath);
                     log.info("writing file " + targetFile.getPath());
-                    FileUtils.writeByteArrayToFile(targetFile, IOUtils.toByteArray(request.getInputStream()));
+                    writeByteArrayToFile(targetFile, request.getInputStream());
                 }
 
                 // PrintWriter writer = response.getWriter();
@@ -110,5 +109,18 @@ public class SimpleDavServerHandler {
 
     public void stop() throws Exception {
         server.stop();
+    }
+
+    private void writeByteArrayToFile(File targetFile, ServletInputStream inputStream) throws IOException {
+        int nRead;
+        byte[] data = new byte[512];
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+        }
+
+        buffer.flush();
+        targetFile.getParentFile().mkdirs();
+        Files.write(targetFile.toPath(), buffer.toByteArray());
     }
 }

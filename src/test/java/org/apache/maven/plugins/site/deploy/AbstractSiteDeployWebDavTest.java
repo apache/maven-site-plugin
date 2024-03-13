@@ -19,13 +19,12 @@
 package org.apache.maven.plugins.site.deploy;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.bridge.MavenRepositorySystem;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -57,7 +56,7 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
         super.setUp();
         if (!siteTargetPath.exists()) {
             siteTargetPath.mkdirs();
-            FileUtils.cleanDirectory(siteTargetPath);
+            cleanDirectory(siteTargetPath);
         }
     }
 
@@ -67,7 +66,7 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
 
     @Test
     public void noAuthzDavDeploy() throws Exception {
-        FileUtils.cleanDirectory(siteTargetPath);
+        cleanDirectory(siteTargetPath);
         SimpleDavServerHandler simpleDavServerHandler = new SimpleDavServerHandler(siteTargetPath);
 
         try {
@@ -103,7 +102,7 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
     @Test
     public void davDeployThruProxyWithoutAuthzInProxy() throws Exception {
 
-        FileUtils.cleanDirectory(siteTargetPath);
+        cleanDirectory(siteTargetPath);
         SimpleDavServerHandler simpleDavServerHandler = new SimpleDavServerHandler(siteTargetPath);
         try {
             File pluginXmlFile = getTestFile("src/test/resources/unit/deploy-dav/pom.xml");
@@ -150,7 +149,7 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
     @Test
     public void davDeployThruProxyWitAuthzInProxy() throws Exception {
 
-        FileUtils.cleanDirectory(siteTargetPath);
+        cleanDirectory(siteTargetPath);
         // SimpleDavServerHandler simpleDavServerHandler = new SimpleDavServerHandler( siteTargetPath );
 
         Map<String, String> authentications = new HashMap<>();
@@ -219,12 +218,12 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
     private void assertContentInFiles() throws Exception {
         File fileToTest = new File(siteTargetPath, "site" + File.separator + "index.html");
         assertTrue(fileToTest.exists());
-        String fileContent = FileUtils.readFileToString(fileToTest);
+        String fileContent = readFileToString(fileToTest);
         assertTrue(fileContent.contains("Welcome to Apache Maven"));
 
         fileToTest = new File(siteTargetPath, "site" + File.separator + "css" + File.separator + "maven-base.css");
         assertTrue(fileToTest.exists());
-        fileContent = FileUtils.readFileToString(fileToTest);
+        fileContent = readFileToString(fileToTest);
         assertTrue(fileContent.contains("background-image: url(../images/collapsed.gif);"));
     }
 
@@ -244,5 +243,27 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
             }
         }
         return false;
+    }
+
+    private void cleanDirectory(File dir) throws IOException {
+        Files.list(dir.toPath())
+                .flatMap(p -> {
+                    try {
+                        return Files.walk(p);
+                    } catch (IOException e) {
+                        return Stream.empty();
+                    }
+                })
+                .sorted(Comparator.reverseOrder())
+                .forEach(p -> {
+                    try {
+                        Files.delete(p);
+                    } catch (IOException e) {
+                    }
+                });
+    }
+
+    private String readFileToString(File fileToTest) throws IOException {
+        return Files.lines(fileToTest.toPath()).collect(Collectors.joining(System.lineSeparator()));
     }
 }
