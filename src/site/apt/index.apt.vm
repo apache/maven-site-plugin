@@ -103,8 +103,6 @@ ${project.name}
 
 ** Site Template
 
-     * {{{./examples/templatefile.html}Changing the Template File}}
-
      * {{{./examples/creatingskins.html}Creating Skins}}
 
 ** Deploying
