@@ -95,6 +95,25 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     private Map<String, Object> attributes;
 
     /**
+     * Parser configurations (per matching Doxia markup source file path patterns).
+     * Each configuration item has the following format:
+     * <p/>
+     * <pre>
+     *   &lt;patterns&gt;
+     *     &lt;pattern&gt;glob:**&#47;*.md&lt;/pattern&gt;&lt;!-- is either glob or regex syntax with the according prefix --&gt;
+     *   &lt;/patterns&gt;
+     *   &lt;emitComments&gt;true&lt;/emitComments&gt;&lt;!-- false by default --&gt;
+     *   &lt;emitAnchorsForIndexableEntries&gt;false&lt;/emitAnchorsForIndexableEntries&gt;&lt;!-- true by default --&gt;
+     * </pre>
+     * The configuration is only applied if one of the given patterns matches the Doxia markup source file path.
+     * The first matching configuration wins (i.e. is applied).
+     * @since 4.0.0
+     * @see java.nio.file.FileSystem#getPathMatcher(String) FileSystem.getPathMatcher(String) for the supported patterns
+     */
+    @Parameter
+    private List<ParserConfiguration> parserConfigurations;
+
+    /**
      * Site renderer.
      */
     @Component
@@ -329,7 +348,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                 context.setProcessedContentOutput(processedDir);
             }
         }
-
+        context.setParserConfigurationRetriever(new ParserConfigurationRetrieverImpl(parserConfigurations));
         return context;
     }
 
