@@ -54,7 +54,7 @@ under the License.
             </goals>
             <configuration>
               <target>
-                <copy failonerror="false" file="index.apt" tofile="${project.build.directory}/generated-site/apt/index.apt"/>
+                <echo file="${project.build.directory}/generated-site/apt/index.apt">Correct!${line.separator}${line.separator}  This is an index file in the generated-site.</echo>
               </target>
             </configuration>
           </execution>
