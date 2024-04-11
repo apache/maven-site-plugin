@@ -198,8 +198,8 @@ under the License.
     <javaVersion>8</javaVersion>
     <!-- for dependencies -->
     <jettyVersion>9.4.53.v20231009</jettyVersion>
-    <doxiaVersion>2.0.0-M8</doxiaVersion>
-    <doxiaSitetoolsVersion>2.0.0-M16</doxiaSitetoolsVersion>
+    <doxiaVersion>2.0.0-M9-SNAPSHOT</doxiaVersion>
+    <doxiaSitetoolsVersion>2.0.0-M17-SNAPSHOT</doxiaSitetoolsVersion>
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
@@ -513,6 +513,17 @@ under the License.
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <configuration>
+            <externalJavadocBaseUrls>
+              <externalJavadocBaseUrl>https://maven.apache.org/doxia/doxia/doxia-core/apidocs/</externalJavadocBaseUrl>
+              <externalJavadocBaseUrl>https://maven.apache.org/doxia/doxia-sitetools/doxia-site-renderer/apidocs/</externalJavadocBaseUrl>
+              <externalJavadocBaseUrl>https://docs.oracle.com/javase/8/docs/api/</externalJavadocBaseUrl>
+            </externalJavadocBaseUrls>
+          </configuration>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-report-plugin</artifactId>
