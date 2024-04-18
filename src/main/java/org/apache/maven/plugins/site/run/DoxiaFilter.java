@@ -108,7 +108,6 @@ public class DoxiaFilter implements Filter {
         // Handle locale request
         SiteRenderingContext context;
         Map<String, DocumentRenderer> documents;
-        SiteRenderingContext generatedSiteContext;
 
         String localeWanted = "";
         for (Locale locale : localesList) {
@@ -132,7 +131,6 @@ public class DoxiaFilter implements Filter {
         }
         context = doxiaBean.getContext();
         documents = doxiaBean.getDocuments();
-        generatedSiteContext = doxiaBean.getGeneratedSiteContext();
 
         // ----------------------------------------------------------------------
         // Handle report and documents
@@ -161,26 +159,6 @@ public class DoxiaFilter implements Filter {
                 }
 
                 return;
-            } catch (RendererException e) {
-                throw new ServletException(e);
-            }
-        } else if (generatedSiteContext != null) {
-            try {
-                Map<String, DocumentRenderer> locateDocuments =
-                        siteRenderer.locateDocumentFiles(generatedSiteContext, false);
-
-                if (locateDocuments.containsKey(path)) {
-                    DocumentRenderer docRenderer = locateDocuments.get(path);
-                    logDocumentRenderer(path, localeWanted, docRenderer);
-                    String outputName = docRenderer.getOutputName();
-                    String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
-                    if (contentType != null) {
-                        servletResponse.setContentType(contentType);
-                    }
-                    docRenderer.renderDocument(servletResponse.getWriter(), siteRenderer, generatedSiteContext);
-
-                    return;
-                }
             } catch (RendererException e) {
                 throw new ServletException(e);
             }

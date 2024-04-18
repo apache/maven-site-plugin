@@ -40,6 +40,7 @@ import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
+import org.apache.maven.doxia.siterenderer.SiteRenderingContext.SiteDirectory;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
@@ -312,9 +313,11 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         // Generate static site
         context.setRootDirectory(project.getBasedir());
         if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
-            context.addSiteDirectory(new File(siteDirectory, locale.toString()));
+            context.addSiteDirectory(new SiteDirectory(new File(siteDirectory, locale.toString()), true));
+            context.addSiteDirectory(new SiteDirectory(new File(generatedSiteDirectory, locale.toString()), false));
         } else {
-            context.addSiteDirectory(siteDirectory);
+            context.addSiteDirectory(new SiteDirectory(siteDirectory, true));
+            context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
         }
 
         if (moduleExcludes != null) {
@@ -425,7 +428,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected Map<String, DocumentRenderer> locateDocuments(
             SiteRenderingContext context, List<MavenReportExecution> reports, Locale locale)
             throws IOException, RendererException {
-        Map<String, DocumentRenderer> documents = siteRenderer.locateDocumentFiles(context, true);
+        Map<String, DocumentRenderer> documents = siteRenderer.locateDocumentFiles(context);
 
         Map<String, MavenReport> reportsByOutputName = locateReports(reports, documents, locale);
 

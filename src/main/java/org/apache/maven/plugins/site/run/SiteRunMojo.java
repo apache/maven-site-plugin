@@ -133,21 +133,11 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                 i18nContext.setInputEncoding(getInputEncoding());
                 i18nContext.setOutputEncoding(getOutputEncoding());
 
-                SiteRenderingContext i18nGeneratedSiteContext = createSiteRenderingContext(locale);
-                i18nGeneratedSiteContext.setInputEncoding(getInputEncoding());
-                i18nGeneratedSiteContext.setOutputEncoding(getOutputEncoding());
-                i18nGeneratedSiteContext.getSiteDirectories().clear();
-
                 File outputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports = getReports(outputDirectory);
 
                 Map<String, DocumentRenderer> i18nDocuments = locateDocuments(i18nContext, reports, locale);
-                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
-                    i18nGeneratedSiteContext.addSiteDirectory(new File(generatedSiteDirectory, locale.toString()));
-                } else {
-                    i18nGeneratedSiteContext.addSiteDirectory(generatedSiteDirectory);
-                }
-                DoxiaBean doxiaBean = new DoxiaBean(i18nContext, i18nDocuments, i18nGeneratedSiteContext);
+                DoxiaBean doxiaBean = new DoxiaBean(i18nContext, i18nDocuments);
 
                 if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     i18nDoxiaContexts.put(locale.toString(), doxiaBean);
