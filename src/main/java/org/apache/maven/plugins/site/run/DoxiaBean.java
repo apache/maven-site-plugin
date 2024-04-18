@@ -34,20 +34,13 @@ public class DoxiaBean {
 
     private Map<String, DocumentRenderer> documents;
 
-    private SiteRenderingContext generatedSiteContext;
-
     /**
      * @param context context
      * @param documents documents
-     * @param generatedSiteContext context of generated content
      */
-    public DoxiaBean(
-            SiteRenderingContext context,
-            Map<String, DocumentRenderer> documents,
-            SiteRenderingContext generatedSiteContext) {
+    public DoxiaBean(SiteRenderingContext context, Map<String, DocumentRenderer> documents) {
         this.context = context;
         this.documents = documents;
-        this.generatedSiteContext = generatedSiteContext;
     }
 
     public SiteRenderingContext getContext() {
@@ -64,13 +57,5 @@ public class DoxiaBean {
 
     public void setDocuments(Map<String, DocumentRenderer> documents) {
         this.documents = documents;
-    }
-
-    public SiteRenderingContext getGeneratedSiteContext() {
-        return generatedSiteContext;
-    }
-
-    public void setGeneratedSiteContext(SiteRenderingContext generatedSiteContext) {
-        this.generatedSiteContext = generatedSiteContext;
     }
 }
