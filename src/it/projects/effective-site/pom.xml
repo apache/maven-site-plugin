@@ -27,7 +27,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
-    <version>39</version>
+    <version>42</version>
   </parent>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>

@@ -23,7 +23,8 @@ import org.apache.maven.doxia.sink.Sink;
 import org.apache.maven.doxia.sink.SinkEventAttributes;
 import org.apache.maven.doxia.sink.impl.SinkAdapter;
 import org.apache.maven.doxia.siterenderer.Renderer;
-import org.apache.maven.project.MavenProject;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 
@@ -31,10 +32,8 @@ import java.util.Locale;
 
 /**
  * Goal which creates a sink in a report.
- *
- * @goal test
- * @phase site
  */
+@Mojo( name = "test", defaultPhase = LifecyclePhase.SITE )
 public class MyReport
     extends AbstractMavenReport
 {
@@ -52,24 +51,6 @@ public class MyReport
     public String getDescription( Locale locale )
     {
         return "Test Report for MSITE-672";
-    }
-
-    @Override
-    protected Renderer getSiteRenderer()
-    {
-        return null;
-    }
-
-    @Override
-    protected String getOutputDirectory()
-    {
-        return null;
-    }
-
-    @Override
-    protected MavenProject getProject()
-    {
-        return null;
     }
 
     @Override

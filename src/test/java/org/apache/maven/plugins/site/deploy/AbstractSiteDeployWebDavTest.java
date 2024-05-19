@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.bridge.MavenRepositorySystem;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
@@ -199,7 +200,8 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
                 setVariableValueToObject(
                         mojo,
                         "localRepository",
-                        MavenRepositorySystem.createArtifactRepository("local", "foo", null, null, null));
+                        MavenRepositorySystem.createArtifactRepository(
+                                "local", "foo", new DefaultRepositoryLayout(), null, null));
                 setVariableValueToObject(mojo, "siteTool", getContainer().lookup(SiteTool.class));
                 setVariableValueToObject(mojo, "siteDirectory", new File("foo"));
                 setVariableValueToObject(mojo, "remoteProjectRepositories", Collections.emptyList());
