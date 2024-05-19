@@ -20,6 +20,8 @@ package org.apache.maven.plugins.it;
  */
 
 import org.apache.maven.doxia.sink.Sink;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
 
@@ -29,10 +31,8 @@ import java.util.Locale;
 
 /**
  * Goal which creates several pages in a report.
- *
- * @goal test
- * @phase site
  */
+@Mojo( name = "test", defaultPhase = LifecyclePhase.SITE )
 public class MyReport
     extends AbstractMavenReport
 {

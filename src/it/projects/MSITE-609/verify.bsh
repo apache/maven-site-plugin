@@ -65,10 +65,10 @@ try
         return false;
     }
     String downloadContent = FileUtils.fileRead( download, "UTF-8" );
-    int indexOf = downloadContent.indexOf( "Download Maven 3.2.5" );
+    int indexOf = downloadContent.indexOf( "Download Maven 3.6.3" );
     if ( indexOf < 0 )
     {
-        System.err.println( "download.html doesn't contain Download Maven 3.2.5" );
+        System.err.println( "download.html doesn't contain Download Maven 3.6.3" );
         return false;
     }
 }

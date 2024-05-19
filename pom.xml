@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
-    <version>41</version>
+    <version>42</version>
     <relativePath />
   </parent>
 
@@ -193,9 +193,8 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <mavenVersion>3.2.5</mavenVersion>
-    <minimalMavenBuildVersion>${mavenVersion}</minimalMavenBuildVersion>
     <javaVersion>8</javaVersion>
+    <mavenVersion>3.6.3</mavenVersion>
     <!-- for dependencies -->
     <jettyVersion>9.4.54.v20240208</jettyVersion>
     <doxiaVersion>2.0.0-M10</doxiaVersion>
@@ -254,7 +253,7 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-aether-provider</artifactId>
+      <artifactId>maven-resolver-provider</artifactId>
       <version>${mavenVersion}</version>
       <scope>provided</scope>
     </dependency>
