@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache</groupId>
     <artifactId>apache</artifactId>
-    <version>19</version>
+    <version>32</version>
   </parent>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>
