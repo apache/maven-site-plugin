@@ -37,6 +37,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
+import org.apache.maven.plugins.site.render.ParserConfiguratorImpl;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.codehaus.plexus.util.IOUtil;
 import org.eclipse.jetty.server.Server;
@@ -125,11 +126,11 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         List<Locale> localesList = getLocales();
         webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
 
-        try {
+        try (ParserConfiguratorImpl parserConfigurator = createParserConfigurator()) {
             Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
 
             for (Locale locale : localesList) {
-                SiteRenderingContext i18nContext = createSiteRenderingContext(locale);
+                SiteRenderingContext i18nContext = createSiteRenderingContext(locale, parserConfigurator);
                 i18nContext.setInputEncoding(getInputEncoding());
                 i18nContext.setOutputEncoding(getOutputEncoding());
 

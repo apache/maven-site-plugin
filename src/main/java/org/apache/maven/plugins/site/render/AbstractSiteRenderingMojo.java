@@ -37,6 +37,7 @@ import org.apache.maven.doxia.site.MenuItem;
 import org.apache.maven.doxia.site.SiteModel;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
+import org.apache.maven.doxia.siterenderer.ParserConfigurator;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
@@ -58,6 +59,8 @@ import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
 import org.apache.maven.shared.utils.WriterFactory;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.ReaderFactory;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
@@ -94,6 +97,37 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter
     private Map<String, Object> attributes;
+
+    /**
+     * Parser configurations (per matching Doxia markup source file path patterns).
+     * Each configuration item has the following format:
+     * <p/>
+     * <pre><code>
+     * &lt;parserId&gt
+     *   &lt;configurations&gt;
+     *     &lt;configuration&gt;
+     *       &lt;patterns&gt;
+     *         &lt;pattern&gt;glob:**&#47;*.md&lt;/pattern&gt;&lt;!-- is either glob or regex syntax with the according prefix --&gt;
+     *       &lt;/patterns&gt;
+     *       &lt;!-- all configurations apart from pattern are directly applied to the underlying parser --&gt;
+     *       &lt;emitComments&gt;true&lt;/emitComments&gt;&lt;!-- false by default --&gt;
+     *       &lt;emitAnchorsForIndexableEntries&gt;false&lt;/emitAnchorsForIndexableEntries&gt;&lt;!-- true by default --&gt;
+     *     &lt;/configuration&gt;
+     *   &lt;/configurations&gt;
+     * &lt;/parserId&gt
+     * </code></pre>
+     * The configuration is only applied if both
+     * <ul>
+     * <li>the parser id matches the parser used for a specific markup source file and</li>
+     * <li>one of the given patterns matches the Doxia markup source file path (or no pattern is given at all).</li>
+     * </ul>
+     *
+     * The first matching configuration wins (i.e. is applied).
+     * @since 4.0.0
+     * @see java.nio.file.FileSystem#getPathMatcher(String) FileSystem.getPathMatcher(String) for the supported patterns
+     */
+    @Parameter
+    private Map<String, List<PlexusConfiguration>> parserConfigurations;
 
     /**
      * Site renderer.
@@ -270,7 +304,12 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         return reportingPlugins.toArray(new ReportPlugin[0]);
     }
 
-    protected SiteRenderingContext createSiteRenderingContext(Locale locale)
+    protected ParserConfiguratorImpl createParserConfigurator() throws ComponentLookupException {
+        return new ParserConfiguratorImpl(
+                parserConfigurations, mavenSession.getContainer(), mojoExecution.getMojoDescriptor());
+    }
+
+    protected SiteRenderingContext createSiteRenderingContext(Locale locale, ParserConfigurator parserConfigurator)
             throws MojoExecutionException, IOException, MojoFailureException {
         SiteModel siteModel = prepareSiteModel(locale);
         Map<String, Object> templateProperties = new HashMap<>();
@@ -332,7 +371,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                 context.setProcessedContentOutput(processedDir);
             }
         }
-
+        context.setParserConfigurator(parserConfigurator);
         return context;
     }
 
