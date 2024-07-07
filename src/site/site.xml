@@ -19,9 +19,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project xmlns="http://maven.apache.org/DECORATION/1.6.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/DECORATION/1.6.0"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd">
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
@@ -41,6 +41,8 @@ under the License.
       <item name="Building a multi-module site" href="/examples/multimodule.html"/>
       <item name="Configuring Site Run" href="/examples/siterun.html"/>
       <item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
+      <item name="Inheritance of the Site Distribution Management"
+        href="/examples/inheritance-site-distribution-management.html"/>
     </menu>
 
     <menu name="Reports">
