@@ -32,13 +32,13 @@ under the License.
   <name>Parent override settings IT</name>
 
   <properties>
-    <msite604.siteRepositoryUrl>parent</msite604.siteRepositoryUrl>
+    <msite604.sitePath>parent</msite604.sitePath>
   </properties>
 
   <distributionManagement>
     <site>
-      <id>${msite604.siteRepositoryId}</id>
-      <url>${msite604.siteRepositoryRoot}/${msite604.siteRepositoryBase}/${msite604.siteRepositoryUrl}</url>
+      <id>${msite604.siteId}</id>
+      <url>${msite604.siteURL}/${msite604.siteBase}/${msite604.sitePath}</url>
     </site>
   </distributionManagement>
 </project>
