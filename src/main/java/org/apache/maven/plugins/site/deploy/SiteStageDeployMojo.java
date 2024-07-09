@@ -63,19 +63,19 @@ public class SiteStageDeployMojo extends AbstractStagingMojo {
     private String stagingSiteURL;
 
     /**
-     * The identifier of the repository where the staging site will be deployed. This id will be used to lookup a
+     * The identifier of the site where the staged site will be deployed. This id will be used to lookup a
      * corresponding <code>&lt;server&gt;</code> entry from the <code>settings.xml</code>. If a matching
      * <code>&lt;server&gt;</code> entry is found, its configured credentials will be used for authentication.
      * <p/>
      * If this is not specified, then the corresponding value of <code>distributionManagement.site.id</code>
      * will be taken as default, unless this is not defined either then the String
-     * <code>"stagingSite"</code> is used. (<strong>Note</strong>:
-     * until v. 2.3 and 3.0-beta-3 the String <code>"stagingSite"</code> is always used.)
+     * <code>"stagingSite"</code> is used. Note that the alias {@code stagingRepositoryId} is deprecated
+     * for removal.
      *
      * @since 2.0.1
      */
-    @Parameter(property = "stagingRepositoryId")
-    private String stagingRepositoryId;
+    @Parameter(property = "stagingSiteId", alias = "stagingRepositoryId")
+    private String stagingSiteId;
 
     @Override
     protected boolean isDeploy() {
@@ -109,7 +109,7 @@ public class SiteStageDeployMojo extends AbstractStagingMojo {
     protected Site determineDeploySite() throws MojoExecutionException {
         Site top = new Site();
 
-        top.setId(stagingRepoId());
+        top.setId(determineStagingSiteId());
         getLog().info("Using this server ID for stage deploy: " + top.getId());
 
         String stagingURL = determineStageDeploySiteURL();
@@ -213,9 +213,9 @@ public class SiteStageDeployMojo extends AbstractStagingMojo {
         return defaultStagingSiteURL;
     }
 
-    private String stagingRepoId() {
-        if (stagingRepositoryId != null) {
-            return stagingRepositoryId;
+    private String determineStagingSiteId() {
+        if (stagingSiteId != null) {
+            return stagingSiteId;
         }
 
         try {
