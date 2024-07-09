@@ -76,9 +76,9 @@ under the License.
     <profile>
       <id>msite604</id>
       <properties>
-        <msite604.siteRepositoryId>settingsId</msite604.siteRepositoryId>
-        <msite604.siteRepositoryRoot>file://@project.build.directory@/it/MSITE-604/target/root</msite604.siteRepositoryRoot>
-        <msite604.siteRepositoryBase>settingsBase</msite604.siteRepositoryBase>
+        <msite604.siteId>settingsId</msite604.siteId>
+        <msite604.siteURL>file://@project.build.directory@/it/MSITE-604/target/root</msite604.siteURL>
+        <msite604.siteBase>settingsBase</msite604.siteBase>
       </properties>
     </profile>
   </profiles>

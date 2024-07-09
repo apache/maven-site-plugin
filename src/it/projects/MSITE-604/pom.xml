@@ -40,15 +40,15 @@ under the License.
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <msite604.siteRepositoryId>defaultId</msite604.siteRepositoryId>
-    <msite604.siteRepositoryBase>defaultBase</msite604.siteRepositoryBase>
-    <msite604.siteRepositoryUrl>defaultRepositoryUrl</msite604.siteRepositoryUrl>
+    <msite604.siteId>defaultId</msite604.siteId>
+    <msite604.siteBase>defaultBase</msite604.siteBase>
+    <msite604.sitePath>defaultPath</msite604.sitePath>
   </properties>
 
   <distributionManagement>
     <site>
-      <id>${msite604.siteRepositoryId}</id>
-      <url>${msite604.siteRepositoryRoot}/${msite604.siteRepositoryBase}/${msite604.siteRepositoryUrl}</url>
+      <id>${msite604.siteId}</id>
+      <url>${msite604.siteURL}/${msite604.siteBase}/${msite604.sitePath}</url>
     </site>
   </distributionManagement>
 
