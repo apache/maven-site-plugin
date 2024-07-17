@@ -25,6 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.bridge.MavenRepositorySystem;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
