@@ -39,15 +39,15 @@ under the License.
     <project.source.encoding>UTF-8</project.source.encoding>
     <prop>project.artifactId = '${project.artifactId}'</prop>
     <distUrl>scp://from.repo/dist</distUrl>
-    <msite604.siteId>site-parent-id</msite604.siteId>
-    <msite604.siteBase>default-repository-base-from-repo-parent</msite604.siteBase>
-    <fluidoSkinVersion>2.0.0-M9</fluidoSkinVersion><!-- invoker interpolation doesn't apply here: but version is not important at this level -->
+    <msite604.siteRepositoryId>repo-parent-id</msite604.siteRepositoryId>
+    <msite604.siteRepositoryBase>default-repository-base-from-repo-parent</msite604.siteRepositoryBase>
+    <fluidoSkinVersion>2.0.0-M3</fluidoSkinVersion><!-- invoker interpolation doesn't apply here: but version is not important at this level -->
   </properties>
 
   <distributionManagement>
     <site>
-      <id>${msite604.siteId}</id>
-      <url>${msite604.siteURL}/${msite604.siteBase}</url>
+      <id>${msite604.siteRepositoryId}</id>
+      <url>${msite604.siteRepositoryRoot}/${msite604.siteRepositoryBase}</url>
     </site>
   </distributionManagement>
 
@@ -56,7 +56,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>4.0.0-M13</version><!-- invoker interpolation doesn't apply here: but version is not important at this level -->
+        <version>4.0.0-M5</version><!-- invoker interpolation doesn't apply here: but version is not important at this level -->
         <configuration>
           <generateReports>false</generateReports>
         </configuration>
