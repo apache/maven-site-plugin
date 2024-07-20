@@ -36,7 +36,7 @@ Maven Site Plugin History
   * {{{/doxia/}Doxia}} to parse {{{/doxia/references/}many markup languages}} then render HTML: see
   {{{./examples/creating-content.html}Creating Content}} documentation for mode details (particularly which markups
   are enabled by default in maven-site-plugin and how to add one),
-  
+
   * {{{/doxia/doxia-sitetools/doxia-site-renderer/}Doxia Sitetools - Site Renderer}} to integrate document content into
   a template packaged as a skin: see {{{./examples/creatingskins.html}Creating Skins}} documentation for more details,
 
@@ -54,17 +54,19 @@ Maven Site Plugin History
   are often translated to {{{https://issues.apache.org/jira/projects/DOXIA}Doxia}} or
   {{{https://issues.apache.org/jira/projects/DOXIASITETOOLS}Doxia Sitetools}}, and issues fixed in
   Doxia or Doxia Sitetools benefit to maven-site-plugin once dependency is upgraded.
-  
+
   Knowing which version of
   maven-site-plugin uses which version of Doxia or Doxia Sitetools is useful to choose to which version to upgrade
   maven-site-plugin to benefit from a fix.
-  
+
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-|| relelease date || maven-site-plugin || {{{/doxia/}Doxia}} || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} || minimum Java || minimum  Maven || Comment 
+|| relelease date || maven-site-plugin || {{{/doxia/}Doxia}} || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} || minimum Java || minimum  Maven || Comment
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-04         | 3.12.0             |        | =                |                    | 8 | 3.2.5 |
+| 2022-07         | 3.12.1             |        |                  |
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-02         | 3.11.0             |        | =                | 1.6.0              |
+| 2022-04         | 3.12.0             |        |                  |                    | 8 | 3.2.5 |
+*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
+| 2022-02         | 3.11.0             |        |                  | 1.6.0              |
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
 | 2021-12         | 3.10.0             | 1.11.1 | =                |
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
@@ -94,15 +96,15 @@ Maven Site Plugin History
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
 | 2011-08         | 3.0                | 1.2    | =                | 1.0.1              | 5 | 2.2.0 | first maven-site-plugin that renders reports with Maven 3
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2012-04         | 2.4                | 1.3    | =  
+| 2012-04         | 2.4                | 1.3    | =
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2011-05         | 2.3                | 1.2    | =  
+| 2011-05         | 2.3                | 1.2    | =
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2010-11         | 2.2                | 1.1.4  | =  
+| 2010-11         | 2.2                | 1.1.4  | =
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2010-06         | 2.1.1              | 1.1.3  | =  
+| 2010-06         | 2.1.1              | 1.1.3  | =
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2009-12         | 2.1                | 1.1.2  | =  
+| 2009-12         | 2.1                | 1.1.2  | =
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2009-03         | 2.0                | 1.0    | =  
+| 2009-03         | 2.0                | 1.0    | =
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
