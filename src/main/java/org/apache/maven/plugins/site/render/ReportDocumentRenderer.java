@@ -259,7 +259,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
     @Override
     public String getOutputName() {
-        return docRenderingContext.getOutputName();
+        return docRenderingContext.getOutputPath();
     }
 
     @Override

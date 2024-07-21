@@ -57,7 +57,6 @@ import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
-import org.apache.maven.shared.utils.WriterFactory;
 import org.codehaus.plexus.util.ReaderFactory;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
@@ -195,7 +194,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * @return The effective reporting output file encoding, never <code>null</code>.
      */
     protected String getOutputEncoding() {
-        return (outputEncoding == null) ? WriterFactory.UTF_8 : outputEncoding;
+        return outputEncoding == null ?  "UTF-8" : outputEncoding;
     }
 
     /**
@@ -295,7 +294,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
             getLog().info(buffer().a("Rendering content with ")
                     .strong(skinArtifact.getId() + " skin")
-                    .toString());
+                    .build());
 
             context = siteRenderer.createContextForSkin(
                     skinArtifact, templateProperties, siteModel, project.getName(), locale);
@@ -355,7 +354,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
 
-            String outputName = report.getOutputName();
+            String outputName = report.getOutputPath();
             String filename = outputName + ".html";
 
             // Always add the report to the menu, see MSITE-150
@@ -460,7 +459,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
                     subMojoExecution, docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            String filename = docRenderer.getOutputName();
+            String filename = docRenderer.getOutputPath();
             if (!documents.containsKey(filename)) {
                 documents.put(filename, docRenderer);
             } else {
@@ -483,7 +482,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
                     subMojoExecution, docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            String filename = docRenderer.getOutputName();
+            String filename = docRenderer.getOutputPath();
             if (!documents.containsKey(filename)) {
                 documents.put(filename, docRenderer);
             } else {
@@ -502,7 +501,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new SitemapDocumentRenderer(
                     subMojoExecution, docRenderingContext, title, context.getSiteModel(), i18n, getLog());
 
-            String filename = docRenderer.getOutputName();
+            String filename = docRenderer.getOutputPath();
             if (!documents.containsKey(filename)) {
                 documents.put(filename, docRenderer);
             } else {
@@ -533,7 +532,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                     }
 
                     if (item.getHref() == null || item.getHref().length() == 0) {
-                        item.setHref(report.getOutputName() + ".html");
+                        item.setHref(report.getOutputPath() + ".html");
                     }
                 } else {
                     getLog().warn("Unrecognised reference: '" + item.getRef() + "'");

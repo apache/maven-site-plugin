@@ -82,6 +82,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
         this.log = log;
     }
 
+    @Override
     public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, IOException {
         String msg = "Generating \"" + buffer().strong(title) + "\" report";
@@ -149,7 +150,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
             for (MavenReport report : categoryReports) {
                 sink.tableRow();
                 sink.tableCell();
-                sink.link(report.getOutputName() + ".html");
+                sink.link(report.getOutputPath() + ".html");
                 sink.text(report.getName(locale));
                 sink.link_();
                 sink.tableCell_();
@@ -177,18 +178,22 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
         siteRenderer.mergeDocumentIntoSite(writer, sink, siteRenderingContext);
     }
 
+    @Override
     public String getOutputName() {
-        return docRenderingContext.getOutputName();
+        return docRenderingContext.getOutputPath();
     }
 
+    @Override
     public DocumentRenderingContext getRenderingContext() {
         return docRenderingContext;
     }
 
+    @Override
     public boolean isOverwrite() {
         return true;
     }
 
+    @Override
     public boolean isExternalReport() {
         return false;
     }

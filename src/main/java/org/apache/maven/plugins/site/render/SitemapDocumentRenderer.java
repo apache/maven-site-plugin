@@ -78,6 +78,7 @@ public class SitemapDocumentRenderer implements SitePluginReportDocumentRenderer
         this.log = log;
     }
 
+    @Override
     public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, IOException {
         Locale locale = siteRenderingContext.getLocale();
@@ -162,18 +163,22 @@ public class SitemapDocumentRenderer implements SitePluginReportDocumentRenderer
         return href.startsWith("/") ? "." + href : href;
     }
 
+    @Override
     public String getOutputName() {
-        return docRenderingContext.getOutputName();
+        return docRenderingContext.getOutputPath();
     }
 
+    @Override
     public DocumentRenderingContext getRenderingContext() {
         return docRenderingContext;
     }
 
+    @Override
     public boolean isOverwrite() {
         return true;
     }
 
+    @Override
     public boolean isExternalReport() {
         return false;
     }
