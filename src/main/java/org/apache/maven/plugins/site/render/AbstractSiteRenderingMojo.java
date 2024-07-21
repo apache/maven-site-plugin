@@ -194,7 +194,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * @return The effective reporting output file encoding, never <code>null</code>.
      */
     protected String getOutputEncoding() {
-        return outputEncoding == null ?  "UTF-8" : outputEncoding;
+        return outputEncoding == null ? "UTF-8" : outputEncoding;
     }
 
     /**
