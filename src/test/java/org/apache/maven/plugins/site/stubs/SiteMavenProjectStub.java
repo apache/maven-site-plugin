@@ -25,8 +25,6 @@ import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Site;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.ReaderFactory;
 import org.codehaus.plexus.util.xml.XmlStreamReader;
 
 /**
@@ -41,15 +39,10 @@ public class SiteMavenProjectStub extends MavenProjectStub {
     public SiteMavenProjectStub(String projectName) {
         basedir = new File(super.getBasedir() + "/src/test/resources/unit/" + projectName);
 
-        XmlStreamReader reader = null;
-        try {
-            reader = ReaderFactory.newXmlReader(new File(getBasedir(), "pom.xml"));
+        try (XmlStreamReader reader = new XmlStreamReader(new File(getBasedir(), "pom.xml"))) {
             setModel(new MavenXpp3Reader().read(reader));
-            reader.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
-        } finally {
-            IOUtil.close(reader);
         }
         Site site = new Site();
         site.setId("localhost");
@@ -59,6 +52,7 @@ public class SiteMavenProjectStub extends MavenProjectStub {
     /**
      * @see org.apache.maven.project.MavenProject#getName()
      */
+    @Override
     public String getName() {
         return getModel().getName();
     }
@@ -66,6 +60,7 @@ public class SiteMavenProjectStub extends MavenProjectStub {
     /**
      * @see org.apache.maven.project.MavenProject#getProperties()
      */
+    @Override
     public Properties getProperties() {
         return new Properties();
     }
@@ -76,6 +71,7 @@ public class SiteMavenProjectStub extends MavenProjectStub {
     }
 
     /** {@inheritDoc} */
+    @Override
     public File getBasedir() {
         return basedir;
     }

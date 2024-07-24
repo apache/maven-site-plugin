@@ -43,7 +43,6 @@ import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.codehaus.plexus.util.PathTool;
-import org.codehaus.plexus.util.WriterFactory;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -247,7 +246,8 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
             File outputFile = new File(mySink.getOutputDirectory(), outputName);
 
-            try (Writer out = new OutputStreamWriter(Files.newOutputStream(outputFile.toPath()), siteRenderingContext.getOutputEncoding())) {
+            try (Writer out = new OutputStreamWriter(
+                    Files.newOutputStream(outputFile.toPath()), siteRenderingContext.getOutputEncoding())) {
                 siteRenderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
             } finally {
                 mySink.close();
