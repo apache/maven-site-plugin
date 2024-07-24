@@ -21,7 +21,9 @@ package org.apache.maven.plugins.site.render;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -245,21 +247,22 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
             File outputFile = new File(mySink.getOutputDirectory(), outputName);
 
-            try (Writer out = WriterFactory.newWriter(outputFile, siteRenderingContext.getOutputEncoding())) {
+            try (Writer out = new OutputStreamWriter(Files.newOutputStream(outputFile.toPath()), siteRenderingContext.getOutputEncoding())) {
                 siteRenderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
-                mySink.close();
-                mySink = null;
             } finally {
-                if (mySink != null) {
-                    mySink.close();
-                }
+                mySink.close();
             }
         }
     }
 
     @Override
     public String getOutputName() {
-        return docRenderingContext.getOutputPath();
+        return docRenderingContext.getOutputName();
+    }
+
+    @Override
+    public String getOutputPath() {
+        return getOutputName();
     }
 
     @Override

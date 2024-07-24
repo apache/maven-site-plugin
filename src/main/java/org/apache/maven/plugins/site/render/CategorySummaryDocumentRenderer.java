@@ -150,7 +150,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
             for (MavenReport report : categoryReports) {
                 sink.tableRow();
                 sink.tableCell();
-                sink.link(report.getOutputPath() + ".html");
+                sink.link(report.getOutputName() + ".html");
                 sink.text(report.getName(locale));
                 sink.link_();
                 sink.tableCell_();
@@ -180,7 +180,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
 
     @Override
     public String getOutputName() {
-        return docRenderingContext.getOutputPath();
+        return docRenderingContext.getOutputName();
     }
 
     @Override

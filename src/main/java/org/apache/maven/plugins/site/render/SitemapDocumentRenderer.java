@@ -165,7 +165,12 @@ public class SitemapDocumentRenderer implements SitePluginReportDocumentRenderer
 
     @Override
     public String getOutputName() {
-        return docRenderingContext.getOutputPath();
+        return docRenderingContext.getOutputName();
+    }
+
+    @Override
+    public String getOutputPath() {
+        return getOutputName();
     }
 
     @Override

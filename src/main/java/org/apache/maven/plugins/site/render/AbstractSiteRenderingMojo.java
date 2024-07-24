@@ -354,7 +354,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
 
-            String outputName = report.getOutputPath();
+            String outputName = report.getOutputName();
             String filename = outputName + ".html";
 
             // Always add the report to the menu, see MSITE-150
@@ -459,7 +459,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
                     subMojoExecution, docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            String filename = docRenderer.getOutputPath();
+            String filename = docRenderer.getOutputName();
             if (!documents.containsKey(filename)) {
                 documents.put(filename, docRenderer);
             } else {
@@ -482,7 +482,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new CategorySummaryDocumentRenderer(
                     subMojoExecution, docRenderingContext, title, desc1, desc2, i18n, categoryReports, getLog());
 
-            String filename = docRenderer.getOutputPath();
+            String filename = docRenderer.getOutputName();
             if (!documents.containsKey(filename)) {
                 documents.put(filename, docRenderer);
             } else {
@@ -501,7 +501,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             DocumentRenderer docRenderer = new SitemapDocumentRenderer(
                     subMojoExecution, docRenderingContext, title, context.getSiteModel(), i18n, getLog());
 
-            String filename = docRenderer.getOutputPath();
+            String filename = docRenderer.getOutputName();
             if (!documents.containsKey(filename)) {
                 documents.put(filename, docRenderer);
             } else {
@@ -532,7 +532,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                     }
 
                     if (item.getHref() == null || item.getHref().length() == 0) {
-                        item.setHref(report.getOutputPath() + ".html");
+                        item.setHref(report.getOutputName() + ".html");
                     }
                 } else {
                     getLog().warn("Unrecognised reference: '" + item.getRef() + "'");

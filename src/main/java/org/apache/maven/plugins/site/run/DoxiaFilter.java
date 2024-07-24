@@ -141,7 +141,7 @@ public class DoxiaFilter implements Filter {
             try {
                 DocumentRenderer docRenderer = documents.get(path);
                 logDocumentRenderer(path, localeWanted, docRenderer);
-                String outputName = docRenderer.getOutputPath();
+                String outputName = docRenderer.getOutputName();
                 String contentType = MimeTypes.getDefaultMimeByExtension(outputName);
                 if (contentType != null) {
                     servletResponse.setContentType(contentType);
