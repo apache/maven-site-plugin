@@ -230,13 +230,12 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         siteRenderer.mergeDocumentIntoSite(writer, mainSink, siteRenderingContext);
 
         // render sub-sinks, eventually created by multi-page reports
-        String outputName = "";
         List<MultiPageSubSink> sinks = multiPageSinkFactory.sinks();
 
         log.debug("Multipage report: " + sinks.size() + " subreports");
 
         for (MultiPageSubSink mySink : sinks) {
-            outputName = mySink.getOutputName();
+            String outputName = mySink.getOutputName();
             log.debug("  Rendering " + outputName);
 
             // Create directories if necessary
