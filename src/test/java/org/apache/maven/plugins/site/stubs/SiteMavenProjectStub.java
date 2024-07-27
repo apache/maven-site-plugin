@@ -28,11 +28,7 @@ import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Site;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
-<<<<<<< HEAD
-import org.codehaus.plexus.util.xml.XmlStreamReader;
-=======
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
->>>>>>> master
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
