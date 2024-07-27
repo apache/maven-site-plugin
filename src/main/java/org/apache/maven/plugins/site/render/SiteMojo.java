@@ -83,6 +83,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (skip) {
             getLog().info("maven.site.skip = true: Skipping site generation");
@@ -104,7 +105,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                                         (!locale.equals(SiteTool.DEFAULT_LOCALE)
                                                 ? "locale '" + locale + "'"
                                                 : "default locale"))
-                                .toString());
+                                .build());
                 File outputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports =
                         generateReports ? getReports(outputDirectory) : Collections.emptyList();
@@ -209,7 +210,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                 mb.strong(entry.getValue() + " " + entry.getKey());
             }
 
-            getLog().info(mb.toString());
+            getLog().info(mb.build());
 
             siteRenderer.render(doxiaDocuments, context, outputDirectory);
         }
@@ -231,7 +232,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                 mb.strong(entry.getValue() + " " + entry.getKey());
             }
 
-            getLog().info(mb.toString());
+            getLog().info(mb.build());
 
             siteRenderer.render(generatedDoxiaDocuments, context, outputDirectory);
         }
@@ -275,7 +276,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                 mb.a("Rendering ");
                 mb.strong(count + " " + type + " document" + (count > 1 ? "s" : ""));
 
-                getLog().info(mb.toString());
+                getLog().info(mb.build());
             }
 
             siteRenderer.render(documents, context, outputDirectory);

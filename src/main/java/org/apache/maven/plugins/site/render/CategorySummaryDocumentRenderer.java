@@ -82,6 +82,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
         this.log = log;
     }
 
+    @Override
     public void renderDocument(Writer writer, SiteRenderer siteRenderer, SiteRenderingContext siteRenderingContext)
             throws RendererException, IOException {
         String msg = "Generating \"" + buffer().strong(title) + "\" report";
@@ -177,18 +178,22 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
         siteRenderer.mergeDocumentIntoSite(writer, sink, siteRenderingContext);
     }
 
+    @Override
     public String getOutputName() {
         return docRenderingContext.getOutputName();
     }
 
+    @Override
     public DocumentRenderingContext getRenderingContext() {
         return docRenderingContext;
     }
 
+    @Override
     public boolean isOverwrite() {
         return true;
     }
 
+    @Override
     public boolean isExternalReport() {
         return false;
     }
