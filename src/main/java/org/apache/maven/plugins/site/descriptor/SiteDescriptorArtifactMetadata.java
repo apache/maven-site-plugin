@@ -29,7 +29,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException;
 import org.apache.maven.doxia.site.SiteModel;
 import org.apache.maven.doxia.site.io.xpp3.SiteXpp3Writer;
-import org.codehaus.plexus.util.WriterFactory;
+import org.codehaus.plexus.util.xml.XmlStreamWriter;
 
 /**
  * Attach a POM to an artifact.
@@ -74,7 +74,7 @@ public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
                     "Could not create artifact directory " + destination + " in local repository");
         }
 
-        try (Writer writer = WriterFactory.newXmlWriter(destination)) {
+        try (Writer writer = new XmlStreamWriter(destination)) {
             new SiteXpp3Writer().write(writer, siteModel);
         } catch (IOException e) {
             throw new RepositoryMetadataStoreException("Error saving in local repository", e);
