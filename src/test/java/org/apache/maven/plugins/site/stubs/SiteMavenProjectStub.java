@@ -19,13 +19,20 @@
 package org.apache.maven.plugins.site.stubs;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Site;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.plugin.testing.stubs.MavenProjectStub;
+<<<<<<< HEAD
 import org.codehaus.plexus.util.xml.XmlStreamReader;
+=======
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+>>>>>>> master
 
 /**
  * @author <a href="mailto:vincent.siveton@gmail.com">Vincent Siveton</a>
@@ -39,14 +46,15 @@ public class SiteMavenProjectStub extends MavenProjectStub {
     public SiteMavenProjectStub(String projectName) {
         basedir = new File(super.getBasedir() + "/src/test/resources/unit/" + projectName);
 
-        try (XmlStreamReader reader = new XmlStreamReader(new File(getBasedir(), "pom.xml"))) {
-            setModel(new MavenXpp3Reader().read(reader));
-        } catch (Exception e) {
+        File pom = new File(getBasedir(), "pom.xml");
+        try (InputStream in = new FileInputStream(pom)) {
+            setModel(new MavenXpp3Reader().read(in));
+            Site site = new Site();
+            site.setId("localhost");
+            distributionManagement.setSite(site);
+        } catch (IOException | XmlPullParserException e) {
             throw new RuntimeException(e);
         }
-        Site site = new Site();
-        site.setId("localhost");
-        distributionManagement.setSite(site);
     }
 
     /**
