@@ -74,6 +74,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
     /**
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         checkInputEncoding();
 
@@ -91,7 +92,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
             throw new MojoExecutionException("Error executing Jetty", e);
         }
 
-        getLog().info(buffer().a("Started Jetty on ").strong(server.getURI()).toString());
+        getLog().info(buffer().a("Started Jetty on ").strong(server.getURI()).build());
 
         // Watch it
         try {

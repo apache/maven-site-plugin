@@ -21,7 +21,9 @@ package org.apache.maven.plugins.site.render;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +43,6 @@ import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.codehaus.plexus.util.PathTool;
-import org.codehaus.plexus.util.WriterFactory;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -229,13 +230,12 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         siteRenderer.mergeDocumentIntoSite(writer, mainSink, siteRenderingContext);
 
         // render sub-sinks, eventually created by multi-page reports
-        String outputName = "";
         List<MultiPageSubSink> sinks = multiPageSinkFactory.sinks();
 
         log.debug("Multipage report: " + sinks.size() + " subreports");
 
         for (MultiPageSubSink mySink : sinks) {
-            outputName = mySink.getOutputName();
+            String outputName = mySink.getOutputName();
             log.debug("  Rendering " + outputName);
 
             // Create directories if necessary
@@ -245,14 +245,11 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
             File outputFile = new File(mySink.getOutputDirectory(), outputName);
 
-            try (Writer out = WriterFactory.newWriter(outputFile, siteRenderingContext.getOutputEncoding())) {
+            try (Writer out = new OutputStreamWriter(
+                    Files.newOutputStream(outputFile.toPath()), siteRenderingContext.getOutputEncoding())) {
                 siteRenderer.mergeDocumentIntoSite(out, mySink, siteRenderingContext);
-                mySink.close();
-                mySink = null;
             } finally {
-                if (mySink != null) {
-                    mySink.close();
-                }
+                mySink.close();
             }
         }
     }
@@ -260,6 +257,11 @@ public class ReportDocumentRenderer implements DocumentRenderer {
     @Override
     public String getOutputName() {
         return docRenderingContext.getOutputName();
+    }
+
+    @Override
+    public String getOutputPath() {
+        return getOutputName();
     }
 
     @Override

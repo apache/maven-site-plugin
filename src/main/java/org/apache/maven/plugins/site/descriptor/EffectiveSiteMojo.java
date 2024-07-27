@@ -30,9 +30,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.plexus.util.WriterFactory;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;
 import org.codehaus.plexus.util.xml.XMLWriter;
+import org.codehaus.plexus.util.xml.XmlStreamWriter;
 import org.codehaus.plexus.util.xml.XmlWriterUtil;
 
 /**
@@ -57,6 +57,7 @@ public class EffectiveSiteMojo extends AbstractSiteDescriptorMojo {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         SiteModel siteModel = prepareSiteModel(getLocales().get(0));
 
@@ -148,7 +149,7 @@ public class EffectiveSiteMojo extends AbstractSiteDescriptorMojo {
     }
 
     protected static void writeXmlFile(File output, String content) throws IOException {
-        try (Writer out = WriterFactory.newXmlWriter(output)) {
+        try (Writer out = new XmlStreamWriter(output)) {
             output.getParentFile().mkdirs();
 
             out.write(content);

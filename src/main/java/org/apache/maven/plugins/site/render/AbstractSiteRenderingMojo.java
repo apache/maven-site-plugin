@@ -57,7 +57,6 @@ import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
-import org.apache.maven.shared.utils.WriterFactory;
 import org.codehaus.plexus.util.ReaderFactory;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
@@ -195,7 +194,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * @return The effective reporting output file encoding, never <code>null</code>.
      */
     protected String getOutputEncoding() {
-        return (outputEncoding == null) ? WriterFactory.UTF_8 : outputEncoding;
+        return outputEncoding == null ? "UTF-8" : outputEncoding;
     }
 
     /**
@@ -295,7 +294,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
             getLog().info(buffer().a("Rendering content with ")
                     .strong(skinArtifact.getId() + " skin")
-                    .toString());
+                    .build());
 
             context = siteRenderer.createContextForSkin(
                     skinArtifact, templateProperties, siteModel, project.getName(), locale);

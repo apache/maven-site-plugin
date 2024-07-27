@@ -29,7 +29,7 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.metadata.RepositoryMetadataStoreException;
 import org.apache.maven.doxia.site.SiteModel;
 import org.apache.maven.doxia.site.io.xpp3.SiteXpp3Writer;
-import org.codehaus.plexus.util.WriterFactory;
+import org.codehaus.plexus.util.xml.XmlStreamWriter;
 
 /**
  * Attach a POM to an artifact.
@@ -49,10 +49,12 @@ public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
         this.siteModel = siteModel;
     }
 
+    @Override
     public String getRemoteFilename() {
         return getFilename();
     }
 
+    @Override
     public String getLocalFilename(ArtifactRepository repository) {
         return getFilename();
     }
@@ -61,6 +63,7 @@ public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
         return getArtifactId() + "-" + artifact.getVersion() + "-" + file.getName();
     }
 
+    @Override
     public void storeInLocalRepository(ArtifactRepository localRepository, ArtifactRepository remoteRepository)
             throws RepositoryMetadataStoreException {
         File destination = new File(
@@ -68,29 +71,34 @@ public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
 
         destination.getParentFile().mkdirs();
 
-        try (Writer writer = WriterFactory.newXmlWriter(destination)) {
+        try (Writer writer = new XmlStreamWriter(destination)) {
             new SiteXpp3Writer().write(writer, siteModel);
         } catch (IOException e) {
             throw new RepositoryMetadataStoreException("Error saving in local repository", e);
         }
     }
 
+    @Override
     public String toString() {
         return "site descriptor for " + artifact.getArtifactId() + " " + artifact.getVersion() + " " + file.getName();
     }
 
+    @Override
     public boolean storedInArtifactVersionDirectory() {
         return true;
     }
 
+    @Override
     public String getBaseVersion() {
         return artifact.getBaseVersion();
     }
 
+    @Override
     public Object getKey() {
         return "site descriptor " + artifact.getGroupId() + ":" + artifact.getArtifactId() + " " + file.getName();
     }
 
+    @Override
     public void merge(ArtifactMetadata metadata) {
         SiteDescriptorArtifactMetadata m = (SiteDescriptorArtifactMetadata) metadata;
         if (!m.file.equals(file)) {
@@ -98,6 +106,7 @@ public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
         }
     }
 
+    @Override
     public void merge(org.apache.maven.repository.legacy.metadata.ArtifactMetadata metadata) {
         // FIXME what todo here ?
     }

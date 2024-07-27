@@ -74,6 +74,7 @@ public class DoxiaFilter implements Filter {
     /**
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
      */
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         servletContext = filterConfig.getServletContext();
 
@@ -89,6 +90,7 @@ public class DoxiaFilter implements Filter {
     /**
      * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
      */
+    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
@@ -194,5 +196,6 @@ public class DoxiaFilter implements Filter {
     /**
      * @see javax.servlet.Filter#destroy()
      */
+    @Override
     public void destroy() {}
 }
