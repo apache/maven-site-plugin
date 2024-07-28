@@ -31,8 +31,6 @@ import java.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.proxy.AsyncProxyServlet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Olivier Lamy
@@ -41,8 +39,6 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
     private Map<String, String> authentications;
 
     private long sleepTime = 0;
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     List<HttpRequest> httpRequests = new ArrayList<>();
 
@@ -81,11 +77,10 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) res;
-
-        log.info("handle ");
 
         if (this.authentications != null && !this.authentications.isEmpty()) {
             String proxyAuthorization = request.getHeader("Proxy-Authorization");
@@ -126,7 +121,6 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
 
                     if (request.getMethod().equalsIgnoreCase("PUT") && targetPath != null) {
                         File targetFile = new File(siteTargetPath, targetPath);
-                        log.info("writing file " + targetFile.getPath());
                         FileUtils.writeByteArrayToFile(targetFile, IOUtils.toByteArray(request.getInputStream()));
                     }
 
