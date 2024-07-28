@@ -53,8 +53,9 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase {
 
+    // Can use @TempDir with JUnit 5
     @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+    public TemporaryFolder directory = new TemporaryFolder();
 
     private File siteTargetPath;
 
@@ -62,7 +63,7 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        siteTargetPath = new File(new File(folder.newFolder(), "target"), "siteTargetDeploy");
+        siteTargetPath = new File(directory.newFolder(), "target");
         if (!siteTargetPath.exists()) {
             siteTargetPath.mkdirs();
         }
