@@ -40,7 +40,9 @@ import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.ReflectionUtils;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
@@ -51,15 +53,19 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase {
 
-    File siteTargetPath = new File(getBasedir() + File.separator + "target" + File.separator + "siteTargetDeploy");
+    // Can use @TempDir with JUnit 5
+    @Rule
+    public TemporaryFolder directory = new TemporaryFolder();
+
+    private File siteTargetPath;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        siteTargetPath = new File(directory.newFolder(), "target");
         if (!siteTargetPath.exists()) {
             siteTargetPath.mkdirs();
-            FileUtils.cleanDirectory(siteTargetPath);
         }
     }
 
@@ -69,7 +75,6 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
 
     @Test
     public void noAuthzDavDeploy() throws Exception {
-        FileUtils.cleanDirectory(siteTargetPath);
         SimpleDavServerHandler simpleDavServerHandler = new SimpleDavServerHandler(siteTargetPath);
 
         try {
@@ -104,8 +109,6 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
 
     @Test
     public void davDeployThruProxyWithoutAuthzInProxy() throws Exception {
-
-        FileUtils.cleanDirectory(siteTargetPath);
         SimpleDavServerHandler simpleDavServerHandler = new SimpleDavServerHandler(siteTargetPath);
         try {
             File pluginXmlFile = getTestFile("src/test/resources/unit/deploy-dav/pom.xml");
@@ -151,10 +154,6 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
 
     @Test
     public void davDeployThruProxyWitAuthzInProxy() throws Exception {
-
-        FileUtils.cleanDirectory(siteTargetPath);
-        // SimpleDavServerHandler simpleDavServerHandler = new SimpleDavServerHandler( siteTargetPath );
-
         Map<String, String> authentications = new HashMap<>();
         authentications.put("foo", "titi");
 
@@ -226,8 +225,8 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
 
         File cssFile = new File(siteTargetPath, "site" + File.separator + "css" + File.separator + "maven-base.css");
         assertTrue(cssFile.exists());
-        fileContent = FileUtils.readFileToString(cssFile, StandardCharsets.UTF_8);
-        assertTrue(fileContent.contains("background-image: url(../images/collapsed.gif);"));
+        String cssContent = FileUtils.readFileToString(cssFile, StandardCharsets.UTF_8);
+        assertTrue(cssContent.contains("background-image: url(../images/collapsed.gif);"));
     }
 
     /**
