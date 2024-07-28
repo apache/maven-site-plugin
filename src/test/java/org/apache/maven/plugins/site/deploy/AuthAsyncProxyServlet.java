@@ -26,10 +26,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.proxy.AsyncProxyServlet;
 
 /**
@@ -121,7 +124,8 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
 
                     if (request.getMethod().equalsIgnoreCase("PUT") && targetPath != null) {
                         File targetFile = new File(siteTargetPath, targetPath);
-                        FileUtils.writeByteArrayToFile(targetFile, IOUtils.toByteArray(request.getInputStream()));
+                        targetFile.getParentFile().mkdirs();
+                        Files.copy(request.getInputStream(), targetFile.toPath());
                     }
 
                     response.setStatus(HttpServletResponse.SC_OK);
