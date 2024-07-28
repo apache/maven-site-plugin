@@ -69,7 +69,10 @@ public class SiteDescriptorArtifactMetadata extends AbstractArtifactMetadata {
         File destination = new File(
                 localRepository.getBasedir(), localRepository.pathOfLocalRepositoryMetadata(this, remoteRepository));
 
-        destination.getParentFile().mkdirs();
+        if (!destination.getParentFile().mkdirs()) {
+            throw new RepositoryMetadataStoreException(
+                    "Could not create artifact directory " + destination + " in local repository");
+        }
 
         try (Writer writer = new XmlStreamWriter(destination)) {
             new SiteXpp3Writer().write(writer, siteModel);
