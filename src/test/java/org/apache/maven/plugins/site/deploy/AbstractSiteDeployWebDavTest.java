@@ -20,13 +20,13 @@ package org.apache.maven.plugins.site.deploy;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.bridge.MavenRepositorySystem;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -220,12 +220,12 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
     private void assertContentInFiles() throws Exception {
         File htmlFile = new File(siteTargetPath, "site" + File.separator + "index.html");
         assertTrue(htmlFile.exists());
-        String fileContent = FileUtils.readFileToString(htmlFile, StandardCharsets.UTF_8);
-        assertTrue(fileContent.contains("Welcome to Apache Maven"));
+        String htmlContent = new String(Files.readAllBytes(htmlFile.toPath()), StandardCharsets.UTF_8);
+        assertTrue(htmlContent.contains("Welcome to Apache Maven"));
 
         File cssFile = new File(siteTargetPath, "site" + File.separator + "css" + File.separator + "maven-base.css");
         assertTrue(cssFile.exists());
-        String cssContent = FileUtils.readFileToString(cssFile, StandardCharsets.UTF_8);
+        String cssContent = new String(Files.readAllBytes(cssFile.toPath()), StandardCharsets.UTF_8);
         assertTrue(cssContent.contains("background-image: url(../images/collapsed.gif);"));
     }
 
