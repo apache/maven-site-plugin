@@ -37,8 +37,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Olivier Lamy
@@ -46,8 +44,6 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class SimpleDavServerHandler {
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     private Server server;
 
@@ -58,6 +54,7 @@ public class SimpleDavServerHandler {
     public SimpleDavServerHandler(final File targetPath) throws Exception {
         this.siteTargetPath = targetPath;
         Handler repoHandler = new AbstractHandler() {
+            @Override
             public void handle(String target, Request r, HttpServletRequest request, HttpServletResponse response)
                     throws IOException, ServletException {
                 String targetPath = request.getPathInfo();
@@ -77,7 +74,6 @@ public class SimpleDavServerHandler {
 
                 if (request.getMethod().equalsIgnoreCase("PUT")) {
                     File targetFile = new File(siteTargetPath, targetPath);
-                    log.info("writing file " + targetFile.getPath());
                     FileUtils.writeByteArrayToFile(targetFile, IOUtils.toByteArray(request.getInputStream()));
                 }
 
