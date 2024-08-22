@@ -59,6 +59,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
 
     private final Log log;
 
+    @SuppressWarnings("checkstyle:parameternumber")
     public CategorySummaryDocumentRenderer(
             MojoExecution mojoExecution,
             DocumentRenderingContext docRenderingContext,
