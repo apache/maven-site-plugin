@@ -25,7 +25,7 @@ assert content.contains( 'Test set: org.apache.maven.plugins.site.its.AppTest' )
 
 assert content.contains( 'Tests run: 1, Failures: 0, Errors: 0, Skipped: 0' );
 
-assert new File( basedir, 'target/site/surefire-report.html' ).exists();
+assert new File( basedir, 'target/site/surefire.html' ).exists();
 assert !new File( basedir, 'target/site/index.html' ).exists();
 
 return true;

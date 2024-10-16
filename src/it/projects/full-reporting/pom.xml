@@ -22,7 +22,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>42</version>
+    <version>43</version>
   </parent>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>
@@ -37,7 +37,7 @@ under the License.
   </issueManagement>
 
   <properties>
-    <version.maven-fluido-skin>2.0.0-M8</version.maven-fluido-skin>
+    <version.maven-fluido-skin>@fluidoSkinVersion@</version.maven-fluido-skin>
   </properties>
 
   <dependencies>
@@ -74,7 +74,7 @@ under the License.
           <dependency>
             <groupId>org.apache.maven.shared</groupId>
             <artifactId>maven-shared-resources</artifactId>
-            <version>5</version>
+            <version>6</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -143,7 +143,10 @@ under the License.
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>@taglistPluginVersion@</version>
+        <configuration>
+          <skipEmptyReport>false</skipEmptyReport>
+        </configuration>
       </plugin>
     </plugins>
   </reporting>

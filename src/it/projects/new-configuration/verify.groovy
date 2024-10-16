@@ -24,7 +24,7 @@ return true;
 assert !new File( basedir, 'target/surefire-reports' ).exists();
 assert !new File( basedir, 'target/surefire-reports/org.apache.maven.plugins.site.its.AppTest.txt' ).exists();
 
-assert !new File( basedir, 'target/site/surefire-report.html' ).exists();
+assert !new File( basedir, 'target/site/surefire.html' ).exists();
 assert new File( basedir, 'target/site/index.html' ).exists();
 assert !new File( basedir, 'target/site/checkstyle.html' ).exists();
 assert !new File( basedir, 'target/site/cpd.html' ).exists();
