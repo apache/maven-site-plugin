@@ -511,6 +511,11 @@ under the License.
           <configuration>
             <requirementsHistories>
               <requirementsHistory>
+                <version>3.20.0</version>
+                <maven>3.6.3</maven>
+                <jdk>1.8</jdk>
+              </requirementsHistory>
+              <requirementsHistory>
                 <version>3.12.0</version>
                 <maven>3.2.5</maven>
                 <jdk>1.8</jdk>
