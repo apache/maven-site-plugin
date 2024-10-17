@@ -34,7 +34,7 @@ Maven Site Plugin History
  Maven Site Plugin uses:
 
   * {{{/doxia/}Doxia}} to parse {{{/doxia/references/}many markup languages}} then render HTML: see
-  {{{./examples/creating-content.html}Creating Content}} documentation for mode details (particularly which markups
+  {{{./examples/creating-content.html}Creating Content}} documentation for more details (particularly which markups
   are enabled by default in maven-site-plugin and how to add one),
 
   * {{{/doxia/doxia-sitetools/doxia-site-renderer/}Doxia Sitetools - Site Renderer}} to integrate document content into
@@ -52,15 +52,15 @@ Maven Site Plugin History
 
   Given this layered approach, rendering issues reported to {{{https://issues.apache.org/jira/projects/MSITE}MSITE Maven Site Plugin issue tracker}}
   are often translated to {{{https://issues.apache.org/jira/projects/DOXIA}Doxia}} or
-  {{{https://issues.apache.org/jira/projects/DOXIASITETOOLS}Doxia Sitetools}}, and issues fixed in
-  Doxia or Doxia Sitetools benefit to maven-site-plugin once dependency is upgraded.
+  {{{https://issues.apache.org/jira/projects/DOXIASITETOOLS}Doxia Sitetools}} issues. Any issues fixed in
+  Doxia or Doxia Sitetools are inherited to the maven-site-plugin once its dependency is updated.
 
   Knowing which version of
   maven-site-plugin uses which version of Doxia or Doxia Sitetools is useful to choose to which version to upgrade
   maven-site-plugin to benefit from a fix: this is the basis for the  {{{./migrate.html}simplified migration guide}}.
 
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-|| relelease date || maven-site-plugin || {{{/doxia/}Doxia}} || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} || minimum Java || minimum  Maven || Comment
+|| release date || maven-site-plugin || {{{/doxia/}Doxia}} || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} || minimum Java || minimum  Maven || Comment
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
 | 2024-07         | 4.0.0-M16          |        |                  |
 *-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
