@@ -46,7 +46,7 @@ Creating Skins
 
     * A couple of CSS files, containing the visual styling
 
-    * An optional Velocity template in <<</META-INF/maven/site.vm>>> for an alternate HTML rendering of the site.
+    * A Velocity template in <<</META-INF/maven/site.vm>>> for an alternate HTML rendering of the site.
 
     * Since Maven Site Plugin 3.5, an optional {{{/doxia/doxia-sitetools/doxia-skin-model/index.html}skin descriptor}}
     in <<</META-INF/maven/skin.xml>>> containing meta-data about the skin
