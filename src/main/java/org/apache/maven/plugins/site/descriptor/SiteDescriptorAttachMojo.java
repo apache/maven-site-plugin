@@ -46,8 +46,7 @@ import org.codehaus.plexus.util.FileUtils;
  */
 @Mojo(name = "attach-descriptor", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
 public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
-    /**
-     */
+
     @Parameter(property = "basedir", required = true, readonly = true)
     private File basedir;
 
@@ -63,7 +62,7 @@ public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
      *
      * @since 2.1.1
      */
-    private MavenProjectHelper projectHelper;
+    private final MavenProjectHelper projectHelper;
 
     @Inject
     public SiteDescriptorAttachMojo(MavenProjectHelper projectHelper) {
