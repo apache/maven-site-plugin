@@ -105,14 +105,14 @@ public class SiteJarMojo extends SiteMojo {
     /**
      * Used for attaching the artifact in the project.
      */
-    private MavenProjectHelper projectHelper;
+    private final MavenProjectHelper projectHelper;
 
     /**
      * The Jar archiver.
      *
      * @since 3.1
      */
-    private JarArchiver jarArchiver;
+    private final JarArchiver jarArchiver;
 
     @Inject
     public SiteJarMojo(MavenProjectHelper projectHelper, JarArchiver jarArchiver) {
