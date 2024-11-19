@@ -299,9 +299,9 @@ under the License.
 
     <!-- Plexus -->
     <dependency>
-      <groupId>org.sonatype.sisu</groupId>
-      <artifactId>sisu-inject-plexus</artifactId>
-      <version>1.4.2</version>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.plexus</artifactId>
+      <version>0.9.0.M3</version>
       <scope>provided</scope>
     </dependency>
 
