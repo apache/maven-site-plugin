@@ -110,6 +110,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         checkInputEncoding();
 
         try {
+            resolveParentSiteResources();
             List<Locale> localesList = getLocales();
 
             for (Locale locale : localesList) {
