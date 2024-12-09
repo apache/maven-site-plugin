@@ -127,6 +127,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
 
         try {
+            resolveParentSiteResources();
             Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
 
             for (Locale locale : localesList) {

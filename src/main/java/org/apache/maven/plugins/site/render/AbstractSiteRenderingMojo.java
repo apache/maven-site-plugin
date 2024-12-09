@@ -51,6 +51,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.site.SiteResourcesAttachMojo;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -112,6 +113,18 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter(alias = "workingDirectory", defaultValue = "${project.build.directory}/generated-site")
     protected File generatedSiteDirectory;
+
+    /**
+     * Directory containing inherited site resources in source format.
+     * It will be populated with the inherited site content (in case there is any)
+     * This directory is expected to have the same structure as <code>siteDirectory</code>
+     * (ie. one directory per Doxia-source-supported markup types).
+     *
+     * In contrast to {@link #generatedSiteDirectory} files in this directory may be overwritten by same named files in either {@link #siteDirectory} or {@link #generatedSiteDirectory}.
+     * @see SiteResourcesAttachMojo
+     */
+    @Parameter(alias = "inheritedDirectory", defaultValue = "${project.build.directory}/inherited-site")
+    protected File inheritedSiteDirectory;
 
     /**
      * The current Maven session.
@@ -178,6 +191,12 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
     @Component
     protected MavenReportExecutor mavenReportExecutor;
+
+    @Component
+    private MavenSession session;
+
+    @Component
+    protected SiteResourcesResolver siteResourcesResolver;
 
     /**
      * Gets the input files encoding.
@@ -314,9 +333,13 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             context.addSiteDirectory(new SiteDirectory(new File(siteDirectory, locale.toString()), true));
             context.addSiteDirectory(new SiteDirectory(new File(generatedSiteDirectory, locale.toString()), false));
+            // TODO: mark as skip duplicates once https://issues.apache.org/jira/browse/DOXIASITETOOLS-359 is in place
+            context.addSiteDirectory(new SiteDirectory(new File(inheritedSiteDirectory, locale.toString()), false));
         } else {
             context.addSiteDirectory(new SiteDirectory(siteDirectory, true));
             context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
+            // TODO: mark as skip duplicates once https://issues.apache.org/jira/browse/DOXIASITETOOLS-359 is in place
+            context.addSiteDirectory(new SiteDirectory(new File(inheritedSiteDirectory, locale.toString()), false));
         }
 
         if (moduleExcludes != null) {
@@ -542,5 +565,17 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
             populateItemRefs(item.getItems(), locale, reportsByOutputName);
         }
+    }
+
+    protected void resolveParentSiteResources() throws IOException {
+        getLog().debug("Start resolving site resources");
+        // potentially add inherited site resources
+        siteResourcesResolver.resolveParentSiteResources(
+                session,
+                project,
+                mojoExecution.getMojoDescriptor().getPluginDescriptor(),
+                inheritedSiteDirectory,
+                getLog());
+        getLog().debug("End resolving site resources");
     }
 }
