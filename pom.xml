@@ -547,6 +547,12 @@ under the License.
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>
