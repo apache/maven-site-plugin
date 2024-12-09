@@ -141,6 +141,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         Map<String, DoxiaBean> i18nDoxiaContexts;
 
         try {
+            resolveParentSiteResources();
             // For external reports
             project.getReporting().setOutputDirectory(tempWebappDirectory.getAbsolutePath());
 
