@@ -18,12 +18,13 @@
  */
 package org.apache.maven.plugins.site.descriptor;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -45,18 +46,9 @@ import org.codehaus.plexus.util.FileUtils;
  */
 @Mojo(name = "attach-descriptor", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
 public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
-    /**
-     */
+
     @Parameter(property = "basedir", required = true, readonly = true)
     private File basedir;
-
-    /**
-     * Maven ProjectHelper.
-     *
-     * @since 2.1.1
-     */
-    @Component
-    private MavenProjectHelper projectHelper;
 
     /**
      * Attach site descriptor only if packaging is pom.
@@ -65,6 +57,19 @@ public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
     @Parameter(defaultValue = "true")
     private boolean pomPackagingOnly;
 
+    /**
+     * Maven ProjectHelper.
+     *
+     * @since 2.1.1
+     */
+    private final MavenProjectHelper projectHelper;
+
+    @Inject
+    public SiteDescriptorAttachMojo(MavenProjectHelper projectHelper) {
+        this.projectHelper = projectHelper;
+    }
+
+    @Override
     public void execute() throws MojoExecutionException {
         if (pomPackagingOnly && !"pom".equals(project.getPackaging())) {
             // https://issues.apache.org/jira/browse/MSITE-597
