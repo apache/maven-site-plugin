@@ -179,6 +179,12 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     @Component
     protected MavenReportExecutor mavenReportExecutor;
 
+    @Component
+    private MavenSession session;
+
+    @Component
+    protected SiteResourcesResolver siteResourcesResolver;
+
     /**
      * Gets the input files encoding.
      *
@@ -319,6 +325,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
         }
 
+        // potentially add inherited site resources
+        siteResourcesResolver.resolveParentSiteResources(session, project, generatedSiteDirectory, getLog());
         if (moduleExcludes != null) {
             context.setModuleExcludes(moduleExcludes);
         }
