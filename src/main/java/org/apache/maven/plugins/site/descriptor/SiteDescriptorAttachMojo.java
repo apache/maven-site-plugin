@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -65,7 +66,8 @@ public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
     private final MavenProjectHelper projectHelper;
 
     @Inject
-    public SiteDescriptorAttachMojo(MavenProjectHelper projectHelper) {
+    public SiteDescriptorAttachMojo(SiteModelInheritanceAssembler assembler, MavenProjectHelper projectHelper) {
+        super(assembler);
         this.projectHelper = projectHelper;
     }
 
