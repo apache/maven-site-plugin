@@ -35,6 +35,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.doxia.site.Menu;
 import org.apache.maven.doxia.site.MenuItem;
 import org.apache.maven.doxia.site.SiteModel;
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
@@ -49,7 +50,6 @@ import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
 import org.apache.maven.reporting.MavenReport;
@@ -93,12 +93,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter
     private Map<String, Object> attributes;
-
-    /**
-     * Site renderer.
-     */
-    @Component
-    protected SiteRenderer siteRenderer;
 
     /**
      * Directory containing generated documentation in source format (Doxia supported markup).
@@ -176,8 +170,21 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     @Parameter(defaultValue = "${project.build.outputTimestamp}")
     protected String outputTimestamp;
 
-    @Component
-    protected MavenReportExecutor mavenReportExecutor;
+    /**
+     * Site renderer.
+     */
+    protected final SiteRenderer siteRenderer;
+
+    protected final MavenReportExecutor mavenReportExecutor;
+
+    protected AbstractSiteRenderingMojo(
+            SiteModelInheritanceAssembler assembler,
+            SiteRenderer siteRenderer,
+            MavenReportExecutor mavenReportExecutor) {
+        super(assembler);
+        this.siteRenderer = siteRenderer;
+        this.mavenReportExecutor = mavenReportExecutor;
+    }
 
     /**
      * Gets the input files encoding.

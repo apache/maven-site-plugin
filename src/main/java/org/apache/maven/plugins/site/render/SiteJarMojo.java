@@ -26,6 +26,8 @@ import java.io.IOException;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -33,6 +35,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.archiver.jar.ManifestException;
@@ -115,7 +118,13 @@ public class SiteJarMojo extends SiteMojo {
     private final JarArchiver jarArchiver;
 
     @Inject
-    public SiteJarMojo(MavenProjectHelper projectHelper, JarArchiver jarArchiver) {
+    public SiteJarMojo(
+            SiteModelInheritanceAssembler assembler,
+            SiteRenderer siteRenderer,
+            MavenReportExecutor mavenReportExecutor,
+            MavenProjectHelper projectHelper,
+            JarArchiver jarArchiver) {
+        super(assembler, siteRenderer, mavenReportExecutor);
         this.projectHelper = projectHelper;
         this.jarArchiver = jarArchiver;
     }
