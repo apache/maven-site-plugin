@@ -19,7 +19,6 @@
 package org.apache.maven.plugins.site.render;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +26,8 @@ import java.io.IOException;
 import org.apache.maven.archiver.MavenArchiveConfiguration;
 import org.apache.maven.archiver.MavenArchiver;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -34,6 +35,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 import org.codehaus.plexus.archiver.jar.ManifestException;
@@ -71,25 +73,10 @@ public class SiteJarMojo extends SiteMojo {
     private String finalName;
 
     /**
-     * Used for attaching the artifact in the project.
-     */
-    @Inject
-    private MavenProjectHelper projectHelper;
-
-    /**
      * Specifies whether to attach the generated artifact to the project.
      */
     @Parameter(property = "site.attach", defaultValue = "true")
     private boolean attach;
-
-    /**
-     * The Jar archiver.
-     *
-     * @since 3.1
-     */
-    @Inject
-    @Named("jar")
-    private JarArchiver jarArchiver;
 
     /**
      * The archive configuration to use.
@@ -117,6 +104,30 @@ public class SiteJarMojo extends SiteMojo {
      */
     @Parameter
     private String[] archiveExcludes;
+
+    /**
+     * Used for attaching the artifact in the project.
+     */
+    private final MavenProjectHelper projectHelper;
+
+    /**
+     * The Jar archiver.
+     *
+     * @since 3.1
+     */
+    private final JarArchiver jarArchiver;
+
+    @Inject
+    public SiteJarMojo(
+            SiteModelInheritanceAssembler assembler,
+            SiteRenderer siteRenderer,
+            MavenReportExecutor mavenReportExecutor,
+            MavenProjectHelper projectHelper,
+            JarArchiver jarArchiver) {
+        super(assembler, siteRenderer, mavenReportExecutor);
+        this.projectHelper = projectHelper;
+        this.jarArchiver = jarArchiver;
+    }
 
     /**
      * @see org.apache.maven.plugin.Mojo#execute()

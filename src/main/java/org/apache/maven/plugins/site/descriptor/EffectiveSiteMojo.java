@@ -18,6 +18,8 @@
  */
 package org.apache.maven.plugins.site.descriptor;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -25,6 +27,7 @@ import java.io.Writer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.doxia.site.SiteModel;
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.site.io.xpp3.SiteXpp3Writer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -53,6 +56,11 @@ public class EffectiveSiteMojo extends AbstractSiteDescriptorMojo {
      */
     @Parameter(property = "output")
     protected File output;
+
+    @Inject
+    public EffectiveSiteMojo(SiteModelInheritanceAssembler assembler) {
+        super(assembler);
+    }
 
     /**
      * {@inheritDoc}

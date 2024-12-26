@@ -18,8 +18,6 @@
  */
 package org.apache.maven.plugins.site.descriptor;
 
-import javax.inject.Inject;
-
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
@@ -41,11 +39,6 @@ import org.eclipse.aether.repository.RemoteRepository;
  * @since 3.5
  */
 public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
-    /**
-     * The component for assembling site model inheritance.
-     */
-    @Inject
-    private SiteModelInheritanceAssembler assembler;
 
     /**
      * The reactor projects.
@@ -86,6 +79,15 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
      */
     @Parameter(property = "relativizeSiteLinks", defaultValue = "true")
     private boolean relativizeSiteLinks;
+
+    /**
+     * The component for assembling site model inheritance.
+     */
+    private final SiteModelInheritanceAssembler assembler;
+
+    protected AbstractSiteDescriptorMojo(SiteModelInheritanceAssembler assembler) {
+        this.assembler = assembler;
+    }
 
     protected SiteModel prepareSiteModel(Locale locale) throws MojoExecutionException {
         SiteModel siteModel;
