@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -52,20 +53,26 @@ public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
     private File basedir;
 
     /**
-     * Maven ProjectHelper.
-     *
-     * @since 2.1.1
-     */
-    @Inject
-    private MavenProjectHelper projectHelper;
-
-    /**
      * Attach site descriptor only if packaging is pom.
      * @since 3.0
      */
     @Parameter(defaultValue = "true")
     private boolean pomPackagingOnly;
 
+    /**
+     * Maven ProjectHelper.
+     *
+     * @since 2.1.1
+     */
+    private final MavenProjectHelper projectHelper;
+
+    @Inject
+    public SiteDescriptorAttachMojo(SiteModelInheritanceAssembler assembler, MavenProjectHelper projectHelper) {
+        super(assembler);
+        this.projectHelper = projectHelper;
+    }
+
+    @Override
     public void execute() throws MojoExecutionException {
         if (pomPackagingOnly && !"pom".equals(project.getPackaging())) {
             // https://issues.apache.org/jira/browse/MSITE-597

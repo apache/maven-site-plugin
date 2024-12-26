@@ -18,8 +18,6 @@
  */
 package org.apache.maven.plugins.site.render;
 
-import javax.inject.Inject;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -38,6 +36,7 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.doxia.site.Menu;
 import org.apache.maven.doxia.site.MenuItem;
 import org.apache.maven.doxia.site.SiteModel;
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
 import org.apache.maven.doxia.siterenderer.RendererException;
@@ -94,12 +93,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter
     private Map<String, Object> attributes;
-
-    /**
-     * Site renderer.
-     */
-    @Inject
-    protected SiteRenderer siteRenderer;
 
     /**
      * Directory containing generated documentation in source format (Doxia supported markup).
@@ -177,8 +170,21 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     @Parameter(defaultValue = "${project.build.outputTimestamp}")
     protected String outputTimestamp;
 
-    @Inject
-    protected MavenReportExecutor mavenReportExecutor;
+    /**
+     * Site renderer.
+     */
+    protected final SiteRenderer siteRenderer;
+
+    protected final MavenReportExecutor mavenReportExecutor;
+
+    protected AbstractSiteRenderingMojo(
+            SiteModelInheritanceAssembler assembler,
+            SiteRenderer siteRenderer,
+            MavenReportExecutor mavenReportExecutor) {
+        super(assembler);
+        this.siteRenderer = siteRenderer;
+        this.mavenReportExecutor = mavenReportExecutor;
+    }
 
     /**
      * Gets the input files encoding.
