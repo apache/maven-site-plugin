@@ -27,7 +27,6 @@ import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
@@ -40,11 +39,6 @@ import org.eclipse.aether.repository.RemoteRepository;
  * @since 3.5
  */
 public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
-    /**
-     * The component for assembling site model inheritance.
-     */
-    @Component
-    private SiteModelInheritanceAssembler assembler;
 
     /**
      * The reactor projects.
@@ -85,6 +79,15 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
      */
     @Parameter(property = "relativizeSiteLinks", defaultValue = "true")
     private boolean relativizeSiteLinks;
+
+    /**
+     * The component for assembling site model inheritance.
+     */
+    private final SiteModelInheritanceAssembler assembler;
+
+    protected AbstractSiteDescriptorMojo(SiteModelInheritanceAssembler assembler) {
+        this.assembler = assembler;
+    }
 
     protected SiteModel prepareSiteModel(Locale locale) throws MojoExecutionException {
         SiteModel siteModel;

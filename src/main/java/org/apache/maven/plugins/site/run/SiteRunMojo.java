@@ -18,6 +18,8 @@
  */
 package org.apache.maven.plugins.site.run;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +30,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -38,6 +42,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
 import org.apache.maven.reporting.exec.MavenReportExecution;
+import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.codehaus.plexus.util.IOUtil;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -70,6 +75,14 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
      */
     @Parameter(property = "port", defaultValue = "8080")
     private int port;
+
+    @Inject
+    public SiteRunMojo(
+            SiteModelInheritanceAssembler assembler,
+            SiteRenderer siteRenderer,
+            MavenReportExecutor mavenReportExecutor) {
+        super(assembler, siteRenderer, mavenReportExecutor);
+    }
 
     /**
      * @see org.apache.maven.plugin.AbstractMojo#execute()

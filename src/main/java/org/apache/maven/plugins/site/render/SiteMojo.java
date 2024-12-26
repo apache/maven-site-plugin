@@ -18,6 +18,8 @@
  */
 package org.apache.maven.plugins.site.render;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,9 +30,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DoxiaDocumentRenderer;
 import org.apache.maven.doxia.siterenderer.RendererException;
+import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.execution.MavenSession;
@@ -42,6 +46,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
+import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.shared.utils.logging.MessageBuilder;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
@@ -79,6 +84,14 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
      */
     @Parameter(property = "validate", defaultValue = "false")
     private boolean validate;
+
+    @Inject
+    public SiteMojo(
+            SiteModelInheritanceAssembler assembler,
+            SiteRenderer siteRenderer,
+            MavenReportExecutor mavenReportExecutor) {
+        super(assembler, siteRenderer, mavenReportExecutor);
+    }
 
     /**
      * {@inheritDoc}
