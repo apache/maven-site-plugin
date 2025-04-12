@@ -21,7 +21,9 @@ name: Release Drafter
 on:
   push:
     branches:
-      - master
+      - maven-site-plugin-3.x
 jobs:
    update_release_draft:
-      uses: apache/maven-gh-actions-shared/.github/workflows/release-drafter.yml@v2
+      uses: apache/maven-gh-actions-shared/.github/workflows/release-drafter.yml@v4
+      with:
+        config-name: 'release-drafter-3.x.yml'
