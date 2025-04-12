@@ -15,7 +15,4 @@
 # specific language governing permissions and limitations
 # under the License.
 
-_extends: maven-gh-actions-shared
-
-include-pre-releases: true
-prerelease: true
+_extends: maven-gh-actions-shared:.github/release-drafter.yml

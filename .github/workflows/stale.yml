@@ -15,7 +15,14 @@
 # specific language governing permissions and limitations
 # under the License.
 
-_extends: maven-gh-actions-shared
+name: Stale
 
-include-pre-releases: true
-prerelease: true
+on:
+  schedule:
+    - cron: '12 5 * * *'
+  issue_comment:
+    types: [ 'created' ]
+
+jobs:
+  stale:
+    uses: 'apache/maven-gh-actions-shared/.github/workflows/stale.yml@v4'
