@@ -30,6 +30,14 @@ under the License.
     <relativePath>../module</relativePath>
   </parent>
 
+  <distributionManagement>
+    <site>
+      <id>website</id>
+      <!-- automatic inheritance calculation would incorrectly yield file:///@project.build.directory@/it/site-inheritance/webhost.company.com/deploy/www/website/submodule -->
+      <url>file:///@project.build.directory@/it/site-inheritance/webhost.company.com/deploy/www/website/module/submodule</url>
+    </site>
+  </distributionManagement>
+
   <artifactId>sub_module</artifactId>
   <name>Sub-Module</name>
 
