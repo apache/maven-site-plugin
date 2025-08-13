@@ -28,7 +28,12 @@ github:
     squash: true
     merge: false
     rebase: true
-  del_branch_on_merge: true
+  protected_branches:
+    master: { }
+    maven-site-plugin-3.x: { }
+    maven-site-plugin-3.12.x: { }
+  pull_requests:
+    del_branch_on_merge: true
   features:
     issues: true
 notifications:
