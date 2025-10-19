@@ -20,9 +20,11 @@ package org.apache.maven.plugins.site.deploy;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -35,6 +37,7 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.scm.provider.ScmUrlUtils;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
@@ -523,16 +526,67 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
                 return oldProject;
             }
 
-            // MSITE-600
-            URIPathDescriptor siteURI = new URIPathDescriptor(URIEncoder.encodeURI(site.getUrl()), "");
-            URIPathDescriptor oldSiteURI = new URIPathDescriptor(URIEncoder.encodeURI(oldSite.getUrl()), "");
-
-            if (!siteURI.sameSite(oldSiteURI.getBaseURI())) {
+            try {
+                if (!isSameSite(site.getUrl(), oldSite.getUrl())) {
+                    return oldProject;
+                }
+            } catch (IllegalArgumentException e) {
+                getLog().warn("Failed to parse distributionManagement.site.url of project \"" + getFullName(oldProject)
+                        + "\" or project \"" + getFullName(parent) + "\": " + e.getMessage());
                 return oldProject;
             }
         }
-
         return parent;
+    }
+
+    /**
+     * Returns {@code true} if the URIs are probably pointing to the same site which means
+     * <ul>
+     * <li>both arguments are hierarchical URIs,</li>
+     * <li>both arguments share the same host and</li>
+     * <li>the path of the latter URI is a subpath of the first URI</li>
+     * </ul>.
+     * @param parentUri
+     * @param uri
+     * @return {@code true} if the URIs are probably pointing to the same site
+     * @throws IllegalArgumentException if the given URIs cannot be parsed
+     */
+    static boolean isSameSite(String parentUri, String uri) {
+        // this just normalizes the paths in it
+        URIPathDescriptor siteURI =
+                new URIPathDescriptor(URIEncoder.encodeURI(extractProviderSpecificPartFromScmUri(parentUri)), "");
+        URIPathDescriptor oldSiteURI =
+                new URIPathDescriptor(URIEncoder.encodeURI(extractProviderSpecificPartFromScmUri(uri)), "");
+        // compare host and path (port and scheme should not matter)
+        return isSameSite(siteURI.getBaseURI(), oldSiteURI.getBaseURI());
+    }
+
+    private static boolean isSameSite(URI parentUri, URI uri) {
+        // host must be equal
+        if (!Objects.equals(uri.getHost(), parentUri.getHost())) {
+            return false;
+        }
+        // path must be a subpath
+        if (uri.getPath() == null
+                || parentUri.getPath() == null
+                || !uri.getPath().startsWith(parentUri.getPath())) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Unwraps <a href="https://maven.apache.org/scm/scm-url-format.html">SCM URLs</a> to get the provider specific part.
+     * @param uri
+     * @return the provider specific part if the given URI is a SCM URI, otherwise just the uri
+     *
+     */
+    static String extractProviderSpecificPartFromScmUri(String uri) {
+        if (ScmUrlUtils.isValid(uri)) {
+            return ScmUrlUtils.getProviderSpecificPart(uri);
+        } else {
+            return uri;
+        }
     }
 
     private static class URIEncoder {
