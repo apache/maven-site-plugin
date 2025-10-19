@@ -498,12 +498,17 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
      * For non-SCM URLs, returns the original URL.
      * For SCM URLs with SCP-like syntax (e.g., git@github.com:user/repo.git),
      * converts them to a comparable format.
+     * For hierarchical SCM systems like SVN, normalizes the scheme to enable
+     * proper comparison of URLs that differ only in http vs https.
      *
      * @param url the URL to process
      * @return the provider-specific URL for SCM URLs, or the original URL otherwise
      */
-    private static String extractComparableUrl(String url) {
+    static String extractComparableUrl(String url) {
         if (url != null && url.startsWith("scm:")) {
+            // Extract the SCM provider (e.g., "git", "svn")
+            String provider = ScmUrlUtils.getProvider(url);
+
             // Extract the provider-specific part of the SCM URL
             // For example: "scm:git:https://github.com/user/repo.git" -> "https://github.com/user/repo.git"
             String providerSpecificPart = ScmUrlUtils.getProviderSpecificPart(url);
@@ -531,6 +536,15 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
                         return "ssh://" + host + "/" + path;
                     }
                 }
+
+                // For hierarchical VCS systems like SVN, normalize the scheme to allow
+                // comparison of URLs that differ only in http vs https
+                // SVN repositories can be accessed via both protocols and should be considered the same
+                if ("svn".equalsIgnoreCase(provider) && providerSpecificPart.startsWith("https://")) {
+                    // Normalize https to http for SVN URLs to enable proper comparison
+                    return "http" + providerSpecificPart.substring(5);
+                }
+
                 // Return the provider-specific part as-is for standard URLs or
                 // if SCP syntax conversion is not applicable
                 return providerSpecificPart;

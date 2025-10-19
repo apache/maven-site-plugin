@@ -135,6 +135,40 @@ public class AbstractDeployMojoTest {
         assertEquals("Top project should be child project due to different https SCM URLs", childProject, topProject);
     }
 
+    /**
+     * Test that extractComparableUrl properly handles SVN URLs with different schemes but same host.
+     * For SVN (hierarchical VCS), URLs with different schemes (http vs https) should be normalized
+     * to the same scheme to allow URIPathDescriptor.sameSite() to recognize them as the same site.
+     * Note: The paths may differ (one being a subpath of another), but as long as scheme, host, and port
+     * are the same, URIPathDescriptor.sameSite() will correctly identify them as the same site.
+     */
+    @Test
+    public void testExtractComparableUrlForSvnUrls() throws Exception {
+        // Extract and normalize both URLs
+        String url1 = AbstractDeployMojo.extractComparableUrl("scm:svn:http://svn.apache.org/repos/asf/maven/website");
+        String url2 = AbstractDeployMojo.extractComparableUrl(
+                "scm:svn:https://svn.apache.org/repos/asf/maven/website/components");
+
+        // Both should be normalized to http scheme
+        assertEquals("http://svn.apache.org/repos/asf/maven/website", url1);
+        assertEquals("http://svn.apache.org/repos/asf/maven/website/components", url2);
+
+        // Now verify they would be considered the same site by creating projects with these URLs
+        TestDeployMojo mojo = new TestDeployMojo();
+        MavenProject childProject =
+                createProjectWithSite("child", "scm:svn:https://svn.apache.org/repos/asf/maven/website/components");
+        MavenProject parentProject =
+                createProjectWithSite("parent", "scm:svn:http://svn.apache.org/repos/asf/maven/website");
+        childProject.setParent(parentProject);
+
+        // The parent should be returned as the top project since they share the same SVN site
+        MavenProject topProject = mojo.getTopLevelProject(childProject);
+        assertEquals(
+                "Top project should be parent due to normalized SVN URLs pointing to same site",
+                parentProject,
+                topProject);
+    }
+
     private MavenProject createProjectWithSite(String artifactId, String siteUrl) {
         MavenProject project = new MavenProject();
         project.setGroupId("org.apache.maven.test");
