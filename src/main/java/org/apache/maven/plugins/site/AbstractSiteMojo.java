@@ -18,12 +18,13 @@
  */
 package org.apache.maven.plugins.site;
 
+import javax.inject.Inject;
+
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.i18n.I18N;
@@ -54,13 +55,13 @@ public abstract class AbstractSiteMojo extends AbstractMojo {
     /**
      * SiteTool.
      */
-    @Component
+    @Inject
     protected SiteTool siteTool;
 
     /**
      * Internationalization.
      */
-    @Component
+    @Inject
     protected I18N i18n;
 
     /**
