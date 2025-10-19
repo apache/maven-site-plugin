@@ -27,7 +27,7 @@ assert content.contains( 'Tests run: 1, Failures: 0, Errors: 0, Skipped: 0' );
 
 sitedir = new File( basedir, 'target/site' );
 
-assert new File( sitedir, 'surefire-report.html' ).exists();
+assert new File( sitedir, 'surefire.html' ).exists();
 assert new File( sitedir, 'index.html' ).exists();
 assert new File( sitedir, 'checkstyle.html' ).exists();
 assert new File( sitedir, 'cpd.html' ).exists();
