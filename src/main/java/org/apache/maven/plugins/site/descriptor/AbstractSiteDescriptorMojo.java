@@ -18,6 +18,8 @@
  */
 package org.apache.maven.plugins.site.descriptor;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +29,6 @@ import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
@@ -43,7 +44,7 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
     /**
      * The component for assembling site model inheritance.
      */
-    @Component
+    @Inject
     private SiteModelInheritanceAssembler assembler;
 
     /**

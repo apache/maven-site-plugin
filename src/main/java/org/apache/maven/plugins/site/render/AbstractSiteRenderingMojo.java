@@ -18,8 +18,11 @@
  */
 package org.apache.maven.plugins.site.render;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -49,7 +52,6 @@ import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
 import org.apache.maven.reporting.MavenReport;
@@ -57,7 +59,6 @@ import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
-import org.codehaus.plexus.util.ReaderFactory;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -97,7 +98,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     /**
      * Site renderer.
      */
-    @Component
+    @Inject
     protected SiteRenderer siteRenderer;
 
     /**
@@ -176,7 +177,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     @Parameter(defaultValue = "${project.build.outputTimestamp}")
     protected String outputTimestamp;
 
-    @Component
+    @Inject
     protected MavenReportExecutor mavenReportExecutor;
 
     /**
@@ -185,7 +186,9 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * @return The input files encoding, never <code>null</code>.
      */
     protected String getInputEncoding() {
-        return (inputEncoding == null || inputEncoding.isEmpty()) ? ReaderFactory.FILE_ENCODING : inputEncoding;
+        return (inputEncoding == null || inputEncoding.isEmpty())
+                ? Charset.defaultCharset().displayName()
+                : inputEncoding;
     }
 
     /**
@@ -208,8 +211,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
     protected void checkInputEncoding() {
         if (inputEncoding == null || inputEncoding.isEmpty()) {
-            getLog().warn("Input file encoding has not been set, using platform encoding " + ReaderFactory.FILE_ENCODING
-                    + ", i.e. build is platform dependent!");
+            getLog().warn("Input file encoding has not been set, using platform encoding "
+                    + Charset.defaultCharset().displayName() + ", i.e. build is platform dependent!");
         }
     }
 

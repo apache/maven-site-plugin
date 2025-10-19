@@ -18,12 +18,13 @@
  */
 package org.apache.maven.plugins.site.descriptor;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -55,7 +56,7 @@ public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
      *
      * @since 2.1.1
      */
-    @Component
+    @Inject
     private MavenProjectHelper projectHelper;
 
     /**
