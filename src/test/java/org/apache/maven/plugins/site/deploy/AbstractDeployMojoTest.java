@@ -110,6 +110,31 @@ public class AbstractDeployMojoTest {
         assertEquals("Top project should be parent project for regular URLs", parentProject, topProject);
     }
 
+    /**
+     * Test that getTopLevelProject correctly handles SCM URLs with standard https format.
+     */
+    @Test
+    public void testGetTopLevelProjectWithHttpsScmUrls() throws Exception {
+        // Create a mock deploy mojo
+        TestDeployMojo mojo = new TestDeployMojo();
+
+        // Create child project with https SCM URL
+        MavenProject childProject = createProjectWithSite("child", "scm:git:https://github.com/user/repo1.git/");
+
+        // Create parent project with different https SCM URL (different domain)
+        MavenProject parentProject = createProjectWithSite("parent", "scm:git:https://gitlab.com/user/repo2.git/");
+
+        // Set up the parent-child relationship
+        childProject.setParent(parentProject);
+
+        // Call getTopLevelProject - it should return childProject
+        // because the SCM URLs point to different repositories
+        MavenProject topProject = mojo.getTopLevelProject(childProject);
+
+        // The top project should be the child project itself since the parent has a different site
+        assertEquals("Top project should be child project due to different https SCM URLs", childProject, topProject);
+    }
+
     private MavenProject createProjectWithSite(String artifactId, String siteUrl) {
         MavenProject project = new MavenProject();
         project.setGroupId("org.apache.maven.test");

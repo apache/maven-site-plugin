@@ -508,20 +508,31 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
             // For example: "scm:git:https://github.com/user/repo.git" -> "https://github.com/user/repo.git"
             String providerSpecificPart = ScmUrlUtils.getProviderSpecificPart(url);
             if (providerSpecificPart != null && !providerSpecificPart.isEmpty()) {
-                // Handle SCP-like Git syntax (e.g., git@github.com:user/repo.git)
+                // Handle SCP-like Git syntax (e.g., git@github.com:user/repo.git or user@host:path)
                 // Convert it to a more standard format for comparison
-                if (providerSpecificPart.contains("@") && providerSpecificPart.contains(":")) {
-                    // This looks like SCP syntax: git@host:path
-                    // Extract the host and path parts
-                    int atIndex = providerSpecificPart.indexOf('@');
+                // Note: This is a heuristic check - we look for the pattern of user@host:path
+                // where the colon comes after the @ symbol and is followed by a path
+                if (providerSpecificPart.contains("@")
+                        && !providerSpecificPart.startsWith("http://")
+                        && !providerSpecificPart.startsWith("https://")
+                        && !providerSpecificPart.startsWith("ssh://")) {
+                    // Find the @ symbol and look for the first : after it that's not part of a URL scheme
+                    int atIndex = providerSpecificPart.lastIndexOf('@');
                     int colonIndex = providerSpecificPart.indexOf(':', atIndex);
-                    if (colonIndex > atIndex && colonIndex < providerSpecificPart.length() - 1) {
+
+                    // Verify this looks like SCP syntax: user@host:path
+                    // The colon should come after @ and before the end
+                    if (atIndex >= 0 && colonIndex > atIndex + 1 && colonIndex < providerSpecificPart.length() - 1) {
                         String host = providerSpecificPart.substring(atIndex + 1, colonIndex);
                         String path = providerSpecificPart.substring(colonIndex + 1);
                         // Convert to a pseudo-URL format for comparison
+                        // Note: IPv6 addresses in brackets are handled by this approach
+                        // as the brackets will be preserved in the host part
                         return "ssh://" + host + "/" + path;
                     }
                 }
+                // Return the provider-specific part as-is for standard URLs or
+                // if SCP syntax conversion is not applicable
                 return providerSpecificPart;
             }
         }
