@@ -214,6 +214,8 @@ under the License.
     <mavenReportingImplVersion>4.0.0</mavenReportingImplVersion>
     <fluidoSkinVersion>2.0.0-M11</fluidoSkinVersion>
     <project.build.outputTimestamp>2024-10-18T12:11:03Z</project.build.outputTimestamp>
+    <!-- remove with parent pom upgrade -->
+    <version.maven-invoker-plugin>3.9.1</version.maven-invoker-plugin>
   </properties>
 
   <dependencies>
