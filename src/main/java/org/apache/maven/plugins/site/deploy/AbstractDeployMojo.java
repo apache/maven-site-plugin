@@ -18,11 +18,14 @@
  */
 package org.apache.maven.plugins.site.deploy;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -31,7 +34,6 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Site;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
@@ -53,8 +55,6 @@ import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.observers.Debug;
 import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.repository.Repository;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Abstract base class for deploy mojos.
@@ -123,10 +123,10 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
 
     private Site deploySite;
 
-    @Component
-    private PlexusContainer container;
+    @Inject
+    private Map<String, Wagon> wagons;
 
-    @Component
+    @Inject
     SettingsDecrypter settingsDecrypter;
 
     /**
@@ -277,16 +277,15 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
         if (protocol == null) {
             throw new MojoExecutionException("Unspecified protocol");
         }
-        try {
-            Wagon wagon = container.lookup(Wagon.class, protocol.toLowerCase(Locale.ROOT));
-            if (!wagon.supportsDirectoryCopy()) {
-                throw new MojoExecutionException(
-                        "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
-            }
-            return wagon;
-        } catch (ComponentLookupException e) {
-            throw new MojoExecutionException("Cannot find wagon which supports the requested protocol: " + protocol, e);
+        Wagon wagon = wagons.get(protocol.toLowerCase(Locale.ROOT));
+        if (wagon == null) {
+            throw new MojoExecutionException("Cannot find wagon which supports the requested protocol: " + protocol);
         }
+        if (!wagon.supportsDirectoryCopy()) {
+            throw new MojoExecutionException(
+                    "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
+        }
+        return wagon;
     }
 
     public AuthenticationInfo getAuthenticationInfo(String id) {
