@@ -295,6 +295,11 @@ under the License.
       <artifactId>commons-io</artifactId>
       <version>2.20.0</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.scm</groupId>
+      <artifactId>maven-scm-api</artifactId>
+      <version>2.1.0</version>
+    </dependency>
 
     <!-- dependencies to annotations -->
     <dependency>

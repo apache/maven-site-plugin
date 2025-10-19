@@ -37,6 +37,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.scm.provider.ScmUrlUtils;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
@@ -493,6 +494,66 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     }
 
     /**
+     * Extracts the provider-specific URL from an SCM URL for comparison purposes.
+     * For non-SCM URLs, returns the original URL.
+     * For SCM URLs with SCP-like syntax (e.g., git@github.com:user/repo.git),
+     * converts them to a comparable format.
+     * For hierarchical SCM systems like SVN, normalizes the scheme to enable
+     * proper comparison of URLs that differ only in http vs https.
+     *
+     * @param url the URL to process
+     * @return the provider-specific URL for SCM URLs, or the original URL otherwise
+     */
+    static String extractComparableUrl(String url) {
+        if (url != null && url.startsWith("scm:")) {
+            // Extract the SCM provider (e.g., "git", "svn")
+            String provider = ScmUrlUtils.getProvider(url);
+
+            // Extract the provider-specific part of the SCM URL
+            // For example: "scm:git:https://github.com/user/repo.git" -> "https://github.com/user/repo.git"
+            String providerSpecificPart = ScmUrlUtils.getProviderSpecificPart(url);
+            if (providerSpecificPart != null && !providerSpecificPart.isEmpty()) {
+                // Handle SCP-like Git syntax (e.g., git@github.com:user/repo.git or user@host:path)
+                // Convert it to a more standard format for comparison
+                // Note: This is a heuristic check - we look for the pattern of user@host:path
+                // where the colon comes after the @ symbol and is followed by a path
+                if (providerSpecificPart.contains("@")
+                        && !providerSpecificPart.startsWith("http://")
+                        && !providerSpecificPart.startsWith("https://")
+                        && !providerSpecificPart.startsWith("ssh://")) {
+                    // Find the @ symbol and look for the first : after it that's not part of a URL scheme
+                    int atIndex = providerSpecificPart.lastIndexOf('@');
+                    int colonIndex = providerSpecificPart.indexOf(':', atIndex);
+
+                    // Verify this looks like SCP syntax: user@host:path
+                    // The colon should come after @ and before the end
+                    if (atIndex >= 0 && colonIndex > atIndex + 1 && colonIndex < providerSpecificPart.length() - 1) {
+                        String host = providerSpecificPart.substring(atIndex + 1, colonIndex);
+                        String path = providerSpecificPart.substring(colonIndex + 1);
+                        // Convert to a pseudo-URL format for comparison
+                        // Note: IPv6 addresses in brackets are handled by this approach
+                        // as the brackets will be preserved in the host part
+                        return "ssh://" + host + "/" + path;
+                    }
+                }
+
+                // For hierarchical VCS systems like SVN, normalize the scheme to allow
+                // comparison of URLs that differ only in http vs https
+                // SVN repositories can be accessed via both protocols and should be considered the same
+                if ("svn".equalsIgnoreCase(provider) && providerSpecificPart.startsWith("https://")) {
+                    // Normalize https to http for SVN URLs to enable proper comparison
+                    return "http" + providerSpecificPart.substring(5);
+                }
+
+                // Return the provider-specific part as-is for standard URLs or
+                // if SCP syntax conversion is not applicable
+                return providerSpecificPart;
+            }
+        }
+        return url;
+    }
+
+    /**
      * Extract the distributionManagement site of the top level parent of the given MavenProject.
      * This climbs up the project hierarchy and returns the site of the last project
      * for which {@link #getSite(org.apache.maven.project.MavenProject)} returns a site that resides in the
@@ -523,8 +584,12 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
             }
 
             // MSITE-600
-            URIPathDescriptor siteURI = new URIPathDescriptor(URIEncoder.encodeURI(site.getUrl()), "");
-            URIPathDescriptor oldSiteURI = new URIPathDescriptor(URIEncoder.encodeURI(oldSite.getUrl()), "");
+            // MSITE-1033: For SCM URLs, extract the provider-specific part for comparison
+            String siteUrlToCompare = extractComparableUrl(site.getUrl());
+            String oldSiteUrlToCompare = extractComparableUrl(oldSite.getUrl());
+
+            URIPathDescriptor siteURI = new URIPathDescriptor(URIEncoder.encodeURI(siteUrlToCompare), "");
+            URIPathDescriptor oldSiteURI = new URIPathDescriptor(URIEncoder.encodeURI(oldSiteUrlToCompare), "");
 
             if (!siteURI.sameSite(oldSiteURI.getBaseURI())) {
                 return oldProject;
