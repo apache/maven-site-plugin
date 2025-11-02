@@ -46,6 +46,10 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Olivier Lamy
  *
@@ -84,8 +88,8 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
             SiteMavenProjectStub siteMavenProjectStub = new SiteMavenProjectStub("deploy-dav");
 
             assertTrue(
-                    "dav server port not available: " + simpleDavServerHandler.getPort(),
-                    simpleDavServerHandler.getPort() > 0);
+                    simpleDavServerHandler.getPort() > 0,
+                    "dav server port not available: " + simpleDavServerHandler.getPort());
 
             siteMavenProjectStub
                     .getDistributionManagement()
