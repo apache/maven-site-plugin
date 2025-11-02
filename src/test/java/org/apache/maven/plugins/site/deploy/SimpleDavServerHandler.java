@@ -23,9 +23,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -44,13 +44,13 @@ import org.eclipse.jetty.servlet.ServletHolder;
  */
 public class SimpleDavServerHandler {
 
-    private Server server;
+    private final Server server;
 
-    private File siteTargetPath;
+    private final Path siteTargetPath;
 
     List<HttpRequest> httpRequests = new ArrayList<>();
 
-    public SimpleDavServerHandler(final File targetPath) throws Exception {
+    public SimpleDavServerHandler(Path targetPath) throws Exception {
         this.siteTargetPath = targetPath;
         Handler repoHandler = new AbstractHandler() {
             @Override
@@ -72,9 +72,9 @@ public class SimpleDavServerHandler {
                 httpRequests.add(rq);
 
                 if (request.getMethod().equalsIgnoreCase("PUT")) {
-                    File targetFile = new File(siteTargetPath, targetPath);
-                    targetFile.getParentFile().mkdirs();
-                    Files.copy(request.getInputStream(), targetFile.toPath());
+                    Path targetFile = siteTargetPath.resolve(targetPath);
+                    Files.createDirectories(targetFile.getParent());
+                    Files.copy(request.getInputStream(), targetFile);
                 }
 
                 // PrintWriter writer = response.getWriter();

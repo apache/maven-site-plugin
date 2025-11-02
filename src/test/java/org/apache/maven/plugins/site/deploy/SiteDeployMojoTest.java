@@ -19,38 +19,21 @@
 package org.apache.maven.plugins.site.deploy;
 
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.apache.maven.wagon.Wagon;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Disabled;
 
 /**
  * @author <a href="mailto:cleclerc@xebia.fr">Cyrille Le Clerc</a>
  */
-@RunWith(JUnit4.class)
+@Disabled
 public class SiteDeployMojoTest extends AbstractMojoTestCase {
-    private Wagon wagon;
-
-    // private Repository repository;
-
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        // wagon = getContainer().lookup( Wagon.class, "scp" );
-        // repository = new Repository( "my-repository", "scp://repository-host/var/maven2" );
-    }
-
-    @Test
-    public void testFoo() {
-        // should not fail ;-)
-        assertTrue(true);
-    }
 
     /**
      * FIXME find a way to restore those tests as wagonManager.addProxy is not anymore available in maven 3.
      * public void testGetProxyInfoNoProxyForRepositoryProtocol()
      * {
+     * wagon = getContainer().lookup( Wagon.class, "scp" );
+     * repository = new Repository( "my-repository", "scp://repository-host/var/maven2" );
+     *
      * wagonManager.addProxy( "http", "proxy-host", 8080, "my-user", "my-password", null );
      * ProxyInfo proxyInfo = SiteDeployMojo.getProxyInfo( repository, wagonManager );
      * assertNull( "ProxyInfo must be null because http != scp", proxyInfo );

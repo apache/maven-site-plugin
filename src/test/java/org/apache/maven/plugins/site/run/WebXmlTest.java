@@ -24,13 +24,13 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class WebXmlTest {
 
@@ -43,7 +43,7 @@ public class WebXmlTest {
         NodeList filterClasses =
                 (NodeList) xPath.compile("/web-app/filter/filter-class").evaluate(doc, XPathConstants.NODESET);
 
-        assertTrue("Expected at least one filter", filterClasses.getLength() > 0);
+        assertTrue(filterClasses.getLength() > 0, "Expected at least one filter");
         for (int index = 0; index < filterClasses.getLength(); index++) {
             Node filterClass = filterClasses.item(index).getFirstChild();
             try {

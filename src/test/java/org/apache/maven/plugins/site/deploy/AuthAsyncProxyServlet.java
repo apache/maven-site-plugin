@@ -24,9 +24,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Enumeration;
@@ -45,12 +45,12 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
 
     List<HttpRequest> httpRequests = new ArrayList<>();
 
-    private File siteTargetPath;
+    private final Path siteTargetPath;
 
     /**
      * Constructor for non authentication servlet.
      */
-    public AuthAsyncProxyServlet(File siteTargetPath) {
+    public AuthAsyncProxyServlet(Path siteTargetPath) {
         super();
         this.siteTargetPath = siteTargetPath;
     }
@@ -60,7 +60,7 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
      *
      * @param authentications a map of user/password
      */
-    public AuthAsyncProxyServlet(Map<String, String> authentications, File siteTargetPath) {
+    public AuthAsyncProxyServlet(Map<String, String> authentications, Path siteTargetPath) {
         this(siteTargetPath);
 
         this.authentications = authentications;
@@ -72,7 +72,7 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
      * @param authentications a map of user/password
      * @param sleepTime a positive time to sleep the service thread (for timeout)
      */
-    public AuthAsyncProxyServlet(Map<String, String> authentications, long sleepTime, File siteTargetPath) {
+    public AuthAsyncProxyServlet(Map<String, String> authentications, long sleepTime, Path siteTargetPath) {
         this(siteTargetPath);
 
         this.authentications = authentications;
@@ -123,9 +123,9 @@ public class AuthAsyncProxyServlet extends AsyncProxyServlet {
                     httpRequests.add(rq);
 
                     if (request.getMethod().equalsIgnoreCase("PUT") && targetPath != null) {
-                        File targetFile = new File(siteTargetPath, targetPath);
-                        targetFile.getParentFile().mkdirs();
-                        Files.copy(request.getInputStream(), targetFile.toPath());
+                        Path targetFile = siteTargetPath.resolve(targetPath);
+                        Files.createDirectories(targetFile.getParent());
+                        Files.copy(request.getInputStream(), targetFile);
                     }
 
                     response.setStatus(HttpServletResponse.SC_OK);

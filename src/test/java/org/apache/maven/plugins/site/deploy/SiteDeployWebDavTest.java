@@ -36,6 +36,6 @@ public class SiteDeployWebDavTest extends AbstractSiteDeployWebDavTest {
 
     @Override
     AbstractMojo getMojo(File pomXmlFile) throws Exception {
-        return (SiteDeployMojo) lookupMojo(getMojoName(), pomXmlFile);
+        return lookupMojo(getMojoName(), pomXmlFile);
     }
 }

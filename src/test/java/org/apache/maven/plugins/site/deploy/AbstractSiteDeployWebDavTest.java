@@ -21,6 +21,7 @@ package org.apache.maven.plugins.site.deploy;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,33 +40,28 @@ import org.apache.maven.plugins.site.stubs.SiteMavenProjectStub;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.ReflectionUtils;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author Olivier Lamy
  *
  */
-@RunWith(JUnit4.class)
 public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase {
 
-    // Can use @TempDir with JUnit 5
-    @Rule
-    public TemporaryFolder directory = new TemporaryFolder();
+    @TempDir
+    protected Path directory;
 
-    private File siteTargetPath;
+    private Path siteTargetPath;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        siteTargetPath = new File(directory.newFolder(), "target");
-        if (!siteTargetPath.exists()) {
-            siteTargetPath.mkdirs();
+        siteTargetPath = directory.resolve("junit").resolve("target");
+        if (!Files.exists(siteTargetPath)) {
+            Files.createDirectories(siteTargetPath);
         }
     }
 
@@ -83,9 +79,9 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
             assertNotNull(mojo);
             SiteMavenProjectStub siteMavenProjectStub = new SiteMavenProjectStub("deploy-dav");
 
-            assertTrue(
-                    "dav server port not available: " + simpleDavServerHandler.getPort(),
-                    simpleDavServerHandler.getPort() > 0);
+            org.junit.jupiter.api.Assertions.assertTrue(
+                    simpleDavServerHandler.getPort() > 0,
+                    "dav server port not available: " + simpleDavServerHandler.getPort());
 
             siteMavenProjectStub
                     .getDistributionManagement()
@@ -218,14 +214,14 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
     }
 
     private void assertContentInFiles() throws Exception {
-        File htmlFile = new File(siteTargetPath, "site" + File.separator + "index.html");
-        assertTrue(htmlFile.exists());
-        String htmlContent = new String(Files.readAllBytes(htmlFile.toPath()), StandardCharsets.UTF_8);
+        Path htmlFile = siteTargetPath.resolve("site").resolve("index.html");
+        assertTrue(Files.exists(htmlFile));
+        String htmlContent = new String(Files.readAllBytes(htmlFile), StandardCharsets.UTF_8);
         assertTrue(htmlContent.contains("Welcome to Apache Maven"));
 
-        File cssFile = new File(siteTargetPath, "site" + File.separator + "css" + File.separator + "maven-base.css");
-        assertTrue(cssFile.exists());
-        String cssContent = new String(Files.readAllBytes(cssFile.toPath()), StandardCharsets.UTF_8);
+        Path cssFile = siteTargetPath.resolve("site").resolve("css").resolve("maven-base.css");
+        assertTrue(Files.exists(cssFile));
+        String cssContent = new String(Files.readAllBytes(cssFile), StandardCharsets.UTF_8);
         assertTrue(cssContent.contains("background-image: url(../images/collapsed.gif);"));
     }
 
