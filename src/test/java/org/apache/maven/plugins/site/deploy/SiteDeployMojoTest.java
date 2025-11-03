@@ -18,7 +18,6 @@
  */
 package org.apache.maven.plugins.site.deploy;
 
-import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.wagon.Wagon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,14 +27,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author <a href="mailto:cleclerc@xebia.fr">Cyrille Le Clerc</a>
  */
-public class SiteDeployMojoTest extends AbstractMojoTestCase {
+public class SiteDeployMojoTest {
     private Wagon wagon;
 
     // private Repository repository;
 
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         // wagon = getContainer().lookup( Wagon.class, "scp" );
         // repository = new Repository( "my-repository", "scp://repository-host/var/maven2" );
     }
