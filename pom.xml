@@ -194,7 +194,7 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <mavenVersion>3.6.3</mavenVersion>
+    <mavenVersion>3.9.12</mavenVersion>
     <!-- for dependencies -->
     <jettyVersion>9.4.58.v20250814</jettyVersion>
     <doxiaVersion>2.0.0</doxiaVersion>
