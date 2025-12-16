@@ -50,11 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Olivier Lamy
- * @since 3.0-beta-2
- *
- */
 public class SiteDeployWebDavWithoutAuthTest {
     @TempDir
     private static File directory;
