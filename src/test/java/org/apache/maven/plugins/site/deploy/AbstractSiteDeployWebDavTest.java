@@ -19,6 +19,7 @@
 package org.apache.maven.plugins.site.deploy;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
@@ -39,31 +40,31 @@ import org.apache.maven.plugins.site.stubs.SiteMavenProjectStub;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
 import org.codehaus.plexus.util.ReflectionUtils;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Olivier Lamy
  *
  */
-@RunWith(JUnit4.class)
 public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase {
 
     // Can use @TempDir with JUnit 5
-    @Rule
-    public TemporaryFolder directory = new TemporaryFolder();
+    @TempDir
+    public File directory;
 
     private File siteTargetPath;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        siteTargetPath = new File(directory.newFolder(), "target");
+        siteTargetPath = new File(newFolder(directory, "junit"), "target");
         if (!siteTargetPath.exists()) {
             siteTargetPath.mkdirs();
         }
@@ -84,8 +85,8 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
             SiteMavenProjectStub siteMavenProjectStub = new SiteMavenProjectStub("deploy-dav");
 
             assertTrue(
-                    "dav server port not available: " + simpleDavServerHandler.getPort(),
-                    simpleDavServerHandler.getPort() > 0);
+                    simpleDavServerHandler.getPort() > 0,
+                    "dav server port not available: " + simpleDavServerHandler.getPort());
 
             siteMavenProjectStub
                     .getDistributionManagement()
@@ -245,5 +246,14 @@ public abstract class AbstractSiteDeployWebDavTest extends AbstractMojoTestCase 
             }
         }
         return false;
+    }
+
+    private static File newFolder(File root, String... subDirs) throws IOException {
+        String subFolder = String.join("/", subDirs);
+        File result = new File(root, subFolder);
+        if (!result.mkdirs()) {
+            throw new IOException("Couldn't create folders " + root);
+        }
+        return result;
     }
 }
