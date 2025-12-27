@@ -54,7 +54,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 /**
  * Generates the site for a single project.
  * <p>
- * Note that links between module sites in a multi module build will <b>not</b> work, since local build directory
+ * Note that links between module sites in a multimodule build will <strong>not</strong> work, since local build directory
  * structure doesn't match deployed site.
  * </p>
  *

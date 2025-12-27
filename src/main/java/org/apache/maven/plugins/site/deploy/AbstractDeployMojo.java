@@ -73,7 +73,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     private File inputDirectory;
 
     /**
-     * Whether to run the "chmod" command on the remote site after the deploy.
+     * Whether to run the "chmod" command on the remote site after deploying.
      * Defaults to "true".
      *
      * @since 2.1
@@ -150,8 +150,8 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
      * Make sure the given URL ends with a slash.
      *
      * @param url a String
-     * @return if url already ends with '/' it is returned unchanged.
-     *         Otherwise a '/' character is appended.
+     * @return if url already ends with '/', it is returned unchanged.
+     *         Otherwise, a '/' character is appended.
      */
     protected static String appendSlash(final String url) {
         if (url.endsWith("/")) {
@@ -191,8 +191,8 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     protected abstract String determineTopDistributionManagementSiteUrl() throws MojoExecutionException;
 
     /**
-     * Get the site used for deployment, with its id to look up credential settings and the target URL for the deploy.
-     * This should be a top-level URL, ie above modules and locale sub-directories. Each deploy mojo
+     * Get the site used for deployment, with its id to look up credential settings and the target URL for deploying.
+     * This should be a top-level URL, that is, above modules and locale subdirectories. Each deploy mojo
      * can tweak algorithm to determine this deploy site by implementing determineDeploySite().
      *
      * @return the site for deployment
@@ -234,9 +234,9 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
      *
      * @param repository the repository to deploy to.
      *                   This needs to contain a valid, non-null {@link Repository#getId() id}
-     *                   to look up credentials for the deploy, and a valid, non-null
+     *                   to look up credentials for deploying, and a valid, non-null
      *                   {@link Repository#getUrl() scm url} to deploy to.
-     * @throws MojoExecutionException if the deploy fails.
+     * @throws MojoExecutionException if the deployment fails
      */
     private void deployTo(final Repository repository) throws MojoExecutionException {
         if (!inputDirectory.exists()) {
