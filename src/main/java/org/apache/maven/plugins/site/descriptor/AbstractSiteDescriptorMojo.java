@@ -59,9 +59,9 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
     protected List<RemoteRepository> remoteProjectRepositories;
 
     /**
-     * Directory containing the <code>site.xml</code> file and the source for hand written docs (one directory
+     * Directory containing the <code>site.xml</code> file and the source for handwritten docs (one directory
      * per Doxia-source-supported markup types):
-     * see <a href="/doxia/references/index.html">Doxia Markup Languages References</a>).
+     * see <a href="/doxia/references/index.html">Doxia Markup Languages References</a>.
      *
      * @since 2.3
      */
