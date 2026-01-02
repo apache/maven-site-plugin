@@ -185,7 +185,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
 
         // main sink
         SiteRendererSink mainSink = new SiteRendererSink(docRenderingContext);
-        // sink factory, for multi-page reports that need sub-sinks
+        // sink factory, for multipage reports that need sub-sinks
         MultiPageSinkFactory multiPageSinkFactory = new MultiPageSinkFactory(report, docRenderingContext);
 
         ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
@@ -229,7 +229,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         // render main sink document content
         siteRenderer.mergeDocumentIntoSite(writer, mainSink, siteRenderingContext);
 
-        // render sub-sinks, eventually created by multi-page reports
+        // render sub-sinks, eventually created by multipage reports
         List<MultiPageSubSink> sinks = multiPageSinkFactory.sinks();
 
         log.debug("Multipage report: " + sinks.size() + " subreports");
