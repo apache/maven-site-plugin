@@ -63,7 +63,7 @@ public class SiteStageDeployMojo extends AbstractStagingMojo {
     private String stagingSiteURL;
 
     /**
-     * The identifier of the site where the staged site will be deployed. This id will be used to lookup a
+     * The identifier of the site where the staged site will be deployed. This id will be used to look up a
      * corresponding <code>&lt;server&gt;</code> entry from the <code>settings.xml</code>. If a matching
      * <code>&lt;server&gt;</code> entry is found, its configured credentials will be used for authentication.
      * <p/>
