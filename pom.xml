@@ -23,7 +23,8 @@ under the License.
   <parent>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
-    <version>45</version>
+    <!-- When updating this, also update the parent version of IT "full_reporting" -->
+    <version>47</version>
     <relativePath />
   </parent>
 
@@ -168,7 +169,7 @@ under the License.
   </contributors>
 
   <prerequisites>
-    <maven>${mavenVersion}</maven>
+    <maven>3.6.3</maven>
   </prerequisites>
 
   <scm>
@@ -202,20 +203,12 @@ under the License.
     <wagonVersion>3.5.3</wagonVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <!-- for ITs -->
-    <checkstylePluginVersion>3.5.0</checkstylePluginVersion>
-    <javadocPluginVersion>3.10.1</javadocPluginVersion>
     <pmdPluginVersion>3.25.0</pmdPluginVersion>
     <jxrPluginVersion>3.5.0</jxrPluginVersion>
-    <projectInfoReportsPluginVersion>3.7.0</projectInfoReportsPluginVersion>
-    <surefirePluginVersion>3.5.1</surefirePluginVersion>
-    <mavenPluginPluginVersion>3.15.0</mavenPluginPluginVersion>
     <taglistPluginVersion>3.2.1</taglistPluginVersion>
-    <antrunPluginVersion>3.1.0</antrunPluginVersion>
     <mavenReportingImplVersion>4.0.0</mavenReportingImplVersion>
     <fluidoSkinVersion>2.0.0-M11</fluidoSkinVersion>
     <project.build.outputTimestamp>2024-07-17T13:43:56Z</project.build.outputTimestamp>
-    <!-- remove with parent pom upgrade -->
-    <version.maven-invoker-plugin>3.9.1</version.maven-invoker-plugin>
   </properties>
 
   <dependencies>
