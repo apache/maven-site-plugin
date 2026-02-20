@@ -146,21 +146,21 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         }
 
         @Override
-        public Sink createSink(File arg0, String arg1, String arg2) throws IOException {
-            // Not used
-            return null;
+        public Sink createSink(File outputDir, String outputName, String encoding) throws IOException {
+            throw new UnsupportedOperationException(
+                    "Only createSink(File, String) is supported by MultiPageSinkFactory. The encoding is always determined by the site rendering context.");
         }
 
         @Override
-        public Sink createSink(OutputStream arg0) throws IOException {
-            // Not used
-            return null;
+        public Sink createSink(OutputStream out) throws IOException {
+            throw new UnsupportedOperationException(
+                    "Only createSink(File, String) is supported by MultiPageSinkFactory. OutputStream based sinks are not supported.");
         }
 
         @Override
-        public Sink createSink(OutputStream arg0, String arg1) throws IOException {
-            // Not used
-            return null;
+        public Sink createSink(OutputStream out, String encoding) throws IOException {
+            throw new UnsupportedOperationException(
+                    "Only createSink(File, String) is supported by MultiPageSinkFactory. OutputStream based sinks are not supported.");
         }
 
         public List<MultiPageSubSink> sinks() {
