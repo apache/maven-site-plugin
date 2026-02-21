@@ -38,7 +38,7 @@ import org.codehaus.plexus.util.FileUtils;
  * <p>For Maven-2.x this is enabled by default only when the project has <code>pom</code> packaging since it will be
  * used by modules inheriting, but this can be enabled for other projects packaging if needed.</p>
  * <p>This default execution has been removed from the built-in lifecycle of Maven 3.x for <code>pom</code>-projects.
- * Users that actually use those projects to provide a common site descriptor for sub modules will need to explicitly
+ * Users that actually use those projects to provide a common site descriptor for submodules will need to explicitly
  * define this goal execution to restore the intended behavior.</p>
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>

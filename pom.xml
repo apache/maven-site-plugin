@@ -214,7 +214,8 @@ under the License.
     <mavenReportingImplVersion>4.0.0</mavenReportingImplVersion>
     <fluidoSkinVersion>2.0.0-M11</fluidoSkinVersion>
     <project.build.outputTimestamp>2024-07-17T13:43:56Z</project.build.outputTimestamp>
-
+    <!-- remove with parent pom upgrade -->
+    <version.maven-invoker-plugin>3.9.1</version.maven-invoker-plugin>
   </properties>
 
   <dependencies>
@@ -287,12 +288,12 @@ under the License.
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
-      <version>3.6.4</version>
+      <version>3.6.6</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.20.0</version>
+      <version>2.21.0</version>
     </dependency>
 
     <!-- dependencies to annotations -->
@@ -318,13 +319,13 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-archiver</artifactId>
-      <version>4.10.1</version>
+      <version>4.11.0</version>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-i18n</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
@@ -424,7 +425,7 @@ under the License.
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.17.0</version>
+      <version>3.20.0</version>
     </dependency>
 
     <dependency>
@@ -477,7 +478,24 @@ under the License.
       <version>${jettyVersion}</version>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Is needed for MojoExtension-->
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version>
+      <!-- last mockito version with java 8 support -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -503,13 +521,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
-      <version>3.3.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <version>3.5.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -572,7 +584,7 @@ under the License.
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>mrm-maven-plugin</artifactId>
-            <version>1.7.0</version>
+            <version>1.7.1</version>
             <configuration>
               <repositories>
                 <proxyRepo />

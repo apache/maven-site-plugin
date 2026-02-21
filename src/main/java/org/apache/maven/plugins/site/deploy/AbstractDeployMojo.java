@@ -18,11 +18,14 @@
  */
 package org.apache.maven.plugins.site.deploy;
 
+import javax.inject.Inject;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -31,7 +34,6 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.DistributionManagement;
 import org.apache.maven.model.Site;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
@@ -53,8 +55,6 @@ import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.observers.Debug;
 import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.repository.Repository;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 /**
  * Abstract base class for deploy mojos.
@@ -73,7 +73,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     private File inputDirectory;
 
     /**
-     * Whether to run the "chmod" command on the remote site after the deploy.
+     * Whether to run the "chmod" command on the remote site after deploying.
      * Defaults to "true".
      *
      * @since 2.1
@@ -123,10 +123,10 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
 
     private Site deploySite;
 
-    @Component
-    private PlexusContainer container;
+    @Inject
+    private Map<String, Wagon> wagons;
 
-    @Component
+    @Inject
     SettingsDecrypter settingsDecrypter;
 
     /**
@@ -150,8 +150,8 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
      * Make sure the given URL ends with a slash.
      *
      * @param url a String
-     * @return if url already ends with '/' it is returned unchanged.
-     *         Otherwise a '/' character is appended.
+     * @return if url already ends with '/', it is returned unchanged.
+     *         Otherwise, a '/' character is appended.
      */
     protected static String appendSlash(final String url) {
         if (url.endsWith("/")) {
@@ -191,8 +191,8 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     protected abstract String determineTopDistributionManagementSiteUrl() throws MojoExecutionException;
 
     /**
-     * Get the site used for deployment, with its id to look up credential settings and the target URL for the deploy.
-     * This should be a top-level URL, ie above modules and locale sub-directories. Each deploy mojo
+     * Get the site used for deployment, with its id to look up credential settings and the target URL for deploying.
+     * This should be a top-level URL, that is, above modules and locale subdirectories. Each deploy mojo
      * can tweak algorithm to determine this deploy site by implementing determineDeploySite().
      *
      * @return the site for deployment
@@ -234,9 +234,9 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
      *
      * @param repository the repository to deploy to.
      *                   This needs to contain a valid, non-null {@link Repository#getId() id}
-     *                   to look up credentials for the deploy, and a valid, non-null
+     *                   to look up credentials for deploying, and a valid, non-null
      *                   {@link Repository#getUrl() scm url} to deploy to.
-     * @throws MojoExecutionException if the deploy fails.
+     * @throws MojoExecutionException if the deployment fails
      */
     private void deployTo(final Repository repository) throws MojoExecutionException {
         if (!inputDirectory.exists()) {
@@ -277,16 +277,15 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
         if (protocol == null) {
             throw new MojoExecutionException("Unspecified protocol");
         }
-        try {
-            Wagon wagon = container.lookup(Wagon.class, protocol.toLowerCase(Locale.ROOT));
-            if (!wagon.supportsDirectoryCopy()) {
-                throw new MojoExecutionException(
-                        "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
-            }
-            return wagon;
-        } catch (ComponentLookupException e) {
-            throw new MojoExecutionException("Cannot find wagon which supports the requested protocol: " + protocol, e);
+        Wagon wagon = wagons.get(protocol.toLowerCase(Locale.ROOT));
+        if (wagon == null) {
+            throw new MojoExecutionException("Cannot find wagon which supports the requested protocol: " + protocol);
         }
+        if (!wagon.supportsDirectoryCopy()) {
+            throw new MojoExecutionException(
+                    "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
+        }
+        return wagon;
     }
 
     public AuthenticationInfo getAuthenticationInfo(String id) {

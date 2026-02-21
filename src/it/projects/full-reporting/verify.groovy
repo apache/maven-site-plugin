@@ -27,7 +27,7 @@ assert content.contains( 'Tests run: 1, Failures: 0, Errors: 0, Skipped: 0' );
 
 sitedir = new File( basedir, 'target/site' );
 
-assert new File( sitedir, 'surefire-report.html' ).exists();
+assert new File( sitedir, 'surefire.html' ).exists();
 assert new File( sitedir, 'index.html' ).exists();
 assert new File( sitedir, 'checkstyle.html' ).exists();
 assert new File( sitedir, 'cpd.html' ).exists();
@@ -42,7 +42,7 @@ assert new File( sitedir, 'team.html' ).exists();
 
 assert new File( sitedir, 'dependencies.html' ).exists();
 content = new File( sitedir, 'dependencies.html' ).text;
-assert content.contains( 'junit:junit:jar:4.13.2' );
+assert content.contains( 'org.junit.jupiter:junit-jupiter-api:jar:' );
 
 // check reports order
 String[] reports = [ 'index',                  // <report>index</report>

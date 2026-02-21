@@ -22,7 +22,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>43</version>
+    <version>45</version>
   </parent>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>
@@ -42,9 +42,9 @@ under the License.
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>@versions.junit5@</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
