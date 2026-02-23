@@ -112,12 +112,13 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         try {
             List<Locale> localesList = getLocales();
 
+            // Default is first in the list
+            Locale defaultLocale = localesList.get(0);
+
             for (Locale locale : localesList) {
                 getLog().info("Rendering site for "
                         + buffer().strong(
-                                        (!locale.equals(SiteTool.DEFAULT_LOCALE)
-                                                ? "locale '" + locale + "'"
-                                                : "default locale"))
+                                        (!locale.equals(defaultLocale) ? "locale '" + locale + "'" : "default locale"))
                                 .build());
                 File outputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports =

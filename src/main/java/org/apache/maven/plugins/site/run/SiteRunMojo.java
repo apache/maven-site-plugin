@@ -34,7 +34,6 @@ import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
-import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -139,6 +138,9 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         List<Locale> localesList = getLocales();
         webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
 
+        // Default is first in the list
+        Locale defaultLocale = localesList.get(0);
+
         try {
             Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
 
@@ -153,13 +155,13 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                 Map<String, DocumentRenderer> i18nDocuments = locateDocuments(i18nContext, reports, locale);
                 DoxiaBean doxiaBean = new DoxiaBean(i18nContext, i18nDocuments);
 
-                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+                if (!defaultLocale.equals(locale)) {
                     i18nDoxiaContexts.put(locale.toString(), doxiaBean);
                 } else {
                     i18nDoxiaContexts.put("default", doxiaBean);
                 }
 
-                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+                if (!defaultLocale.equals(locale)) {
                     siteRenderer.copyResources(i18nContext, new File(tempWebappDirectory, locale.toString()));
                 } else {
                     siteRenderer.copyResources(i18nContext, tempWebappDirectory);

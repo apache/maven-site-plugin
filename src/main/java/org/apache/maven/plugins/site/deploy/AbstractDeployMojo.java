@@ -28,7 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
-import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.DistributionManagement;
@@ -349,8 +348,11 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
 
             getLog().info("Pushing " + inputDirectory);
 
+            // Default is first in the list
+            final Locale defaultLocale = localesList.get(0);
+
             for (Locale locale : localesList) {
-                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+                if (!locale.equals(defaultLocale)) {
                     getLog().info("   >>> to " + appendSlash(repository.getUrl()) + locale + "/" + relativeDir);
 
                     wagon.putDirectory(new File(inputDirectory, locale.toString()), locale + "/" + relativeDir);
