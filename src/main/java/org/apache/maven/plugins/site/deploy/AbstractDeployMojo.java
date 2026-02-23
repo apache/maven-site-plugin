@@ -348,11 +348,10 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
 
             getLog().info("Pushing " + inputDirectory);
 
-            // Default is first in the list
-            final Locale defaultLocale = localesList.get(0);
+            final Locale rootLocale = getRootLocale(localesList);
 
             for (Locale locale : localesList) {
-                if (!locale.equals(defaultLocale)) {
+                if (!locale.equals(rootLocale)) {
                     getLog().info("   >>> to " + appendSlash(repository.getUrl()) + locale + "/" + relativeDir);
 
                     wagon.putDirectory(new File(inputDirectory, locale.toString()), locale + "/" + relativeDir);

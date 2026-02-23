@@ -103,13 +103,10 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
             if (url == null) {
                 getLog().warn("No project URL defined - site links will not be relativized!");
             } else {
-                List<Locale> localesList = getLocales();
-
-                // Default is first in the list
-                Locale defaultLocale = localesList.get(0);
+                Locale rootLocale = getRootLocale(getLocales());
 
                 // MSITE-658
-                final String localeUrl = !locale.equals(defaultLocale) ? append(url, locale.toString()) : url;
+                final String localeUrl = locale.equals(rootLocale) ? url : append(url, locale.toString());
 
                 getLog().info("Relativizing site links with respect to localized project URL: " + localeUrl);
                 assembler.resolvePaths(siteModel, localeUrl);
