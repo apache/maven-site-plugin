@@ -55,6 +55,9 @@ import org.apache.maven.wagon.authorization.AuthorizationException;
 import org.apache.maven.wagon.observers.Debug;
 import org.apache.maven.wagon.proxy.ProxyInfo;
 import org.apache.maven.wagon.repository.Repository;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.eclipse.aether.transport.wagon.WagonConfigurator;
 
 /**
  * Abstract base class for deploy mojos.
@@ -129,6 +132,8 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     @Inject
     SettingsDecrypter settingsDecrypter;
 
+    @Inject
+    private WagonConfigurator wagonConfigurator;
     /**
      * {@inheritDoc}
      */
@@ -284,6 +289,28 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
         if (!wagon.supportsDirectoryCopy()) {
             throw new MojoExecutionException(
                     "Wagon protocol '" + repository.getProtocol() + "' doesn't support directory copying");
+        }
+        // retrieve relevant settings
+        Server server = settings.getServer(repository.getId());
+        // taken over from
+        // https://github.com/apache/maven/blob/18a52647884dcc822eb04bf5a3265a21dc83256c/maven-core/src/main/java/org/apache/maven/internal/aether/DefaultRepositorySystemSessionFactory.java#L242
+        if (server != null && server.getConfiguration() != null) {
+            Xpp3Dom dom = (Xpp3Dom) server.getConfiguration();
+            for (int i = dom.getChildCount() - 1; i >= 0; i--) {
+                Xpp3Dom child = dom.getChild(i);
+                if ("wagonProvider".equals(child.getName())) {
+                    dom.removeChild(i);
+                }
+            }
+            XmlPlexusConfiguration config = new XmlPlexusConfiguration(dom);
+            try {
+                // use Wagon configurator from Resolver
+                wagonConfigurator.configure(wagon, config);
+            } catch (Exception e) {
+                throw new MojoExecutionException(
+                        "Error configuring wagon with server configuration for server id '" + repository.getId() + "'",
+                        e);
+            }
         }
         return wagon;
     }
