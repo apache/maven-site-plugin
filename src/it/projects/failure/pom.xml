@@ -34,10 +34,6 @@ under the License.
   </description>
   <url>http://maven.apache.org</url>
 
-  <properties>
-    <projectInfoReportsPluginVersion>@projectInfoReportsPluginVersion@</projectInfoReportsPluginVersion>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -64,7 +60,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>${projectInfoReportsPluginVersion}</version>
+        <version>@version.maven-project-info-reports-plugin@</version>
         <reportSets>
           <reportSet>
             <reports>
