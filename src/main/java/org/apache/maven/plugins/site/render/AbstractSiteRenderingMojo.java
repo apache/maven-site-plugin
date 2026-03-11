@@ -100,12 +100,21 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * build time mean).
      * This directory is expected to have the same structure as <code>siteDirectory</code>
      * (ie. one directory per Doxia-source-supported markup types).
-     *
-     * todo should we deprecate in favour of reports directly using Doxia Sink API, without this Doxia source
-     * intermediate step?
+     * This is never editable.
      */
     @Parameter(alias = "workingDirectory", defaultValue = "${project.build.directory}/generated-site")
     protected File generatedSiteDirectory;
+
+    /**
+     * Optional list of source directories to be used instead of {@link #siteDirectory} for rendering edit URLs.
+     * This is only used for documents rendered from {@link #siteDirectory} but not for those rendered from {@link AbstractSiteRenderingMojo#generatedSiteDirectory}.
+     * as the latter ones are always considered non-editable.
+     * 
+     * The first directory containing a document with the given relative path is used for generating the URL (the same relative path as the document has to {@link #siteDirectory}).
+     * @since 3.22.0
+     */
+    @Parameter
+    protected File[] alternativeSiteSourceDirectories;
 
     /**
      * The current Maven session.
@@ -320,14 +329,21 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         // Generate static site
         context.setRootDirectory(project.getBasedir());
+        final SiteDirectory mainSiteDirectory;
         if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
-            context.addSiteDirectory(new SiteDirectory(new File(siteDirectory, locale.toString()), true));
+            mainSiteDirectory = new SiteDirectory(new File(this.siteDirectory, locale.toString()), true);
             context.addSiteDirectory(new SiteDirectory(new File(generatedSiteDirectory, locale.toString()), false));
         } else {
-            context.addSiteDirectory(new SiteDirectory(siteDirectory, true));
+            mainSiteDirectory = new SiteDirectory(siteDirectory, true);
             context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
         }
-
+        if (alternativeSiteSourceDirectories != null) {
+            for (File additionalSiteSourceDirectory : alternativeSiteSourceDirectories) {
+                mainSiteDirectory.addAlternativeSourceDirectory(additionalSiteSourceDirectory);
+            }
+        }
+        context.addSiteDirectory(mainSiteDirectory);
+        
         if (moduleExcludes != null) {
             context.setModuleExcludes(moduleExcludes);
         }
