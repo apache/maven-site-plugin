@@ -114,6 +114,8 @@ Some properties are defined by default: see [Doxia Site Renderer&apos;s Velocity
 
 Since version 3\.5, you can save processed markup by setting `saveProcessedContent` to `true`: see [corresponding documentation](../site-mojo.html#saveProcessedContent) for more details.
 
+For simple property replacement consider using [Maven Filtering](./filtering-content.html) instead of Velocity templating (also to avoid the common issues described below).
+
 #[[###]]# Common Issues and Workarounds
 
 - **dotted properties**:

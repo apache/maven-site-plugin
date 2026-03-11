@@ -37,6 +37,7 @@ under the License.
 
     <menu name="Examples">
       <item name="Creating Content" href="/examples/creating-content.html"/>
+      <item name="Filtering Content" href="/examples/filtering-content.html"/>
       <item name="Configuring the Site Descriptor" href="/examples/sitedescriptor.html"/>
       <item name="Building a multi-module site" href="/examples/multimodule.html"/>
       <item name="Configuring Site Run" href="/examples/siterun.html"/>

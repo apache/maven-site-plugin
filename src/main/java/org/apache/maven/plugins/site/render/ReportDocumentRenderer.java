@@ -128,13 +128,7 @@ public class ReportDocumentRenderer implements DocumentRenderer {
             document = document.substring(0, document.lastIndexOf('.'));
 
             DocumentRenderingContext subSinkContext = new DocumentRenderingContext(
-                    docRenderingContext.getBasedir(),
-                    docRenderingContext.getBasedirRelativePath(),
-                    document,
-                    docRenderingContext.getParserId(),
-                    docRenderingContext.getExtension(),
-                    docRenderingContext.isEditable(),
-                    docRenderingContext.getGenerator());
+                    docRenderingContext.getBasedir(), document, docRenderingContext.getGenerator());
 
             // Create a sink for this subpage, based on this new document rendering context
             MultiPageSubSink sink = new MultiPageSubSink(outputDirectory, outputName, subSinkContext);
