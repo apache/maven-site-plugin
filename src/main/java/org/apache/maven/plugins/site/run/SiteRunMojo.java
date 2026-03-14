@@ -138,16 +138,17 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
 
         List<Locale> localesList = getLocales();
         webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
-
+        Locale rootLocale = getRootLocale(localesList);
+        webapp.setAttribute(DoxiaFilter.ROOT_LOCALE_KEY, rootLocale);
         try {
             Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
 
             for (Locale locale : localesList) {
-                SiteRenderingContext i18nContext = createSiteRenderingContext(locale);
+                SiteRenderingContext i18nContext = createSiteRenderingContext(locale, rootLocale);
                 i18nContext.setInputEncoding(getInputEncoding());
                 i18nContext.setOutputEncoding(getOutputEncoding());
 
-                File outputDirectory = getOutputDirectory(locale);
+                File outputDirectory = getOutputDirectory(locale, rootLocale);
                 List<MavenReportExecution> reports = getReports(outputDirectory);
 
                 Map<String, DocumentRenderer> i18nDocuments = locateDocuments(i18nContext, reports, locale);
@@ -159,7 +160,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                     i18nDoxiaContexts.put("default", doxiaBean);
                 }
 
-                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+                if (!rootLocale.equals(locale)) {
                     siteRenderer.copyResources(i18nContext, new File(tempWebappDirectory, locale.toString()));
                 } else {
                     siteRenderer.copyResources(i18nContext, tempWebappDirectory);
@@ -173,9 +174,9 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         return webapp;
     }
 
-    private File getOutputDirectory(Locale locale) {
+    private File getOutputDirectory(Locale locale, Locale rootLocale) {
         File file;
-        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+        if (!locale.equals(rootLocale)) {
             file = new File(tempWebappDirectory, locale.toString());
         } else {
             file = tempWebappDirectory;
