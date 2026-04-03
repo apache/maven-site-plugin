@@ -132,6 +132,7 @@ public class SiteJarMojo extends SiteMojo {
     /**
      * @see org.apache.maven.plugin.Mojo#execute()
      */
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (skip) {
             getLog().info("maven.site.skip = true: Skipping jar generation");
