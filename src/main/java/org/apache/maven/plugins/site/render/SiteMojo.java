@@ -112,6 +112,8 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         try {
             List<Locale> localesList = getLocales();
 
+            Locale rootLocale = getRootLocale(localesList);
+
             for (Locale locale : localesList) {
                 getLog().info("Rendering site for "
                         + buffer().strong(
@@ -119,10 +121,10 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                                                 ? "locale '" + locale + "'"
                                                 : "default locale"))
                                 .build());
-                File outputDirectory = getOutputDirectory(locale);
+                File outputDirectory = getOutputDirectory(locale, rootLocale);
                 List<MavenReportExecution> reports =
                         generateReports ? getReports(outputDirectory) : Collections.emptyList();
-                renderLocale(locale, reports, localesList, outputDirectory);
+                renderLocale(locale, rootLocale, reports, localesList, outputDirectory);
             }
         } catch (RendererException e) {
             if (e.getCause() instanceof MavenReportException) {
@@ -136,9 +138,13 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
     }
 
     private void renderLocale(
-            Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales, File outputDirectory)
+            Locale locale,
+            Locale rootLocale,
+            List<MavenReportExecution> reports,
+            List<Locale> supportedLocales,
+            File outputDirectory)
             throws IOException, RendererException, MojoFailureException, MojoExecutionException {
-        SiteRenderingContext context = createSiteRenderingContext(locale);
+        SiteRenderingContext context = createSiteRenderingContext(locale, rootLocale);
         context.addSiteLocales(supportedLocales);
         context.setInputEncoding(getInputEncoding());
         context.setOutputEncoding(getOutputEncoding());
@@ -296,9 +302,9 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         }
     }
 
-    private File getOutputDirectory(Locale locale) {
+    private File getOutputDirectory(Locale locale, Locale rootLocale) {
         File file;
-        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+        if (!locale.equals(rootLocale)) {
             file = new File(outputDirectory, locale.toString());
         } else {
             file = outputDirectory;

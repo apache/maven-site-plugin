@@ -43,7 +43,6 @@ import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext.SiteDirectory;
-import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
@@ -278,7 +277,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         return reportingPlugins.toArray(new ReportPlugin[0]);
     }
 
-    protected SiteRenderingContext createSiteRenderingContext(Locale locale)
+    protected SiteRenderingContext createSiteRenderingContext(Locale locale, Locale rootLocale)
             throws MojoExecutionException, IOException, MojoFailureException {
         SiteModel siteModel = prepareSiteModel(locale);
         Map<String, Object> templateProperties = new HashMap<>();
@@ -320,7 +319,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         // Generate static site
         context.setRootDirectory(project.getBasedir());
-        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+        if (!locale.equals(rootLocale)) {
             context.addSiteDirectory(new SiteDirectory(new File(siteDirectory, locale.toString()), true));
             context.addSiteDirectory(new SiteDirectory(new File(generatedSiteDirectory, locale.toString()), false));
         } else {
@@ -334,7 +333,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         if (saveProcessedContent) {
             File processedDir = new File(generatedSiteDirectory, "processed");
-            if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+            if (!locale.equals(rootLocale)) {
                 context.setProcessedContentOutput(new File(processedDir, locale.toString()));
             } else {
                 context.setProcessedContentOutput(processedDir);
@@ -360,6 +359,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected Map<String, MavenReport> locateReports(
             List<MavenReportExecution> reports, Map<String, DocumentRenderer> documents, Locale locale) {
         Map<String, MavenReport> reportsByOutputName = new LinkedHashMap<>();
+        Locale rootLocale = getRootLocale(getLocales());
         for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
 
@@ -380,7 +380,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                         + filename + "\" already exists.");
             } else {
                 File localizedSiteDirectory;
-                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+                if (!locale.equals(rootLocale)) {
                     localizedSiteDirectory = new File(siteDirectory, locale.toString());
                 } else {
                     localizedSiteDirectory = siteDirectory;
@@ -445,9 +445,9 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         siteTool.populateReportsMenu(context.getSiteModel(), locale, categories);
         populateReportItems(context.getSiteModel(), locale, reportsByOutputName);
-
+        Locale rootLocale = getRootLocale(getLocales());
         File localizedSiteDirectory;
-        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+        if (!locale.equals(rootLocale)) {
             localizedSiteDirectory = new File(siteDirectory, locale.toString());
         } else {
             localizedSiteDirectory = siteDirectory;
