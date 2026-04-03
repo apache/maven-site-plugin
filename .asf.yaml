@@ -29,7 +29,7 @@ github:
     merge: false
     rebase: true
   protected_branches:
-    master: { }
+#    master: { }
     maven-site-plugin-3.x: { }
     maven-site-plugin-3.12.x: { }
   pull_requests:
