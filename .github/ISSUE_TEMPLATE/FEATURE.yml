@@ -14,15 +14,22 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-version: 2
-updates:
 
-  - package-ecosystem: "maven"
-    directory: "/"
-    schedule:
-      interval: "daily"
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
+name: Feature request
+description: File a proposal for new feature, improvement
+labels: ["enhancement"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this new feature, improvement proposal.
+
+  - type: textarea
+    id: message
+    attributes:
+      label: New feature, improvement proposal
+    validations:
+      required: true

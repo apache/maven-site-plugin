@@ -14,15 +14,35 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-version: 2
-updates:
 
-  - package-ecosystem: "maven"
-    directory: "/"
-    schedule:
-      interval: "daily"
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
+name: Bug Report
+description: File a bug report
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report.     
+
+        Simple fixes in single PRs do not require issues. 
+  
+        **Do you use the latest project version?**
+
+  - type: input
+    id: version
+    attributes:
+      label: Affected version
+    validations:
+      required: true
+
+  - type: textarea
+    id: message
+    attributes:
+      label: Bug description
+    validations:
+      required: true
+
+
