@@ -14,15 +14,14 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-version: 2
-updates:
 
-  - package-ecosystem: "maven"
-    directory: "/"
-    schedule:
-      interval: "daily"
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#configuring-the-template-chooser
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
+blank_issues_enabled: false
+
+contact_links:
+
+  - name: Project Mailing Lists
+    url: https://maven.apache.org/mailing-lists.html
+    about: Please ask a question or discuss here
+
