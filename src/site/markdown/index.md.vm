@@ -1,113 +1,73 @@
- ------
- Introduction
- ------
- Maria Odea Ching
- ------
- 2013-07-22
- ------
+---
+title: Introduction
+author: 
+  - Maria Odea Ching
+date: 2013-07-22
+---
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+<!-- Licensed to the Apache Software Foundation (ASF) under one-->
+<!-- or more contributor license agreements.  See the NOTICE file-->
+<!-- distributed with this work for additional information-->
+<!-- regarding copyright ownership.  The ASF licenses this file-->
+<!-- to you under the Apache License, Version 2.0 (the-->
+<!-- "License"); you may not use this file except in compliance-->
+<!-- with the License.  You may obtain a copy of the License at-->
+<!---->
+<!--   http://www.apache.org/licenses/LICENSE-2.0-->
+<!---->
+<!-- Unless required by applicable law or agreed to in writing,-->
+<!-- software distributed under the License is distributed on an-->
+<!-- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY-->
+<!-- KIND, either express or implied.  See the License for the-->
+<!-- specific language governing permissions and limitations-->
+<!-- under the License.-->
 
- ~~ NOTE: For help with the syntax of this file, see:
- ~~ http://maven.apache.org/doxia/references/apt-format.html
+# ${project.name}
 
+The Site Plugin is used to generate a site for the project. The generated site also includes the project&apos;s reports that were configured in the POM.
 
-${project.name}
+Please read the [migration guide](./migrate.html) if you want to upgrade from a previous version.
 
- The Site Plugin is used to generate a site for the project. The generated site also includes the project's reports
- that were configured in the POM.
- 
- Please read the {{{./migrate.html}migration guide}} if you want to upgrade from a previous version.
+#[[##]]# Goals Overview
 
-* Goals Overview
+The Site Plugin has seven goals:
 
-   The Site Plugin has seven goals:
+- [site:site](./site-mojo.html) is used generate a site for a single project. Note that links between module sites in a multi module build will **not** work, since local build directory structure doesn&apos;t match deployed site.
+- [site:deploy](./deploy-mojo.html) is used to deploy the generated site using Wagon supported protocol to the site URL specified in the `<distributionManagement>` section of the POM.
+- [site:run](./run-mojo.html) starts the site up, rendering documents as requested for faster editing. It uses Jetty as the web server.
+- [site:stage](./stage-mojo.html) generates a site in a local staging or mock directory based on the site URL specified in the `<distributionManagement>` section of the POM. It can be used to test that links between module sites in a multi module build work. This goal requires the site to already have been generated using the site goal, such as by calling `mvn site`.
+- [site:stage-deploy](./stage-deploy-mojo.html) deploys the generated site to a staging or mock directory to the site URL specified in the `<distributionManagement>` section of the POM.
+- [site:attach-descriptor](./attach-descriptor-mojo.html) adds the site descriptor \(`site.xml`\) to the list of files to be installed/deployed. For more references of the site descriptor, [here&apos;s a link](./examples/sitedescriptor.html).
+- [site:jar](./jar-mojo.html) bundles the site output into a JAR so that it can be deployed to a repository.
+- [site:effective-site](./effective-site-mojo.html) calculates the effective site descriptor, after inheritance and interpolation.
 
-   * {{{./site-mojo.html}site:site}} is used generate a site for a single project.
-     Note that links between module sites in a multi module build will <<not>> work, since local build directory structure
-     doesn't match deployed site.
+#[[##]]# Usage
 
-   * {{{./deploy-mojo.html}site:deploy}} is used to deploy the generated site using Wagon supported protocol to
-     the site URL specified in the <<<\<distributionManagement\>>>> section of the POM.
+General instructions on how to use the Site Plugin can be found on the [usage page](./usage.html). Some more specific use cases are described in the examples given below.
 
-   * {{{./run-mojo.html}site:run}} starts the site up, rendering documents as requested for faster editing. It uses Jetty
-     as the web server.
+In case you still have questions regarding the plugin&apos;s usage, please have a look at the [FAQ](./faq.html) and feel free to contact the [user mailing list](./mailing-lists.html). The posts to the mailing list are archived and could already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching the [mail archive](./mailing-lists.html).
 
-   * {{{./stage-mojo.html}site:stage}} generates a site in a local staging or mock directory based on the site URL
-     specified in the <<<\<distributionManagement\>>>> section of the POM. It can be used
-     to test that links between module sites in a multi module build work. This goal requires the site to already have been
-     generated using the site goal, such as by calling <<<mvn site>>>.
+If you feel like the plugin is missing a feature or has a defect, you can file a feature request or bug report in our [issue tracker](./issue-management.html). When creating a new issue, please provide a comprehensive description of your concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason, entire debug logs, POMs, or, most preferably, little demo projects attached to the issue are very much appreciated. Of course, patches are welcome, too. Contributors can check out the project from our [source repository](./scm.html) and will find supplementary information in the [guide to helping with Maven](/guides/development/guide-helping.html).
 
-   * {{{./stage-deploy-mojo.html}site:stage-deploy}} deploys the generated site to a staging or mock directory to the site
-     URL specified in the <<<\<distributionManagement\>>>> section of the POM.
+#[[##]]# Examples
 
-   * {{{./attach-descriptor-mojo.html}site:attach-descriptor}} adds the site descriptor (<<<site.xml>>>) to the list of
-     files to be installed/deployed. For more references of the site descriptor,
-     {{{./examples/sitedescriptor.html}here's a link}}.
+The following examples show how to use the Site Plugin in more advanced use cases:
 
-   * {{{./jar-mojo.html}site:jar}} bundles the site output into a JAR so that it can be deployed to a repository.
+- [Creating Content](./examples/creating-content.html)
+- [Configuring the Site Descriptor](./examples/sitedescriptor.html)
+- [Configuring Site Run](./examples/siterun.html)
+- [Excluding Document Formats](./examples/moduleexcludes.html)
 
-   * {{{./effective-site-mojo.html}site:effective-site}} calculates the effective site descriptor, after inheritance and
-     interpolation.
+#[[###]]# Reports
 
-* Usage
+- [Configuring Reports](./examples/configuring-reports.html)
+- [Reports Internationalization](./i18n.html)
 
-  General instructions on how to use the Site Plugin can be found on the {{{./usage.html}usage page}}. Some more
-  specific use cases are described in the examples given below.
+#[[###]]# Site Template
 
-  In case you still have questions regarding the plugin's usage, please have a look at the {{{./faq.html}FAQ}} and feel
-  free to contact the {{{./mailing-lists.html}user mailing list}}. The posts to the mailing list are archived and could
-  already contain the answer to your question as part of an older thread. Hence, it is also worth browsing/searching
-  the {{{./mailing-lists.html}mail archive}}.
+- [Creating Skins](./examples/creatingskins.html)
 
-  If you feel like the plugin is missing a feature or has a defect, you can file a feature request or bug report in our
-  {{{./issue-management.html}issue tracker}}. When creating a new issue, please provide a comprehensive description of your
-  concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason,
-  entire debug logs, POMs, or, most preferably, little demo projects attached to the issue are very much appreciated.
-  Of course, patches are welcome, too. Contributors can check out the project from our
-  {{{./scm.html}source repository}} and will find supplementary information in the
-  {{{/guides/development/guide-helping.html}guide to helping with Maven}}.
+#[[###]]# Deploying
 
-* Examples
-
-   The following examples show how to use the Site Plugin in more advanced use cases:
-
-   * {{{./examples/creating-content.html}Creating Content}}
-
-   * {{{./examples/sitedescriptor.html}Configuring the Site Descriptor}}
-
-   * {{{./examples/siterun.html}Configuring Site Run}}
-
-   * {{{./examples/moduleexcludes.html}Excluding Document Formats}}
-
-** Reports
-
-   * {{{./examples/configuring-reports.html}Configuring Reports}}
-
-   * {{{./i18n.html}Reports Internationalization}}
-
-** Site Template
-
-     * {{{./examples/creatingskins.html}Creating Skins}}
-
-** Deploying
-
-     * {{{./examples/adding-deploy-protocol.html}Adding a Protocol to Deploy the Site}}
-
-     * {{{./examples/site-deploy-to-sourceforge.net.html}Deploying to sourceforge.net}}
-
+- [Adding a Protocol to Deploy the Site](./examples/adding-deploy-protocol.html)
+- [Deploying to sourceforge.net](./examples/site-deploy-to-sourceforge.net.html)

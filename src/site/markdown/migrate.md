@@ -1,133 +1,88 @@
- ------
- Migrate
- ------
- Dennis Lundberg
- Hervé Boutemy
- ------
- 2016-04-09
- ------
+---
+title: Migrate
+author: 
+  - Dennis Lundberg
+  - Hervé Boutemy
+date: 2016-04-09
+---
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+<!-- Licensed to the Apache Software Foundation (ASF) under one-->
+<!-- or more contributor license agreements.  See the NOTICE file-->
+<!-- distributed with this work for additional information-->
+<!-- regarding copyright ownership.  The ASF licenses this file-->
+<!-- to you under the Apache License, Version 2.0 (the-->
+<!-- "License"); you may not use this file except in compliance-->
+<!-- with the License.  You may obtain a copy of the License at-->
+<!---->
+<!--   http://www.apache.org/licenses/LICENSE-2.0-->
+<!---->
+<!-- Unless required by applicable law or agreed to in writing,-->
+<!-- software distributed under the License is distributed on an-->
+<!-- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY-->
+<!-- KIND, either express or implied.  See the License for the-->
+<!-- specific language governing permissions and limitations-->
+<!-- under the License.-->
 
- ~~ NOTE: For help with the syntax of this file, see:
- ~~ http://maven.apache.org/doxia/references/apt-format.html
+# Migrate
 
+The Site Plugin has had a couple of upgrades that requires the user to make adjustments to their environment, documents or configuration. Below is a list of key changes and what updates you as a user need to be aware of: you can have a look at [history](./history.html) for precise details of internal components updates.
 
-Migrate
+## From 3\.4 to 3\.5\.1
 
-  The Site Plugin has had a couple of upgrades that requires the user to make
-  adjustments to their environment, documents or configuration. Below is a list
-  of key changes and what updates you as a user need to be aware of: you can have
-  a look at {{{./history.html} history}} for precise details of internal components updates.
+- Since [Velocity](http://velocity.apache.org) has been upgraded from version 1\.5 to version 1\.7, which changes escaping rules, you may need to update escape sequences in your `.vm` documents and/or skins. If you can&apos;t update content and/or skin immediately, you can manually downgrade Velocity version by configuring a dependency to Maven Site Plugin:
 
-* From 3.4 to 3.5.1
+    ```unknown
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.velocity</groupId>
+              <artifactId>velocity</artifactId>
+              <version>1.5</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+    ```
 
-  * Since {{{http://velocity.apache.org}Velocity}} has been upgraded from version 1.5 to version 1.7,
-  which changes escaping rules, you may need to update escape sequences in your <<<.vm>>> documents and/or skins.
-  If you can't update content and/or skin immediately, you can manually downgrade Velocity version by
-  configuring a dependency to Maven Site Plugin:
+- Site Decoration Model 1\.7\.0 has changed type for `head` and `footer` from `DOM` to `String`: if your `site.xml` \(or one parent\) contains XML content, you&apos;ll need to escape it, usually by adding `<![CDATA[` and `]]>` around the content:
 
-+-----------------+
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-site-plugin</artifactId>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.velocity</groupId>
-          <artifactId>velocity</artifactId>
-          <version>1.5</version>
-        </dependency>
-      </dependencies>
-    </plugin>
-+-----------------+
+    ```unknown
+    <project xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
+        <body>
+            <head>
+                <![CDATA[<anyHeadElement/>]]>
+            </head>
+            <footer>
+                <![CDATA[<anyFooterElement/>]]>
+            </footer>
+        ...
+        </body>
+    </project>
+    ```
 
-  * Site Decoration Model 1.7.0 has changed type for <<<head>>> and <<<footer>>> from <<<DOM>>> to <<<String>>>:
-  if your <<<site.xml>>> (or one parent) contains XML content, you'll need to escape it, usually by
-  adding <<<\<![CDATA[>>> and <<<]]\>>>> around the content:
+- Interpolation of `${project.*}` and `${*}` expressions in `site.xml` have changed to be consistent with equivalent feature in Maven `pom.xml`: interpolation is now done _after_ inheritance. For `site.xml`, this may lead to failures on urls \(often on `${project.url}` expression\), that are expected to be rebased during inheritance: a new _early interpolation_ feature has been added in Maven Site Plugin 3\.5\.1 throught `${this.*}` expressions \(see [ Doxia Integration Tools reference documentation](/doxia/doxia-sitetools/doxia-integration-tools/index.html)\). With this feature \(for example `${this.url}` or `${this.customProperty}` expressions\), you&apos;ll get former `site.xml` interpolation result.
 
-+-----------------+
-<project xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
-    <body>
-        <head>
-            <![CDATA[<anyHeadElement/>]]>
-        </head>
-        <footer>
-            <![CDATA[<anyFooterElement/>]]>
-        </footer>
-    ...
-    </body>
-</project>
-+-----------------+
+## From 2\.x to 3\.x
 
-  * Interpolation of <<<$\{project.*}>>> and <<<$\{*}>>> expressions in <<<site.xml>>> have changed to be
-  consistent with equivalent feature in Maven <<<pom.xml>>>: interpolation is now done <after> inheritance.
-  For <<<site.xml>>>, this may lead to failures on urls (often on <<<$\{project.url}>>> expression),
-  that are expected to be rebased during inheritance: a new <early interpolation> feature has been added
-  in Maven Site Plugin 3.5.1 throught <<<$\{this.*}>>> expressions (see
-  {{{/doxia/doxia-sitetools/doxia-integration-tools/index.html} Doxia Integration Tools reference documentation}}).
-  With this feature (for example <<<$\{this.url}>>> or <<<$\{this.customProperty}>>> expressions), you'll get
-  former <<<site.xml>>> interpolation result.
+- Version 3 of the plugin requires at least **Maven 2\.2\.0** to run.
+- If you use **Maven 3** please read the [Maven 3](./maven-3.html) guide about relevant issues.
 
-  []
+## From 2\.2\.x to 2\.3\.x
 
-* From 2.x to 3.x
+- The `site:stage` and `site:stage-deploy` goals have been decoupled from site generation. Executing these goals without generating the site first will lead to a build failure.
 
-  * Version 3 of the plugin requires at least <<Maven 2.2.0>> to run.
+## From 2\.1\.x to 2\.2\.x
 
-  * If you use <<Maven 3>> please read the {{{./maven-3.html}Maven 3}} guide about relevant issues.
+- The plugin now requires at least **Maven 2\.2\.0** to run, you cannot use it with older Maven versions.
+- The plugin now requires at least **Java 5** to run, you cannot use it with older Java versions.
 
-  []
+## From 2\.0\.x to 2\.1\.x
 
-* From 2.2.x to 2.3.x
-
-  * The <<<site:stage>>> and <<<site:stage-deploy>>> goals have been decoupled from site generation.
-  Executing these goals without generating the site first will lead to a build failure.
-
-  []
-
-* From 2.1.x to 2.2.x
-
-  * The plugin now requires at least <<Maven 2.2.0>> to run, you cannot use it
-  with older Maven versions.
-
-  * The plugin now requires at least <<Java 5>> to run, you cannot use it
-  with older Java versions.
-
-  []
-
-* From 2.0.x to 2.1.x
-
-  * The plugin now requires at least <<Maven 2.1>> to run, you cannot use it
-  with older Maven versions.
-
-  * The plugin has been upgraded to use <<Doxia 1.1>>, which has seen a lot of
-  major changes itself. If you experience unexpected behavior, please read these
-  resources:
-
-    * {{{/doxia/whatsnew-1.1.html}Doxia: what's new in 1.1?}}
-
-    * {{{/doxia/references/doxia-apt.html}Doxia: Enhancements to the APT format}}
-
-    * {{{/doxia/issues/index.html}Doxia: Issues & Gotchas}}
-
-    * {{{/doxia/faq.html}Doxia: Frequently Asked Questions}}
-
-    []
-
-  []
+- The plugin now requires at least **Maven 2\.1** to run, you cannot use it with older Maven versions.
+- The plugin has been upgraded to use **Doxia 1\.1**, which has seen a lot of major changes itself. If you experience unexpected behavior, please read these resources:
+    - [Doxia: what&apos;s new in 1\.1?](/doxia/whatsnew-1.1.html)
+    - [Doxia: Enhancements to the APT format](/doxia/references/doxia-apt.html)
+    - [Doxia: Issues &amp; Gotchas](/doxia/issues/index.html)
+    - [Doxia: Frequently Asked Questions](/doxia/faq.html)
