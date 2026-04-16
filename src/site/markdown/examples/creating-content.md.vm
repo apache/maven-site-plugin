@@ -1,44 +1,38 @@
- ------
- Creating Content
- ------
- Dennis Lundberg
- ------
- 2009-03-08
- ------
+---
+title: Creating Content
+author: 
+  - Dennis Lundberg
+date: 2009-03-08
+---
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+<!-- Licensed to the Apache Software Foundation (ASF) under one-->
+<!-- or more contributor license agreements.  See the NOTICE file-->
+<!-- distributed with this work for additional information-->
+<!-- regarding copyright ownership.  The ASF licenses this file-->
+<!-- to you under the Apache License, Version 2.0 (the-->
+<!-- "License"); you may not use this file except in compliance-->
+<!-- with the License.  You may obtain a copy of the License at-->
+<!---->
+<!--   http://www.apache.org/licenses/LICENSE-2.0-->
+<!---->
+<!-- Unless required by applicable law or agreed to in writing,-->
+<!-- software distributed under the License is distributed on an-->
+<!-- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY-->
+<!-- KIND, either express or implied.  See the License for the-->
+<!-- specific language governing permissions and limitations-->
+<!-- under the License.-->
 
- ~~ NOTE: For help with the syntax of this file, see:
- ~~ http://maven.apache.org/doxia/references/apt-format.html
+# Creating Content
 
+Now it&apos;s time to create some content for your site. Site content is structured by format, as several formats are supported.
 
-Creating Content
+<!-- MACRO{toc|section=1|fromDepth=2|toDepth=3} -->
 
-  Now it's time to create some content for your site. Site
-  content is structured by format, as several formats are supported.
+#[[##]]# Documentation formats
 
-%{toc|section=1|fromDepth=2|toDepth=3}
+Here&apos;s an example of a directory structure for a site:
 
-* Documentation formats
-
-  Here's an example of a directory structure for a site:
-
--------------------
+```
 +- src/
    +- site/
       +- apt/
@@ -58,51 +52,20 @@ Creating Content
       |  +- xhtml-content.xhtml
       |
       +- site.xml
---------------------
+```
 
- The <<<$\{basedir\}/src/site>>> directory which contains a site
- descriptor along with various directories corresponding to the supported
- document formats. Let's take a look at examples of the various document
- formats.
+The `${basedir}/src/site` directory which contains a site descriptor along with various directories corresponding to the supported document formats. Let&apos;s take a look at examples of the various document formats.
 
-  * APT:
-  The APT format ("Almost Plain Text") is a wiki-like format that allows you to
-  write simple, structured documents (like this one) very quickly. A full
-  reference of the
-  {{{/doxia/references/apt-format.html} APT Format}} is
-  available.
+- APT: The APT format \(&quot;Almost Plain Text&quot;\) is a wiki-like format that allows you to write simple, structured documents \(like this one\) very quickly. A full reference of the [ APT Format](/doxia/references/apt-format.html) is available.
+- FML: The FML format is the FAQ format. This is the same that were used in Maven 1\.x. For more info about the [FML Format](/doxia/references/fml-format.html) check the [Doxia](/doxia/) site.
+- XDoc: The XDoc format is the same as [ used in Maven 1\.x](/maven-1.x/using/site.html). A reference for the [ XDoc Format](/doxia/references/xdoc-format.html) is available.
+- Markdown \(since maven-site-plugin 3\.3\): [ Markdown](http://en.wikipedia.org/wiki/Markdown) is a widespread Markup language.
 
-  * FML:
-  The FML format is the FAQ format. This is the same that were used in Maven 1.x.
-  For more info about the
-  {{{/doxia/references/fml-format.html}FML Format}}
-  check the {{{/doxia/}Doxia}} site.
+Other formats are available, but the above four are recognized by default by the site plugin. Any other document format for which a Doxia parser exists can be used as well \(see the list of [Doxia Markup Languages](/doxia/references/index.html)\), but in this case you need to add the corresponding Doxia dependency to your site plugin configuration, as explained in the last paragraph. Note that Doxia also supports several output formats, the site plugin only creates XHTML5\.
 
-  * XDoc:
-  The XDoc format is the same as
-  {{{/maven-1.x/using/site.html} used in Maven 1.x}}.
-  A reference for the
-  {{{/doxia/references/xdoc-format.html} XDoc Format}}
-  is available.
+Note that all of the above is optional - just one index file is required in one of the input trees. The paths under each format will be merged together to form the root directory of the site. After running &apos;`mvn site:site`&apos; on the example above you will end up with this in your `target` directory:
 
-  * Markdown (since maven-site-plugin 3.3):
-  {{{http://en.wikipedia.org/wiki/Markdown} Markdown}} is a widespread Markup language.
-
-  []
-
-  Other formats are available, but the above four are recognized by default by the site plugin.
-  Any other document format for which a Doxia parser exists can be used as well (see the list of
-  {{{/doxia/references/index.html}Doxia Markup Languages}}),
-  but in this case you need to add the corresponding Doxia dependency to your site plugin configuration, as
-  explained in the last paragraph.
-  Note that Doxia also supports several output formats, the site plugin only creates XHTML5.
-
-  Note that all of the above is optional - just one index file is required in
-  one of the input trees. The paths under each format will be merged together
-  to form the root directory of the site. After running '<<<mvn site:site>>>'
-  on the example above you will end up with this in your <<<target>>> directory:
-
--------------------
+```
 +- target/
    +- site/
       +- css/
@@ -114,27 +77,17 @@ Creating Content
       +- faq.html
       +- other.html
       +- xhtml-content.html
---------------------
+```
 
-  This means that <<</src/site/apt/index.apt>>> will be available in the site as
-  <<</index.html>>>. So, in {{{./sitedescriptor.html} your site descriptor}} you
-  might link to <<</index.html>>> and <<</other.html>>>, where the source of
-  these two files would be <<</src/site/apt/index.apt>>> and
-  <<</src/site/xdoc/other.xdoc>>>.
+This means that `/src/site/apt/index.apt` will be available in the site as `/index.html`. So, in [ your site descriptor](./sitedescriptor.html) you might link to `/index.html` and `/other.html`, where the source of these two files would be `/src/site/apt/index.apt` and `/src/site/xdoc/other.xdoc`.
 
-  The <<<css>>> and <<<images>>> directories contain stylesheets and images
-  from the skin being used. You can read more about skins in
-  {{{./sitedescriptor.html}the site descriptor documentation}}.
+The `css` and `images` directories contain stylesheets and images from the skin being used. You can read more about skins in [the site descriptor documentation](./sitedescriptor.html).
 
+#[[##]]# Adding Extra Resources
 
-* Adding Extra Resources
+You can add any arbitrary resource to your site by including them in a `resources` directory as shown below. Additional CSS files can be picked up when they are placed in the `css` directory within the `resources` directory.
 
-  You can add any arbitrary resource to your site by including them in a
-  <<<resources>>> directory as shown below. Additional CSS files can be picked
-  up when they are placed in the <<<css>>> directory within the <<<resources>>>
-  directory.
-
--------------------
+```
 +- src/
    +- site/
       +- resources/
@@ -143,67 +96,45 @@ Creating Content
          |
          +- images/
             +- pic1.jpg
---------------------
+```
 
-  The file <<<site.css>>> will be added to the default XHTML5 output, so it can
-  be used to adjust the default Maven stylesheets if desired.
+The file `site.css` will be added to the default XHTML5 output, so it can be used to adjust the default Maven stylesheets if desired.
 
-  The file <<<pic1.jpg>>> will be available via a relative reference to the
-  <<<images>>> directory from any page in your site.
+The file `pic1.jpg` will be available via a relative reference to the `images` directory from any page in your site.
 
+#[[##]]# Filtering
 
-* Filtering
+To filter properties into any supported documentation format, add a `.vm` extension to the filename.
 
-  To filter properties into any supported documentation format, add a <<<.vm>>>
-  extension to the filename.
+For example, the module for the Maven website contains a [`content/xdoc/download.xml.vm`](http://svn.apache.org/repos/asf/maven/site/trunk/content/xdoc/download.xml.vm) file, which uses the expression `${currentStableVersion}` to filter in a property set in the [POM](http://svn.apache.org/repos/asf/maven/site/trunk/pom.xml).
 
-  For example, the module for the Maven website contains a
-  {{{http://svn.apache.org/repos/asf/maven/site/trunk/content/xdoc/download.xml.vm}<<<content/xdoc/download.xml.vm>>>}}
-  file, which uses the expression <<<$\{currentStableVersion}>>> to filter in a
-  property set in the
-  {{{http://svn.apache.org/repos/asf/maven/site/trunk/pom.xml}POM}}.
+**Note:** [Apache Velocity](http://velocity.apache.org/) is used to apply the filtering.
 
-  <<Note:>> {{{http://velocity.apache.org/}Apache Velocity}} is used to apply the filtering.
+Some properties are defined by default: see [Doxia Site Renderer&apos;s Velocity processing reference](/doxia/doxia-sitetools/doxia-site-renderer/#Velocity_processing) for more information. For a complete usage overview, see Velocity&apos;s [user guide](http://velocity.apache.org/engine/devel/user-guide.html).
 
-  Some properties are defined by default: see
-  {{{/doxia/doxia-sitetools/doxia-site-renderer/#Velocity_processing} Doxia Site Renderer's Velocity processing reference}}
-  for more information. For a complete usage overview, see Velocity's {{{http://velocity.apache.org/engine/devel/user-guide.html}user guide}}.
+Since version 3\.5, you can save processed markup by setting `saveProcessedContent` to `true`: see [corresponding documentation](../site-mojo.html#saveProcessedContent) for more details.
 
-  Since version 3.5, you can save processed markup by setting <<<saveProcessedContent>>> to <<<true>>>: see
-  {{{../site-mojo.html#saveProcessedContent}corresponding documentation}} for more details.
+#[[###]]# Common Issues and Workarounds
 
-** Common Issues and Workarounds
+- **dotted properties**:
 
-  * <<dotted properties>>:
+    As Velocity uses a dot-notation to traverse beans, you **cannot** use dotted properties defined in `<properties>` directly.
 
-  As Velocity uses a dot-notation to traverse beans, you <<cannot>>
-  use dotted properties defined in <<<\<properties\>>>> directly.
+    It is generally advised to access properties by using the `${esc.d}context` tool: e.g., with `${esc.d}context.get("my.property")`.
 
-  It is generally advised to access properties by using the <<<${esc.d}context>>> tool:
-  e.g., with <<<${esc.d}context.get("my.property")>>>.
+- **Markdown conflict with Velocity on #[[##]]# syntax**:
 
-  * <<Markdown conflict with Velocity on ${esc.h}${esc.h} syntax>>:
+    Since `#[[##]]#` denotes a [single line comment](https://velocity.apache.org/engine/2.3/vtl-reference.html#single-line-comments) in Velocity, Markdown headers using this syntax are suppressed from generated content.
 
-  Since <<<${esc.h}${esc.h}>>> denotes a
-  {{{https://velocity.apache.org/engine/2.3/vtl-reference.html#single-line-comments}single line comment}} in Velocity,
-  Markdown headers using this syntax are suppressed from generated content.
+    You can use [unparsed content syntax](https://velocity.apache.org/engine/2.3/vtl-reference.html#unparsed-content) `${esc.h}[[#[[##]]#]]${esc.h}` or [escape tool](https://velocity.apache.org/tools/3.1/apidocs/org/apache/velocity/tools/generic/EscapeTool.html) like `${esc.d}{esc.h}${esc.d}{esc.h}`.
 
-  You can use {{{https://velocity.apache.org/engine/2.3/vtl-reference.html#unparsed-content}unparsed content syntax}}
-  <<<${esc.h}[[#[[##]]#]]${esc.h}>>> or
-  {{{https://velocity.apache.org/tools/3.1/apidocs/org/apache/velocity/tools/generic/EscapeTool.html}escape tool}}
-  like <<<${esc.d}\{esc.h\}${esc.d}\{esc.h\}>>>.
+#[[##]]# Internationalization
 
-* Internationalization
+Internationalization in Maven is very simple, as long as the reports you are using have that particular locale defined. For an overview of supported languages and instructions on how to add further languages, please see the related article [ Internationalization](../i18n.html).
 
-  Internationalization in Maven is very simple, as long as the reports you are
-  using have that particular locale defined. For an overview of supported
-  languages and instructions on how to add further languages, please see the
-  related article {{{../i18n.html} Internationalization}}.
+To enable multiple locales, or languages, add a configuration similar to the following to your POM:
 
-  To enable multiple locales, or languages, add a configuration similar to the
-  following to your POM:
-
-+------------------
+```unknown
 <project>
   ...
   <build>
@@ -220,18 +151,13 @@ Creating Content
   </build>
   ...
 </project>
-+------------------
+```
 
-  This will generate both a default (<<<Locale#ROOT>>>) and a French version of the site.
-  It will be generated at the root of the site, with a copy of the French
-  translation of the site in the <<<fr/>>> subdirectory.
+This will generate both a default \(`Locale#ROOT`\) and a French version of the site. It will be generated at the root of the site, with a copy of the French translation of the site in the `fr/` subdirectory.
 
-  To add your own content for that translation instead of using the default,
-  create a subdirectory with that locale's name in your site directory and
-  create a new site descriptor with the name of the locale in the file name.
-  For example:
+To add your own content for that translation instead of using the default, create a subdirectory with that locale&apos;s name in your site directory and create a new site descriptor with the name of the locale in the file name. For example:
 
--------------------
+```
 +- src/
    +- site/
       +- apt/
@@ -243,7 +169,7 @@ Creating Content
       |
       +- site.xml         (Default site descriptor)
       +- site_fr.xml      (French site descriptor)
---------------------
+```
 
-  With one site descriptor per language, the translated site(s) can evolve
-  independently.
+With one site descriptor per language, the translated site\(s\) can evolve independently.
+

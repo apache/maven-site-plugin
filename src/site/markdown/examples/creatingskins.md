@@ -1,87 +1,65 @@
- ------
- Creating Skins
- ------
- Brett Porter
- Dennis Lundberg
- ------
- 2009-03-08
- ------
+---
+title: Creating Skins
+author: 
+  - Brett Porter
+  - Dennis Lundberg
+date: 2009-03-08
+---
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+<!-- Licensed to the Apache Software Foundation (ASF) under one-->
+<!-- or more contributor license agreements.  See the NOTICE file-->
+<!-- distributed with this work for additional information-->
+<!-- regarding copyright ownership.  The ASF licenses this file-->
+<!-- to you under the Apache License, Version 2.0 (the-->
+<!-- "License"); you may not use this file except in compliance-->
+<!-- with the License.  You may obtain a copy of the License at-->
+<!---->
+<!--   http://www.apache.org/licenses/LICENSE-2.0-->
+<!---->
+<!-- Unless required by applicable law or agreed to in writing,-->
+<!-- software distributed under the License is distributed on an-->
+<!-- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY-->
+<!-- KIND, either express or implied.  See the License for the-->
+<!-- specific language governing permissions and limitations-->
+<!-- under the License.-->
 
- ~~ NOTE: For help with the syntax of this file, see:
- ~~ http://maven.apache.org/doxia/references/apt-format.html
+# Creating Skins
 
+If you want to tune the way your site looks, you can use a custom skin to provide your own CSS stylesheets. If that is still not enough, you can even tweak the output templates that Maven uses to generate the site documentation.
 
-Creating Skins
+For an in-depth discussion of site customization, please have a look at [ Maven: The Complete Reference, Chapter 10\. Site Generation](http://books.sonatype.com/mvnref-book/reference/site-generation.html) provided by Sonatype.
 
-  If you want to tune the way your site looks, you can use a custom skin to
-  provide your own CSS stylesheets. If that is still not enough, you can even tweak
-  the output templates that Maven uses to generate the site documentation.
+## About
 
-  For an in-depth discussion of site customization, please have a look at
-  {{{http://books.sonatype.com/mvnref-book/reference/site-generation.html} Maven: The Complete Reference, Chapter 10. Site Generation}}
-  provided by Sonatype.
+A skin contains the following elements:
 
-* About
+- Resources to copy into each project \(such as images used by the CSS\)
+- A couple of CSS files, containing the visual styling
+- A Velocity template in `/META-INF/maven/site.vm` for an alternate HTML rendering of the site.
+- Since Maven Site Plugin 3\.5, an optional [skin descriptor](/doxia/doxia-sitetools/doxia-skin-model/index.html) in `/META-INF/maven/skin.xml` containing meta-data about the skin
+## Maven Site Skin Archetype
 
-  A skin contains the following elements:
+[`maven-archetype-site-skin` archetype](/archetypes/maven-archetype-site-skin/) can be used to easily create a complete new skin project, including its dedicated `/META-INF/maven/site.vm`.
 
-    * Resources to copy into each project (such as images used by the CSS)
+## Building
 
-    * A couple of CSS files, containing the visual styling
+A skin is built like any other JAR - with a `packaging` of `jar`. No additional plugins are needed.
 
-    * A Velocity template in <<</META-INF/maven/site.vm>>> for an alternate HTML rendering of the site.
+Resources should be put in the normal `src/main/resources` directory.
 
-    * Since Maven Site Plugin 3.5, an optional {{{/doxia/doxia-sitetools/doxia-skin-model/index.html}skin descriptor}}
-    in <<</META-INF/maven/skin.xml>>> containing meta-data about the skin
+Once the JAR is built and deployed, it can be used by projects.
 
-* Maven Site Skin Archetype
+## Constructing the CSS
 
-  {{{/archetypes/maven-archetype-site-skin/}<<<maven-archetype-site-skin>>> archetype}} can be used to easily create a complete
-  new skin project, including its dedicated <<</META-INF/maven/site.vm>>>.
+<!-- @todo More information is needed here on constructing the CSS-->
 
-* Building
+If you are interested in constructing your own CSS, it is recommended that you copy the file [`maven-theme.css`](https://github.com/apache/maven-default-skin/tree/master/src/main/resources/css/maven-theme.css) from Maven Default Skin and modify it to suit your needs.
 
-  A skin is built like any other JAR - with a <<<packaging>>> of <<<jar>>>.
-  No additional plugins are needed.
+## Customizing the HTML Output with a Velocity Template
 
-  Resources should be put in the normal <<<src/main/resources>>> directory.
+The format of the Velocity template is currently out of scope for this document.
 
-  Once the JAR is built and deployed, it can be used by projects.
+For more information about how to write Velocity templates see the [Velocity User Guide](https://velocity.apache.org/engine/2.3/user-guide.html) and [Velocity Template Language Reference Guide](https://velocity.apache.org/engine/2.3/vtl-reference.html).
 
-* Constructing the CSS
+Notice that Velocity 2\.3 is used since Maven Site Plugin 4\.0\.0-M2, but version 1\.7 was used previously.
 
-~~ @todo More information is needed here on constructing the CSS
-
-  If you are interested in constructing your own CSS, it is recommended that
-  you copy the file
-  {{{https://github.com/apache/maven-default-skin/tree/master/src/main/resources/css/maven-theme.css}<<<maven-theme.css>>>}}
-  from Maven Default Skin and modify it to suit your needs.
-
-* Customizing the HTML Output with a Velocity Template
-
-  The format of the Velocity template is currently out of scope for this
-  document.
-
-  For more information about how to write Velocity templates see the
-  {{{https://velocity.apache.org/engine/2.3/user-guide.html}Velocity User Guide}}
-  and
-  {{{https://velocity.apache.org/engine/2.3/vtl-reference.html}Velocity Template Language Reference Guide}}.
-
-  Notice that Velocity 2.3 is used since Maven Site Plugin 4.0.0-M2, but version 1.7 was used previously.

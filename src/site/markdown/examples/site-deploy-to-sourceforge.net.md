@@ -1,79 +1,66 @@
- ------
- Deploying to sourceforge.net
- ------
- Barrie Treloar
- ------
- 2009-03-08
- ------
-
-~~ Licensed to the Apache Software Foundation (ASF) under one
-~~ or more contributor license agreements.  See the NOTICE file
-~~ distributed with this work for additional information
-~~ regarding copyright ownership.  The ASF licenses this file
-~~ to you under the Apache License, Version 2.0 (the
-~~ "License"); you may not use this file except in compliance
-~~ with the License.  You may obtain a copy of the License at
-~~
-~~   http://www.apache.org/licenses/LICENSE-2.0
-~~
-~~ Unless required by applicable law or agreed to in writing,
-~~ software distributed under the License is distributed on an
-~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-~~ KIND, either express or implied.  See the License for the
-~~ specific language governing permissions and limitations
-~~ under the License.
-
-~~ NOTE: For help with the syntax of this file, see:
-~~ http://maven.apache.org/doxia/references/apt-format.html
-
-Deploying to sourceforge.net
-
-  This {{{http://sourceforge.net/community/forum/topic.php?id=3518&page}sf.net announcement}} indicates that the
-  new hostname for project web file management has changed. The new hostname for file management is:
-  <<<web.sourceforge.net>>> and
-  the new accepted methods are: SFTP, SCP, rsync over SSH. Unfortunately <<<web.sourceforge.net>>> also has a restricted
-  shell environment and does not allow remote commands to be executed.
-
-  In addition shell access to <<<shell.sourceforge.net>>> now requires the creation of a shell before it can be
-  accessed.
-
-  Both of these mean that if you attempt to deploy your site without following these steps you will get an error.
-
-* Quick Start
-
-  * Create a shell on <<<shell.sourceforge.net>>> with your username and project group
-
 ---
-ssh -t <username>,<project name>@shell.sf.net create
+title: Deploying to sourceforge.net
+author: 
+  - Barrie Treloar
+date: 2009-03-08
 ---
 
-  * Use <<<shell.sourceforge.net>>> (instead of <<<web.sourceforge.net>>>) in you site URL
+<!-- Licensed to the Apache Software Foundation (ASF) under one-->
+<!-- or more contributor license agreements.  See the NOTICE file-->
+<!-- distributed with this work for additional information-->
+<!-- regarding copyright ownership.  The ASF licenses this file-->
+<!-- to you under the Apache License, Version 2.0 (the-->
+<!-- "License"); you may not use this file except in compliance-->
+<!-- with the License.  You may obtain a copy of the License at-->
+<!---->
+<!--   http://www.apache.org/licenses/LICENSE-2.0-->
+<!---->
+<!-- Unless required by applicable law or agreed to in writing,-->
+<!-- software distributed under the License is distributed on an-->
+<!-- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY-->
+<!-- KIND, either express or implied.  See the License for the-->
+<!-- specific language governing permissions and limitations-->
+<!-- under the License.-->
 
-+---
-  ...
-  <distributionManagement>
-    ...
-    <site>
-      <id>your_project.sf.net</id>
-      <url>scp://shell.sourceforge.net/home/project-web/your_project/htdocs</url>
-    </site>
-  </distributionManagement>
-+---
+# Deploying to sourceforge.net
 
-  * Run <<<mvn site:deploy>>>
+This [sf.net announcement](http://sourceforge.net/community/forum/topic.php?id=3518&page) indicates that the new hostname for project web file management has changed. The new hostname for file management is: `web.sourceforge.net` and the new accepted methods are: SFTP, SCP, rsync over SSH. Unfortunately `web.sourceforge.net` also has a restricted shell environment and does not allow remote commands to be executed.
 
-  * Verify that you have a working web site by opening a browser to <<<http://your_project.sf.net>>>
+In addition shell access to `shell.sourceforge.net` now requires the creation of a shell before it can be accessed.
 
-  []
+Both of these mean that if you attempt to deploy your site without following these steps you will get an error.
 
-* Detailed Instructions with Examples
+## Quick Start
 
-  The following examples will use the <<<qifcon>>> project and the user <<<barrie>>>.
-  Substitute these with your own project name and user name.
+- Create a shell on `shell.sourceforge.net` with your username and project group
 
-** Create a shell on <<<shell.sourceforge.net>>> with your username and project group
+    ```
+    ssh -t <username>,<project name>@shell.sf.net create
+    ```
 
------
+- Use `shell.sourceforge.net` \(instead of `web.sourceforge.net`\) in you site URL
+
+    ```unknown
+      ...
+      <distributionManagement>
+        ...
+        <site>
+          <id>your_project.sf.net</id>
+          <url>scp://shell.sourceforge.net/home/project-web/your_project/htdocs</url>
+        </site>
+      </distributionManagement>
+    ```
+
+- Run `mvn site:deploy`
+- Verify that you have a working web site by opening a browser to `http://your_project.sf.net`
+
+## Detailed Instructions with Examples
+
+The following examples will use the `qifcon` project and the user `barrie`. Substitute these with your own project name and user name.
+
+### Create a shell on `shell.sourceforge.net` with your username and project group
+
+```
 $ ssh -t barrie,qifcon@shell.sf.net create
 barrie,qifcon@shell.sf.net's password:
 
@@ -86,13 +73,13 @@ Use the "shutdown" command to destroy the shell before the time limit.
 For path information and login help, type "sf-help".
 
 -bash-3.2$
------
+```
 
-** Use <<<shell.sourceforge.net>>> (instead of <<<web.sourceforge.net>>>) in you site URL
+### Use `shell.sourceforge.net` \(instead of `web.sourceforge.net`\) in you site URL
 
-  In the project's <<<pom.xml>>>:
+In the project&apos;s `pom.xml`:
 
-+---+
+```unknown
   ...
   <distributionManagement>
     ...
@@ -102,11 +89,11 @@ For path information and login help, type "sf-help".
     </site>
   </distributionManagement>
   ...
-+---+
+```
 
-** Run <<<mvn site:deploy>>>
+### Run `mvn site:deploy`
 
------
+```
 C:\ide\Finance\qifcon\site>mvn site:deploy
 [INFO] Scanning for projects...
 [INFO] Searching repository for plugin with prefix: 'site'.
@@ -135,105 +122,99 @@ scp://shell.sourceforge.net/home/groups/q/qi/qifcon/htdocs - Session: Disconnect
 [INFO] Finished at: Sat Nov 08 08:09:40 CST 2008
 [INFO] Final Memory: 6M/11M
 [INFO] ------------------------------------------------------------------------
------
+```
 
-** Verify you have a working web site
+### Verify you have a working web site
 
-  Open a browser to <<<http://qifcon.sf.net>>>.
+Open a browser to `http://qifcon.sf.net`.
 
+## Troubleshooting
 
-* Troubleshooting
+### Trying to deploy to `web.sourceforge.net`
 
-** Trying to deploy to <<<web.sourceforge.net>>>
+The accepted methods for deploying to `web.sourceforge.net` are: SFTP, SCP, rsync over SSH.
 
-  The accepted methods for deploying to <<<web.sourceforge.net>>> are: SFTP, SCP, rsync over SSH.
+This will mean that the zipped archive created by Wagon can be uploaded, but the commands that Wagon uses to create directories, unzip and chmod files will fail silently.
 
-  This will mean that the zipped archive created by Wagon can be uploaded, but the commands
-  that Wagon uses to create directories, unzip and chmod files will fail silently.
+There are two types of failures:
 
-  There are two types of failures:
+1. No such file or directory
 
-  [[1]] No such file or directory
-
-    This will occur if you are deploying into a subdirectory that does not yet exist.
-    The cause is that the <<<mkdir>>> command has failed silently.
+    This will occur if you are deploying into a subdirectory that does not yet exist. The cause is that the `mkdir` command has failed silently.
 
     An example of this error:
 
------
-C:\ide\Finance\qifcon\site>mvn site:deploy
-[INFO] Scanning for projects...
-[INFO] Searching repository for plugin with prefix: 'site'.
-[INFO] ------------------------------------------------------------------------
-[INFO] Building QifCon
-[INFO]    task-segment: [site:deploy]
-[INFO] ------------------------------------------------------------------------
-[INFO] [site:deploy]
-Using private key: C:\Projects\putty\barrie@sourceforge-net.openssh
-scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Opened
-Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
-Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
-Executing command: scp -t /home/groups/q/qi/qifcon/htdocs/site/./wagon12736.zip
-scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnecting
-scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnected
-[INFO] ------------------------------------------------------------------------
-[ERROR] BUILD ERROR
-[INFO] ------------------------------------------------------------------------
-[INFO] Error uploading site
+    ```
+    C:\ide\Finance\qifcon\site>mvn site:deploy
+    [INFO] Scanning for projects...
+    [INFO] Searching repository for plugin with prefix: 'site'.
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Building QifCon
+    [INFO]    task-segment: [site:deploy]
+    [INFO] ------------------------------------------------------------------------
+    [INFO] [site:deploy]
+    Using private key: C:\Projects\putty\barrie@sourceforge-net.openssh
+    scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Opened
+    Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
+    Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
+    Executing command: scp -t /home/groups/q/qi/qifcon/htdocs/site/./wagon12736.zip
+    scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnecting
+    scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnected
+    [INFO] ------------------------------------------------------------------------
+    [ERROR] BUILD ERROR
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Error uploading site
+    
+    Embedded error: SCP terminated with error: 'scp: /home/groups/q/qi/qifcon/htdocs/site/./wagon12736.zip: No such file or directory'
+    [INFO] ------------------------------------------------------------------------
+    [INFO] For more information, run Maven with the -e switch
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time: 15 seconds
+    [INFO] Finished at: Sat Nov 08 07:27:34 CST 2008
+    [INFO] Final Memory: 6M/11M
+    [INFO] ------------------------------------------------------------------------
+    ```
 
-Embedded error: SCP terminated with error: 'scp: /home/groups/q/qi/qifcon/htdocs/site/./wagon12736.zip: No such file or directory'
-[INFO] ------------------------------------------------------------------------
-[INFO] For more information, run Maven with the -e switch
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 15 seconds
-[INFO] Finished at: Sat Nov 08 07:27:34 CST 2008
-[INFO] Final Memory: 6M/11M
-[INFO] ------------------------------------------------------------------------
------
+1. Unable to unzip the zip file created by Wagon
 
-  [[2]] Unable to unzip the zip file created by Wagon
+    If the directory exists then the Wagon zip file can be uploaded and `site:deploy` will appear to succeed, but the web site will not work since the Wagon zip file can not be unzipped.
 
-    If the directory exists then the Wagon zip file can be uploaded and <<<site:deploy>>> will appear to
-    succeed, but the web site will not work since the Wagon zip file can not be unzipped.
+    ```
+    C:\ide\Finance\qifcon\site>mvn site:deploy
+    [INFO] Scanning for projects...
+    [INFO] Searching repository for plugin with prefix: 'site'.
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Building QifCon
+    [INFO]    task-segment: [site:deploy]
+    [INFO] ------------------------------------------------------------------------
+    [INFO] [site:deploy]
+    Using private key: C:\Projects\putty\barrie@sourceforge-net.openssh
+    scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Opened
+    Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
+    Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
+    Executing command: scp -t /home/groups/q/qi/qifcon/htdocs/site/./wagon21889.zip
+    Uploading: ./wagon21889.zip to scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site
+    
+    ########################
+    Transfer finished. 95979 bytes copied in 1.872 seconds
+    Executing command: cd /home/groups/q/qi/qifcon/htdocs/site/.; unzip -q -o wagon21889.zip; rm -f wagon21889.zip
+    Executing command: chmod -Rf g+w,a+rX /home/groups/q/qi/qifcon/htdocs/site
+    scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnecting
+    scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnected
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESSFUL
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time: 18 seconds
+    [INFO] Finished at: Sat Nov 08 07:51:04 CST 2008
+    [INFO] Final Memory: 6M/11M
+    [INFO] ------------------------------------------------------------------------
+    ```
 
------
-C:\ide\Finance\qifcon\site>mvn site:deploy
-[INFO] Scanning for projects...
-[INFO] Searching repository for plugin with prefix: 'site'.
-[INFO] ------------------------------------------------------------------------
-[INFO] Building QifCon
-[INFO]    task-segment: [site:deploy]
-[INFO] ------------------------------------------------------------------------
-[INFO] [site:deploy]
-Using private key: C:\Projects\putty\barrie@sourceforge-net.openssh
-scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Opened
-Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
-Executing command: mkdir -p /home/groups/q/qi/qifcon/htdocs/site/.
-Executing command: scp -t /home/groups/q/qi/qifcon/htdocs/site/./wagon21889.zip
-Uploading: ./wagon21889.zip to scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site
+### No shell created error
 
-########################
-Transfer finished. 95979 bytes copied in 1.872 seconds
-Executing command: cd /home/groups/q/qi/qifcon/htdocs/site/.; unzip -q -o wagon21889.zip; rm -f wagon21889.zip
-Executing command: chmod -Rf g+w,a+rX /home/groups/q/qi/qifcon/htdocs/site
-scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnecting
-scp://web.sourceforge.net/home/groups/q/qi/qifcon/htdocs/site - Session: Disconnected
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESSFUL
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 18 seconds
-[INFO] Finished at: Sat Nov 08 07:51:04 CST 2008
-[INFO] Final Memory: 6M/11M
-[INFO] ------------------------------------------------------------------------
------
+If you try to run `ssh` without first creating a shell you will get the following error:
 
-  []
-
-** No shell created error
-
-  If you try to run <<<ssh>>> without first creating a shell you will get the following error:
-
------
+```
 $ ssh barrie,qifcon@shell.sf.net
 barrie,qifcon@shell.sf.net's password:
 Logging in to your interactive shell...
@@ -250,4 +231,5 @@ ready for use.  An example create that enters the shell when ready:
     ssh -t USER,PROJECT@shell.sourceforge.net create
 
 Connection to shell.sf.net closed.
------
+```
+

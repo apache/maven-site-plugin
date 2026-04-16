@@ -1,148 +1,85 @@
- ------
- Maven Site Plugin History
- ------
- Hervé Boutemy
- ------
- 2018-01-20
- ------
+---
+title: Maven Site Plugin History
+author: 
+  - Hervé Boutemy
+date: 2018-01-20
+---
 
- ~~ Licensed to the Apache Software Foundation (ASF) under one
- ~~ or more contributor license agreements.  See the NOTICE file
- ~~ distributed with this work for additional information
- ~~ regarding copyright ownership.  The ASF licenses this file
- ~~ to you under the Apache License, Version 2.0 (the
- ~~ "License"); you may not use this file except in compliance
- ~~ with the License.  You may obtain a copy of the License at
- ~~
- ~~   http://www.apache.org/licenses/LICENSE-2.0
- ~~
- ~~ Unless required by applicable law or agreed to in writing,
- ~~ software distributed under the License is distributed on an
- ~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~~ KIND, either express or implied.  See the License for the
- ~~ specific language governing permissions and limitations
- ~~ under the License.
+<!-- Licensed to the Apache Software Foundation (ASF) under one-->
+<!-- or more contributor license agreements.  See the NOTICE file-->
+<!-- distributed with this work for additional information-->
+<!-- regarding copyright ownership.  The ASF licenses this file-->
+<!-- to you under the Apache License, Version 2.0 (the-->
+<!-- "License"); you may not use this file except in compliance-->
+<!-- with the License.  You may obtain a copy of the License at-->
+<!---->
+<!--   http://www.apache.org/licenses/LICENSE-2.0-->
+<!---->
+<!-- Unless required by applicable law or agreed to in writing,-->
+<!-- software distributed under the License is distributed on an-->
+<!-- "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY-->
+<!-- KIND, either express or implied.  See the License for the-->
+<!-- specific language governing permissions and limitations-->
+<!-- under the License.-->
 
- ~~ NOTE: For help with the syntax of this file, see:
- ~~ http://maven.apache.org/doxia/references/apt-format.html
+# Maven Site Plugin History
 
+## Overview
 
-Maven Site Plugin History
+Maven Site Plugin uses:
 
-* Overview
+- [Doxia](/doxia/) to parse [many markup languages](/doxia/references/) then render HTML: see [Creating Content](./examples/creating-content.html) documentation for more details \(particularly which markups are enabled by default in maven-site-plugin and how to add one\),
+- [Doxia Sitetools - Site Renderer](/doxia/doxia-sitetools/doxia-site-renderer/) to integrate document content into a template packaged as a skin: see [Creating Skins](./examples/creatingskins.html) documentation for more details,
+- [Maven Reporting Executor](/shared/maven-reporting-exec/) to manage reports execution \(since Maven 3; reports execution was managed by Maven itself in Maven 2: see old [Using maven-site-plugin with Maven3](https://maven.apache.org/plugins-archives/maven-site-plugin-3.9.0/maven-3.html) documentation for more details\).
+![Developer Overview](developer-overview.png)
 
- Maven Site Plugin uses:
+## Maven Site Plugin vs Doxia vs Doxia Sitetools
 
-  * {{{/doxia/}Doxia}} to parse {{{/doxia/references/}many markup languages}} then render HTML: see
-  {{{./examples/creating-content.html}Creating Content}} documentation for more details (particularly which markups
-  are enabled by default in maven-site-plugin and how to add one),
+Given this layered approach, rendering issues reported to [MSITE Maven Site Plugin issue tracker](https://issues.apache.org/jira/projects/MSITE) are often translated to [Doxia](https://issues.apache.org/jira/projects/DOXIA) or [Doxia Sitetools](https://issues.apache.org/jira/projects/DOXIASITETOOLS) issues. Any issues fixed in Doxia or Doxia Sitetools are inherited to the maven-site-plugin once its dependency is updated.
 
-  * {{{/doxia/doxia-sitetools/doxia-site-renderer/}Doxia Sitetools - Site Renderer}} to integrate document content into
-  a template packaged as a skin: see {{{./examples/creatingskins.html}Creating Skins}} documentation for more details,
+Knowing which version of maven-site-plugin uses which version of Doxia or Doxia Sitetools is useful to choose to which version to upgrade maven-site-plugin to benefit from a fix: this is the basis for the [simplified migration guide](./migrate.html).
 
-  * {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} to manage reports execution (since Maven 3; reports execution
-  was managed by Maven itself in Maven 2: see old {{{https://maven.apache.org/plugins-archives/maven-site-plugin-3.9.0/maven-3.html}Using maven-site-plugin with Maven3}} documentation for
-  more details).
+|release date|maven-site-plugin|[Doxia](/doxia/)|[Doxia Sitetools](/doxia/doxia-sitetools/)|[Maven Reporting Executor](/shared/maven-reporting-exec/)|minimum Java|minimum Maven|Comment|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|2024-10|3\.21\.0|2\.0\.0|2\.0\.0|2\.0\.0|||Doxia 2\.0\.0|
+|2024-08|3\.20\.0|||||||
+|2024-07|4\.0\.0-M16|||||||
+|2024-05|4\.0\.0-M15|2\.0\.0-M12|2\.0\.0-M19|2\.0\.0-M14|8|3\.6\.3||
+|2024-05|4\.0\.0-M14|2\.0\.0-M10|2\.0\.0-M18|2\.0\.0-M13||||
+|2023-12|4\.0\.0-M13|||||||
+|2023-11|4\.0\.0-M12||2\.0\.0-M16|2\.0\.0-M12||||
+|2023-10|4\.0\.0-M11|2\.0\.0-M8|2\.0\.0-M13|2\.0\.0-M11||||
+|2023-10|4\.0\.0-M10||2\.0\.0-M12|2\.0\.0-M10||||
+|2023-07|4\.0\.0-M9|2\.0\.0-M7|2\.0\.0-M11|2\.0\.0-M9||||
+|2023-04|4\.0\.0-M8||2\.0\.0-M10|2\.0\.0-M8||||
+|2023-04|4\.0\.0-M7||2\.0\.0-M7|2\.0\.0-M6||||
+|2023-03|4\.0\.0-M6|2\.0\.0-M6|=|2\.0\.0-M5||||
+|2023-02|4\.0\.0-M5|2\.0\.0-M5|=|2\.0\.0-M4||||
+|2022-12|4\.0\.0-M4|2\.0\.0-M4|=|2\.0\.0-M3||||
+|2022-07|4\.0\.0-M3|||2\.0\.0-M2||||
+|2022-06|4\.0\.0-M2|2\.0\.0-M3|=|||||
+|2022-05|4\.0\.0-M1|2\.0\.0-M2|=|2\.0\.0-M1|8|3\.2\.5|Test of Doxia 2\.0\.0 milestones|
+|2022-07|3\.12\.1|||||||
+|2022-04|3\.12\.0||||8|3\.2\.5||
+|2022-02|3\.11\.0|||1\.6\.0||||
+|2021-12|3\.10\.0|1\.11\.1|=|||||
+|2020-06|3\.9\.1||1\.9\.2|1\.5\.1|7|3\.0\.5||
+|2020-03|3\.9\.0|1\.9\.1|1\.9\.2|||||
+|2019-07|3\.8\.2|1\.9|1\.9\.1||7|3\.0|addition of confluence/docbook/twiki support by default|
+|2018-04|3\.7\.1||1\.8\.1|||||
+|2017-12|3\.7|1\.8|=|1\.4|||Markdown parser/HTML renderer [changed](/doxia/doxia/doxia-modules/doxia-module-markdown/)|
+|2016-11|3\.6||1\.7\.4|1\.3||||
+|2016-04|3\.5\.1||1\.7\.1|||||
+|2016-02|3\.5|1\.7|=||6|2\.2\.1|`site.xml`&apos;s `head` and `footer` changed from DOM to String, requiring CDATA|
+|2014-07|3\.4|1\.6|=|1\.2|||Reports inherit configuration from pluginManagement|
+|2013-05|3\.3|1\.4|=|1\.1|||addition of Markdown support by default in maven-site-plugin|
+|2012-10|3\.2||=|||||
+|2012-04|3\.1|1\.3|=|1\.0\.2|5|2\.2\.1||
+|2011-08|3\.0|1\.2|=|1\.0\.1|5|2\.2\.0|first maven-site-plugin that renders reports with Maven 3|
+|2012-04|2\.4|1\.3|=|||||
+|2011-05|2\.3|1\.2|=|||||
+|2010-11|2\.2|1\.1\.4|=|||||
+|2010-06|2\.1\.1|1\.1\.3|=|||||
+|2009-12|2\.1|1\.1\.2|=|||||
+|2009-03|2\.0|1\.0|=|||||
 
-  []
-
-[developer-overview.png] Developer Overview
-
-* Maven Site Plugin vs Doxia vs Doxia Sitetools
-
-  Given this layered approach, rendering issues reported to {{{https://issues.apache.org/jira/projects/MSITE}MSITE Maven Site Plugin issue tracker}}
-  are often translated to {{{https://issues.apache.org/jira/projects/DOXIA}Doxia}} or
-  {{{https://issues.apache.org/jira/projects/DOXIASITETOOLS}Doxia Sitetools}} issues. Any issues fixed in
-  Doxia or Doxia Sitetools are inherited to the maven-site-plugin once its dependency is updated.
-
-  Knowing which version of
-  maven-site-plugin uses which version of Doxia or Doxia Sitetools is useful to choose to which version to upgrade
-  maven-site-plugin to benefit from a fix: this is the basis for the  {{{./migrate.html}simplified migration guide}}.
-
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-|| release date || maven-site-plugin || {{{/doxia/}Doxia}} || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} || minimum Java || minimum  Maven || Comment
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2024-10         | 3.21.0             | 2.0.0  | 2.0.0            | 2.0.0              |   |       | Doxia 2.0.0
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2024-08         | 3.20.0             |        |                  |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2024-07         | 4.0.0-M16          |        |                  |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2024-05         | 4.0.0-M15          | 2.0.0-M12 | 2.0.0-M19     | 2.0.0-M14          | 8 | 3.6.3 |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2024-05         | 4.0.0-M14          | 2.0.0-M10 | 2.0.0-M18     | 2.0.0-M13
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-12         | 4.0.0-M13          |        |                  |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-11         | 4.0.0-M12          |        | 2.0.0-M16        | 2.0.0-M12
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-10         | 4.0.0-M11          | 2.0.0-M8 | 2.0.0-M13      | 2.0.0-M11
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-10         | 4.0.0-M10          |        | 2.0.0-M12        | 2.0.0-M10
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-07         | 4.0.0-M9           | 2.0.0-M7 | 2.0.0-M11      | 2.0.0-M9
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-04         | 4.0.0-M8           |        | 2.0.0-M10        | 2.0.0-M8
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-04         | 4.0.0-M7           |        | 2.0.0-M7         | 2.0.0-M6
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-03         | 4.0.0-M6           | 2.0.0-M6 | =              | 2.0.0-M5
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2023-02         | 4.0.0-M5           | 2.0.0-M5 | =              | 2.0.0-M4
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-12         | 4.0.0-M4           | 2.0.0-M4 | =              | 2.0.0-M3
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-07         | 4.0.0-M3           |        |                  | 2.0.0-M2
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-06         | 4.0.0-M2           | 2.0.0-M3 | =              |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-05         | 4.0.0-M1           | 2.0.0-M2 | =              | 2.0.0-M1           | 8 | 3.2.5 | Test of Doxia 2.0.0 milestones
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-|| release date || maven-site-plugin || {{{/doxia/}Doxia}} 1 || {{{/doxia/doxia-sitetools/}Doxia Sitetools}} 1 || {{{/shared/maven-reporting-exec/}Maven Reporting Executor}} 1 || minimum Java || minimum  Maven || Comment
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-07         | 3.12.1             |        |                  |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-04         | 3.12.0             |        |                  |                    | 8 | 3.2.5 |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2022-02         | 3.11.0             |        |                  | 1.6.0              |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2021-12         | 3.10.0             | 1.11.1 | =                |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2020-06         | 3.9.1              |        | 1.9.2            | 1.5.1              | 7 | 3.0.5 |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2020-03         | 3.9.0              | 1.9.1  | 1.9.2            |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2019-07         | 3.8.2              | 1.9    | 1.9.1            |                    | 7 | 3.0   | addition of confluence/docbook/twiki support by default
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2018-04         | 3.7.1              |        | 1.8.1            |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2017-12         | 3.7                | 1.8    | =                | 1.4                |   |       | Markdown parser/HTML renderer {{{/doxia/doxia/doxia-modules/doxia-module-markdown/}changed}}
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2016-11         | 3.6                |        | 1.7.4            | 1.3
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2016-04         | 3.5.1              |        | 1.7.1            |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2016-02         | 3.5                | 1.7    | =                |                    | 6 | 2.2.1 | <<<site.xml>>>'s <<<head>>> and <<<footer>>> changed from DOM to String, requiring CDATA
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2014-07         | 3.4                | 1.6    | =                | 1.2                |   |       | Reports inherit configuration from pluginManagement
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2013-05         | 3.3                | 1.4    | =                | 1.1                |   |       | addition of Markdown support by default in maven-site-plugin
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2012-10         | 3.2                |        | =                |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2012-04         | 3.1                | 1.3    | =                | 1.0.2              | 5 | 2.2.1 |
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2011-08         | 3.0                | 1.2    | =                | 1.0.1              | 5 | 2.2.0 | first maven-site-plugin that renders reports with Maven 3
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2012-04         | 2.4                | 1.3    | =
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2011-05         | 2.3                | 1.2    | =
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2010-11         | 2.2                | 1.1.4  | =
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2010-06         | 2.1.1              | 1.1.3  | =
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2009-12         | 2.1                | 1.1.2  | =
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
-| 2009-03         | 2.0                | 1.0    | =
-*-----------------*--------------------*--------*------------------*--------------------*---*-------*---------------*
