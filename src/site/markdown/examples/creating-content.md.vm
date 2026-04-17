@@ -102,13 +102,13 @@ The file `site.css` will be added to the default XHTML5 output, so it can be use
 
 The file `pic1.jpg` will be available via a relative reference to the `images` directory from any page in your site.
 
-#[[##]]# Filtering
+#[[##]]# Templating
 
-To filter properties into any supported documentation format, add a `.vm` extension to the filename.
+To add simple logic to your content (for example to filter properties) add a `.vm` extension to the filename (this is valid for all supported formats).
 
-For example, the module for the Maven website contains a [`content/xdoc/download.xml.vm`](http://svn.apache.org/repos/asf/maven/site/trunk/content/xdoc/download.xml.vm) file, which uses the expression `${currentStableVersion}` to filter in a property set in the [POM](http://svn.apache.org/repos/asf/maven/site/trunk/pom.xml).
+**Note:** [Apache Velocity](http://velocity.apache.org/) is used as templating engine.
 
-**Note:** [Apache Velocity](http://velocity.apache.org/) is used to apply the filtering.
+For example, the module for the Maven website contains a [`content/xdoc/download.xml.vm`](https://github.com/apache/maven-site/blob/master/content/xdoc/download.xml.vm) file, which uses the expression `${currentStableVersion}` to filter in a property set in the [POM](http://svn.apache.org/repos/asf/maven/site/trunk/pom.xml).
 
 Some properties are defined by default: see [Doxia Site Renderer&apos;s Velocity processing reference](/doxia/doxia-sitetools/doxia-site-renderer/#Velocity_processing) for more information. For a complete usage overview, see Velocity&apos;s [user guide](http://velocity.apache.org/engine/devel/user-guide.html).
 
