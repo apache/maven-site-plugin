@@ -59,8 +59,6 @@ import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
 
-import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
-
 /**
  * Base class for site rendering mojos.
  *
@@ -300,10 +298,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         try {
             Artifact skinArtifact =
                     siteTool.getSkinArtifactFromRepository(repoSession, remoteProjectRepositories, siteModel.getSkin());
-
-            getLog().info(buffer().a("Rendering content with ")
-                    .strong(skinArtifact.getId() + " skin")
-                    .build());
 
             context = siteRenderer.createContextForSkin(
                     skinArtifact, templateProperties, siteModel, project.getName(), locale);

@@ -54,8 +54,9 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
  * It uses Jetty as the web server.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- *
+ * @deprecated It is recommended to use the {@link org.apache.maven.plugins.site.render.HotReloadMojo} instead and point browser directly to the file system instead of relying on a local server.
  */
+@Deprecated
 @Mojo(name = "run", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true)
 public class SiteRunMojo extends AbstractSiteRenderingMojo {
     /**

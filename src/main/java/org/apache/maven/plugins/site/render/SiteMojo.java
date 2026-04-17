@@ -153,6 +153,10 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         // copy resources
         siteRenderer.copyResources(context, outputDirectory);
 
+        getLog().info(buffer().a("Rendering content with ")
+                .strong(context.getSkin().getId() + " skin")
+                .build());
+
         // and finally render Doxia documents
         List<DocumentRenderer> nonDoxiaDocuments = renderDoxiaDocuments(documents.values(), context, outputDirectory);
 

@@ -323,6 +323,11 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-interactivity-api</artifactId>
+      <version>1.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
     </dependency>
     <dependency>
