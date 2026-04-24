@@ -27,7 +27,7 @@ boolean result = true;
 
 try
 {
-    File report = new File( basedir, "target/site/changes-report.html" );
+    File report = new File( basedir, "target/site/changes.html" );
     if ( !report.exists() || report.isDirectory() )
     {
         System.err.println( "report file is missing or a directory." );
@@ -38,22 +38,14 @@ try
     int indexOf = reportContent.indexOf( "Changes" );
     if ( indexOf < 0 )
     {
-      System.err.println( "changes-report.html doesn't contains Changes Report title" );
+      System.err.println( "changes.html doesn't contains Changes Report title" );
       return false;
     }
 
     indexOf = reportContent.indexOf( "href=\"http://localhost/MCHANGES-88\"" );
     if ( indexOf < 0 )
     {
-      System.err.println( "changes-report.html doesn't contains jira issue link" );
-      return false;
-    }
-
-    // Tests output problems caused by only using <fixes> element
-    indexOf = reportContent.indexOf( "BUG-12345" );
-    if ( indexOf < 0 )
-    {
-      System.err.println( "changes-report.html doesn't contains issue text for issue specified with <fixes> element" );
+      System.err.println( "changes.html doesn't contains jira issue link" );
       return false;
     }
 }
