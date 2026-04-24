@@ -17,9 +17,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<document xmlns="http://maven.apache.org/changes/1.0.0"
+<document xmlns="http://maven.apache.org/changes/2.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/changes/2.0.0 http://maven.apache.org/xsd/changes-2.0.0.xsd">
   <properties>
     <title>Changes report Project</title>
     <author email="zloug@toto.com">Mr Zloug</author>
@@ -32,33 +32,18 @@ under the License.
       <action dev="me" type="fix" issue="MCHANGES-88">
         Enable retrieving component-specific issues.
       </action>
-      <action dev="jruiz" type="remove">
+      <action dev="me" type="fix" issue="1212" system="qc">
+        Enable retrieving component-specific issues.
+      </action>      
+      <action dev="jruiz" type="remove" due-to="others" due-to-email="users@users.com">
         The element type " link " must be terminated by the matching end-tag.
         Deleted the erroneous code.
-        <fixes issue="MCHANGES-1"/>
-        <fixes issue="JIRA-12"/>
-        <dueto name="John Doe" email="john@doe.com"/>
-        <dueto name="Jane Doe"/>
-      </action>
-      <action dev="you" type="update" system="bugzilla">
-        Handle different issue systems.
-        <fixes issue="BUG-12345"/>
-        <dueto name="John Doe" email="john@doe.com"/>
-      </action>
-      <action dev="him" type="update">
-        Updated dependencies.
-        <dueto name="John Doe" email="john@doe.com"/>
-        <dueto name="Jane Doe"/>
       </action>
     </release>
 
     <release version="1.0" date="2005-01-01" description="First release">
-      <action dev="me" type="update" issue="MCHANGES-47" due-to="others" due-to-email="others@users.com">
+      <action dev="me" type="update" date="2008-01-01">
         Uploaded documentation on how to use the plugin.
-        <fixes issue="MCHANGES-88"/>
-        <fixes issue="JIRA-YYY"/>
-        <dueto name="John Doe" email="john@doe.com"/>
-        <dueto name="Jane Doe"/>
       </action>
     </release>
   </body>
