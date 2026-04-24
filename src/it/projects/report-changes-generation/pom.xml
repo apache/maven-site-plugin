@@ -47,7 +47,7 @@
   </issueManagement>
 
   <properties>
-    <changesPluginVersion>2.12.1</changesPluginVersion>
+    <changesPluginVersion>3.0.0-M3</changesPluginVersion>
   </properties>
 
   <build>
