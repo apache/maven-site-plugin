@@ -50,7 +50,7 @@ import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 
 /**
- * Renders the site and watches for Doxia source file changes, re-rendering on modification.
+ * Renders the site and watches for Doxia source file changes, re-rendering it modification.
  * The goal blocks until the user presses Enter.
  * <p>
  * This is intended for use during site development to provide immediate feedback on changes.
@@ -58,8 +58,8 @@ import org.codehaus.plexus.components.interactivity.PrompterException;
  *
  * @since 3.22.0
  */
-@Mojo(name = "hot-reload", requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true, aggregator = true)
-public class HotReloadMojo extends AbstractSiteRenderingMojo {
+@Mojo(name = "auto-refresh", requiresDependencyResolution = ResolutionScope.TEST, threadSafe = true, aggregator = true)
+public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
 
     /**
      * Directory where the project sites and report distributions will be generated (as html/css/...).
@@ -70,7 +70,7 @@ public class HotReloadMojo extends AbstractSiteRenderingMojo {
     /**
      * Polling interval in milliseconds for watching file changes.
      */
-    @Parameter(property = "hot-reload.interval", defaultValue = "1000")
+    @Parameter(property = "auto-refresh.interval", defaultValue = "1000")
     private long pollingInterval;
 
     /**
@@ -80,7 +80,7 @@ public class HotReloadMojo extends AbstractSiteRenderingMojo {
     private boolean generateReports;
 
     @Inject
-    public HotReloadMojo(
+    public AutoRefreshMojo(
             SiteModelInheritanceAssembler assembler,
             SiteRenderer siteRenderer,
             MavenReportExecutor mavenReportExecutor,
