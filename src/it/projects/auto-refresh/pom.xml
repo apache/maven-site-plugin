@@ -24,11 +24,11 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>
-  <artifactId>hot-reload</artifactId>
+  <artifactId>auto-refresh</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>hot-reload IT</name>
-  <description>Integration test for the hot-reload goal</description>
+  <name>auto-refresh IT</name>
+  <description>Integration test for the auto-refresh goal</description>
 
   <properties>
     <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
