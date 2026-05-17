@@ -229,7 +229,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
                 }
             }
         } catch (Exception e) {
-            getLog().error("Error handling deletion", e);
+            getLog().error("Error handling deletion of Doxia source file \"" + deletedFile + "\"", e);
         }
     }
 
@@ -269,7 +269,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
             }
             getLog().info("Re-render complete.");
         } catch (Exception e) {
-            getLog().error("Error re-rendering site", e);
+            getLog().error("Error re-rendering Doxia source file \"" + changedFile + "\"", e);
         }
     }
 
