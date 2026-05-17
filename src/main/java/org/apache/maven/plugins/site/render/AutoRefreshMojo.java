@@ -50,7 +50,8 @@ import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.components.interactivity.PrompterException;
 
 /**
- * Renders the site and watches for Doxia source file changes, re-rendering it modification.
+ * Renders the site once completely and then watches for Doxia source file changes.
+ * After modifications the affected file(s) are re-rendered and the output files updated.
  * The goal blocks until the user presses Enter.
  * <p>
  * This is intended for use during site development to provide immediate feedback on changes.
