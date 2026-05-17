@@ -154,10 +154,10 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
 
             if (!mavenSession.getSettings().isInteractiveMode()) {
                 getLog().info(
-                                "Hot-reload: non-interactive mode detected, skipping file watching after initial render.");
+                                "Auto-refresh: non-interactive mode detected, skipping file watching after initial render.");
             } else {
                 monitor.start();
-                getLog().info("Hot-reload is active. Press Enter to stop...");
+                getLog().info("Auto-refresh is active. Press Enter to stop...");
 
                 try {
                     prompter.prompt(System.lineSeparator());
@@ -166,7 +166,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
                 }
 
                 monitor.stop();
-                getLog().info("Hot-reload stopped.");
+                getLog().info("Auto-refresh stopped.");
             }
         } catch (RendererException e) {
             throw new MojoExecutionException("Failed to render site", e);
@@ -229,7 +229,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
                 }
             }
         } catch (Exception e) {
-            getLog().error("Error handling deletion: " + e.getMessage(), e);
+            getLog().error("Error handling deletion", e);
         }
     }
 
@@ -269,7 +269,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
             }
             getLog().info("Re-render complete.");
         } catch (Exception e) {
-            getLog().error("Error re-rendering site: " + e.getMessage(), e);
+            getLog().error("Error re-rendering site", e);
         }
     }
 
