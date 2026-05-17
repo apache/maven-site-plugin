@@ -24,7 +24,7 @@ under the License.
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-plugins</artifactId>
     <!-- When updating this, also update the parent version of IT "full_reporting" -->
-    <version>47</version>
+    <version>48</version>
     <relativePath />
   </parent>
 
