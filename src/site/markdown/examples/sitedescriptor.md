@@ -123,8 +123,9 @@ You can add your own &quot;Powered by&quot; logo to your site. To do this, you a
 <site>
   ...
   <poweredBy>
-    <logo name="Maven" href="https://maven.apache.org/"
-          img="https://maven.apache.org/images/logos/maven-feather.png"/>
+    <logo href="https://maven.apache.org/">
+        <image src="https://maven.apache.org/images/logos/maven-feather.png"alt="Maven"/>
+    </logo>
   </poweredBy>
   ...
 </site>
