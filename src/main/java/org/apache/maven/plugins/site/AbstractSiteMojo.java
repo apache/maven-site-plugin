@@ -73,8 +73,4 @@ public abstract class AbstractSiteMojo extends AbstractMojo {
     protected List<Locale> getLocales() {
         return siteTool.getSiteLocales(locales);
     }
-
-    protected Locale getRootLocale(List<Locale> locales) {
-        return locales.contains(SiteTool.DEFAULT_LOCALE) ? SiteTool.DEFAULT_LOCALE : locales.get(0);
-    }
 }

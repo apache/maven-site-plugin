@@ -70,7 +70,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>@projectInfoReportsPluginVersion@</version>
+        <version>@version.maven-project-info-reports-plugin@</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -82,7 +82,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>@javadocPluginVersion@</version>
+        <version>@version.maven-javadoc-plugin@</version>
         <reportSets>
           <reportSet>
             <reports>

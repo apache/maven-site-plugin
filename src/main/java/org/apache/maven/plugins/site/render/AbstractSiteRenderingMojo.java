@@ -43,6 +43,7 @@ import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext.SiteDirectory;
+import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
@@ -57,8 +58,6 @@ import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
-
-import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
 /**
  * Base class for site rendering mojos.
@@ -99,12 +98,21 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * build time mean).
      * This directory is expected to have the same structure as <code>siteDirectory</code>
      * (ie. one directory per Doxia-source-supported markup types).
-     *
-     * todo should we deprecate in favour of reports directly using Doxia Sink API, without this Doxia source
-     * intermediate step?
+     * This is never editable.
      */
     @Parameter(alias = "workingDirectory", defaultValue = "${project.build.directory}/generated-site")
     protected File generatedSiteDirectory;
+
+    /**
+     * Optional list of source directories to be used instead of {@link #siteDirectory} for rendering edit URLs.
+     * This is only used for documents rendered from {@link #siteDirectory} but not for those rendered from {@link AbstractSiteRenderingMojo#generatedSiteDirectory}.
+     * as the latter ones are always considered non-editable.
+     *
+     * The first directory containing a document with the given relative path is used for generating the URL (the same relative path as the document has to {@link #siteDirectory}).
+     * @since 3.22.0
+     */
+    @Parameter
+    protected File[] alternativeSiteSourceDirectories;
 
     /**
      * The current Maven session.
@@ -277,7 +285,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         return reportingPlugins.toArray(new ReportPlugin[0]);
     }
 
-    protected SiteRenderingContext createSiteRenderingContext(Locale locale, Locale rootLocale)
+    protected SiteRenderingContext createSiteRenderingContext(Locale locale)
             throws MojoExecutionException, IOException, MojoFailureException {
         SiteModel siteModel = prepareSiteModel(locale);
         Map<String, Object> templateProperties = new HashMap<>();
@@ -300,10 +308,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             Artifact skinArtifact =
                     siteTool.getSkinArtifactFromRepository(repoSession, remoteProjectRepositories, siteModel.getSkin());
 
-            getLog().info(buffer().a("Rendering content with ")
-                    .strong(skinArtifact.getId() + " skin")
-                    .build());
-
             context = siteRenderer.createContextForSkin(
                     skinArtifact, templateProperties, siteModel, project.getName(), locale);
         } catch (SiteToolException e) {
@@ -319,13 +323,20 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         // Generate static site
         context.setRootDirectory(project.getBasedir());
-        if (!locale.equals(rootLocale)) {
-            context.addSiteDirectory(new SiteDirectory(new File(siteDirectory, locale.toString()), true));
+        final SiteDirectory mainSiteDirectory;
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
+            mainSiteDirectory = new SiteDirectory(new File(this.siteDirectory, locale.toString()), true);
             context.addSiteDirectory(new SiteDirectory(new File(generatedSiteDirectory, locale.toString()), false));
         } else {
-            context.addSiteDirectory(new SiteDirectory(siteDirectory, true));
+            mainSiteDirectory = new SiteDirectory(siteDirectory, true);
             context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
         }
+        if (alternativeSiteSourceDirectories != null) {
+            for (File additionalSiteSourceDirectory : alternativeSiteSourceDirectories) {
+                mainSiteDirectory.addAlternativeEditableSourceDirectory(additionalSiteSourceDirectory);
+            }
+        }
+        context.addSiteDirectory(mainSiteDirectory);
 
         if (moduleExcludes != null) {
             context.setModuleExcludes(moduleExcludes);
@@ -333,7 +344,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         if (saveProcessedContent) {
             File processedDir = new File(generatedSiteDirectory, "processed");
-            if (!locale.equals(rootLocale)) {
+            if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                 context.setProcessedContentOutput(new File(processedDir, locale.toString()));
             } else {
                 context.setProcessedContentOutput(processedDir);
@@ -359,7 +370,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     protected Map<String, MavenReport> locateReports(
             List<MavenReportExecution> reports, Map<String, DocumentRenderer> documents, Locale locale) {
         Map<String, MavenReport> reportsByOutputName = new LinkedHashMap<>();
-        Locale rootLocale = getRootLocale(getLocales());
         for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
 
@@ -380,7 +390,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                         + filename + "\" already exists.");
             } else {
                 File localizedSiteDirectory;
-                if (!locale.equals(rootLocale)) {
+                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     localizedSiteDirectory = new File(siteDirectory, locale.toString());
                 } else {
                     localizedSiteDirectory = siteDirectory;
@@ -445,9 +455,9 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
         siteTool.populateReportsMenu(context.getSiteModel(), locale, categories);
         populateReportItems(context.getSiteModel(), locale, reportsByOutputName);
-        Locale rootLocale = getRootLocale(getLocales());
+
         File localizedSiteDirectory;
-        if (!locale.equals(rootLocale)) {
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             localizedSiteDirectory = new File(siteDirectory, locale.toString());
         } else {
             localizedSiteDirectory = siteDirectory;

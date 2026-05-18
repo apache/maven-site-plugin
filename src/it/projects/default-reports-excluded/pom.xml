@@ -31,10 +31,6 @@ under the License.
   <description>check that MPIR is enabled by default even if not configured</description>
   <url>http://maven.apache.org</url>
 
-  <properties>
-    <projectInfoReportsPluginVersion>@projectInfoReportsPluginVersion@</projectInfoReportsPluginVersion>
-  </properties>
-
   <build>
     <plugins>
       <plugin>
@@ -45,7 +41,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>@projectInfoReportsPluginVersion@</version>
+        <version>@version.maven-project-info-reports-plugin@</version>
       </plugin>
     </plugins>
   </build>

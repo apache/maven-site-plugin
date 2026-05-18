@@ -89,8 +89,6 @@ public class DoxiaFilter implements Filter {
         i18nDoxiaContexts = (Map<String, DoxiaBean>) servletContext.getAttribute(I18N_DOXIA_CONTEXTS_KEY);
 
         localesList = (List<Locale>) servletContext.getAttribute(LOCALES_LIST_KEY);
-
-        rootLocale = (Locale) servletContext.getAttribute(ROOT_LOCALE_KEY);
     }
 
     /**
@@ -191,7 +189,7 @@ public class DoxiaFilter implements Filter {
                     ? docRenderer.getRenderingContext().getGenerator()
                     : docRenderer.getClass().getName();
         }
-        String localizedPath = !locale.equals(rootLocale.toString()) ? locale + "/" + path : path;
+        String localizedPath = !locale.equals(SiteTool.DEFAULT_LOCALE.toString()) ? locale + "/" + path : path;
         String localizedSource = source
                 + (!locale.equals(SiteTool.DEFAULT_LOCALE.toString())
                         ? " (locale '" + locale + "')"

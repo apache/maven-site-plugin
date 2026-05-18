@@ -22,7 +22,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven</groupId>
     <artifactId>maven-parent</artifactId>
-    <version>45</version>
+    <version>47</version>
   </parent>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>
@@ -59,17 +59,17 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>@surefirePluginVersion@</version>
+        <version>@version.maven-surefire@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>@javadocPluginVersion@</version>
+        <version>@version.maven-javadoc-plugin@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>@checkstylePluginVersion@</version>
+        <version>@version.maven-checkstyle-plugin@</version>
         <dependencies>
           <dependency>
             <groupId>org.apache.maven.shared</groupId>
@@ -81,7 +81,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>@projectInfoReportsPluginVersion@</version>
+        <version>@version.maven-project-info-reports-plugin@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -96,7 +96,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>@projectInfoReportsPluginVersion@</version>
+        <version>@version.maven-project-info-reports-plugin@</version>
         <configuration>
           <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
           <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
@@ -130,12 +130,12 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>@javadocPluginVersion@</version>
+        <version>@version.maven-javadoc-plugin@</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>@checkstylePluginVersion@</version>
+        <version>@version.maven-checkstyle-plugin@</version>
         <configuration>
           <configLocation>sun_checks.xml</configLocation>
         </configuration>

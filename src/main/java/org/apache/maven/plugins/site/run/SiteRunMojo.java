@@ -54,7 +54,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
  * It uses Jetty as the web server.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
- *
+ * @see org.apache.maven.plugins.site.render.AutoRefreshMojo {@code auto-refresh} goal for automatic rerendering based on file system changes.
  */
 @Mojo(name = "run", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true)
 public class SiteRunMojo extends AbstractSiteRenderingMojo {
@@ -138,17 +138,16 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
 
         List<Locale> localesList = getLocales();
         webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
-        Locale rootLocale = getRootLocale(localesList);
-        webapp.setAttribute(DoxiaFilter.ROOT_LOCALE_KEY, rootLocale);
+
         try {
             Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
 
             for (Locale locale : localesList) {
-                SiteRenderingContext i18nContext = createSiteRenderingContext(locale, rootLocale);
+                SiteRenderingContext i18nContext = createSiteRenderingContext(locale);
                 i18nContext.setInputEncoding(getInputEncoding());
                 i18nContext.setOutputEncoding(getOutputEncoding());
 
-                File outputDirectory = getOutputDirectory(locale, rootLocale);
+                File outputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports = getReports(outputDirectory);
 
                 Map<String, DocumentRenderer> i18nDocuments = locateDocuments(i18nContext, reports, locale);
@@ -160,7 +159,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                     i18nDoxiaContexts.put("default", doxiaBean);
                 }
 
-                if (!rootLocale.equals(locale)) {
+                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     siteRenderer.copyResources(i18nContext, new File(tempWebappDirectory, locale.toString()));
                 } else {
                     siteRenderer.copyResources(i18nContext, tempWebappDirectory);
@@ -174,9 +173,9 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         return webapp;
     }
 
-    private File getOutputDirectory(Locale locale, Locale rootLocale) {
+    private File getOutputDirectory(Locale locale) {
         File file;
-        if (!locale.equals(rootLocale)) {
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             file = new File(tempWebappDirectory, locale.toString());
         } else {
             file = tempWebappDirectory;

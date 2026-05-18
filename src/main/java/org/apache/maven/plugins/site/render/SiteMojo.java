@@ -112,8 +112,6 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         try {
             List<Locale> localesList = getLocales();
 
-            Locale rootLocale = getRootLocale(localesList);
-
             for (Locale locale : localesList) {
                 getLog().info("Rendering site for "
                         + buffer().strong(
@@ -121,10 +119,10 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
                                                 ? "locale '" + locale + "'"
                                                 : "default locale"))
                                 .build());
-                File outputDirectory = getOutputDirectory(locale, rootLocale);
+                File outputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports =
                         generateReports ? getReports(outputDirectory) : Collections.emptyList();
-                renderLocale(locale, rootLocale, reports, localesList, outputDirectory);
+                renderLocale(locale, reports, localesList, outputDirectory);
             }
         } catch (RendererException e) {
             if (e.getCause() instanceof MavenReportException) {
@@ -138,13 +136,9 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
     }
 
     private void renderLocale(
-            Locale locale,
-            Locale rootLocale,
-            List<MavenReportExecution> reports,
-            List<Locale> supportedLocales,
-            File outputDirectory)
+            Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales, File outputDirectory)
             throws IOException, RendererException, MojoFailureException, MojoExecutionException {
-        SiteRenderingContext context = createSiteRenderingContext(locale, rootLocale);
+        SiteRenderingContext context = createSiteRenderingContext(locale);
         context.addSiteLocales(supportedLocales);
         context.setInputEncoding(getInputEncoding());
         context.setOutputEncoding(getOutputEncoding());
@@ -158,6 +152,10 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
 
         // copy resources
         siteRenderer.copyResources(context, outputDirectory);
+
+        getLog().info(buffer().a("Rendering content with ")
+                .strong(context.getSkin().getId() + " skin")
+                .build());
 
         // and finally render Doxia documents
         List<DocumentRenderer> nonDoxiaDocuments = renderDoxiaDocuments(documents.values(), context, outputDirectory);
@@ -302,9 +300,9 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         }
     }
 
-    private File getOutputDirectory(Locale locale, Locale rootLocale) {
+    private File getOutputDirectory(Locale locale) {
         File file;
-        if (!locale.equals(rootLocale)) {
+        if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             file = new File(outputDirectory, locale.toString());
         } else {
             file = outputDirectory;

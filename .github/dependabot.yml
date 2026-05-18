@@ -26,9 +26,3 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-
-  - package-ecosystem: "maven"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    target-branch: "maven-site-plugin-3.x"
