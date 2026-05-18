@@ -24,14 +24,7 @@ date: 2018-01-20
 
 # Maven Site Plugin History
 
-## Overview
-
-Maven Site Plugin uses:
-
-- [Doxia](/doxia/) to parse [many markup languages](/doxia/references/) then render HTML: see [Creating Content](./examples/creating-content.html) documentation for more details \(particularly which markups are enabled by default in maven-site-plugin and how to add one\),
-- [Doxia Sitetools - Site Renderer](/doxia/doxia-sitetools/doxia-site-renderer/) to integrate document content into a template packaged as a skin: see [Creating Skins](./examples/creatingskins.html) documentation for more details,
-- [Maven Reporting Executor](/shared/maven-reporting-exec/) to manage reports execution \(since Maven 3; reports execution was managed by Maven itself in Maven 2: see old [Using maven-site-plugin with Maven3](https://maven.apache.org/plugins-archives/maven-site-plugin-3.9.0/maven-3.html) documentation for more details\).
-![Developer Overview](developer-overview.png)
+The Maven site plugin leverages certain other modules outlined at [Architecture](./index.html).
 
 ## Maven Site Plugin vs Doxia vs Doxia Sitetools
 
