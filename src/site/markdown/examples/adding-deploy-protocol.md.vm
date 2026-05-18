@@ -24,7 +24,7 @@ date: 2011-07-24
 
 # Adding a Protocol to Deploy the Site
 
-Out of the box, Maven only supports `file:`, `http:`, `https:`, and `scp:` as transport protocols.
+Out of the box, Maven and Site Plugin only supports `file:`, `http(s):` and `dav+http(s):` (for WebDAV) as transport protocols.
 
 If you try to deploy a site with an unsupported protocol, you&apos;ll get an error:
 
@@ -38,7 +38,7 @@ Currently supported protocols are: ...
 
 As explained in the error message, to deploy a site with a non-built-in protocol, you need to add the corresponding [wagon provider](/wagon/).
 
-You can add it either as a [global extension](/guides/mini/guide-using-extensions.html), or declare it at as a dependency of the site plugin:
+You can add it either as a [global extension](/guides/mini/guide-using-extensions.html), or declare it as a dependency of the site plugin:
 
 ```unknown
 <project>
@@ -51,10 +51,10 @@ You can add it either as a [global extension](/guides/mini/guide-using-extension
           <artifactId>maven-site-plugin</artifactId>
           <version>${project.version}</version>
           <dependencies>
-            <dependency><!-- add support for ssh/scp -->
+            <dependency><!-- add support for sftp/scp -->
               <groupId>org.apache.maven.wagon</groupId>
               <artifactId>wagon-ssh</artifactId>
-              <version>1.0</version>
+              <version>${wagonVersion}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -65,3 +65,6 @@ You can add it either as a [global extension](/guides/mini/guide-using-extension
 </project>
 ```
 
+Although deployment to SCM (Source Control Management) systems (e.g. SVN, Git, Mercury) is supported also by [Wagon SCM provider](/wagon/wagon-providers/wagon-scm/) 
+that wagon provider is currently committing each file separately which is not desirable in the context of site deployment.
+Therefore, it is recommended to use the [Maven SCM Publish Plugin](https://maven.apache.org/plugins/maven-scm-publish-plugin/) for SCM deployment instead which pushes all files in a single commit.
