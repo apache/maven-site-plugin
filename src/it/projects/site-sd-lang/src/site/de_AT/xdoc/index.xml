@@ -1,9 +1,6 @@
-title: Markdown Title Metadata
-author: Author Metadata
-date: Date Metadata
-description: Markdown description metadata, not known from Doxia API as title, author and date are
+<?xml version="1.0" encoding="ISO-8859-15"?>
 
-<!---
+<!--
 Licensed to the Apache Software Foundation (ASF) under one
 or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -22,12 +19,18 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-Markdown Test
-=====================
+<document>
+  <properties>
+    <author>Hans Müller</author>
+    <title>Servus zum Index</title>
+  </properties>
+  <body>
 
-Subsection
-----------
+    <section name="presentation">
+      <p>
+        Diese Seite ist für de_AT
+      </p>
+    </section>
 
-This is a subsection.
-
-Content for verify.groovy
+  </body>
+</document>

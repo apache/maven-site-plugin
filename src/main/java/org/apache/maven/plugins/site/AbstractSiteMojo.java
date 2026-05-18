@@ -36,8 +36,8 @@ import org.codehaus.plexus.i18n.I18N;
  */
 public abstract class AbstractSiteMojo extends AbstractMojo {
     /**
-     * A comma separated list of locales to render. The locale for the root of the site will be
-     * the default locale if the "default" token is included or the first valid token in the list.
+     * A comma separated list of locales to render. The first valid token will be the default Locale
+     * for this site.
      *
      * @since 2.3
      */

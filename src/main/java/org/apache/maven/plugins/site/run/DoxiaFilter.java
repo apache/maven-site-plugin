@@ -61,8 +61,6 @@ public class DoxiaFilter implements Filter {
 
     public static final String LOCALES_LIST_KEY = "localesList";
 
-    public static final String ROOT_LOCALE_KEY = "rootLocale";
-
     private ServletContext servletContext;
 
     private File outputDirectory;
@@ -72,8 +70,6 @@ public class DoxiaFilter implements Filter {
     private Map<String, DoxiaBean> i18nDoxiaContexts;
 
     private List<Locale> localesList;
-
-    private Locale rootLocale;
 
     /**
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
