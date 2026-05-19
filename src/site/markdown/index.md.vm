@@ -65,6 +65,7 @@ The following examples show how to use the Site Plugin in more advanced use case
 
 - [Creating Content](./examples/creating-content.html)
 - [Configuring the Site Descriptor](./examples/sitedescriptor.html)
+- [Using Mermaid Diagrams](./examples/mermaid-diagrams.html)
 - [Configuring Site Run](./examples/siterun.html)
 - [Excluding Document Formats](./examples/moduleexcludes.html)
 

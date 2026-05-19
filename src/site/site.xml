@@ -19,9 +19,9 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/DECORATION/1.6.0"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd">
+<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
+  <!--  TODO: enable mermaid when rendering with m-site-p 3.22.0 -->
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
@@ -44,6 +44,7 @@ under the License.
       <item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
       <item name="Inheritance of the Site Distribution Management"
         href="/examples/inheritance-site-distribution-management.html"/>
+      <item name="Mermaid Diagrams" href="/examples/mermaid-diagrams.html"/>
     </menu>
 
     <menu name="Reports">
@@ -60,4 +61,4 @@ under the License.
       <item name="Deploying to sourceforge.net" href="/examples/site-deploy-to-sourceforge.net.html"/>
     </menu>
   </body>
-</project>
+</site>
