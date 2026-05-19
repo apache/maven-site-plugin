@@ -28,18 +28,28 @@ The Site Plugin is used to generate a site for the project. The generated site a
 
 Please read the [migration guide](./migrate.html) if you want to upgrade from a previous version.
 
+#[[##]]# Architecture
+
+The Site Plugin uses:
+
+- [Doxia](/doxia/) to parse [many markup languages](/doxia/references/) then render HTML: see [Creating Content](./examples/creating-content.html) documentation for more details \(particularly which markups are enabled by default in maven-site-plugin and how to add one\),
+- [Doxia Sitetools - Site Renderer](/doxia/doxia-sitetools/doxia-site-renderer/) to integrate document content into a template packaged as a skin: see [Creating Skins](./examples/creatingskins.html) documentation for more details,
+- [Maven Reporting Executor](/shared/maven-reporting-exec/) to manage reports execution \(since Maven 3\).
+![Developer Overview](developer-overview.png)
+
 #[[##]]# Goals Overview
 
-The Site Plugin has seven goals:
+The Site Plugin has the following goals:
 
 - [site:site](./site-mojo.html) is used generate a site for a single project. Note that links between module sites in a multi module build will **not** work, since local build directory structure doesn&apos;t match deployed site.
 - [site:deploy](./deploy-mojo.html) is used to deploy the generated site using Wagon supported protocol to the site URL specified in the `<distributionManagement>` section of the POM.
-- [site:run](./run-mojo.html) starts the site up, rendering documents as requested for faster editing. It uses Jetty as the web server.
+- [site:run](./run-mojo.html) starts a server, rendering documents on-demand (while requested) for faster previews. It uses Jetty as the web server.
 - [site:stage](./stage-mojo.html) generates a site in a local staging or mock directory based on the site URL specified in the `<distributionManagement>` section of the POM. It can be used to test that links between module sites in a multi module build work. This goal requires the site to already have been generated using the site goal, such as by calling `mvn site`.
 - [site:stage-deploy](./stage-deploy-mojo.html) deploys the generated site to a staging or mock directory to the site URL specified in the `<distributionManagement>` section of the POM.
 - [site:attach-descriptor](./attach-descriptor-mojo.html) adds the site descriptor \(`site.xml`\) to the list of files to be installed/deployed. For more references of the site descriptor, [here&apos;s a link](./examples/sitedescriptor.html).
 - [site:jar](./jar-mojo.html) bundles the site output into a JAR so that it can be deployed to a repository.
 - [site:effective-site](./effective-site-mojo.html) calculates the effective site descriptor, after inheritance and interpolation.
+- [site:auto-refresh](./auto-refresh-mojo.html) renders the site once and then watches for changes in the source files. If a change is detected, the Doxia source will be re-rendered.
 
 #[[##]]# Usage
 
@@ -55,6 +65,7 @@ The following examples show how to use the Site Plugin in more advanced use case
 
 - [Creating Content](./examples/creating-content.html)
 - [Configuring the Site Descriptor](./examples/sitedescriptor.html)
+- [Using Mermaid Diagrams](./examples/mermaid-diagrams.html)
 - [Configuring Site Run](./examples/siterun.html)
 - [Excluding Document Formats](./examples/moduleexcludes.html)
 

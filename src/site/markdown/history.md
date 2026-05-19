@@ -24,14 +24,7 @@ date: 2018-01-20
 
 # Maven Site Plugin History
 
-## Overview
-
-Maven Site Plugin uses:
-
-- [Doxia](/doxia/) to parse [many markup languages](/doxia/references/) then render HTML: see [Creating Content](./examples/creating-content.html) documentation for more details \(particularly which markups are enabled by default in maven-site-plugin and how to add one\),
-- [Doxia Sitetools - Site Renderer](/doxia/doxia-sitetools/doxia-site-renderer/) to integrate document content into a template packaged as a skin: see [Creating Skins](./examples/creatingskins.html) documentation for more details,
-- [Maven Reporting Executor](/shared/maven-reporting-exec/) to manage reports execution \(since Maven 3; reports execution was managed by Maven itself in Maven 2: see old [Using maven-site-plugin with Maven3](https://maven.apache.org/plugins-archives/maven-site-plugin-3.9.0/maven-3.html) documentation for more details\).
-![Developer Overview](developer-overview.png)
+The Maven site plugin leverages certain other modules outlined at [Architecture](./index.html).
 
 ## Maven Site Plugin vs Doxia vs Doxia Sitetools
 
@@ -41,24 +34,9 @@ Knowing which version of maven-site-plugin uses which version of Doxia or Doxia 
 
 |release date|maven-site-plugin|[Doxia](/doxia/)|[Doxia Sitetools](/doxia/doxia-sitetools/)|[Maven Reporting Executor](/shared/maven-reporting-exec/)|minimum Java|minimum Maven|Comment|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|2026-05|3\.22\.0|2\.1\.0|2\.1\.0|2\.0\.1|||Doxia 2\.1\.0 with support for Mermaid diagrams|
 |2024-10|3\.21\.0|2\.0\.0|2\.0\.0|2\.0\.0|||Doxia 2\.0\.0|
-|2024-08|3\.20\.0|||||||
-|2024-07|4\.0\.0-M16|||||||
-|2024-05|4\.0\.0-M15|2\.0\.0-M12|2\.0\.0-M19|2\.0\.0-M14|8|3\.6\.3||
-|2024-05|4\.0\.0-M14|2\.0\.0-M10|2\.0\.0-M18|2\.0\.0-M13||||
-|2023-12|4\.0\.0-M13|||||||
-|2023-11|4\.0\.0-M12||2\.0\.0-M16|2\.0\.0-M12||||
-|2023-10|4\.0\.0-M11|2\.0\.0-M8|2\.0\.0-M13|2\.0\.0-M11||||
-|2023-10|4\.0\.0-M10||2\.0\.0-M12|2\.0\.0-M10||||
-|2023-07|4\.0\.0-M9|2\.0\.0-M7|2\.0\.0-M11|2\.0\.0-M9||||
-|2023-04|4\.0\.0-M8||2\.0\.0-M10|2\.0\.0-M8||||
-|2023-04|4\.0\.0-M7||2\.0\.0-M7|2\.0\.0-M6||||
-|2023-03|4\.0\.0-M6|2\.0\.0-M6|=|2\.0\.0-M5||||
-|2023-02|4\.0\.0-M5|2\.0\.0-M5|=|2\.0\.0-M4||||
-|2022-12|4\.0\.0-M4|2\.0\.0-M4|=|2\.0\.0-M3||||
-|2022-07|4\.0\.0-M3|||2\.0\.0-M2||||
-|2022-06|4\.0\.0-M2|2\.0\.0-M3|=|||||
-|2022-05|4\.0\.0-M1|2\.0\.0-M2|=|2\.0\.0-M1|8|3\.2\.5|Test of Doxia 2\.0\.0 milestones|
+|2024-08|3\.20\.0|2\.0\.0-M12|2\.0\.0-M19|2\.0\.0-M14||3\.6\.3|Doxia 2\.0\.0 (still based on non-final milestone releases)|
 |2022-07|3\.12\.1|||||||
 |2022-04|3\.12\.0||||8|3\.2\.5||
 |2022-02|3\.11\.0|||1\.6\.0||||
