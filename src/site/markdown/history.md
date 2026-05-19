@@ -36,7 +36,7 @@ Knowing which version of maven-site-plugin uses which version of Doxia or Doxia 
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 |2026-05|3\.22\.0|2\.1\.0|2\.1\.0|2\.0\.1|||Doxia 2\.1\.0 with support for Mermaid diagrams|
 |2024-10|3\.21\.0|2\.0\.0|2\.0\.0|2\.0\.0|||Doxia 2\.0\.0|
-|2024-08|3\.20\.0|2\.0\.0-M12|2\.0\.0-M19|2\.0\.0-M14||3\.6\.3|Doxia 2\.0\.0 (still based on non final milestone releases)|
+|2024-08|3\.20\.0|2\.0\.0-M12|2\.0\.0-M19|2\.0\.0-M14||3\.6\.3|Doxia 2\.0\.0 (still based on non-final milestone releases)|
 |2022-07|3\.12\.1|||||||
 |2022-04|3\.12\.0||||8|3\.2\.5||
 |2022-02|3\.11\.0|||1\.6\.0||||
