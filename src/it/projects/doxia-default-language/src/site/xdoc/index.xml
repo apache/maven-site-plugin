@@ -17,6 +17,17 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-# Hot Reload Test
+<document>
+  <properties>
+    <title>Guten Tag zum Index</title>
+  </properties>
+  <body>
 
-This is a test page for the hot-reload goal.
+    <section name="presentation">
+      <p>
+        Diese Seite ist für de_DE
+      </p>
+    </section>
+
+  </body>
+</document>

@@ -24,13 +24,14 @@ under the License.
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.apache.maven.plugins.site.its</groupId>
-  <artifactId>no-locales-default-token</artifactId>
+  <artifactId>doxia-default-language</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>no-locales-default-token</name>
+  <name>doxia-default-language</name>
 
   <properties>
     <fluidoSkinVersion>@fluidoSkinVersion@</fluidoSkinVersion>
+    <maven.doxia.sitetools.user.language>de</maven.doxia.sitetools.user.language>
   </properties>
 
   <build>
@@ -41,7 +42,6 @@ under the License.
           <version>@project.version@</version>
           <configuration>
             <generateSitemap>true</generateSitemap>
-            <locales>de</locales>
           </configuration>
         </plugin>
       </plugins>
