@@ -33,16 +33,22 @@ assert content.contains( '<<<http://maven.apache.org/$\\{property}/relative-pare
 assert content.contains( '<<<http://maven.apache.org/prop-value-from-reactor-parent/relative-parent/reactor-parent>>>' ); // reactor-parent
 assert content.contains( '<<<http://maven.apache.org/prop-value-from-child/relative-parent/reactor-parent/child>>>' ); // child
 
-// Site Model inheritance+interpolation
+// site.xml Site Model inheritance+interpolation
+effectiveSiteContent = new File( basedir, 'child/target/effective-site.xml' ).text;
 childContent = new File( basedir, 'child/target/site/index.html' ).text;
 
-assert childContent.contains( 'project.artifactId = child' );
+// bannerLeft name
+assert effectiveSiteContent.contains( '<bannerLeft name="bannerLeft project.artifactId = child" />' );
+assert childContent.contains( 'bannerLeft project.artifactId = child' );
 
 // breadcrumbs
 assert childContent.contains( '<a href="../../index.html"' );
 assert childContent.contains( '<a href="../index.html"' );
 assert childContent.contains( '<a href="index.html"' );
 
+reactorEffectiveSiteContent = new File( basedir, 'reactor-parent/target/effective-site.xml' ).text;
 reactorContent = new File( basedir, 'reactor-parent/target/site/index.html' ).text;
 
-assert reactorContent.contains( 'project.artifactId = reactor-parent' );
+// bannerLeft name
+assert reactorEffectiveSiteContent.contains( '<bannerLeft name="bannerLeft project.artifactId = reactor-parent" />' );
+assert reactorContent.contains( 'bannerLeft project.artifactId = reactor-parent' );
