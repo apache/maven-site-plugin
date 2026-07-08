@@ -45,7 +45,6 @@ import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext.SiteDirectory;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecution;
@@ -113,12 +112,6 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter
     protected File[] alternativeSiteSourceDirectories;
-
-    /**
-     * The current Maven session.
-     */
-    @Parameter(defaultValue = "${session}", readonly = true, required = true)
-    protected MavenSession mavenSession;
 
     /**
      * The mojo execution

@@ -26,6 +26,7 @@ import org.apache.maven.doxia.site.SiteModel;
 import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
@@ -48,6 +49,12 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
 
     @Parameter(defaultValue = "${repositorySystemSession}", required = true, readonly = true)
     protected RepositorySystemSession repoSession;
+
+    /**
+     * The current Maven session.
+     */
+    @Parameter(defaultValue = "${session}", readonly = true)
+    protected MavenSession mavenSession;
 
     /**
      * Remote project repositories used for the project.
@@ -93,7 +100,13 @@ public abstract class AbstractSiteDescriptorMojo extends AbstractSiteMojo {
         SiteModel siteModel;
         try {
             siteModel = siteTool.getSiteModel(
-                    siteDirectory, locale, project, reactorProjects, repoSession, remoteProjectRepositories);
+                    siteDirectory,
+                    locale,
+                    mavenSession.getRequest(),
+                    project,
+                    reactorProjects,
+                    repoSession,
+                    remoteProjectRepositories);
         } catch (SiteToolException e) {
             throw new MojoExecutionException("Failed to obtain site model", e);
         }
