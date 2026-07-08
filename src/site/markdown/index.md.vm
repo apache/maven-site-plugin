@@ -35,6 +35,7 @@ The Site Plugin uses:
 - [Doxia](/doxia/) to parse [many markup languages](/doxia/references/) then render HTML: see [Creating Content](./examples/creating-content.html) documentation for more details \(particularly which markups are enabled by default in maven-site-plugin and how to add one\),
 - [Doxia Sitetools - Site Renderer](/doxia/doxia-sitetools/doxia-site-renderer/) to integrate document content into a template packaged as a skin: see [Creating Skins](./examples/creatingskins.html) documentation for more details,
 - [Maven Reporting Executor](/shared/maven-reporting-exec/) to manage reports execution \(since Maven 3\).
+
 ![Developer Overview](developer-overview.png)
 
 #[[##]]# Goals Overview
