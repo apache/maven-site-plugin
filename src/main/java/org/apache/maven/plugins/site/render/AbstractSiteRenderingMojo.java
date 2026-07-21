@@ -296,6 +296,20 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             templateProperties.putAll(attributes);
         }
 
+        if (siteModel.getSkin() == null) {
+            File siteDescriptor = new File(siteDirectory, "site.xml");
+            throw new MojoFailureException("No skin is declared in the site descriptor. Since the site descriptor"
+                    + " no longer provides a default skin, a skin must be declared explicitly, for example in "
+                    + siteDescriptor + ":" + System.lineSeparator()
+                    + "  <skin>" + System.lineSeparator()
+                    + "    <groupId>org.apache.maven.skins</groupId>" + System.lineSeparator()
+                    + "    <artifactId>maven-fluido-skin</artifactId>" + System.lineSeparator()
+                    + "    <version>...</version>" + System.lineSeparator()
+                    + "  </skin>" + System.lineSeparator()
+                    + "The skin is normally inherited from the Maven parent's site descriptor; check that the parent"
+                    + " site descriptor is resolvable if you expected it to be inherited.");
+        }
+
         SiteRenderingContext context;
         try {
             Artifact skinArtifact =
