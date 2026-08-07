@@ -45,7 +45,7 @@ The Site Plugin has had a couple of upgrades that requires the user to make adju
         </plugin>
     ```
 
-- Site Decoration Model 1\.7\.0 has changed type for `head` and `footer` from `DOM` to `String`: if your `site.xml` \(or one parent\) contains XML content, you&apos;ll need to escape it, usually by adding `<![CDATA[` and `]]>` around the content:
+- Site Decoration Model 1\.7\.0 has changed type for `head` and `footer` from `DOM` to `String`: if your `site.xml` (or one parent) contains XML content, you&apos;ll need to escape it, usually by adding `<![CDATA[` and `]]>` around the content:
 
     ```unknown
     <project xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -62,7 +62,7 @@ The Site Plugin has had a couple of upgrades that requires the user to make adju
     </project>
     ```
 
-- Interpolation of `${project.*}` and `${*}` expressions in `site.xml` have changed to be consistent with equivalent feature in Maven `pom.xml`: interpolation is now done _after_ inheritance. For `site.xml`, this may lead to failures on urls \(often on `${project.url}` expression\), that are expected to be rebased during inheritance: a new _early interpolation_ feature has been added in Maven Site Plugin 3\.5\.1 throught `${this.*}` expressions \(see [ Doxia Integration Tools reference documentation](/doxia/doxia-sitetools/doxia-integration-tools/index.html)\). With this feature \(for example `${this.url}` or `${this.customProperty}` expressions\), you&apos;ll get former `site.xml` interpolation result.
+- Interpolation of `${project.*}` and `${*}` expressions in `site.xml` have changed to be consistent with equivalent feature in Maven `pom.xml`: interpolation is now done _after_ inheritance. For `site.xml`, this may lead to failures on urls (often on `${project.url}` expression), that are expected to be rebased during inheritance: a new _early interpolation_ feature has been added in Maven Site Plugin 3\.5\.1 throught `${this.*}` expressions (see [ Doxia Integration Tools reference documentation](/doxia/doxia-sitetools/doxia-integration-tools/index.html)). With this feature (for example `${this.url}` or `${this.customProperty}` expressions), you&apos;ll get former `site.xml` interpolation result.
 
 ## From 2\.x to 3\.x
 

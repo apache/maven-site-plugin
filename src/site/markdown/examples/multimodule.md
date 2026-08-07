@@ -35,15 +35,15 @@ To preview the whole tree of a multi-module site, you can use the [`site:stage`]
 
 [`site:deploy`](../deploy-mojo.html) does the same thing as `site:stage`, but uses the url defined in the `<distributionManagement>` element of the pom as deployment location. This is usually a remote url, but both remote protocols like `scp` and local protocols like `file` are supported.
 
-Finally, [`site:stage-deploy`](../stage-deploy-mojo.html) does the same thing as `site:deploy` but uses the `stagingDirectory` parameter as deployment location. This can be used to deploy the site to a remote staging area \(`site:stage` is always local\).
+Finally, [`site:stage-deploy`](../stage-deploy-mojo.html) does the same thing as `site:deploy` but uses the `stagingDirectory` parameter as deployment location. This can be used to deploy the site to a remote staging area (`site:stage` is always local).
 
 **Notes:**
 
-- If subprojects inherit the \(distribution\) site URL from a parent POM, they will automatically append their _artifactId_ to form their effective deployment location. This goes for both the project url and the url defined in the `<distributionManagement>` element of the pom.
+- If subprojects inherit the (distribution) site URL from a parent POM, they will automatically append their _artifactId_ to form their effective deployment location. This goes for both the project url and the url defined in the `<distributionManagement>` element of the pom.
 - If your multi-module tree does not follow the Maven conventions, or if module directories are named differently than module artifacts, you have to specify the url&apos;s for **each** child project. See also [`How does the Site Plugin use the <url> element in the POM?`](../faq.html#Use_of_url).
-- The pom.xml of the topmost project in a multi-module build must define the distributionManagement URL element \(called &quot;rootURL&quot; hereafter\). The rootURL must be the topmost distributionManagement URL in the multi-module project, implying that any distributionManagement URL defined within another project in a multimodule build must start with the rootURL and append unique paths \(to be situated &quot;below&quot; the rootURL\).
+- The pom.xml of the topmost project in a multi-module build must define the distributionManagement URL element (called &quot;rootURL&quot; hereafter). The rootURL must be the topmost distributionManagement URL in the multi-module project, implying that any distributionManagement URL defined within another project in a multimodule build must start with the rootURL and append unique paths (to be situated &quot;below&quot; the rootURL).
 - All projects in multi-module builds must define unique distributionManagement url elements, below/under the root distributionManagement URL in terms of URL path.
-- If the artifactId and module name \(i.e. directory name\) are not identical for any project within a multi-module build, the distributionManagement URL element must be defined in the pom.xml file in the project.
+- If the artifactId and module name (i.e. directory name) are not identical for any project within a multi-module build, the distributionManagement URL element must be defined in the pom.xml file in the project.
 ## Inheritance
 
 Site descriptors are inherited along the same lines as project descriptors are. If you want your project&apos;s site descriptor to be inherited, you need to attach it to the project&apos;s main artifact. You use the [`site:attach-descriptor`](../attach-descriptor-mojo.html) goal to attach the site descriptor to your project&apos;s main artifact.

@@ -38,7 +38,7 @@ Both of these mean that if you attempt to deploy your site without following the
     ssh -t <username>,<project name>@shell.sf.net create
     ```
 
-- Use `shell.sourceforge.net` \(instead of `web.sourceforge.net`\) in you site URL
+- Use `shell.sourceforge.net` (instead of `web.sourceforge.net`) in you site URL
 
     ```unknown
       ...
@@ -75,7 +75,7 @@ For path information and login help, type "sf-help".
 -bash-3.2$
 ```
 
-### Use `shell.sourceforge.net` \(instead of `web.sourceforge.net`\) in you site URL
+### Use `shell.sourceforge.net` (instead of `web.sourceforge.net`) in you site URL
 
 In the project&apos;s `pom.xml`:
 

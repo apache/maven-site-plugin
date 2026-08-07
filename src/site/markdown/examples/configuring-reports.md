@@ -61,7 +61,7 @@ If you have included the appropriate `<menu ref="reports"/>` tag in your [site d
 
 **Note:** Many report plugins provide a parameter called `outputDirectory` or similar to specify the destination for their report outputs. This parameter is only relevant if the report plugin is run standalone, i.e. by invocation directly from the command line. In contrast, when reports are generated as part of the site, the configuration of the Maven Site Plugin will determine the effective output directory to ensure that all reports end up in a common location.
 
-Check out reporting plugins \(&quot;R&quot; value in the &quot;Type&quot; column\) in the [plugins page](/plugins/), for a list of available reporting plugins from Apache Maven Team.
+Check out reporting plugins (&quot;R&quot; value in the &quot;Type&quot; column) in the [plugins page](/plugins/), for a list of available reporting plugins from Apache Maven Team.
 
 # Selecting Reports from a Plugin: Configuring Report Sets
 

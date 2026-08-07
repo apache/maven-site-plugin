@@ -59,5 +59,5 @@ bar/ (root of site)
 └── report.html
 ```
 
-As you can see the site content of the parent POM is located in the root of the site directory, while the content of each project using the parent POM \(called &quot;project-A&quot; and &quot;project-B&quot; in the example\) is located inside a subdirectory.
+As you can see the site content of the parent POM is located in the root of the site directory, while the content of each project using the parent POM (called &quot;project-A&quot; and &quot;project-B&quot; in the example) is located inside a subdirectory.
 
