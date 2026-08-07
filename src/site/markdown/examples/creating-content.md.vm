@@ -56,12 +56,12 @@ Here&apos;s an example of a directory structure for a site:
 
 The `${basedir}/src/site` directory which contains a site descriptor along with various directories corresponding to the supported document formats. Let&apos;s take a look at examples of the various document formats.
 
-- APT: The APT format \(&quot;Almost Plain Text&quot;\) is a wiki-like format that allows you to write simple, structured documents \(like this one\) very quickly. A full reference of the [ APT Format](/doxia/references/apt-format.html) is available.
+- APT: The APT format (&quot;Almost Plain Text&quot;) is a wiki-like format that allows you to write simple, structured documents (like this one) very quickly. A full reference of the [ APT Format](/doxia/references/apt-format.html) is available.
 - FML: The FML format is the FAQ format. This is the same that were used in Maven 1\.x. For more info about the [FML Format](/doxia/references/fml-format.html) check the [Doxia](/doxia/) site.
 - XDoc: The XDoc format is the same as [ used in Maven 1\.x](/maven-1.x/using/site.html). A reference for the [ XDoc Format](/doxia/references/xdoc-format.html) is available.
-- Markdown \(since maven-site-plugin 3\.3\): [ Markdown](http://en.wikipedia.org/wiki/Markdown) is a widespread Markup language.
+- Markdown (since maven-site-plugin 3\.3): [ Markdown](http://en.wikipedia.org/wiki/Markdown) is a widespread Markup language.
 
-Other formats are available, but the above four are recognized by default by the site plugin. Any other document format for which a Doxia parser exists can be used as well \(see the list of [Doxia Markup Languages](/doxia/references/index.html)\), but in this case you need to add the corresponding Doxia dependency to your site plugin configuration, as explained in the last paragraph. Note that Doxia also supports several output formats, the site plugin only creates XHTML5\.
+Other formats are available, but the above four are recognized by default by the site plugin. Any other document format for which a Doxia parser exists can be used as well (see the list of [Doxia Markup Languages](/doxia/references/index.html)), but in this case you need to add the corresponding Doxia dependency to your site plugin configuration, as explained in the last paragraph. Note that Doxia also supports several output formats, the site plugin only creates XHTML5\.
 
 Note that all of the above is optional - just one index file is required in one of the input trees. The paths under each format will be merged together to form the root directory of the site. After running &apos;`mvn site:site`&apos; on the example above you will end up with this in your `target` directory:
 
@@ -155,7 +155,7 @@ To enable multiple locales, or languages, add a configuration similar to the fol
 </project>
 ```
 
-This will generate both a default \(`Locale#ROOT`\) and a French version of the site. It will be generated at the root of the site, with a copy of the French translation of the site in the `fr/` subdirectory.
+This will generate both a default (`Locale#ROOT`) and a French version of the site. It will be generated at the root of the site, with a copy of the French translation of the site in the `fr/` subdirectory.
 
 To add your own content for that translation instead of using the default, create a subdirectory with that locale&apos;s name in your site directory and create a new site descriptor with the name of the locale in the file name. For example:
 
@@ -173,5 +173,5 @@ To add your own content for that translation instead of using the default, creat
       +- site_fr.xml      (French site descriptor)
 ```
 
-With one site descriptor per language, the translated site\(s\) can evolve independently.
+With one site descriptor per language, the translated site(s) can evolve independently.
 

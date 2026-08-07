@@ -26,7 +26,7 @@ date: 2012-01-12
 
 # Usage
 
-You can put additional content \(e.g. documentation, resources, etc.\) in your site. See [Creating Content](./examples/creating-content.html) for more information on this. If you want to change the menus, breadcrumbs, links or logos on your pages you need to add and configure a [site descriptor](./examples/sitedescriptor.html). If you like, you also can let Maven generate some [reports](./examples/configuring-reports.html) for you, based on the contents of your POM.
+You can put additional content (e.g. documentation, resources, etc.) in your site. See [Creating Content](./examples/creating-content.html) for more information on this. If you want to change the menus, breadcrumbs, links or logos on your pages you need to add and configure a [site descriptor](./examples/sitedescriptor.html). If you like, you also can let Maven generate some [reports](./examples/configuring-reports.html) for you, based on the contents of your POM.
 
 <!-- MACRO{toc|section=1|fromDepth=2|toDepth=3} -->
 
@@ -42,7 +42,7 @@ By default, the resulting site will be in the `target/site/` directory.
 
 **Note:** If you have a multi module project, then the links between the parent and child modules will _not_ work when you use `mvn site` or `mvn site:site`. If you want to use those links, you should use `mvn site:stage` instead. You can read more about that goal further down on this page in the section called &apos;_Staging a Site_&apos;.
 
-**Note:** For performance reasons, Maven compares the timestamps of generated files and corresponding source documents, and only regenerates documents that have changed since the last build. However, this only applies to documentation source documents \(apt, xdoc,...\). If you change anything in your `site.xml`, any relevant sections in your pom, or any relevant properties or resource files, you should generate the site from scratch to make sure all references and links are correct.
+**Note:** For performance reasons, Maven compares the timestamps of generated files and corresponding source documents, and only regenerates documents that have changed since the last build. However, this only applies to documentation source documents (apt, xdoc,...). If you change anything in your `site.xml`, any relevant sections in your pom, or any relevant properties or resource files, you should generate the site from scratch to make sure all references and links are correct.
 
 ## Deploying a Site
 
@@ -121,7 +121,7 @@ The server will, by default, be started on `http://localhost:8080/`. See [https:
 
 **Note:** Running a site only works for single-module sites. To preview a multi-module site one should use `site:stage`.
 
-## Rebuilding a Published \(Released\) Site
+## Rebuilding a Published (Released) Site
 
-In general, site documentation is published as part of a release. This means that changes to the documentation depend on a new release before being visible _or_ you must accept that the documentation refers to a snapshot version instead of the latest release version. To solve that problem, you first need to configure your project for reproducibility by setting the `project.build.outputTimestamp` model property. Then branch off from the SCM tag you want to modify, perform the changes, commit them and then rebuild, finally publish updated site. The underlying Maven Doxia Sitetools will automatically inject that property as `publishDate` Velocity context property into the site and the skin won&apos;t render a newer \(current\) date, but use this one. Checkout the `publishDate` IT for configuration details.
+In general, site documentation is published as part of a release. This means that changes to the documentation depend on a new release before being visible _or_ you must accept that the documentation refers to a snapshot version instead of the latest release version. To solve that problem, you first need to configure your project for reproducibility by setting the `project.build.outputTimestamp` model property. Then branch off from the SCM tag you want to modify, perform the changes, commit them and then rebuild, finally publish updated site. The underlying Maven Doxia Sitetools will automatically inject that property as `publishDate` Velocity context property into the site and the skin won&apos;t render a newer (current) date, but use this one. Checkout the `publishDate` IT for configuration details.
 

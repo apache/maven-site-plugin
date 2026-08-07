@@ -33,7 +33,7 @@ For an in-depth discussion of site customization, please have a look at [ Maven:
 
 A skin contains the following elements:
 
-- Resources to copy into each project \(such as images used by the CSS\)
+- Resources to copy into each project (such as images used by the CSS)
 - A couple of CSS files, containing the visual styling
 - A Velocity template in `/META-INF/maven/site.vm` for an alternate HTML rendering of the site.
 - Since Maven Site Plugin 3\.5, an optional [skin descriptor](/doxia/doxia-sitetools/doxia-skin-model/index.html) in `/META-INF/maven/skin.xml` containing meta-data about the skin
