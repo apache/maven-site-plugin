@@ -43,6 +43,12 @@ under the License.
       <version>@versions.junit5@</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>@version.maven-plugin-tools@</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <build>
