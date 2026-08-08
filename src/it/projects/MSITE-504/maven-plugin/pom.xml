@@ -52,5 +52,11 @@ under the License.
       <artifactId>maven-plugin-api</artifactId>
       <version>@mavenVersion@</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>@version.maven-plugin-tools@</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 </project>
