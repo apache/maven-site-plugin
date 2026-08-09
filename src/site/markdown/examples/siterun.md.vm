@@ -30,7 +30,7 @@ For the [`site:run`](../run-mojo.html) goal, you can configure which port to use
 
 For example, you can have the following configuration in your POM:
 
-```unknown
+```xml
 <project>
   ...
   <build>

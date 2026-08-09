@@ -56,7 +56,7 @@ By default, all the parent descriptor settings are inherited with the only excep
 
 However, it is possible to inherit menus as well. To do so, use the `inherit` attribute in the site descriptor. This can be either `top` or `bottom`, indicating where the inherited menu will be placed. For example:
 
-```unknown
+```xml
 <project>
   ...
   <body>
@@ -76,7 +76,7 @@ Some reports can be run against the sum of every modules: these are aggregate re
 
 To benefit from aggregate reports, you must configure a reportSet in the parent pom, and turn inheritance off to avoid the aggregate report to be run in modules. For example, with maven-jxr-report:
 
-```unknown
+```xml
 <project>
   ...
   <reporting>

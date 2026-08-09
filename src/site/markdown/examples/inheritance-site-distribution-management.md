@@ -28,7 +28,7 @@ under the License.
 
 Inside your POM you can not only configure the `distributionManagement` for the releases and snapshots of your project, but also where to deploy your site when using the [`site:deploy`](../deploy-mojo.html) goal. The following configuration would deploy the project&apos;s site to a local directory called `bar`.
 
-```unknown
+```xml
 <distributionManagement>
   <site>
       <id>local</id>
@@ -53,11 +53,11 @@ To handle this easily you can use a the same parent POM with each of your projec
 bar/ (root of site)
 ├── css
 ├── project-A
-│   ├── css
-│   └── report.html
+│   ├── css
+│   └── report.html
 ├── project-B
-│   ├── css
-│   └── report.html
+│   ├── css
+│   └── report.html
 └── report.html
 ```
 

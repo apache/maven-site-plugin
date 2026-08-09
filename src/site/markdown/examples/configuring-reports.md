@@ -43,7 +43,7 @@ To find out more please see to the [Project Info Reports Plugin](/plugins/maven-
 
 To add these reports to your site, you must add the plugin to the `<reporting>` element in the POM. The following example shows how to configure the standard Project Info Reports that display information from the POM in a friendly format:
 
-```unknown
+```xml
 <project>
   ...
   <reporting>
@@ -71,7 +71,7 @@ By default, when you add a plugin in reporting section, _every_ reporting goal a
 
 If you want to choose only some reports from a plugin, or if you want to run a report multiple times with a different configuration, you need to configure report sets:
 
-```unknown
+```xml
 <project>
   ...
   <reporting>

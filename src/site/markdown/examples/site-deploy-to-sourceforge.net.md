@@ -42,7 +42,7 @@ Both of these mean that if you attempt to deploy your site without following the
 
 - Use `shell.sourceforge.net` (instead of `web.sourceforge.net`) in you site URL
 
-    ```unknown
+    ```xml
       ...
       <distributionManagement>
         ...
@@ -81,7 +81,7 @@ For path information and login help, type "sf-help".
 
 In the project&apos;s `pom.xml`:
 
-```unknown
+```xml
   ...
   <distributionManagement>
     ...
