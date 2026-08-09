@@ -34,32 +34,43 @@ Given this layered approach, rendering issues reported to [MSITE Maven Site Plug
 
 Knowing which version of maven-site-plugin uses which version of Doxia or Doxia Sitetools is useful to choose to which version to upgrade maven-site-plugin to benefit from a fix: this is the basis for the [simplified migration guide](./migrate.html).
 
-|release date|maven-site-plugin|[Doxia](/doxia/)|[Doxia Sitetools](/doxia/doxia-sitetools/)|[Maven Reporting Executor](/shared/maven-reporting-exec/)|minimum Java|minimum Maven|Comment|
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|2026-05|3\.22\.0|2\.1\.0|2\.1\.0|2\.0\.1|||Doxia 2\.1\.0 with support for Mermaid diagrams|
-|2024-10|3\.21\.0|2\.0\.0|2\.0\.0|2\.0\.0|||Doxia 2\.0\.0|
-|2024-08|3\.20\.0|2\.0\.0-M12|2\.0\.0-M19|2\.0\.0-M14||3\.6\.3|Doxia 2\.0\.0 (still based on non-final milestone releases)|
-|2022-07|3\.12\.1|||||||
-|2022-04|3\.12\.0||||8|3\.2\.5||
-|2022-02|3\.11\.0|||1\.6\.0||||
-|2021-12|3\.10\.0|1\.11\.1|=|||||
-|2020-06|3\.9\.1||1\.9\.2|1\.5\.1|7|3\.0\.5||
-|2020-03|3\.9\.0|1\.9\.1|1\.9\.2|||||
-|2019-07|3\.8\.2|1\.9|1\.9\.1||7|3\.0|addition of confluence/docbook/twiki support by default|
-|2018-04|3\.7\.1||1\.8\.1|||||
-|2017-12|3\.7|1\.8|=|1\.4|||Markdown parser/HTML renderer [changed](/doxia/doxia/doxia-modules/doxia-module-markdown/)|
-|2016-11|3\.6||1\.7\.4|1\.3||||
-|2016-04|3\.5\.1||1\.7\.1|||||
-|2016-02|3\.5|1\.7|=||6|2\.2\.1|`site.xml`&apos;s `head` and `footer` changed from DOM to String, requiring CDATA|
-|2014-07|3\.4|1\.6|=|1\.2|||Reports inherit configuration from pluginManagement|
-|2013-05|3\.3|1\.4|=|1\.1|||addition of Markdown support by default in maven-site-plugin|
-|2012-10|3\.2||=|||||
-|2012-04|3\.1|1\.3|=|1\.0\.2|5|2\.2\.1||
-|2011-08|3\.0|1\.2|=|1\.0\.1|5|2\.2\.0|first maven-site-plugin that renders reports with Maven 3|
-|2012-04|2\.4|1\.3|=|||||
-|2011-05|2\.3|1\.2|=|||||
-|2010-11|2\.2|1\.1\.4|=|||||
-|2010-06|2\.1\.1|1\.1\.3|=|||||
-|2009-12|2\.1|1\.1\.2|=|||||
-|2009-03|2\.0|1\.0|=|||||
+| release date | maven-site-plugin | [Doxia][d]  | [Doxia Sitetools][dst] | [Maven Reporting Executor][mre] | minimum Java | minimum Maven | Comment                                        |
+|--------------|-------------------|-------------|------------------------|---------------------------------|--------------|---------------|------------------------------------------------|
+| 2026-05      | 3.22.0            | 2.1.0       | =                      | 2.0.1                           |              |               | Doxia 2.1.0, with support for Mermaid diagrams |
+| 2024-10      | 3.21.0            | 2.0.0       | =                      | 2.0.0                           | 8            | 3.6.3         | Doxia 2.0.0                                    |
+| 2024-08      | 3.20.0            | *2.0.0-M12* | *2.0.0-M19*            | *2.0.0-M14*                     |              |               |                                                |
+| *2024-07*    | *4.0.0-M16*       | *2.0.0-M12* | *2.0.0-M19*            | *2.0.0-M14*                     |              |               |                                                |
+| ...          | _4.0.0-M*_        | _2.0.0-M*_  | _2.0.0-M*_             | _2.0.0-M*_                      |              |               |                                                |
+| *2022-05*    | *4.0.0-M1*        | *2.0.0-M2*  | *=*                    | *2.0.0-M1*                      | 8            | 3.6.3         | Doxia 2 (non-final *"M" milestone* releases)   |
 
+### Releases using deprecated Doxia 1
+
+| release date | maven-site-plugin | [Doxia][d] | [Doxia Sitetools][dst] | [Maven Reporting Executor][mre] | minimum Java | minimum Maven | Comment                                                                                    |
+|--------------|-------------------|------------|------------------------|---------------------------------|--------------|---------------|--------------------------------------------------------------------------------------------|
+| 2022-07      | 3.12.1            |            |                        |                                 |              |               |                                                                                            |
+| 2022-04      | 3.12.0            |            |                        |                                 | 8            | 3.2.5         |                                                                                            |
+| 2022-02      | 3.11.0            |            |                        | 1.6.0                           |              |               |                                                                                            |
+| 2021-12      | 3.10.0            | 1.11.1     | =                      |                                 |              |               |                                                                                            |
+| 2020-06      | 3.9.1             |            | 1.9.2                  | 1.5.1                           | 7            | 3.0.5         |                                                                                            |
+| 2020-03      | 3.9.0             | 1.9.1      | 1.9.2                  |                                 |              |               |                                                                                            |
+| 2019-07      | 3.8.2             | 1.9        | 1.9.1                  |                                 | 7            | 3.0           | addition of confluence/docbook/twiki support by default                                    |
+| 2018-04      | 3.7.1             |            | 1.8.1                  |                                 |              |               |                                                                                            |
+| 2017-12      | 3.7               | 1.8        | =                      | 1.4                             |              |               | Markdown parser/HTML renderer [changed](/doxia/doxia/doxia-modules/doxia-module-markdown/) |
+| 2016-11      | 3.6               |            | 1.7.4                  | 1.3                             |              |               |                                                                                            |
+| 2016-04      | 3.5.1             |            | 1.7.1                  |                                 |              |               |                                                                                            |
+| 2016-02      | 3.5               | 1.7        | =                      |                                 | 6            | 2.2.1         | `site.xml`&apos;s `head` and `footer` changed from DOM to String, requiring CDATA          |
+| 2014-07      | 3.4               | 1.6        | =                      | 1.2                             |              |               | Reports inherit configuration from pluginManagement                                        |
+| 2013-05      | 3.3               | 1.4        | =                      | 1.1                             |              |               | addition of Markdown support by default in maven-site-plugin                               |
+| 2012-10      | 3.2               |            | =                      |                                 |              |               |                                                                                            |
+| 2012-04      | 3.1               | 1.3        | =                      | 1.0.2                           | 5            | 2.2.1         |                                                                                            |
+| 2011-08      | 3.0               | 1.2        | =                      | 1.0.1                           | 5            | 2.2.0         | first maven-site-plugin that renders reports with Maven 3                                  |
+| 2012-04      | 2.4               | 1.3        | =                      |                                 |              |               |                                                                                            |
+| 2011-05      | 2.3               | 1.2        | =                      |                                 |              |               |                                                                                            |
+| 2010-11      | 2.2               | 1.1.4      | =                      |                                 |              |               |                                                                                            |
+| 2010-06      | 2.1.1             | 1.1.3      | =                      |                                 |              |               |                                                                                            |
+| 2009-12      | 2.1               | 1.1.2      | =                      |                                 |              |               |                                                                                            |
+| 2009-03      | 2.0               | 1.0        | =                      |                                 |              |               |                                                                                            |
+
+[d]: /doxia/
+[dst]: /doxia/doxia-sitetools/
+[mre]: /shared/maven-reporting-exec/
