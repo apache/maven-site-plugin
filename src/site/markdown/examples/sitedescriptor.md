@@ -41,7 +41,7 @@ The title of each generated page will be a combination of the _site title_ and t
 
 If you want to use a different site title, but do not want to change the `<name>` element in your `pom.xml`, you can configure this in your `site.xml`, like this:
 
-```unknown
+```xml
 <site name="My Site Title">
   ...
 </site>
@@ -51,7 +51,7 @@ If you want to use a different site title, but do not want to change the `<name>
 
 You can include some logos on top of your site, using the following syntax:
 
-```unknown
+```xml
 <site>
   ...
   <bannerLeft href="https://maven.apache.org">
@@ -71,7 +71,7 @@ Refer to the site descriptor [reference](/doxia/doxia-sitetools/doxia-site-model
 
 With the out-of-the-box Velocity template, the position of the &quot;Last Published&quot; date is configurable. By default, the position is on the left but you can change it. To do this, you can add a `<publishDate>` element to your `site.xml` like the following:
 
-```unknown
+```xml
 <site>
   ...
   <publishDate position="right"/>
@@ -83,7 +83,7 @@ The `position` attribute can have one of these values: `left`, `right`, `navigat
 
 If you want hide the publish date, you can use this in your `site.xml`:
 
-```unknown
+```xml
 <site>
   ...
   <publishDate position="none"/>
@@ -97,7 +97,7 @@ The format of the &quot;Last Published&quot; date is the ISO extended date forma
 
 You can show the &quot;Version&quot; of your project on the site, by adding a `<version>` element to your `site.xml` like this:
 
-```unknown
+```xml
 <site>
   ...
   <version position="right"/>
@@ -109,7 +109,7 @@ The `position` attribute can have the same values as the `publishDate` attribute
 
 If you want hide the version, you can use this in your `site.xml`:
 
-```unknown
+```xml
 <site>
   ...
   <version position="none"/>
@@ -121,7 +121,7 @@ If you want hide the version, you can use this in your `site.xml`:
 
 You can add your own &quot;Powered by&quot; logo to your site. To do this, you add a `<poweredBy>` element in your `site.xml` like this:
 
-```unknown
+```xml
 <site>
   ...
   <poweredBy>
@@ -141,7 +141,7 @@ See [ Building multi-module sites](./multimodule.html).
 
 Files in the format-based directory structure can be linked to by their target HTML filename, e.g. `${basedir}/src/site/apt/foo.apt` and `${basedir}/src/site/fml/faq.fml` can be linked to via:
 
-```unknown
+```xml
 <site>
   ...
   <body>
@@ -158,7 +158,7 @@ Files in the format-based directory structure can be linked to by their target H
 
 There are also several preset menus that can be used in the site descriptor to include generated content from your project. These are linked via the `ref` attribute, like so:
 
-```unknown
+```xml
 <site>
   ...
   <body>
@@ -181,7 +181,7 @@ The currently available preset menus are:
 
 You can inject some HTML code into the generated `<head>` element of each page by adding a head element to the body element of your project&apos;s site descriptor. The following example adds some javascript:
 
-```unknown
+```xml
 <site>
   ...
   <body>
@@ -201,7 +201,7 @@ Notice: since Maven Site Plugin version 3\.5, if XHTML content is used, it has t
 
 To add links below your site logo, just add a links element to the `<body>` element of the site descriptor. Each item in the links element will be rendered as a link in a bar directly below your project&apos;s logo.
 
-```unknown
+```xml
 <site>
   ...
   <body>
@@ -222,7 +222,7 @@ If there exists a logical hierarchy within your site modules, you may want to ge
 
 To configure breadcrumbs, add a `<breadcrumbs>` element to the `<body>` element in the site descriptor. Each item element will render a link, and the items in the `<breadcrumbs>` element will be rendered in order. The breadcrumb items should be listed from highest level to lowest level.
 
-```unknown
+```xml
 <site>
   ...
   <body>
@@ -243,7 +243,7 @@ To configure breadcrumbs, add a `<breadcrumbs>` element to the `<body>` element 
 
 You can replace the auto-generated footer content by specifying a custom `<footer>` element:
 
-```unknown
+```xml
 <site>
   ...
   <body>
@@ -261,7 +261,7 @@ Notice: since Maven Site Plugin version 3\.5, if XHTML content is used, it has t
 
 There is also a dummy `<custom>` element then can be used to specify some arbitrary content. Note that you need to write your own velocity template to make use of this element, it is ignored by the default Velocity template used by the Site Plugin.
 
-```unknown
+```xml
 <site>
   ...
   <custom>Custom content</custom>
@@ -273,7 +273,7 @@ There is also a dummy `<custom>` element then can be used to specify some arbitr
 
 Skins can be created to customize the look and feel of a site in a consistent way. For more information on creating a skin, see [Creating a Skin](./creatingskins.html). To use a specific skin in your project, you use the `<skin>` element of the site descriptor. This is a regular artifact or dependency-like element. For example, to use the [Maven Fluido Skin](/skins/maven-fluido-skin/), you would include:
 
-```unknown
+```xml
 <site>
   ...
   <skin>
@@ -297,7 +297,7 @@ The authors of skins have the option to use custom properties that are unique to
 
 One skin that uses this is the Maven Fluido Skin. There are many examples on [their site](/skins/maven-fluido-skin/) showing what is possible to do with custom properties. Here is one example:
 
-```unknown
+```xml
 <site>
   ...
   <custom>

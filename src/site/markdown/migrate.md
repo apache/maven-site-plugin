@@ -33,7 +33,7 @@ The Site Plugin has had a couple of upgrades that requires the user to make adju
 
 - Since [Velocity](http://velocity.apache.org) has been upgraded from version 1\.5 to version 1\.7, which changes escaping rules, you may need to update escape sequences in your `.vm` documents and/or skins. If you can&apos;t update content and/or skin immediately, you can manually downgrade Velocity version by configuring a dependency to Maven Site Plugin:
 
-    ```unknown
+    ```xml
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
@@ -49,7 +49,7 @@ The Site Plugin has had a couple of upgrades that requires the user to make adju
 
 - Site Decoration Model 1\.7\.0 has changed type for `head` and `footer` from `DOM` to `String`: if your `site.xml` (or one parent) contains XML content, you&apos;ll need to escape it, usually by adding `<![CDATA[` and `]]>` around the content:
 
-    ```unknown
+    ```xml
     <project xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
         <body>

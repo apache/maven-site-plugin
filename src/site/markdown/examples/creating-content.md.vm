@@ -138,7 +138,7 @@ Internationalization in Maven is very simple, as long as the reports you are usi
 
 To enable multiple locales, or languages, add a configuration similar to the following to your POM:
 
-```unknown
+```xml
 <project>
   ...
   <build>

@@ -36,7 +36,7 @@ You can put additional content (e.g. documentation, resources, etc.) in your sit
 
 To generate the project&apos;s site and reports, execute:
 
-```unknown
+```shell
 mvn site
 ```
 
@@ -50,7 +50,7 @@ By default, the resulting site will be in the `target/site/` directory.
 
 To be able to deploy the site, you must first specify where the site will be deployed. This is set in the `<distributionManagement>` element of the POM as shown below.
 
-```unknown
+```xml
 <project>
   ...
   <distributionManagement>
@@ -71,13 +71,13 @@ Now you can execute the [`site:deploy`](./deploy-mojo.html) goal from your proje
 
 **Note:** A site must be generated first before executing `site:deploy`.
 
-```unknown
+```shell
 mvn site:deploy
 ```
 
 If you want to generate the site _and_ deploy it in one go, you can utilize the `site-deploy` phase of the site lifecycle. To do this, just execute:
 
-```unknown
+```shell
 mvn site-deploy
 ```
 
@@ -87,7 +87,7 @@ To review/test the generated web site before an official deploy, you can stage t
 
 Just execute the [`site:stage`](./stage-mojo.html) goal from your project
 
-```unknown
+```shell
 mvn site:stage
 ```
 
@@ -95,7 +95,7 @@ mvn site:stage
 
 By default, the site will be staged in a directory `target/staging/`. A different staging location can be chosen with the `stagingDirectory` parameter as shown below:
 
-```unknown
+```shell
 mvn site:stage -DstagingDirectory=C:\fullsite
 ```
 
@@ -105,7 +105,7 @@ To stage a site and deploy it, execute the [`site:stage-deploy`](./stage-deploy-
 
 By default, the site will be stage-deployed to `${distributionManagement.site.url}/staging/`. A different location can be chosen with the `stagingSiteURL` parameter as shown below:
 
-```unknown
+```shell
 mvn site:stage-deploy -DstagingSiteURL=scp://www.mycompany.com/www/project/
 ```
 
@@ -115,7 +115,7 @@ mvn site:stage-deploy -DstagingSiteURL=scp://www.mycompany.com/www/project/
 
 The Site Plugin can also be used to start up the site in Jetty. To do this, execute:
 
-```unknown
+```shell
 mvn site:run
 ```
 

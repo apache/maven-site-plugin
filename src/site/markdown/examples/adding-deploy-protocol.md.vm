@@ -42,7 +42,7 @@ As explained in the error message, to deploy a site with a non-built-in protocol
 
 You can add it either as a [global extension](/guides/mini/guide-using-extensions.html), or declare it as a dependency of the site plugin:
 
-```unknown
+```xml
 <project>
   ...
   <build>
