@@ -22,10 +22,12 @@ import javax.inject.Inject;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.maven.doxia.site.inheritance.URIPathDescriptor;
 import org.apache.maven.doxia.tools.SiteTool;
@@ -37,6 +39,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.AbstractSiteMojo;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.scm.provider.ScmUrlUtils;
 import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
@@ -520,6 +523,106 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     }
 
     /**
+     * Extracts the provider-specific URL from an SCM URL for comparison purposes.
+     * For non-SCM URLs, returns the original URL.
+     * For SCM URLs with SCP-like syntax (e.g., git@github.com:user/repo.git),
+     * converts them to a comparable format.
+     * For hierarchical SCM systems like SVN, normalizes the scheme to enable
+     * proper comparison of URLs that differ only in http vs https.
+     *
+     * @param url the URL to process
+     * @return the provider-specific URL for SCM URLs, or the original URL otherwise
+     */
+    static String extractComparableUrl(String url) {
+        if (url != null && url.startsWith("scm:")) {
+            // Extract the SCM provider (e.g., "git", "svn")
+            String provider = ScmUrlUtils.getProvider(url);
+
+            // Extract the provider-specific part of the SCM URL
+            // For example: "scm:git:https://github.com/user/repo.git" -> "https://github.com/user/repo.git"
+            String providerSpecificPart = ScmUrlUtils.getProviderSpecificPart(url);
+            if (providerSpecificPart != null && !providerSpecificPart.isEmpty()) {
+                // Handle SCP-like Git syntax (e.g., git@github.com:user/repo.git or user@host:path)
+                // Convert it to a more standard format for comparison
+                // Note: This is a heuristic check - we look for the pattern of user@host:path
+                // where the colon comes after the @ symbol and is followed by a path
+                if (providerSpecificPart.contains("@")
+                        && !providerSpecificPart.startsWith("http://")
+                        && !providerSpecificPart.startsWith("https://")
+                        && !providerSpecificPart.startsWith("ssh://")) {
+                    // Find the @ symbol and look for the first : after it that's not part of a URL scheme
+                    int atIndex = providerSpecificPart.lastIndexOf('@');
+                    int colonIndex = providerSpecificPart.indexOf(':', atIndex);
+
+                    // Verify this looks like SCP syntax: user@host:path
+                    // The colon should come after @ and before the end
+                    if (atIndex >= 0 && colonIndex > atIndex + 1 && colonIndex < providerSpecificPart.length() - 1) {
+                        String host = providerSpecificPart.substring(atIndex + 1, colonIndex);
+                        String path = providerSpecificPart.substring(colonIndex + 1);
+                        // Convert to a pseudo-URL format for comparison
+                        // Note: IPv6 addresses in brackets are handled by this approach
+                        // as the brackets will be preserved in the host part
+                        return "ssh://" + host + "/" + path;
+                    }
+                }
+
+                // For hierarchical VCS systems like SVN, normalize the scheme to allow
+                // comparison of URLs that differ only in http vs https
+                // SVN repositories can be accessed via both protocols and should be considered the same
+                if ("svn".equalsIgnoreCase(provider) && providerSpecificPart.startsWith("https://")) {
+                    // Normalize https to http for SVN URLs to enable proper comparison
+                    return "http" + providerSpecificPart.substring(5);
+                }
+
+                // Return the provider-specific part as-is for standard URLs or
+                // if SCP syntax conversion is not applicable
+                return providerSpecificPart;
+            }
+        }
+        return url;
+    }
+
+    /**
+     * Returns whether a child repository lies within a parent repository, which is what makes them one site
+     * to deploy. The host must match and the child path must be the parent path or below it.
+     * <p>
+     * Host, scheme and port alone do not tell them apart: two repositories on the same forge, such as
+     * {@code github.com/org/parent.git} and {@code github.com/org/child.git}, share all three and are still
+     * unrelated sites. This is stricter than {@link URIPathDescriptor#sameSite}, so it applies only to SCM
+     * URLs, where the path names the repository.
+     *
+     * @param parentUri the site URI of the parent project
+     * @param childUri the site URI of the child project
+     * @return {@code true} if both URIs describe the same site
+     */
+    static boolean isScmUrl(String url) {
+        return url != null && url.startsWith("scm:");
+    }
+
+    static boolean isSameRepositoryPath(URI parentUri, URI childUri) {
+        if (!Objects.equals(parentUri.getHost(), childUri.getHost())) {
+            return false;
+        }
+
+        String parentPath = stripTrailingSlash(parentUri.getPath());
+        String childPath = stripTrailingSlash(childUri.getPath());
+        if (parentPath == null || childPath == null) {
+            // an opaque URI neither the SCM unwrapping nor URI parsing could resolve; treat the sites as separate
+            return false;
+        }
+
+        // compare whole segments, so that /foo does not contain /foobar
+        return childPath.equals(parentPath) || childPath.startsWith(parentPath + "/");
+    }
+
+    private static String stripTrailingSlash(String path) {
+        if (path != null && path.endsWith("/")) {
+            return path.substring(0, path.length() - 1);
+        }
+        return path;
+    }
+
+    /**
      * Extract the distributionManagement site of the top level parent of the given MavenProject.
      * This climbs up the project hierarchy and returns the site of the last project
      * for which {@link #getSite(org.apache.maven.project.MavenProject)} returns a site that resides in the
@@ -550,10 +653,20 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
             }
 
             // MSITE-600
-            URIPathDescriptor siteURI = new URIPathDescriptor(URIEncoder.encodeURI(site.getUrl()), "");
-            URIPathDescriptor oldSiteURI = new URIPathDescriptor(URIEncoder.encodeURI(oldSite.getUrl()), "");
+            // MSITE-1033: For SCM URLs, extract the provider-specific part for comparison
+            String siteUrlToCompare = extractComparableUrl(site.getUrl());
+            String oldSiteUrlToCompare = extractComparableUrl(oldSite.getUrl());
 
-            if (!siteURI.sameSite(oldSiteURI.getBaseURI())) {
+            URIPathDescriptor siteURI = new URIPathDescriptor(URIEncoder.encodeURI(siteUrlToCompare), "");
+            URIPathDescriptor oldSiteURI = new URIPathDescriptor(URIEncoder.encodeURI(oldSiteUrlToCompare), "");
+
+            // an SCM URL names a repository, so the path decides; a deployment URL keeps the older, looser
+            // rule, under which a child may sit anywhere on the same server and still be one site
+            boolean sameSite = isScmUrl(site.getUrl()) || isScmUrl(oldSite.getUrl())
+                    ? isSameRepositoryPath(siteURI.getBaseURI(), oldSiteURI.getBaseURI())
+                    : siteURI.sameSite(oldSiteURI.getBaseURI());
+
+            if (!sameSite) {
                 return oldProject;
             }
         }
