@@ -158,9 +158,7 @@ public class AbstractDeployMojoTest {
     /**
      * Test that extractComparableUrl properly handles SVN URLs with different schemes but same host.
      * For SVN (hierarchical VCS), URLs with different schemes (http vs https) should be normalized
-     * to the same scheme to allow URIPathDescriptor.sameSite() to recognize them as the same site.
-     * Note: The paths may differ (one being a subpath of another), but as long as scheme, host, and port
-     * are the same, URIPathDescriptor.sameSite() will correctly identify them as the same site.
+     * to the same scheme to allow site inheritance to recognize them as the same site.
      */
     @Test
     public void testExtractComparableUrlForSvnUrls() throws Exception {
@@ -187,6 +185,31 @@ public class AbstractDeployMojoTest {
                 parentProject,
                 topProject,
                 "Top project should be parent due to normalized SVN URLs pointing to same site");
+    }
+
+    @Test
+    public void testExtractComparableUrlWithBracketedIpv6() {
+        String url = AbstractDeployMojo.extractComparableUrl("scm:git:git@[2001:db8::1]:user/repo.git");
+        assertEquals("ssh://[2001:db8::1]/user/repo.git", url);
+    }
+
+    @Test
+    public void testExtractComparableUrlWithMalformedScmUrl() {
+        String malformedUrl = "scm:invalid";
+        String result = AbstractDeployMojo.extractComparableUrl(malformedUrl);
+        assertEquals(malformedUrl, result);
+    }
+
+    @Test
+    public void testGetTopLevelProjectWithDifferentPorts() throws Exception {
+        TestDeployMojo mojo = new TestDeployMojo();
+        MavenProject childProject =
+                createProjectWithSite("child", "scm:git:https://example.com:8443/org/repo.git/child");
+        MavenProject parentProject = createProjectWithSite("parent", "scm:git:https://example.com:9443/org/repo.git/");
+        childProject.setParent(parentProject);
+
+        MavenProject topProject = mojo.getTopLevelProject(childProject);
+        assertEquals(childProject, topProject, "Projects with different ports should not share a site");
     }
 
     private MavenProject createProjectWithSite(String artifactId, String siteUrl) {
