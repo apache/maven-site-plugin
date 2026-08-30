@@ -535,48 +535,61 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
      */
     static String extractComparableUrl(String url) {
         if (url != null && url.startsWith("scm:")) {
-            // Extract the SCM provider (e.g., "git", "svn")
-            String provider = ScmUrlUtils.getProvider(url);
+            try {
+                // Extract the SCM provider (e.g., "git", "svn")
+                String provider = ScmUrlUtils.getProvider(url);
 
-            // Extract the provider-specific part of the SCM URL
-            // For example: "scm:git:https://github.com/user/repo.git" -> "https://github.com/user/repo.git"
-            String providerSpecificPart = ScmUrlUtils.getProviderSpecificPart(url);
-            if (providerSpecificPart != null && !providerSpecificPart.isEmpty()) {
-                // Handle SCP-like Git syntax (e.g., git@github.com:user/repo.git or user@host:path)
-                // Convert it to a more standard format for comparison
-                // Note: This is a heuristic check - we look for the pattern of user@host:path
-                // where the colon comes after the @ symbol and is followed by a path
-                if (providerSpecificPart.contains("@")
-                        && !providerSpecificPart.startsWith("http://")
-                        && !providerSpecificPart.startsWith("https://")
-                        && !providerSpecificPart.startsWith("ssh://")) {
-                    // Find the @ symbol and look for the first : after it that's not part of a URL scheme
-                    int atIndex = providerSpecificPart.lastIndexOf('@');
-                    int colonIndex = providerSpecificPart.indexOf(':', atIndex);
+                // Extract the provider-specific part of the SCM URL
+                // For example: "scm:git:https://github.com/user/repo.git" -> "https://github.com/user/repo.git"
+                String providerSpecificPart = ScmUrlUtils.getProviderSpecificPart(url);
+                if (providerSpecificPart != null && !providerSpecificPart.isEmpty()) {
+                    // Handle SCP-like Git syntax (e.g., git@github.com:user/repo.git or user@host:path)
+                    // Convert it to a more standard format for comparison
+                    // Note: This is a heuristic check - we look for the pattern of user@host:path
+                    // where the colon comes after the @ symbol and is followed by a path
+                    if (providerSpecificPart.contains("@")
+                            && !providerSpecificPart.startsWith("http://")
+                            && !providerSpecificPart.startsWith("https://")
+                            && !providerSpecificPart.startsWith("ssh://")) {
+                        // Find the @ symbol and look for the first : after it that's not part of a URL scheme
+                        int atIndex = providerSpecificPart.lastIndexOf('@');
+                        int colonIndex;
+                        if (atIndex >= 0
+                                && atIndex + 1 < providerSpecificPart.length()
+                                && providerSpecificPart.charAt(atIndex + 1) == '[') {
+                            int closingBracket = providerSpecificPart.indexOf(']', atIndex + 1);
+                            colonIndex = (closingBracket > 0) ? providerSpecificPart.indexOf(':', closingBracket) : -1;
+                        } else {
+                            colonIndex = (atIndex >= 0) ? providerSpecificPart.indexOf(':', atIndex) : -1;
+                        }
 
-                    // Verify this looks like SCP syntax: user@host:path
-                    // The colon should come after @ and before the end
-                    if (atIndex >= 0 && colonIndex > atIndex + 1 && colonIndex < providerSpecificPart.length() - 1) {
-                        String host = providerSpecificPart.substring(atIndex + 1, colonIndex);
-                        String path = providerSpecificPart.substring(colonIndex + 1);
-                        // Convert to a pseudo-URL format for comparison
-                        // Note: IPv6 addresses in brackets are handled by this approach
-                        // as the brackets will be preserved in the host part
-                        return "ssh://" + host + "/" + path;
+                        // Verify this looks like SCP syntax: user@host:path
+                        // The colon should come after @ and before the end
+                        if (atIndex >= 0
+                                && colonIndex > atIndex + 1
+                                && colonIndex < providerSpecificPart.length() - 1) {
+                            String host = providerSpecificPart.substring(atIndex + 1, colonIndex);
+                            String path = providerSpecificPart.substring(colonIndex + 1);
+                            // Convert to a pseudo-URL format for comparison
+                            return "ssh://" + host + "/" + path;
+                        }
                     }
-                }
 
-                // For hierarchical VCS systems like SVN, normalize the scheme to allow
-                // comparison of URLs that differ only in http vs https
-                // SVN repositories can be accessed via both protocols and should be considered the same
-                if ("svn".equalsIgnoreCase(provider) && providerSpecificPart.startsWith("https://")) {
-                    // Normalize https to http for SVN URLs to enable proper comparison
-                    return "http" + providerSpecificPart.substring(5);
-                }
+                    // For hierarchical VCS systems like SVN, normalize the scheme to allow
+                    // comparison of URLs that differ only in http vs https
+                    // SVN repositories can be accessed via both protocols and should be considered the same
+                    if ("svn".equalsIgnoreCase(provider) && providerSpecificPart.startsWith("https://")) {
+                        // Normalize https to http for SVN URLs to enable proper comparison
+                        return "http" + providerSpecificPart.substring(5);
+                    }
 
-                // Return the provider-specific part as-is for standard URLs or
-                // if SCP syntax conversion is not applicable
-                return providerSpecificPart;
+                    // Return the provider-specific part as-is for standard URLs or
+                    // if SCP syntax conversion is not applicable
+                    return providerSpecificPart;
+                }
+            } catch (IllegalArgumentException e) {
+                // Malformed SCM URL; fall back to original URL
+                return url;
             }
         }
         return url;
@@ -584,7 +597,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
 
     /**
      * Returns whether a child repository lies within a parent repository, which is what makes them one site
-     * to deploy. The host must match and the child path must be the parent path or below it.
+     * to deploy. The host and port must match and the child path must be the parent path or below it.
      * <p>
      * Host, scheme and port alone do not tell them apart: two repositories on the same forge, such as
      * {@code github.com/org/parent.git} and {@code github.com/org/child.git}, share all three and are still
@@ -600,7 +613,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
     }
 
     static boolean isSameRepositoryPath(URI parentUri, URI childUri) {
-        if (!Objects.equals(parentUri.getHost(), childUri.getHost())) {
+        if (!Objects.equals(parentUri.getHost(), childUri.getHost()) || parentUri.getPort() != childUri.getPort()) {
             return false;
         }
 
