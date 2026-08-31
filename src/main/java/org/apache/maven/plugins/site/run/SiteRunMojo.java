@@ -21,15 +21,17 @@ package org.apache.maven.plugins.site.run;
 import javax.inject.Inject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import com.sun.net.httpserver.HttpServer;
 import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
@@ -43,15 +45,12 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
-import org.codehaus.plexus.util.IOUtil;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.webapp.WebAppContext;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
 /**
  * Starts the site up, rendering documents as requested for faster editing.
- * It uses Jetty as the web server.
+ * It uses the HTTP server provided by the JDK.
  *
  * @author <a href="mailto:brett@apache.org">Brett Porter</a>
  * @see org.apache.maven.plugins.site.render.AutoRefreshMojo {@code auto-refresh} goal for automatic rerendering based on file system changes.
@@ -59,7 +58,7 @@ import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 @Mojo(name = "run", requiresDependencyResolution = ResolutionScope.TEST, requiresReports = true)
 public class SiteRunMojo extends AbstractSiteRenderingMojo {
     /**
-     * Where to create the dummy web application.
+     * Where to create the temporary site directory served by the HTTP server.
      */
     @Parameter(defaultValue = "${project.build.directory}/site-webapp")
     private File tempWebappDirectory;
@@ -91,56 +90,60 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         checkInputEncoding();
 
-        Server server = new Server(InetSocketAddress.createUnresolved(host, port));
-        server.setStopAtShutdown(true);
+        tempWebappDirectory.mkdirs();
 
-        WebAppContext webapp = createWebApplication();
-        webapp.setServer(server);
+        Map<String, DoxiaBean> i18nDoxiaContexts = createDoxiaContexts();
 
-        server.setHandler(webapp);
-
+        HttpServer server;
         try {
-            server.start();
-        } catch (Exception e) {
-            throw new MojoExecutionException("Error executing Jetty", e);
+            server = HttpServer.create(new InetSocketAddress(host, port), 0);
+        } catch (IOException e) {
+            throw new MojoExecutionException("Error creating HTTP server on " + host + ":" + port, e);
         }
 
-        getLog().info(buffer().a("Started Jetty on ").strong(server.getURI()).build());
+        ExecutorService executor = Executors.newCachedThreadPool(runnable -> {
+            Thread thread = new Thread(runnable, "site:run");
+            thread.setDaemon(true);
+            return thread;
+        });
+        server.setExecutor(executor);
+        server.createContext(
+                "/", new DoxiaHandler(tempWebappDirectory, siteRenderer, i18nDoxiaContexts, getLocales(), getLog()));
+
+        server.start();
+
+        int listeningPort = server.getAddress().getPort();
+        getLog().info(buffer().a("Started site:run HTTP server on ")
+                .strong("http://" + host + ":" + listeningPort + "/")
+                .build());
 
         // Watch it
+        CountDownLatch latch = new CountDownLatch(1);
+        Runtime.getRuntime()
+                .addShutdownHook(new Thread(
+                        () -> {
+                            server.stop(0);
+                            executor.shutdown();
+                            latch.countDown();
+                        },
+                        "site:run-shutdown"));
+
         try {
-            server.getThreadPool().join();
+            latch.await();
         } catch (InterruptedException e) {
-            getLog().warn("Jetty was interrupted", e);
+            getLog().warn("site:run server was interrupted", e);
         }
     }
 
-    private WebAppContext createWebApplication() throws MojoExecutionException {
-        File webXml = new File(tempWebappDirectory, "WEB-INF/web.xml");
-        webXml.getParentFile().mkdirs();
-
-        try (InputStream inStream = getClass().getResourceAsStream("/run/web.xml"); //
-                FileOutputStream outStream = new FileOutputStream(webXml)) {
-            IOUtil.copy(inStream, outStream);
-        } catch (IOException e) {
-            throw new MojoExecutionException("Unable to construct temporary webapp for running site", e);
-        }
-
-        WebAppContext webapp = new WebAppContext();
-        webapp.setContextPath("/");
-        webapp.setResourceBase(tempWebappDirectory.getAbsolutePath());
-        webapp.setAttribute(DoxiaFilter.OUTPUT_DIRECTORY_KEY, tempWebappDirectory);
-        webapp.setAttribute(DoxiaFilter.SITE_RENDERER_KEY, siteRenderer);
-        webapp.getInitParams().put("org.mortbay.jetty.servlet.Default.useFileMappedBuffer", "false");
-
-        // For external reports
-        project.getReporting().setOutputDirectory(tempWebappDirectory.getAbsolutePath());
-
-        List<Locale> localesList = getLocales();
-        webapp.setAttribute(DoxiaFilter.LOCALES_LIST_KEY, localesList);
+    private Map<String, DoxiaBean> createDoxiaContexts() throws MojoExecutionException {
+        Map<String, DoxiaBean> i18nDoxiaContexts;
 
         try {
-            Map<String, DoxiaBean> i18nDoxiaContexts = new HashMap<>();
+            // For external reports
+            project.getReporting().setOutputDirectory(tempWebappDirectory.getAbsolutePath());
+
+            List<Locale> localesList = getLocales();
+            i18nDoxiaContexts = new HashMap<>();
 
             for (Locale locale : localesList) {
                 SiteRenderingContext i18nContext = createSiteRenderingContext(locale);
@@ -155,22 +158,16 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
 
                 if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     i18nDoxiaContexts.put(locale.toString(), doxiaBean);
-                } else {
-                    i18nDoxiaContexts.put("default", doxiaBean);
-                }
-
-                if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
                     siteRenderer.copyResources(i18nContext, new File(tempWebappDirectory, locale.toString()));
                 } else {
+                    i18nDoxiaContexts.put("default", doxiaBean);
                     siteRenderer.copyResources(i18nContext, tempWebappDirectory);
                 }
             }
-
-            webapp.setAttribute(DoxiaFilter.I18N_DOXIA_CONTEXTS_KEY, i18nDoxiaContexts);
         } catch (Exception e) {
-            throw new MojoExecutionException("Unable to set up webapp", e);
+            throw new MojoExecutionException("Unable to set up site:run contexts", e);
         }
-        return webapp;
+        return i18nDoxiaContexts;
     }
 
     private File getOutputDirectory(Locale locale) {

@@ -113,13 +113,13 @@ mvn site:stage-deploy -DstagingSiteURL=scp://www.mycompany.com/www/project/
 
 ## Running a Site
 
-The Site Plugin can also be used to start up the site in Jetty. To do this, execute:
+The Site Plugin can also be used to start up the site in a local HTTP server. To do this, execute:
 
 ```shell
 mvn site:run
 ```
 
-The server will, by default, be started on `http://localhost:8080/`. See [https://www.eclipse.org/jetty/](https://www.eclipse.org/jetty/) for more information about the Jetty server.
+The server will, by default, be started on `http://localhost:8080/`.
 
 **Note:** Running a site only works for single-module sites. To preview a multi-module site one should use `site:stage`.
 
