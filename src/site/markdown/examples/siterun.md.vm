@@ -50,5 +50,5 @@ For example, you can have the following configuration in your POM:
 </project>
 ```
 
-When you execute &quot;`mvn site:run`&quot;, you will see in the command line that the Jetty server is started at port 9000\. To access the site, type `http://localhost:9000` in your browser. You will also see that the dummy web application is generated in the `${basedir}/target/site/tempdir` directory as specified by the `tempWebappDirectory` parameter.
+When you execute &quot;`mvn site:run`&quot;, you will see in the command line that the HTTP server is started at port 9000\. To access the site, type `http://localhost:9000` in your browser. You will also see that the served site files are generated in the `${basedir}/target/site/tempdir` directory as specified by the `tempWebappDirectory` parameter.
 

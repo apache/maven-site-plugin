@@ -106,7 +106,7 @@ public class SiteDeployWebDavWithoutAuthTest {
 
             mojo.execute();
             assertContentInFiles();
-            assertFalse(assertAtLeastOneRequestContainsHeader(simpleDavServerHandler.httpRequests, "Proxy-Connection"));
+            assertFalse(assertAtLeastOneRequestContainsHeader(simpleDavServerHandler.httpRequests, "proxy-connection"));
         }
 
         @Provides
@@ -148,7 +148,7 @@ public class SiteDeployWebDavWithoutAuthTest {
 
             assertContentInFiles();
 
-            assertTrue(assertAtLeastOneRequestContainsHeader(simpleDavServerHandler.httpRequests, "Proxy-Connection"));
+            assertTrue(assertAtLeastOneRequestContainsHeader(simpleDavServerHandler.httpRequests, "proxy-connection"));
         }
 
         @Provides

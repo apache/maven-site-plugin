@@ -64,7 +64,6 @@ class SiteDeployWebDavThruProxyWitAuthzInProxyTest {
 
     private static SimpleDavServerHandler simpleDavServerHandler;
     private static File siteTargetPath;
-    private static AuthAsyncProxyServlet servlet;
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -76,8 +75,7 @@ class SiteDeployWebDavThruProxyWitAuthzInProxyTest {
         Map<String, String> authentications = new HashMap<>();
         authentications.put("foo", "titi");
 
-        servlet = new AuthAsyncProxyServlet(authentications, siteTargetPath);
-        simpleDavServerHandler = new SimpleDavServerHandler(servlet);
+        simpleDavServerHandler = new SimpleDavServerHandler(siteTargetPath, authentications);
     }
 
     @AfterAll
@@ -94,8 +92,8 @@ class SiteDeployWebDavThruProxyWitAuthzInProxyTest {
         mojo.execute();
 
         assertContentInFiles();
-        assertTrue(requestsContainsProxyUse(servlet.httpRequests));
-        assertAtLeastOneRequestContainsHeader(servlet.httpRequests, "Proxy-Authorization");
+        assertTrue(requestsContainsProxyUse(simpleDavServerHandler.httpRequests));
+        assertAtLeastOneRequestContainsHeader(simpleDavServerHandler.httpRequests, "proxy-authorization");
     }
 
     @Provides
@@ -162,7 +160,7 @@ class SiteDeployWebDavThruProxyWitAuthzInProxyTest {
      * @return true if at least on request use proxy http header Proxy-Connection : Keep-Alive
      */
     private boolean requestsContainsProxyUse(List<HttpRequest> requests) {
-        return assertAtLeastOneRequestContainsHeader(requests, "Proxy-Connection");
+        return assertAtLeastOneRequestContainsHeader(requests, "proxy-connection");
     }
 
     private boolean assertAtLeastOneRequestContainsHeader(List<HttpRequest> requests, String headerName) {
