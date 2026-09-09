@@ -279,7 +279,7 @@ Skins can be created to customize the look and feel of a site in a consistent wa
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>
-    <version>1.8</version>
+    <version>2.1.0</version>
   </skin>
   ...
 </site>
@@ -289,7 +289,7 @@ Skins can be created to customize the look and feel of a site in a consistent wa
 
 This skin will copy the necessary resources including CSS and if necessary use the included alternate Velocity template to render the site.
 
-If you don&apos;t specify a skin, the Site Plugin will use [Maven Default Skin](/skins/maven-default-skin/).
+Since version 3\.20\.0 a skin is mandatory: the site descriptor no longer carries a built-in default skin, and the build fails with `No skin is declared in the site descriptor` when none is found. The skin is normally inherited from the parent&apos;s site descriptor, so most projects never declare one themselves; projects inheriting from [Apache Parent POM](https://maven.apache.org/pom/asf/) get [Maven Fluido Skin](/skins/maven-fluido-skin/) that way. If you see that failure, check that the parent site descriptor is resolvable before adding a `<skin>` of your own.
 
 ## Custom Properties
 

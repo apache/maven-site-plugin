@@ -55,7 +55,7 @@ Once the JAR is built and deployed, it can be used by projects.
 
 <!-- @todo More information is needed here on constructing the CSS-->
 
-If you are interested in constructing your own CSS, it is recommended that you copy the file [`maven-theme.css`](https://github.com/apache/maven-default-skin/tree/master/src/main/resources/css/maven-theme.css) from Maven Default Skin and modify it to suit your needs.
+If you are interested in constructing your own CSS, it is recommended that you copy the file [`maven-theme.css`](https://github.com/apache/maven-fluido-skin/tree/master/src/main/resources/css/maven-theme.css) from Maven Fluido Skin and modify it to suit your needs.
 
 ## Customizing the HTML Output with a Velocity Template
 
