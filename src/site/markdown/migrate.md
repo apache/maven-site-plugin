@@ -29,6 +29,17 @@ under the License.
 
 The Site Plugin has had a couple of upgrades that requires the user to make adjustments to their environment, documents or configuration. Below is a list of key changes and what updates you as a user need to be aware of: you can have a look at [history](./history.html) for precise details of internal components updates.
 
+## From 3\.12\.x to 3\.20\.0
+
+Version 3\.20\.0 moves the plugin onto the [Doxia 2\.0\.0 stack](/doxia/) and Maven Reporting API 4\.0\.0. It is the Doxia 2 line for Maven 3\.x, and the gap after 3\.12\.x is deliberate: 4\.0\.0 is reserved for Maven 4.
+
+- Reports are loaded through Maven Reporting API 4\.0\.0, so report plugins built against Maven Reporting API 3\.x no longer run. Upgrade every report plugin along with the Site Plugin.
+- A skin is mandatory. The site descriptor no longer carries a built-in default skin, and the build fails with `No skin is declared in the site descriptor` when none is found. Projects inheriting from the [Apache Parent POM](/pom/asf/) pick up [Maven Fluido Skin](/skins/maven-fluido-skin/) through the inherited site descriptor, so if that failure appears, first check that the parent site descriptor is resolvable.
+- The site descriptor has a second model version, with `site` as its root element and the `http://maven.apache.org/SITE/2.0.0` namespace, described in the [site descriptor reference](/doxia/doxia-sitetools/doxia-site-model/site.html). Descriptors written against the v1 model are still read and converted on the fly; [convert them](/doxia/doxia-sitetools/doxia-site-model/convert-to-sitedescriptor-2.x.html) when convenient.
+- The default locale is the root locale, written `default` in the `locales` parameter. When you render several locales, list `default` among them, otherwise nothing is generated at the root of the output directory.
+- Documents are rendered as XHTML5, and section titles start at `h1` where they previously started at `h2`. Skins and stylesheets that select on heading level need to be adjusted.
+- Site descriptors cached in your local repository by earlier runs can be 0-byte markers that shadow the remote ones. Delete them once: `find ~/.m2/repository -name \*site\*.xml -size 0 -delete`
+
 ## From 3\.4 to 3\.5\.1
 
 - Since [Velocity](http://velocity.apache.org) has been upgraded from version 1\.5 to version 1\.7, which changes escaping rules, you may need to update escape sequences in your `.vm` documents and/or skins. If you can&apos;t update content and/or skin immediately, you can manually downgrade Velocity version by configuring a dependency to Maven Site Plugin:
