@@ -248,14 +248,18 @@ public class ReportDocumentRenderer implements DocumentRenderer {
         }
     }
 
+    /**
+     * @deprecated use {@link #getOutputPath()} instead
+     */
     @Override
+    @Deprecated
     public String getOutputName() {
-        return docRenderingContext.getOutputName();
+        return getOutputPath();
     }
 
     @Override
     public String getOutputPath() {
-        return getOutputName();
+        return docRenderingContext.getOutputPath();
     }
 
     @Override
