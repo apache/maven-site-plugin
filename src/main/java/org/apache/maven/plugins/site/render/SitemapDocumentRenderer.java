@@ -163,14 +163,18 @@ public class SitemapDocumentRenderer implements SitePluginReportDocumentRenderer
         return href.startsWith("/") ? "." + href : href;
     }
 
+    /**
+     * @deprecated use {@link #getOutputPath()} instead
+     */
     @Override
+    @Deprecated
     public String getOutputName() {
-        return docRenderingContext.getOutputName();
+        return getOutputPath();
     }
 
     @Override
     public String getOutputPath() {
-        return getOutputName();
+        return docRenderingContext.getOutputPath();
     }
 
     @Override
