@@ -38,7 +38,16 @@ public class MyReport
     extends AbstractMavenReport
 {
 
+    /**
+     * @deprecated use {@link #getOutputPath()} instead
+     */
+    @Deprecated
     public String getOutputName()
+    {
+        return getOutputPath();
+    }
+
+    public String getOutputPath()
     {
         return "MSITE-627";
     }
