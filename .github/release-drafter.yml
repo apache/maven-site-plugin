@@ -15,5 +15,5 @@
 # specific language governing permissions and limitations
 # under the License.
 
-_extends: maven-gh-actions-shared:/.github/release-drafter.yml
+_extends: maven-gh-actions-shared
 tag-template: maven-site-plugin-$RESOLVED_VERSION
