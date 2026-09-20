@@ -64,11 +64,16 @@ try
         System.err.println( "download.html file is missing or a directory." );
         return false;
     }
+    // the page interpolates ${currentVersion}, which the filtered POM sets from @mavenVersion@
+    String pomContent = FileUtils.fileRead( new File( basedir, "pom.xml" ), "UTF-8" );
+    int start = pomContent.indexOf( "<currentVersion>" ) + "<currentVersion>".length();
+    String currentVersion = pomContent.substring( start, pomContent.indexOf( "</currentVersion>", start ) );
+    String expected = "Download Maven " + currentVersion;
     String downloadContent = FileUtils.fileRead( download, "UTF-8" );
-    int indexOf = downloadContent.indexOf( "Download Maven 3.6.3" );
+    int indexOf = downloadContent.indexOf( expected );
     if ( indexOf < 0 )
     {
-        System.err.println( "download.html doesn't contain Download Maven 3.6.3" );
+        System.err.println( "download.html doesn't contain " + expected );
         return false;
     }
 }
