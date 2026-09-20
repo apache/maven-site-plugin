@@ -19,6 +19,7 @@
  */
 
 import java.io.*;
+import groovy.xml.XmlSlurper;
 import org.codehaus.plexus.util.*;
 
 boolean result = true;
@@ -65,10 +66,8 @@ try
         return false;
     }
     // the page interpolates ${currentVersion}, which the filtered POM sets from @mavenVersion@
-    String pomContent = FileUtils.fileRead( new File( basedir, "pom.xml" ), "UTF-8" );
-    int start = pomContent.indexOf( "<currentVersion>" ) + "<currentVersion>".length();
-    String currentVersion = pomContent.substring( start, pomContent.indexOf( "</currentVersion>", start ) );
-    String expected = "Download Maven " + currentVersion;
+    def pom = new XmlSlurper().parse( new File( basedir, "pom.xml" ) )
+    String expected = "Download Maven " + pom.properties.currentVersion.text()
     String downloadContent = FileUtils.fileRead( download, "UTF-8" );
     int indexOf = downloadContent.indexOf( expected );
     if ( indexOf < 0 )
