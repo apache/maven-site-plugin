@@ -65,7 +65,7 @@ try
     }
 
     content = FileUtils.fileRead( licenses, "UTF-8" );
-    int index = content.indexOf( "<a href=\"index.html\">Heim</a>" );
+    index = content.indexOf( "<a href=\"index.html\">Heim</a>" );
     if ( index < 0 )
     {
         System.err.println( "licenses.html has incorrect links!" );

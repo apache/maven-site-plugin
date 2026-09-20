@@ -40,8 +40,8 @@ try
     }
 
     String content = FileUtils.fileRead( siteDescriptor, "UTF-8" );
-    int index1 = content.indexOf( "name=\"${project.name}\"" );
-    int index2 = content.indexOf( "<menu name=\"${menu.title}\">" );
+    int index1 = content.indexOf( 'name="${project.name}"' );
+    int index2 = content.indexOf( '<menu name="${menu.title}">' );
     int index3 = content.indexOf( "<!-- a comment -->" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 )
     {
