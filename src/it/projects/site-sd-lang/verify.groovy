@@ -100,28 +100,28 @@ try
 
     // STAGING
 
-    File topLevelDirectory = new File( basedir, "target/staging" );
+    topLevelDirectory = new File( basedir, "target/staging" );
     if ( !topLevelDirectory.exists() || !topLevelDirectory.isDirectory() )
     {
         System.err.println( "Staging directory '" + topLevelDirectory + "' is missing or not a directory." );
         return false;
     }
 
-    File moduleDirectory = new File( topLevelDirectory, "mymodule" );
+    moduleDirectory = new File( topLevelDirectory, "mymodule" );
     if ( !moduleDirectory.exists() || !moduleDirectory.isDirectory() )
     {
         System.err.println( "Staging module directory '" + moduleDirectory + "' is missing or not a directory." );
         return false;
     }
 
-    File frDirectory = new File( topLevelDirectory, "fr" );
+    frDirectory = new File( topLevelDirectory, "fr" );
     if ( !frDirectory.exists() || !frDirectory.isDirectory() )
     {
         System.err.println( "Staging fr directory '" + frDirectory + "' is missing or not a directory." );
         return false;
     }
 
-    File frModuleDirectory = new File( frDirectory, "mymodule" );
+    frModuleDirectory = new File( frDirectory, "mymodule" );
     if ( !frModuleDirectory.exists() || !frModuleDirectory.isDirectory() )
     {
         System.err.println( "Staging fr module directory '" + frModuleDirectory + "' is missing or not a directory." );

@@ -237,7 +237,7 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int indexOf = content.indexOf( "<a href=\"../index.html\">Aggregator</a>" );
+    indexOf = content.indexOf( "<a href=\"../index.html\">Aggregator</a>" );
     if ( indexOf < 0 )
     {
         System.err.println( "staged junk index.html is missing module link!" );
@@ -253,10 +253,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\">Child and Module</a>" );
-    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\">Inheriting Child</a>" );
-    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\">Module</a>" );
-    int index4 = content.indexOf( "<a href=\"./\">Aggregator</a>" );
+    index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\">Child and Module</a>" );
+    index2 = content.indexOf( "<a href=\"inheriting_child/index.html\">Inheriting Child</a>" );
+    index3 = content.indexOf( "<a href=\"www/website/module/index.html\">Module</a>" );
+    index4 = content.indexOf( "<a href=\"./\">Aggregator</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "staged index.html is missing module link!" );
@@ -414,7 +414,7 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int indexOf = content.indexOf( "<a href=\"../index.html\">Aggregator</a>" );
+    indexOf = content.indexOf( "<a href=\"../index.html\">Aggregator</a>" );
     if ( indexOf < 0 )
     {
         System.err.println( "stage-deployed junk index.html is missing module link!" );
@@ -430,10 +430,10 @@ try
     }
 
     content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\">Child and Module</a>" );
-    int index2 = content.indexOf( "<a href=\"inheriting_child/index.html\">Inheriting Child</a>" );
-    int index3 = content.indexOf( "<a href=\"www/website/module/index.html\">Module</a>" );
-    int index4 = content.indexOf( "<a href=\"./\">Aggregator</a>" );
+    index1 = content.indexOf( "<a href=\"www/website/deep/down/below/index.html\">Child and Module</a>" );
+    index2 = content.indexOf( "<a href=\"inheriting_child/index.html\">Inheriting Child</a>" );
+    index3 = content.indexOf( "<a href=\"www/website/module/index.html\">Module</a>" );
+    index4 = content.indexOf( "<a href=\"./\">Aggregator</a>" );
     if ( index1 < 0 || index2 < 0 || index3 < 0 || index4 < 0 )
     {
         System.err.println( "stage-deployed index.html is missing module link!" );
