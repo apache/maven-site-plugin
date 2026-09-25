@@ -472,6 +472,20 @@ under the License.
   </dependencies>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <configuration>
+            <inputExcludes combine.children="append">
+              <!-- UTF-16BE test fixture, no license header detectable -->
+              <exclude>**/site-plugin-test-encoding/src/site/apt/apt.apt</exclude>
+            </inputExcludes>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <!-- indexes the test-only Wagon component the site deployment tests look up -->
@@ -482,6 +496,7 @@ under the License.
   </build>
 
   <profiles>
+
     <profile>
       <id>run-its</id>
       <build>
