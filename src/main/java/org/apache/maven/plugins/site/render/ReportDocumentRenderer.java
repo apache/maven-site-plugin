@@ -38,7 +38,6 @@ import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.sink.SiteRendererSink;
 import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.reporting.MavenMultiPageReport;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
@@ -188,13 +187,8 @@ public class ReportDocumentRenderer implements DocumentRenderer {
                 Thread.currentThread().setContextClassLoader(classLoader);
             }
 
-            if (report instanceof MavenMultiPageReport) {
-                // extended multi-page API
-                ((MavenMultiPageReport) report).generate(mainSink, multiPageSinkFactory, locale);
-            } else {
-                // old single-page-only API
-                report.generate(mainSink, locale);
-            }
+            // single-page reports implementing only generate(Sink, Locale) are reached through its default
+            report.generate(mainSink, multiPageSinkFactory, locale);
         } catch (MavenReportException e) {
             String report = (reportMojoInfo == null) ? ('"' + localReportName + '"') : reportMojoInfo;
             throw new RendererException("Error generating " + report + " report", e);
