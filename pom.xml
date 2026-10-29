@@ -441,12 +441,6 @@ under the License.
       <!-- last mockito version with java 8 support -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4jVersion}</version>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
