@@ -380,7 +380,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         for (MavenReportExecution mavenReportExecution : reports) {
             MavenReport report = mavenReportExecution.getMavenReport();
 
-            String outputName = report.getOutputName();
+            String outputName = report.getOutputPath();
             String filename = outputName + ".html";
 
             // Always add the report to the menu, see MSITE-150
@@ -558,7 +558,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                     }
 
                     if (item.getHref() == null || item.getHref().length() == 0) {
-                        item.setHref(report.getOutputName() + ".html");
+                        item.setHref(report.getOutputPath() + ".html");
                     }
                 } else {
                     getLog().warn("Unrecognised reference: '" + item.getRef() + "'");
