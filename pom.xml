@@ -194,7 +194,6 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>8</javaVersion>
     <mavenVersion>3.9.16</mavenVersion>
     <!-- resolver shipping with ${mavenVersion} -->
     <resolverVersion>1.9.27</resolverVersion>
