@@ -135,7 +135,7 @@ You can add your own &quot;Powered by&quot; logo to your site. To do this, you a
 
 ## Inheritance
 
-See [ Building multi-module sites](./multimodule.html).
+See [ Building multi-module sites](https://maven.apache.org/guides/mini/guide-multimodule-site.html).
 
 ## Including Generated Content
 
@@ -237,7 +237,7 @@ To configure breadcrumbs, add a `<breadcrumbs>` element to the `<body>` element 
 </site>
 ```
 
-**Note** that in a multi-module build, if the parent contains a breadcrumb and the inheriting site descriptor doesn&apos;t, a breadcrumb with the current site descriptor&apos;s name will be added automatically. See the notes on [building a multi-module site](./multimodule.html) for more details.
+**Note** that in a multi-module build, if the parent contains a breadcrumb and the inheriting site descriptor doesn&apos;t, a breadcrumb with the current site descriptor&apos;s name will be added automatically. See the notes on [building a multi-module site](https://maven.apache.org/guides/mini/guide-multimodule-site.html) for more details.
 
 ## Custom footer
 
@@ -271,7 +271,7 @@ There is also a dummy `<custom>` element then can be used to specify some arbitr
 
 ## Skinning
 
-Skins can be created to customize the look and feel of a site in a consistent way. For more information on creating a skin, see [Creating a Skin](./creatingskins.html). To use a specific skin in your project, you use the `<skin>` element of the site descriptor. This is a regular artifact or dependency-like element. For example, to use the [Maven Fluido Skin](/skins/maven-fluido-skin/), you would include:
+Skins can be created to customize the look and feel of a site in a consistent way. For more information on creating a skin, see [Creating a Skin](https://maven.apache.org/skins/#Creating_a_skin). To use a specific skin in your project, you use the `<skin>` element of the site descriptor. This is a regular artifact or dependency-like element. For example, to use the [Maven Fluido Skin](/skins/maven-fluido-skin/), you would include:
 
 ```xml
 <site>
@@ -320,5 +320,5 @@ Expressions can be:
 - ${project.properties}, for instance `${myProperty}` referenced in ` <project><properties><myProperty> `
 - ${environmentVariable}, for instance `${JAVA_HOME}`
 
-**Note:**There are additional restrictions on using dotted project properties in content pages. See [Filtering](./creating-content.html#Filtering) for details on injecting properties into content pages.
+**Note:**There are additional restrictions on using dotted project properties in content pages. See [Using Properties in Content](https://maven.apache.org/guides/mini/guide-site.html#Using_Properties_in_Content) for details on injecting properties into content pages.
 

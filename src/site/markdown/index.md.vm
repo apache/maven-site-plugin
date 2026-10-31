@@ -34,8 +34,8 @@ Please read the [migration guide](./migrate.html) if you want to upgrade from a 
 
 The Site Plugin uses:
 
-- [Doxia](/doxia/) to parse [many markup languages](/doxia/references/) then render HTML: see [Creating Content](./examples/creating-content.html) documentation for more details (particularly which markups are enabled by default in maven-site-plugin and how to add one),
-- [Doxia Sitetools - Site Renderer](/doxia/doxia-sitetools/doxia-site-renderer/) to integrate document content into a template packaged as a skin: see [Creating Skins](./examples/creatingskins.html) documentation for more details,
+- [Doxia](/doxia/) to parse [many markup languages](/doxia/references/) then render HTML: see [Creating a site](https://maven.apache.org/guides/mini/guide-site.html) guide for more details (particularly which markups are enabled by default in maven-site-plugin and how to add one),
+- [Doxia Sitetools - Site Renderer](/doxia/doxia-sitetools/doxia-site-renderer/) to integrate document content into a template packaged as a skin: see [Creating a skin](https://maven.apache.org/skins/#Creating_a_skin) for more details,
 - [Maven Reporting Executor](/shared/maven-reporting-exec/) to manage reports execution (since Maven 3).
 
 ![Developer Overview](developer-overview.png)
@@ -66,20 +66,20 @@ If you feel like the plugin is missing a feature or has a defect, you can file a
 
 The following examples show how to use the Site Plugin in more advanced use cases:
 
-- [Creating Content](./examples/creating-content.html)
+- [Creating Content](https://maven.apache.org/guides/mini/guide-site.html#Creating_Content)
 - [Configuring the Site Descriptor](./examples/sitedescriptor.html)
-- [Using Mermaid Diagrams](./examples/mermaid-diagrams.html)
+- [Using Mermaid Diagrams](https://maven.apache.org/doxia/mermaid-diagrams.html)
 - [Configuring Site Run](./examples/siterun.html)
 - [Excluding Document Formats](./examples/moduleexcludes.html)
 
 #[[###]]# Reports
 
 - [Configuring Reports](./examples/configuring-reports.html)
-- [Reports Internationalization](./i18n.html)
+- [Reports Internationalization](https://maven.apache.org/plugins/localization.html)
 
 #[[###]]# Site Template
 
-- [Creating Skins](./examples/creatingskins.html)
+- [Creating Skins](https://maven.apache.org/skins/#Creating_a_skin)
 
 #[[###]]# Deploying
 

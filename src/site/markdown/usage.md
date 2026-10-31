@@ -28,7 +28,7 @@ under the License.
 
 # Usage
 
-You can put additional content (e.g. documentation, resources, etc.) in your site. See [Creating Content](./examples/creating-content.html) for more information on this. If you want to change the menus, breadcrumbs, links or logos on your pages you need to add and configure a [site descriptor](./examples/sitedescriptor.html). If you like, you also can let Maven generate some [reports](./examples/configuring-reports.html) for you, based on the contents of your POM.
+You can put additional content (e.g. documentation, resources, etc.) in your site. See [Creating a site](https://maven.apache.org/guides/mini/guide-site.html) for more information on this. If you want to change the menus, breadcrumbs, links or logos on your pages you need to add and configure a [site descriptor](./examples/sitedescriptor.html). If you like, you also can let Maven generate some [reports](./examples/configuring-reports.html) for you, based on the contents of your POM.
 
 <!-- MACRO{toc|section=1|fromDepth=2|toDepth=3} -->
 
