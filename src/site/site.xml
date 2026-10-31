@@ -57,7 +57,6 @@ under the License.
 
     <menu name="Deploying">
       <item name="Adding a Protocol to Deploy the Site" href="/examples/adding-deploy-protocol.html"/>
-      <item name="Deploying to sourceforge.net" href="/examples/site-deploy-to-sourceforge.net.html"/>
     </menu>
   </body>
 </site>
