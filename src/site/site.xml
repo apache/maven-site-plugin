@@ -21,7 +21,6 @@ under the License.
 
 <site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd">
-  <!--  TODO: enable mermaid when rendering with m-site-p 3.22.0 -->
   <body>
     <menu name="Overview">
       <item name="Introduction" href="index.html"/>
@@ -36,24 +35,24 @@ under the License.
     </menu>
 
     <menu name="Examples">
-      <item name="Creating Content" href="/examples/creating-content.html"/>
-      <item name="Filtering Content" href="/examples/filtering-content.html"/>
+      <item name="Creating Content" href="https://maven.apache.org/guides/mini/guide-site.html#Creating_Content"/>
+      <item name="Filtering Content" href="https://maven.apache.org/guides/mini/guide-site.html#Filtering_with_Maven_Resources_Plugin"/>
       <item name="Configuring the Site Descriptor" href="/examples/sitedescriptor.html"/>
-      <item name="Building a multi-module site" href="/examples/multimodule.html"/>
+      <item name="Building a multi-module site" href="https://maven.apache.org/guides/mini/guide-multimodule-site.html"/>
       <item name="Configuring Site Run" href="/examples/siterun.html"/>
       <item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
       <item name="Inheritance of the Site Distribution Management"
         href="/examples/inheritance-site-distribution-management.html"/>
-      <item name="Mermaid Diagrams" href="/examples/mermaid-diagrams.html"/>
+      <item name="Mermaid Diagrams" href="https://maven.apache.org/doxia/mermaid-diagrams.html"/>
     </menu>
 
     <menu name="Reports">
       <item name="Configuring Reports" href="/examples/configuring-reports.html"/>
-      <item name="Reports Internationalization" href="i18n.html"/>
+      <item name="Reports Internationalization" href="https://maven.apache.org/plugins/localization.html"/>
     </menu>
 
     <menu name="Site Template">
-      <item name="Creating Skins" href="/examples/creatingskins.html"/>
+      <item name="Creating Skins" href="https://maven.apache.org/skins/#Creating_a_skin"/>
     </menu>
 
     <menu name="Deploying">
