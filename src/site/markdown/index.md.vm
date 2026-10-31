@@ -84,4 +84,3 @@ The following examples show how to use the Site Plugin in more advanced use case
 #[[###]]# Deploying
 
 - [Adding a Protocol to Deploy the Site](./examples/adding-deploy-protocol.html)
-- [Deploying to sourceforge.net](./examples/site-deploy-to-sourceforge.net.html)
