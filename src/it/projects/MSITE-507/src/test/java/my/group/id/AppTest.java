@@ -19,19 +19,17 @@ package my.group.id;
  * under the License.
  */
 
-import org.junit.*;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.matchers.JUnitMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest  {
+class AppTest {
 
   @Test
-  public void testApp() {
+  void testApp() {
     assertTrue( true );
   }
 }
