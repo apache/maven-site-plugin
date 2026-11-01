@@ -22,7 +22,8 @@ def page = new File( basedir, 'target/site/markdown.html' )
 assert page.exists() : "$page must have been generated"
 def content = page.text
 
-assert content.contains( '<a href="https://github.com/apache/maven-site-plugin/tree/master/src/site/markdown/markdown.md"><img src="./images/accessories-text-editor.png" alt="Edit" /></a>' ) : 'Found invalid edit link'
+// the skin decides how the edit link looks (an icon, a text link); check where it points
+assert content.contains( '<a href="https://github.com/apache/maven-site-plugin/tree/master/src/site/markdown/markdown.md"' ) : 'Found invalid edit link'
 assert content.contains( '<h1>Markdown Test</h1>' ) : 'Found invalid headline'
 
 
@@ -30,4 +31,4 @@ page = new File( basedir, 'target/site/index.html' )
 assert page.exists() : "$page must have been generated"
 content = page.text
 
-assert !content.contains( '<img src="./images/accessories-text-editor.png" alt="Edit" />' ) : 'Found edit link for report that should not have it'
+assert !content.contains( 'https://github.com/apache/maven-site-plugin/tree/master/src/site/' ) : 'Found edit link for report that should not have it'
