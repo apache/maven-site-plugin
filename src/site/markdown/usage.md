@@ -93,6 +93,17 @@ mvn site:stage
 
 **Note:** A site must be generated first before executing `site:stage`.
 
+`site:stage` works out where each module goes in the staged site from the site URLs in `<distributionManagement>`, so the project, or a parent it inherits from, needs a `<site>` element with both an `<id>` and a `<url>`, even though nothing is deployed there. A project that publishes its site some other way, for example with the [Maven SCM Publish Plugin](/plugins/maven-scm-publish-plugin/), can use any URL:
+
+```xml
+<distributionManagement>
+  <site>
+    <id>local</id>
+    <url>file:///tmp/site</url>
+  </site>
+</distributionManagement>
+```
+
 By default, the site will be staged in a directory `target/staging/`. A different staging location can be chosen with the `stagingDirectory` parameter as shown below:
 
 ```shell
