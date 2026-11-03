@@ -41,6 +41,7 @@ import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
 
 /**
  * Configures a parser based on a {@link PlexusConfiguration} for a particular parser id and optionally matching one of multiple patterns.
@@ -70,9 +71,12 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
         private List<PathMatcher> matchers;
 
         /**
-         * Returns {@code true} the given file path matches one of the {@link #patterns} given via {@link #addPattern(String)}
+         * Returns {@code true} if this configuration is meant for the given parser and the given file path matches
+         * one of its patterns (or it has no patterns at all).
+         * @param parserId the id of the parser used for the file
          * @param filePath the file path to check
-         * @return {@code true} if the given file path matches at least one of the patterns, {@code false} otherwise.
+         * @return {@code true} if the parser id is equal and the file path matches at least one of the patterns,
+         *         {@code false} otherwise.
          * @throws  IllegalArgumentException
          *          If one of the patterns does not comply with the form: {@code syntax:pattern}
          * @throws  java.util.regex.PatternSyntaxException
@@ -82,7 +86,7 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
          * @see FileSystem#getPathMatcher(String)
          */
         public boolean matches(String parserId, Path filePath) {
-            if (this.parserId.equals(parserId)) {
+            if (!this.parserId.equals(parserId)) {
                 return false;
             }
             if (matchers.isEmpty()) {
@@ -111,7 +115,13 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
                 for (PlexusConfiguration configuration : parserConfigurationPerId.getValue()) {
                     ParserConfigurationKey key =
                             new ParserConfigurationKey(parserId, configuration.getChild("patterns"));
-                    this.parserConfigurations.put(key, configuration);
+                    try {
+                        // the patterns are no parser property
+                        this.parserConfigurations.put(
+                                key, PlexusConfigurationUtils.copyWithoutChildren(configuration, "patterns"));
+                    } catch (PlexusConfigurationException e) {
+                        throw new IllegalArgumentException("Invalid configuration for parser " + parserId, e);
+                    }
                 }
             }
         }

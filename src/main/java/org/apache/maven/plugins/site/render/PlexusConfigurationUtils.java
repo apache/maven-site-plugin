@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 public class PlexusConfigurationUtils {
 
@@ -44,5 +46,27 @@ public class PlexusConfigurationUtils {
             stringValues.add(item.getValue());
         }
         return stringValues;
+    }
+
+    /**
+     * Creates a copy of the given configuration which lacks all direct children with the given name.
+     * @param configuration the configuration to copy
+     * @param childName the name of the children to leave out
+     * @return the copy without the given children
+     * @throws PlexusConfigurationException if the configuration cannot be read
+     */
+    static PlexusConfiguration copyWithoutChildren(PlexusConfiguration configuration, String childName)
+            throws PlexusConfigurationException {
+        XmlPlexusConfiguration copy = new XmlPlexusConfiguration(configuration.getName());
+        copy.setValue(configuration.getValue(null));
+        for (String attributeName : configuration.getAttributeNames()) {
+            copy.setAttribute(attributeName, configuration.getAttribute(attributeName));
+        }
+        for (PlexusConfiguration child : configuration.getChildren()) {
+            if (!childName.equals(child.getName())) {
+                copy.addChild(child);
+            }
+        }
+        return copy;
     }
 }
