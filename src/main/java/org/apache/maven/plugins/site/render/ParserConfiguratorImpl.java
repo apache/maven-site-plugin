@@ -35,6 +35,7 @@ import org.apache.maven.doxia.parser.Parser;
 import org.apache.maven.doxia.siterenderer.ParserConfigurator;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
@@ -91,7 +92,7 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
         }
     }
 
-    private final org.codehaus.plexus.classworlds.realm.ClassRealm pluginClassRealm;
+    private final ClassRealm pluginClassRealm;
     private final PlexusContainer plexusContainer;
     private final ComponentConfigurator componentConfigurator;
 

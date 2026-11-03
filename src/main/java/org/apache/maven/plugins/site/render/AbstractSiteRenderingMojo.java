@@ -119,7 +119,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * </ul>
      *
      * The first matching configuration wins (i.e. is applied).
-     * @since 4.0.0
+     * @since 3.23.0
      * @see java.nio.file.FileSystem#getPathMatcher(String) FileSystem.getPathMatcher(String) for the supported patterns
      */
     @Parameter

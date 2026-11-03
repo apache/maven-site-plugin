@@ -45,6 +45,7 @@ import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
 import org.apache.maven.plugins.site.render.ParserConfiguratorImpl;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 import static org.apache.maven.shared.utils.logging.MessageUtils.buffer;
 
@@ -92,56 +93,68 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
 
         tempWebappDirectory.mkdirs();
 
-        Map<String, DoxiaBean> i18nDoxiaContexts = createDoxiaContexts();
+        // keep the configurator alive as long as the server uses the contexts created with it
+        try (ParserConfiguratorImpl parserConfigurator = createParserConfigurator()) {
+            Map<String, DoxiaBean> i18nDoxiaContexts = createDoxiaContexts(parserConfigurator);
 
-        HttpServer server;
-        try {
-            server = HttpServer.create(new InetSocketAddress(host, port), 0);
-        } catch (IOException e) {
-            throw new MojoExecutionException("Error creating HTTP server on " + host + ":" + port, e);
-        }
+            HttpServer server;
+            try {
+                server = HttpServer.create(new InetSocketAddress(host, port), 0);
+            } catch (IOException e) {
+                throw new MojoExecutionException("Error creating HTTP server on " + host + ":" + port, e);
+            }
 
-        ExecutorService requestExecutor = Executors.newCachedThreadPool(runnable -> {
-            Thread thread = new Thread(runnable, "site:run");
-            thread.setDaemon(true);
-            return thread;
-        });
-        // Documents are rendered on this thread: Maven's mojo execution scope is bound to it (MSITE-849)
-        MojoThreadExecutor renderExecutor = new MojoThreadExecutor();
-        server.setExecutor(requestExecutor);
-        server.createContext(
-                "/",
-                new DoxiaHandler(
-                        tempWebappDirectory, siteRenderer, i18nDoxiaContexts, getLocales(), renderExecutor, getLog()));
+            ExecutorService requestExecutor = Executors.newCachedThreadPool(runnable -> {
+                Thread thread = new Thread(runnable, "site:run");
+                thread.setDaemon(true);
+                return thread;
+            });
+            // Documents are rendered on this thread: Maven's mojo execution scope is bound to it (MSITE-849)
+            MojoThreadExecutor renderExecutor = new MojoThreadExecutor();
+            server.setExecutor(requestExecutor);
+            server.createContext(
+                    "/",
+                    new DoxiaHandler(
+                            tempWebappDirectory,
+                            siteRenderer,
+                            i18nDoxiaContexts,
+                            getLocales(),
+                            renderExecutor,
+                            getLog()));
 
-        server.start();
+            server.start();
 
-        int listeningPort = server.getAddress().getPort();
-        getLog().info(buffer().a("Started site:run HTTP server on ")
-                .strong("http://" + host + ":" + listeningPort + "/")
-                .build());
+            int listeningPort = server.getAddress().getPort();
+            getLog().info(buffer().a("Started site:run HTTP server on ")
+                    .strong("http://" + host + ":" + listeningPort + "/")
+                    .build());
 
-        // Watch it
-        Runtime.getRuntime()
-                .addShutdownHook(new Thread(
-                        () -> {
-                            server.stop(0);
-                            requestExecutor.shutdown();
-                            renderExecutor.stop();
-                        },
-                        "site:run-shutdown"));
+            // Watch it
+            Runtime.getRuntime()
+                    .addShutdownHook(new Thread(
+                            () -> {
+                                server.stop(0);
+                                requestExecutor.shutdown();
+                                renderExecutor.stop();
+                            },
+                            "site:run-shutdown"));
 
-        try {
-            renderExecutor.runUntilStopped();
-        } catch (InterruptedException e) {
-            getLog().warn("site:run server was interrupted", e);
+            try {
+                renderExecutor.runUntilStopped();
+            } catch (InterruptedException e) {
+                getLog().warn("site:run server was interrupted", e);
+            }
+
+        } catch (ComponentLookupException | IOException e) {
+            throw new MojoExecutionException("Cannot set up the configuration of parsers", e);
         }
     }
 
-    private Map<String, DoxiaBean> createDoxiaContexts() throws MojoExecutionException {
+    private Map<String, DoxiaBean> createDoxiaContexts(ParserConfiguratorImpl parserConfigurator)
+            throws MojoExecutionException {
         Map<String, DoxiaBean> i18nDoxiaContexts;
 
-        try (ParserConfiguratorImpl parserConfigurator = createParserConfigurator()) {
+        try {
             // For external reports
             project.getReporting().setOutputDirectory(tempWebappDirectory.getAbsolutePath());
 
