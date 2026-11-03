@@ -41,6 +41,7 @@ under the License.
       <item name="Building a multi-module site" href="https://maven.apache.org/guides/mini/guide-multimodule-site.html"/>
       <item name="Configuring Site Run" href="/examples/siterun.html"/>
       <item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
+      <item name="Configuring Parsers" href="/examples/configuring-parsers.html"/>
       <item name="Inheritance of the Site Distribution Management"
         href="/examples/inheritance-site-distribution-management.html"/>
       <item name="Mermaid Diagrams" href="https://maven.apache.org/doxia/mermaid-diagrams.html"/>

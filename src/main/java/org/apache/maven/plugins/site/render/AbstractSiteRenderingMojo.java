@@ -95,30 +95,39 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     private Map<String, Object> attributes;
 
     /**
-     * Parser configurations (per matching Doxia markup source file path patterns).
-     * Each configuration item has the following format:
-     * <p/>
+     * Configures Doxia parsers, selected by parser id and optionally by the path of the source file.
+     * The parameter maps a parser id (for example <code>markdown</code>, <code>xdoc</code> or <code>apt</code>)
+     * to a list of <code>configuration</code> elements:
      * <pre><code>
-     * &lt;parserId&gt
-     *   &lt;configurations&gt;
+     * &lt;parserConfigurations&gt;
+     *   &lt;markdown&gt;
      *     &lt;configuration&gt;
      *       &lt;patterns&gt;
-     *         &lt;pattern&gt;glob:**&#47;*.md&lt;/pattern&gt;&lt;!-- is either glob or regex syntax with the according prefix --&gt;
+     *         &lt;pattern&gt;glob:**&#47;*.md&lt;/pattern&gt;
      *       &lt;/patterns&gt;
-     *       &lt;!-- all configurations apart from pattern are directly applied to the underlying parser --&gt;
-     *       &lt;emitComments&gt;true&lt;/emitComments&gt;&lt;!-- false by default --&gt;
-     *       &lt;emitAnchorsForIndexableEntries&gt;false&lt;/emitAnchorsForIndexableEntries&gt;&lt;!-- true by default --&gt;
+     *       &lt;emitComments&gt;true&lt;/emitComments&gt;
+     *       &lt;emitAnchorsForIndexableEntries&gt;false&lt;/emitAnchorsForIndexableEntries&gt;
      *     &lt;/configuration&gt;
-     *   &lt;/configurations&gt;
-     * &lt;/parserId&gt
+     *   &lt;/markdown&gt;
+     * &lt;/parserConfigurations&gt;
      * </code></pre>
-     * The configuration is only applied if both
+     * Apart from <code>patterns</code>, all elements of a <code>configuration</code> are set as properties of the
+     * parser, in the same way as parameters of a Mojo. Which properties exist depends on the parser.
+     * <p>
+     * A <code>configuration</code> is applied only if both
+     * </p>
      * <ul>
-     * <li>the parser id matches the parser used for a specific markup source file and</li>
-     * <li>one of the given patterns matches the Doxia markup source file path (or no pattern is given at all).</li>
+     * <li>its parser id equals the id of the parser used for the source file and</li>
+     * <li>one of its patterns matches the absolute path of the source file (or it has no patterns at all).</li>
      * </ul>
+     * <p>
+     * A pattern starts with the syntax, either <code>glob:</code> or <code>regex:</code>.
+     * The first matching <code>configuration</code> wins. Parsers without a matching <code>configuration</code>
+     * keep the defaults of the Site Plugin (<code>emitComments</code> is <code>false</code> and
+     * <code>emitAnchorsForIndexableEntries</code> is <code>true</code>). Parsers with a matching
+     * <code>configuration</code> use their own defaults for properties which are not set there.
+     * </p>
      *
-     * The first matching configuration wins (i.e. is applied).
      * @since 3.23.0
      * @see java.nio.file.FileSystem#getPathMatcher(String) FileSystem.getPathMatcher(String) for the supported patterns
      */
