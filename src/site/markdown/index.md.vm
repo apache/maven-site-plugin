@@ -71,7 +71,7 @@ The following examples show how to use the Site Plugin in more advanced use case
 - [Using Mermaid Diagrams](https://maven.apache.org/doxia/mermaid-diagrams.html)
 - [Configuring Site Run](./examples/siterun.html)
 - [Excluding Document Formats](./examples/moduleexcludes.html)
-- [Configuring Parsers](./examples/configuring-parsers.html)
+- [Configuring Parsers](https://maven.apache.org/guides/mini/guide-site.html#Configuring_Parsers)
 
 #[[###]]# Reports
 
