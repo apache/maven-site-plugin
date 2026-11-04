@@ -27,9 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.sun.net.httpserver.HttpServer;
 import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
@@ -101,11 +98,8 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
             throw new MojoExecutionException("Error creating HTTP server on " + host + ":" + port, e);
         }
 
-        ExecutorService executor = Executors.newCachedThreadPool(runnable -> {
-            Thread thread = new Thread(runnable, "site:run");
-            thread.setDaemon(true);
-            return thread;
-        });
+        // Pages are rendered on this thread: Maven's execution scopes are bound to it (MSITE-849)
+        MojoThreadExecutor executor = new MojoThreadExecutor();
         server.setExecutor(executor);
         server.createContext(
                 "/", new DoxiaHandler(tempWebappDirectory, siteRenderer, i18nDoxiaContexts, getLocales(), getLog()));
@@ -118,18 +112,16 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                 .build());
 
         // Watch it
-        CountDownLatch latch = new CountDownLatch(1);
         Runtime.getRuntime()
                 .addShutdownHook(new Thread(
                         () -> {
                             server.stop(0);
-                            executor.shutdown();
-                            latch.countDown();
+                            executor.stop();
                         },
                         "site:run-shutdown"));
 
         try {
-            latch.await();
+            executor.runUntilStopped();
         } catch (InterruptedException e) {
             getLog().warn("site:run server was interrupted", e);
         }
