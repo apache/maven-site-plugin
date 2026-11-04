@@ -679,6 +679,14 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
                     ? isSameRepositoryPath(siteURI.getBaseURI(), oldSiteURI.getBaseURI())
                     : siteURI.sameSite(oldSiteURI.getBaseURI());
 
+            // MSITE-948: a parent declaring child.site.url.inherit.append.path="false" says its children do not
+            // live below its own site, so a child with a site url outside of the parent's one is not a part of it
+            if (sameSite
+                    && !site.isChildSiteUrlInheritAppendPath()
+                    && !isSameRepositoryPath(siteURI.getBaseURI(), oldSiteURI.getBaseURI())) {
+                sameSite = false;
+            }
+
             if (!sameSite) {
                 return oldProject;
             }

@@ -212,6 +212,50 @@ public class AbstractDeployMojoTest {
         assertEquals(childProject, topProject, "Projects with different ports should not share a site");
     }
 
+    /**
+     * MSITE-948: a parent with child.site.url.inherit.append.path="false" is not the top site of a child whose
+     * site url lies elsewhere on the same host.
+     */
+    @Test
+    public void testGetTopLevelProjectParentWithoutAppendPath() throws Exception {
+        TestDeployMojo mojo = new TestDeployMojo();
+        MavenProject childProject = createProjectWithSite("child", "https://example.org/site/child");
+        MavenProject parentProject = createProjectWithSite("parent", "https://example.org/site/base-parent");
+        getSite(parentProject).setChildSiteUrlInheritAppendPath(false);
+        childProject.setParent(parentProject);
+
+        assertEquals(childProject, mojo.getTopLevelProject(childProject));
+    }
+
+    @Test
+    public void testGetTopLevelProjectWithAppendPathStillGroupsSiblings() throws Exception {
+        TestDeployMojo mojo = new TestDeployMojo();
+        MavenProject childProject = createProjectWithSite("child", "https://example.org/site/child");
+        MavenProject parentProject = createProjectWithSite("parent", "https://example.org/site/base-parent");
+        childProject.setParent(parentProject);
+
+        assertEquals(parentProject, mojo.getTopLevelProject(childProject));
+    }
+
+    @Test
+    public void testGetTopLevelProjectWithoutAppendPathKeepsInheritedAndNestedUrls() throws Exception {
+        TestDeployMojo mojo = new TestDeployMojo();
+        MavenProject parentProject = createProjectWithSite("parent", "https://example.org/site/base-parent");
+        getSite(parentProject).setChildSiteUrlInheritAppendPath(false);
+
+        MavenProject inheritedUrl = createProjectWithSite("inherited", "https://example.org/site/base-parent");
+        inheritedUrl.setParent(parentProject);
+        assertEquals(parentProject, mojo.getTopLevelProject(inheritedUrl));
+
+        MavenProject nestedUrl = createProjectWithSite("nested", "https://example.org/site/base-parent/nested");
+        nestedUrl.setParent(parentProject);
+        assertEquals(parentProject, mojo.getTopLevelProject(nestedUrl));
+    }
+
+    private static Site getSite(MavenProject project) {
+        return project.getDistributionManagement().getSite();
+    }
+
     private MavenProject createProjectWithSite(String artifactId, String siteUrl) {
         MavenProject project = new MavenProject();
         project.setGroupId("org.apache.maven.test");
