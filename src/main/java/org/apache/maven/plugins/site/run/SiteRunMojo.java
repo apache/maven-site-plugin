@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.sun.net.httpserver.HttpServer;
 import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
@@ -98,11 +100,18 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
             throw new MojoExecutionException("Error creating HTTP server on " + host + ":" + port, e);
         }
 
-        // Pages are rendered on this thread: Maven's execution scopes are bound to it (MSITE-849)
-        MojoThreadExecutor executor = new MojoThreadExecutor();
-        server.setExecutor(executor);
+        ExecutorService requestExecutor = Executors.newCachedThreadPool(runnable -> {
+            Thread thread = new Thread(runnable, "site:run");
+            thread.setDaemon(true);
+            return thread;
+        });
+        // Documents are rendered on this thread: Maven's mojo execution scope is bound to it (MSITE-849)
+        MojoThreadExecutor renderExecutor = new MojoThreadExecutor();
+        server.setExecutor(requestExecutor);
         server.createContext(
-                "/", new DoxiaHandler(tempWebappDirectory, siteRenderer, i18nDoxiaContexts, getLocales(), getLog()));
+                "/",
+                new DoxiaHandler(
+                        tempWebappDirectory, siteRenderer, i18nDoxiaContexts, getLocales(), renderExecutor, getLog()));
 
         server.start();
 
@@ -116,12 +125,13 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
                 .addShutdownHook(new Thread(
                         () -> {
                             server.stop(0);
-                            executor.stop();
+                            requestExecutor.shutdown();
+                            renderExecutor.stop();
                         },
                         "site:run-shutdown"));
 
         try {
-            executor.runUntilStopped();
+            renderExecutor.runUntilStopped();
         } catch (InterruptedException e) {
             getLog().warn("site:run server was interrupted", e);
         }

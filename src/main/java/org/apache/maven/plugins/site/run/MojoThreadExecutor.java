@@ -25,10 +25,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * An {@link Executor} that runs every submitted task on the thread calling {@link #runUntilStopped()}.
  * <p>
- * {@code site:run} hands HTTP requests to this executor and serves them from the Mojo thread. Maven's
- * thread-bound scopes ({@code MavenProject}, {@code MojoExecution}, {@code MavenSession}) are only
- * available on that thread, and Doxia components contributed by site dependencies, such as parsers, are
- * instantiated lazily while a page is rendered.
+ * {@code site:run} serves HTTP requests on its own threads and hands the rendering of documents to this
+ * executor, which runs it on the Mojo thread. Maven's mojo execution scope ({@code MavenProject},
+ * {@code MojoExecution}) is only available on that thread, and Doxia components contributed by site
+ * dependencies, such as parsers, are instantiated lazily while a document is rendered.
  */
 class MojoThreadExecutor implements Executor {
     private static final Runnable STOP = () -> {};
