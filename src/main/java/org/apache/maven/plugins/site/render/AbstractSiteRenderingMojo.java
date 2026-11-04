@@ -105,7 +105,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
     /**
      * Directory containing inherited site resources in source format.
-     * It will be populated with the inherited site content (in case there is any)
+     * It will be populated with the inherited site content (in case there is any); its previous content is deleted
+     * first, so point it at an output directory only.
      * This directory is expected to have the same structure as <code>siteDirectory</code>
      * (ie. one directory per Doxia-source-supported markup types).
      *

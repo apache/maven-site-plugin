@@ -47,6 +47,7 @@ import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.aether.RepositorySystem;
@@ -89,6 +90,8 @@ public class SiteResourcesResolver {
             File destDirectory,
             Log log)
             throws IOException {
+        // start from scratch, so that resources removed from a parent do not linger from an earlier run
+        FileUtils.deleteDirectory(destDirectory);
         MavenProject parent = project.getParent();
         if (parent != null) {
             // start with the topmost one to allow child projects to override parent resources
