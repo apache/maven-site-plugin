@@ -59,7 +59,7 @@ To add these reports to your site, you must add the plugin to the `<reporting>` 
 </project>
 ```
 
-If you have included the appropriate `<menu ref="reports"/>` tag in your [site descriptor](./sitedescriptor.html), then when you regenerate the site those items will appear in a menu called &quot;Project Reports&quot;.
+If you have included the appropriate `<menu ref="reports"/>` tag in your [site descriptor](https://maven.apache.org/guides/mini/guide-site-descriptor.html), then when you regenerate the site those items will appear in a menu called &quot;Project Reports&quot;.
 
 **Note:** Many report plugins provide a parameter called `outputDirectory` or similar to specify the destination for their report outputs. This parameter is only relevant if the report plugin is run standalone, i.e. by invocation directly from the command line. In contrast, when reports are generated as part of the site, the configuration of the Maven Site Plugin will determine the effective output directory to ensure that all reports end up in a common location.
 
