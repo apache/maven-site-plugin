@@ -51,6 +51,22 @@ try
         result = false;
     }
 
+    // inherited from the parent
+    File inheritedPage = new File( childSiteDirectory, "test.html" );
+    if ( !inheritedPage.exists() )
+    {
+        System.err.println( "page inherited from the parent is missing in child." );
+        result = false;
+    }
+
+    // same name in parent and child: the child wins
+    File overwrittenPage = new File( childSiteDirectory, "test2.html" );
+    if ( !overwrittenPage.exists() || FileUtils.fileRead( overwrittenPage ).indexOf( "Overwritten" ) < 0 )
+    {
+        System.err.println( "test2.html of the child does not overwrite the one of the parent." );
+        result = false;
+    }
+
 }
 catch ( IOException e )
 {
