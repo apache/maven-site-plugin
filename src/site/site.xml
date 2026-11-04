@@ -37,12 +37,12 @@ under the License.
     <menu name="Examples">
       <item name="Creating Content" href="https://maven.apache.org/guides/mini/guide-site.html#Creating_Content"/>
       <item name="Filtering Content" href="https://maven.apache.org/guides/mini/guide-site.html#Filtering_with_Maven_Resources_Plugin"/>
-      <item name="Configuring the Site Descriptor" href="/examples/sitedescriptor.html"/>
+      <item name="Configuring the Site Descriptor" href="https://maven.apache.org/guides/mini/guide-site-descriptor.html"/>
       <item name="Building a multi-module site" href="https://maven.apache.org/guides/mini/guide-multimodule-site.html"/>
       <item name="Configuring Site Run" href="/examples/siterun.html"/>
       <item name="Excluding Document Formats" href="/examples/moduleexcludes.html"/>
       <item name="Inheritance of the Site Distribution Management"
-        href="/examples/inheritance-site-distribution-management.html"/>
+        href="https://maven.apache.org/guides/mini/guide-multimodule-site.html#Inheritance_of_the_Site_Distribution_Management"/>
       <item name="Mermaid Diagrams" href="https://maven.apache.org/doxia/mermaid-diagrams.html"/>
     </menu>
 
