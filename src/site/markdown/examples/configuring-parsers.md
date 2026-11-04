@@ -54,4 +54,4 @@ The parameter lists `configuration` elements below the id of the parser (`markdo
 
 In this example comments in Markdown files below a `drafts` directory and in all XDoc files end up in the generated HTML. Other Markdown files keep the default of the Site Plugin and drop their comments.
 
-A pattern starts with `glob:` or `regex:` and is matched against the absolute path of the source file. The first `configuration` for the parser id with a matching pattern, or without patterns, is applied.
+A pattern starts with `glob:` or `regex:` and is matched against the absolute path of the source file. A `glob:` pattern separates directories with `/` on every platform. A `regex:` pattern sees the platform's own separator, so a pattern that has to work on Windows too accepts both, such as `regex:.*[/\\]other[/\\].*\.md`. The first `configuration` for the parser id with a matching pattern, or without patterns, is applied.

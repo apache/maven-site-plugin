@@ -155,7 +155,7 @@ class ParserConfiguratorImplTest {
         try (ParserConfiguratorImpl configurator = createConfigurator(single(
                 "markdown",
                 configuration("<configuration><patterns><pattern>glob:**/nothing/*.md</pattern>"
-                        + "<pattern>regex:.*/other/.*\\.md</pattern></patterns>"
+                        + "<pattern>regex:.*[/\\\\]other[/\\\\].*\\.md</pattern></patterns>"
                         + "<emitComments>true</emitComments></configuration>")))) {
             assertTrue(configurator.configure("markdown", OTHER_FILE, new TestParser()));
             assertFalse(configurator.configure("markdown", MARKDOWN_FILE, new TestParser()));

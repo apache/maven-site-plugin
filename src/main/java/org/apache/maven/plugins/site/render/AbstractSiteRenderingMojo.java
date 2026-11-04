@@ -122,6 +122,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * </ul>
      * <p>
      * A pattern starts with the syntax, either <code>glob:</code> or <code>regex:</code>.
+     * A <code>glob:</code> pattern separates directories with <code>/</code> on every platform, while a
+     * <code>regex:</code> pattern sees the platform's own separator, <code>\</code> on Windows.
      * The first matching <code>configuration</code> wins. Parsers without a matching <code>configuration</code>
      * keep the defaults of the Site Plugin (<code>emitComments</code> is <code>false</code> and
      * <code>emitAnchorsForIndexableEntries</code> is <code>true</code>). Parsers with a matching
