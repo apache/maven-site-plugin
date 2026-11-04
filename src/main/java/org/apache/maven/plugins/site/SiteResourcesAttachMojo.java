@@ -18,13 +18,15 @@
  */
 package org.apache.maven.plugins.site;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -39,7 +41,7 @@ import org.codehaus.plexus.archiver.util.DefaultFileSet;
  * Usually used in combination with {@link org.apache.maven.plugins.site.descriptor.SiteDescriptorAttachMojo} to also deploy the actual site descriptor.
  * Any inheriting site will implicitly have this site content (but each file may be overwritten).
  *
- * @since next
+ * @since 3.23.0
  */
 @Mojo(name = SiteResourcesAttachMojo.GOAL_NAME, defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
 public class SiteResourcesAttachMojo extends AbstractSiteMojo {
@@ -54,14 +56,23 @@ public class SiteResourcesAttachMojo extends AbstractSiteMojo {
     @Parameter(defaultValue = "${basedir}/src/site")
     protected File siteDirectory;
 
-    /**
-     * Maven ProjectHelper.
-     */
-    @Component
-    private MavenProjectHelper projectHelper;
+    private final MavenProjectHelper projectHelper;
 
-    @Component(hint = ARCHIVE_EXTENSION)
-    private Archiver zipArchiver;
+    private final Archiver zipArchiver;
+
+    /**
+     * Creates the mojo.
+     * Both arguments are only used by {@link #execute()}. {@code SiteResourcesResolver} creates an instance with
+     * {@code null} arguments to evaluate the configuration and call {@link #createArchive(Archiver, File)}.
+     *
+     * @param projectHelper the Maven project helper used for attaching the archive
+     * @param zipArchiver the archiver creating the site resources archive
+     */
+    @Inject
+    public SiteResourcesAttachMojo(MavenProjectHelper projectHelper, @Named(ARCHIVE_EXTENSION) Archiver zipArchiver) {
+        this.projectHelper = projectHelper;
+        this.zipArchiver = zipArchiver;
+    }
 
     /**
      * The file name patterns to exclude (potentially in addition to the default ones mentioned at {@link #addDefaultExcludes}).

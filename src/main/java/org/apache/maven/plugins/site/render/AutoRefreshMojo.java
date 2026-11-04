@@ -85,8 +85,9 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
             SiteModelInheritanceAssembler assembler,
             SiteRenderer siteRenderer,
             MavenReportExecutor mavenReportExecutor,
+            SiteResourcesResolver siteResourcesResolver,
             Prompter prompter) {
-        super(assembler, siteRenderer, mavenReportExecutor);
+        super(assembler, siteRenderer, mavenReportExecutor, siteResourcesResolver);
         this.prompter = prompter;
     }
 
@@ -102,6 +103,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
         checkInputEncoding();
 
         try {
+            resolveParentSiteResources();
             List<Locale> localesList = getLocales();
 
             // Initial full render
