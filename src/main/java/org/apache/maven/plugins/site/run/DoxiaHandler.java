@@ -119,6 +119,10 @@ public class DoxiaHandler implements HttpHandler {
             }
         } catch (RendererException e) {
             sendError(exchange, 500, "Error rendering document: " + e.getMessage());
+        } catch (RuntimeException e) {
+            // e.g. a Doxia component that cannot be instantiated; the JDK server would only drop the connection
+            log.error("Error handling " + exchange.getRequestURI().getPath(), e);
+            sendError(exchange, 500, "Error rendering document: " + e);
         }
     }
 
