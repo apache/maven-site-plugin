@@ -210,7 +210,8 @@ public class SiteResourcesResolver {
         // get mojo descriptor of sibling mojo!
         MojoDescriptor attachMojoDescriptor = pluginDescriptor.getMojo(SiteResourcesAttachMojo.GOAL_NAME);
         MojoExecution attachMojoExecution = new MojoExecution(attachMojoDescriptor, "implicit-attach-resources");
-        SiteResourcesAttachMojo mojo = new SiteResourcesAttachMojo();
+        // the injected collaborators are only needed by execute(), which is not called here
+        SiteResourcesAttachMojo mojo = new SiteResourcesAttachMojo(null, null);
         // modify MavenSession to use the basedir of another project as context
         MavenSession mavenSessionForOtherProject = mavenSession.clone();
         mavenSessionForOtherProject.setCurrentProject(project);

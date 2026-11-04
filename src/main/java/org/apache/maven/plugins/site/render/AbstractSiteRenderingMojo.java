@@ -45,13 +45,11 @@ import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext.SiteDirectory;
 import org.apache.maven.doxia.tools.SiteTool;
 import org.apache.maven.doxia.tools.SiteToolException;
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.ReportPlugin;
 import org.apache.maven.model.Reporting;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.site.SiteResourcesAttachMojo;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
@@ -192,20 +190,21 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
     protected final MavenReportExecutor mavenReportExecutor;
 
+    /**
+     * Resolves the site resources of the parent projects.
+     */
+    protected final SiteResourcesResolver siteResourcesResolver;
+
     protected AbstractSiteRenderingMojo(
             SiteModelInheritanceAssembler assembler,
             SiteRenderer siteRenderer,
-            MavenReportExecutor mavenReportExecutor) {
+            MavenReportExecutor mavenReportExecutor,
+            SiteResourcesResolver siteResourcesResolver) {
         super(assembler);
         this.siteRenderer = siteRenderer;
         this.mavenReportExecutor = mavenReportExecutor;
+        this.siteResourcesResolver = siteResourcesResolver;
     }
-
-    @Component
-    private MavenSession session;
-
-    @Component
-    protected SiteResourcesResolver siteResourcesResolver;
 
     /**
      * Gets the input files encoding.
@@ -361,7 +360,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             mainSiteDirectory = new SiteDirectory(siteDirectory, true);
             context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
             // TODO: mark as skip duplicates once https://issues.apache.org/jira/browse/DOXIASITETOOLS-359 is in place
-            context.addSiteDirectory(new SiteDirectory(new File(inheritedSiteDirectory, locale.toString()), false));
+            context.addSiteDirectory(new SiteDirectory(inheritedSiteDirectory, false));
         }
         if (alternativeSiteSourceDirectories != null) {
             for (File additionalSiteSourceDirectory : alternativeSiteSourceDirectories) {
@@ -599,7 +598,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         getLog().debug("Start resolving site resources");
         // potentially add inherited site resources
         siteResourcesResolver.resolveParentSiteResources(
-                session,
+                mavenSession,
                 project,
                 mojoExecution.getMojoDescriptor().getPluginDescriptor(),
                 inheritedSiteDirectory,

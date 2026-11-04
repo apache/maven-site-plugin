@@ -122,9 +122,10 @@ public class SiteJarMojo extends SiteMojo {
             SiteModelInheritanceAssembler assembler,
             SiteRenderer siteRenderer,
             MavenReportExecutor mavenReportExecutor,
+            SiteResourcesResolver siteResourcesResolver,
             MavenProjectHelper projectHelper,
             JarArchiver jarArchiver) {
-        super(assembler, siteRenderer, mavenReportExecutor);
+        super(assembler, siteRenderer, mavenReportExecutor, siteResourcesResolver);
         this.projectHelper = projectHelper;
         this.jarArchiver = jarArchiver;
     }
