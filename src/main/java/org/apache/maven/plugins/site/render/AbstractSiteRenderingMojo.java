@@ -351,23 +351,27 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         // Generate static site
         context.setRootDirectory(project.getBasedir());
         final SiteDirectory mainSiteDirectory;
+        final File localizedGeneratedSiteDirectory;
+        final File localizedInheritedSiteDirectory;
         if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             mainSiteDirectory = new SiteDirectory(new File(this.siteDirectory, locale.toString()), true);
-            context.addSiteDirectory(new SiteDirectory(new File(generatedSiteDirectory, locale.toString()), false));
-            // TODO: mark as skip duplicates once https://issues.apache.org/jira/browse/DOXIASITETOOLS-359 is in place
-            context.addSiteDirectory(new SiteDirectory(new File(inheritedSiteDirectory, locale.toString()), false));
+            localizedGeneratedSiteDirectory = new File(generatedSiteDirectory, locale.toString());
+            localizedInheritedSiteDirectory = new File(inheritedSiteDirectory, locale.toString());
         } else {
             mainSiteDirectory = new SiteDirectory(siteDirectory, true);
-            context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
-            // TODO: mark as skip duplicates once https://issues.apache.org/jira/browse/DOXIASITETOOLS-359 is in place
-            context.addSiteDirectory(new SiteDirectory(inheritedSiteDirectory, false));
+            localizedGeneratedSiteDirectory = generatedSiteDirectory;
+            localizedInheritedSiteDirectory = inheritedSiteDirectory;
         }
         if (alternativeSiteSourceDirectories != null) {
             for (File additionalSiteSourceDirectory : alternativeSiteSourceDirectories) {
                 mainSiteDirectory.addAlternativeEditableSourceDirectory(additionalSiteSourceDirectory);
             }
         }
+        // the order matters: a directory added later never overrides a document of an earlier one,
+        // so inherited documents must come last
         context.addSiteDirectory(mainSiteDirectory);
+        context.addSiteDirectory(new SiteDirectory(localizedGeneratedSiteDirectory, false));
+        context.addSiteDirectory(new SiteDirectory(localizedInheritedSiteDirectory, false, true));
 
         if (moduleExcludes != null) {
             context.setModuleExcludes(moduleExcludes);
