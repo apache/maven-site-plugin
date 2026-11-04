@@ -116,5 +116,9 @@ If you want to choose only some reports from a plugin, or if you want to run a r
 
 _Notice_: don&apos;t forget to define reportSets for plugins which provide aggregator reports, like maven-javadoc-plugin, maven-jxr-plugin or maven-checkstyle-plugin or you&apos;ll have these aggregate reports run by default in addition to non-aggregate reports.
 
+## How Report Sets Are Selected
+
+All the report sets of a plugin are collected, a report set with `<inherited>false</inherited>` stays in the POM that declares it, and each report then decides whether it can run in the module, so a `pom` module often shows only the aggregate report. See [How Report Sets Are Selected](/guides/mini/guide-site.html#How_Report_Sets_Are_Selected) in the site guide for the rule and an example.
+
 See the [reportSet documentation in POM reference](/ref/current/maven-model/maven.html#class_reportSet) for complete description of available configurations.
 
