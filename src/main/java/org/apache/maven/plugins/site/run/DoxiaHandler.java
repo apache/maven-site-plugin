@@ -30,6 +30,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -59,6 +62,8 @@ public class DoxiaHandler implements HttpHandler {
 
     private final List<Locale> localesList;
 
+    private final Executor renderExecutor;
+
     private final Log log;
 
     public DoxiaHandler(
@@ -66,11 +71,13 @@ public class DoxiaHandler implements HttpHandler {
             SiteRenderer siteRenderer,
             Map<String, DoxiaBean> i18nDoxiaContexts,
             List<Locale> localesList,
+            Executor renderExecutor,
             Log log) {
         this.outputDirectory = outputDirectory.toPath().toAbsolutePath().normalize();
         this.siteRenderer = siteRenderer;
         this.i18nDoxiaContexts = i18nDoxiaContexts;
         this.localesList = localesList;
+        this.renderExecutor = renderExecutor;
         this.log = log;
     }
 
@@ -149,11 +156,48 @@ public class DoxiaHandler implements HttpHandler {
         }
 
         Writer writer = new StringWriter();
-        docRenderer.renderDocument(writer, siteRenderer, context);
+        render(writer, docRenderer, context);
 
         String encoding = context.getOutputEncoding();
         byte[] content = writer.toString().getBytes(Charset.forName(encoding));
         send(exchange, 200, getMimeType(outputName, encoding), content);
+    }
+
+    /**
+     * Renders the document with the render executor and waits for it. Doxia components contributed by site
+     * dependencies, such as parsers, are instantiated while a document is rendered, and some of them inject
+     * objects of Maven's mojo execution scope, which is bound to the Mojo thread (MSITE-849).
+     */
+    private void render(Writer writer, DocumentRenderer docRenderer, SiteRenderingContext context)
+            throws IOException, RendererException {
+        CompletableFuture<Void> rendered = new CompletableFuture<>();
+        renderExecutor.execute(() -> {
+            try {
+                docRenderer.renderDocument(writer, siteRenderer, context);
+                rendered.complete(null);
+            } catch (Throwable e) {
+                rendered.completeExceptionally(e);
+            }
+        });
+
+        try {
+            rendered.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Interrupted while rendering " + docRenderer.getOutputName(), e);
+        } catch (ExecutionException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof IOException) {
+                throw (IOException) cause;
+            } else if (cause instanceof RendererException) {
+                throw (RendererException) cause;
+            } else if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            } else if (cause instanceof Error) {
+                throw (Error) cause;
+            }
+            throw new IOException(cause);
+        }
     }
 
     private void serveStaticContent(HttpExchange exchange, String path) throws IOException {
