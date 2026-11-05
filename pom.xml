@@ -435,6 +435,14 @@ under the License.
       <version>${wagonVersion}</version>
       <scope>provided</scope>
     </dependency>
+    <!-- the provider for file: URLs, used by site:stage, so that staging does not depend on the one a Maven
+         distribution ships; other protocols come from build extensions (plain http: cannot copy directories) -->
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-file</artifactId>
+      <version>${wagonVersion}</version>
+      <scope>runtime</scope>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
