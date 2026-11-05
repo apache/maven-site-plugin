@@ -21,6 +21,7 @@ package org.apache.maven.plugins.site.render;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -600,6 +601,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     }
 
     protected void resolveParentSiteResources() throws IOException {
+        checkInheritedSiteDirectory(inheritedSiteDirectory, siteDirectory, project.getBasedir());
         getLog().debug("Start resolving site resources");
         // potentially add inherited site resources
         siteResourcesResolver.resolveParentSiteResources(
@@ -609,5 +611,26 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                 inheritedSiteDirectory,
                 getLog());
         getLog().debug("End resolving site resources");
+    }
+
+    /**
+     * Refuses an inherited site directory that holds one of the project's own directories, since it is emptied before
+     * each run.
+     *
+     * @param inheritedSiteDirectory the directory to be emptied
+     * @param protectedDirectories the directories that must survive, {@code null} entries are ignored
+     * @throws IOException if the inherited site directory is or contains one of the protected directories
+     */
+    static void checkInheritedSiteDirectory(File inheritedSiteDirectory, File... protectedDirectories)
+            throws IOException {
+        Path inherited = inheritedSiteDirectory.toPath().toAbsolutePath().normalize();
+        for (File protectedDirectory : protectedDirectories) {
+            if (protectedDirectory != null
+                    && protectedDirectory.toPath().toAbsolutePath().normalize().startsWith(inherited)) {
+                throw new IOException("inheritedSiteDirectory " + inheritedSiteDirectory
+                        + " is emptied before each run and contains " + protectedDirectory
+                        + "; point it at an output directory such as ${project.build.directory}/inherited-site");
+            }
+        }
     }
 }
