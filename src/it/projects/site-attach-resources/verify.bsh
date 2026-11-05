@@ -42,6 +42,11 @@ try
     File artifactsDirectory = new File( target, "snapshot-repo/org/apache/maven/plugins/site/its/site-attach-resources/1.0-SNAPSHOT" );
     boolean hasSiteResourcesArtifact = false;
     File[] files = artifactsDirectory.listFiles();
+    if ( files == null )
+    {
+        System.err.println( "Missing directory " + artifactsDirectory );
+        return false;
+    }
     for ( int i = 0; i < files.length; i++ )
     {
         String name = files[i].getName();
@@ -60,6 +65,11 @@ try
     artifactsDirectory = new File( target, "snapshot-repo/org/apache/maven/plugins/site/its/jar-site-attach-resources/1.0-SNAPSHOT" );
     hasSiteResourcesArtifact = false;
     files = artifactsDirectory.listFiles();
+    if ( files == null )
+    {
+        System.err.println( "Missing directory " + artifactsDirectory );
+        return false;
+    }
     for ( int i = 0; i < files.length; i++ )
     {
         String name = files[i].getName();
