@@ -24,8 +24,9 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,6 +49,11 @@ import org.codehaus.plexus.configuration.PlexusConfigurationException;
  * It internally leverages the {@link ComponentConfigurator} for calling the right methods inside the parser implementation.
  */
 public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
+    /** The default of the Site Renderer for {@code emitComments}. */
+    private static final boolean DEFAULT_EMIT_COMMENTS = false;
+
+    /** The default of the Site Renderer for {@code emitAnchorsForIndexableEntries}. */
+    private static final boolean DEFAULT_EMIT_ANCHORS_FOR_INDEXABLE_ENTRIES = true;
 
     private static final class ParserConfigurationKey {
 
@@ -100,14 +106,15 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
     private final PlexusContainer plexusContainer;
     private final ComponentConfigurator componentConfigurator;
 
-    private final Map<ParserConfigurationKey, PlexusConfiguration> parserConfigurations;
+    /** The configurations in declaration order; the first matching one wins. */
+    private final List<Map.Entry<ParserConfigurationKey, PlexusConfiguration>> parserConfigurations;
 
     public ParserConfiguratorImpl(
             Map<String, List<PlexusConfiguration>> parserConfigurations,
             PlexusContainer plexusContainer,
             MojoDescriptor mojoDescriptor)
             throws ComponentLookupException {
-        this.parserConfigurations = new LinkedHashMap<>();
+        this.parserConfigurations = new ArrayList<>();
         if (parserConfigurations != null) {
             for (Map.Entry<String, List<PlexusConfiguration>> parserConfigurationPerId :
                     parserConfigurations.entrySet()) {
@@ -117,8 +124,8 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
                             new ParserConfigurationKey(parserId, configuration.getChild("patterns"));
                     try {
                         // the patterns are no parser property
-                        this.parserConfigurations.put(
-                                key, PlexusConfigurationUtils.copyWithoutChildren(configuration, "patterns"));
+                        this.parserConfigurations.add(new AbstractMap.SimpleImmutableEntry<>(
+                                key, PlexusConfigurationUtils.copyWithoutChildren(configuration, "patterns")));
                     } catch (PlexusConfigurationException e) {
                         throw new IllegalArgumentException("Invalid configuration for parser " + parserId, e);
                     }
@@ -141,6 +148,10 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
 
     public void configureParser(PlexusConfiguration configuration, Parser parser)
             throws ComponentConfigurationException {
+        // Parsers are singletons shared by all source files, and the renderer resets these two properties only for
+        // files without a matching configuration, so a value set for an earlier file must not leak into this one
+        parser.setEmitComments(DEFAULT_EMIT_COMMENTS);
+        parser.setEmitAnchorsForIndexableEntries(DEFAULT_EMIT_ANCHORS_FOR_INDEXABLE_ENTRIES);
         componentConfigurator.configureComponent(parser, configuration, pluginClassRealm);
     }
 
@@ -155,7 +166,7 @@ public class ParserConfiguratorImpl implements ParserConfigurator, Closeable {
 
     @Override
     public boolean configure(String parserId, Path filePath, Parser parser) {
-        Optional<PlexusConfiguration> config = parserConfigurations.entrySet().stream()
+        Optional<PlexusConfiguration> config = parserConfigurations.stream()
                 .filter(c -> c.getKey().matches(parserId, filePath))
                 .findFirst()
                 .map(Map.Entry::getValue);

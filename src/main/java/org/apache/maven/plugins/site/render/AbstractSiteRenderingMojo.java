@@ -126,8 +126,11 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * <code>regex:</code> pattern sees the platform's own separator, <code>\</code> on Windows.
      * The first matching <code>configuration</code> wins. Parsers without a matching <code>configuration</code>
      * keep the defaults of the Site Plugin (<code>emitComments</code> is <code>false</code> and
-     * <code>emitAnchorsForIndexableEntries</code> is <code>true</code>). Parsers with a matching
-     * <code>configuration</code> use their own defaults for properties which are not set there.
+     * <code>emitAnchorsForIndexableEntries</code> is <code>true</code>). For a file with a matching
+     * <code>configuration</code>, these two properties also fall back to the defaults of the Site Plugin when the
+     * <code>configuration</code> does not set them. Any other property that the <code>configuration</code> does not
+     * set keeps the value left by the previous file of the same parser id, because Doxia shares one parser instance
+     * between all files, so set it in every <code>configuration</code> of that parser.
      * </p>
      *
      * @since 3.23.0

@@ -173,12 +173,33 @@ class ParserConfiguratorImplTest {
             TestParser first = new TestParser();
             assertTrue(configurator.configure("markdown", OTHER_FILE, first));
             assertTrue(first.isEmitComments());
-            assertFalse(first.isEmitAnchorsForIndexableEntries());
+            // not set by the configuration: the default of the Site Plugin
+            assertTrue(first.isEmitAnchorsForIndexableEntries());
 
             TestParser second = new TestParser();
             assertTrue(configurator.configure("markdown", MARKDOWN_FILE, second));
             assertFalse(second.isEmitComments());
             assertTrue(second.isEmitAnchorsForIndexableEntries());
+        }
+    }
+
+    @Test
+    void propertiesOfAnEarlierFileDoNotLeakIntoTheNextFileOfTheSameParser() throws Exception {
+        try (ParserConfiguratorImpl configurator = createConfigurator(single(
+                "markdown",
+                configuration("<configuration><patterns><pattern>glob:**/other/*.md</pattern></patterns>"
+                        + "<emitComments>true</emitComments></configuration>"),
+                configuration("<configuration><emitAnchorsForIndexableEntries>false"
+                        + "</emitAnchorsForIndexableEntries></configuration>")))) {
+            // Doxia hands the same parser instance to every file
+            TestParser shared = new TestParser();
+            assertTrue(configurator.configure("markdown", OTHER_FILE, shared));
+            assertTrue(shared.isEmitComments());
+            assertTrue(shared.isEmitAnchorsForIndexableEntries());
+
+            assertTrue(configurator.configure("markdown", MARKDOWN_FILE, shared));
+            assertFalse(shared.isEmitComments());
+            assertFalse(shared.isEmitAnchorsForIndexableEntries());
         }
     }
 
