@@ -21,6 +21,7 @@ package org.apache.maven.plugins.site.render;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -51,6 +52,7 @@ import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.site.SiteResourcesAttachMojo;
 import org.apache.maven.plugins.site.descriptor.AbstractSiteDescriptorMojo;
 import org.apache.maven.reporting.MavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -101,6 +103,19 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter(alias = "workingDirectory", defaultValue = "${project.build.directory}/generated-site")
     protected File generatedSiteDirectory;
+
+    /**
+     * Directory containing inherited site resources in source format.
+     * It will be populated with the inherited site content (in case there is any); its previous content is deleted
+     * first, so point it at an output directory only.
+     * This directory is expected to have the same structure as <code>siteDirectory</code>
+     * (ie. one directory per Doxia-source-supported markup types).
+     *
+     * In contrast to {@link #generatedSiteDirectory} files in this directory may be overwritten by same named files in either {@link #siteDirectory} or {@link #generatedSiteDirectory}.
+     * @see SiteResourcesAttachMojo
+     */
+    @Parameter(alias = "inheritedDirectory", defaultValue = "${project.build.directory}/inherited-site")
+    protected File inheritedSiteDirectory;
 
     /**
      * Optional list of source directories to be used instead of {@link #siteDirectory} for rendering edit URLs.
@@ -177,13 +192,20 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
 
     protected final MavenReportExecutor mavenReportExecutor;
 
+    /**
+     * Resolves the site resources of the parent projects.
+     */
+    protected final SiteResourcesResolver siteResourcesResolver;
+
     protected AbstractSiteRenderingMojo(
             SiteModelInheritanceAssembler assembler,
             SiteRenderer siteRenderer,
-            MavenReportExecutor mavenReportExecutor) {
+            MavenReportExecutor mavenReportExecutor,
+            SiteResourcesResolver siteResourcesResolver) {
         super(assembler);
         this.siteRenderer = siteRenderer;
         this.mavenReportExecutor = mavenReportExecutor;
+        this.siteResourcesResolver = siteResourcesResolver;
     }
 
     /**
@@ -331,19 +353,27 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         // Generate static site
         context.setRootDirectory(project.getBasedir());
         final SiteDirectory mainSiteDirectory;
+        final File localizedGeneratedSiteDirectory;
+        final File localizedInheritedSiteDirectory;
         if (!locale.equals(SiteTool.DEFAULT_LOCALE)) {
             mainSiteDirectory = new SiteDirectory(new File(this.siteDirectory, locale.toString()), true);
-            context.addSiteDirectory(new SiteDirectory(new File(generatedSiteDirectory, locale.toString()), false));
+            localizedGeneratedSiteDirectory = new File(generatedSiteDirectory, locale.toString());
+            localizedInheritedSiteDirectory = new File(inheritedSiteDirectory, locale.toString());
         } else {
             mainSiteDirectory = new SiteDirectory(siteDirectory, true);
-            context.addSiteDirectory(new SiteDirectory(generatedSiteDirectory, false));
+            localizedGeneratedSiteDirectory = generatedSiteDirectory;
+            localizedInheritedSiteDirectory = inheritedSiteDirectory;
         }
         if (alternativeSiteSourceDirectories != null) {
             for (File additionalSiteSourceDirectory : alternativeSiteSourceDirectories) {
                 mainSiteDirectory.addAlternativeEditableSourceDirectory(additionalSiteSourceDirectory);
             }
         }
+        // the order matters: a directory added later never overrides a document of an earlier one,
+        // so inherited documents must come last
         context.addSiteDirectory(mainSiteDirectory);
+        context.addSiteDirectory(new SiteDirectory(localizedGeneratedSiteDirectory, false));
+        context.addSiteDirectory(new SiteDirectory(localizedInheritedSiteDirectory, false, true));
 
         if (moduleExcludes != null) {
             context.setModuleExcludes(moduleExcludes);
@@ -567,6 +597,40 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
             }
 
             populateItemRefs(item.getItems(), locale, reportsByOutputName);
+        }
+    }
+
+    protected void resolveParentSiteResources() throws IOException {
+        checkInheritedSiteDirectory(inheritedSiteDirectory, siteDirectory, project.getBasedir());
+        getLog().debug("Start resolving site resources");
+        // potentially add inherited site resources
+        siteResourcesResolver.resolveParentSiteResources(
+                mavenSession,
+                project,
+                mojoExecution.getMojoDescriptor().getPluginDescriptor(),
+                inheritedSiteDirectory,
+                getLog());
+        getLog().debug("End resolving site resources");
+    }
+
+    /**
+     * Refuses an inherited site directory that holds one of the project's own directories, since it is emptied before
+     * each run.
+     *
+     * @param inheritedSiteDirectory the directory to be emptied
+     * @param protectedDirectories the directories that must survive, {@code null} entries are ignored
+     * @throws IOException if the inherited site directory is or contains one of the protected directories
+     */
+    static void checkInheritedSiteDirectory(File inheritedSiteDirectory, File... protectedDirectories)
+            throws IOException {
+        Path inherited = inheritedSiteDirectory.toPath().toAbsolutePath().normalize();
+        for (File protectedDirectory : protectedDirectories) {
+            if (protectedDirectory != null
+                    && protectedDirectory.toPath().toAbsolutePath().normalize().startsWith(inherited)) {
+                throw new IOException("inheritedSiteDirectory " + inheritedSiteDirectory
+                        + " is emptied before each run and contains " + protectedDirectory
+                        + "; point it at an output directory such as ${project.build.directory}/inherited-site");
+            }
         }
     }
 }
