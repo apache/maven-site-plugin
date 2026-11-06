@@ -92,6 +92,9 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
 
     private final Prompter prompter;
 
+    /** Shared by all (re-)renderings until the mojo ends, set in {@link #execute()}. */
+    private ParserConfiguratorImpl parserConfigurator;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (skip) {
@@ -101,7 +104,8 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
 
         checkInputEncoding();
 
-        try {
+        try (ParserConfiguratorImpl configurator = createParserConfigurator()) {
+            parserConfigurator = configurator;
             List<Locale> localesList = getLocales();
 
             // Initial full render
@@ -183,7 +187,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
         try {
             for (Locale locale : localesList) {
                 File localeOutputDirectory = getOutputDirectory(locale);
-                SiteRenderingContext context = createSiteRenderingContext(locale);
+                SiteRenderingContext context = createSiteRenderingContext(locale, parserConfigurator);
                 context.addSiteLocales(localesList);
                 context.setInputEncoding(getInputEncoding());
                 context.setOutputEncoding(getOutputEncoding());
@@ -239,7 +243,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
         try {
             for (Locale locale : localesList) {
                 File localeOutputDirectory = getOutputDirectory(locale);
-                SiteRenderingContext context = createSiteRenderingContext(locale);
+                SiteRenderingContext context = createSiteRenderingContext(locale, parserConfigurator);
                 context.addSiteLocales(localesList);
                 context.setInputEncoding(getInputEncoding());
                 context.setOutputEncoding(getOutputEncoding());
@@ -277,7 +281,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
     private void renderSite(
             Locale locale, List<MavenReportExecution> reports, List<Locale> supportedLocales, File outputDirectory)
             throws IOException, RendererException, MojoFailureException, MojoExecutionException {
-        SiteRenderingContext context = createSiteRenderingContext(locale);
+        SiteRenderingContext context = createSiteRenderingContext(locale, parserConfigurator);
         context.addSiteLocales(supportedLocales);
         context.setInputEncoding(getInputEncoding());
         context.setOutputEncoding(getOutputEncoding());

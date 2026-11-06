@@ -39,6 +39,7 @@ import org.apache.maven.doxia.site.SiteModel;
 import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.doxia.siterenderer.DocumentRenderer;
 import org.apache.maven.doxia.siterenderer.DocumentRenderingContext;
+import org.apache.maven.doxia.siterenderer.ParserConfigurator;
 import org.apache.maven.doxia.siterenderer.RendererException;
 import org.apache.maven.doxia.siterenderer.SiteRenderer;
 import org.apache.maven.doxia.siterenderer.SiteRenderingContext;
@@ -57,6 +58,8 @@ import org.apache.maven.reporting.MavenReportException;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 import org.apache.maven.reporting.exec.MavenReportExecutorRequest;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 
 /**
  * Base class for site rendering mojos.
@@ -90,6 +93,51 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      */
     @Parameter
     private Map<String, Object> attributes;
+
+    /**
+     * Configures Doxia parsers, selected by parser id and optionally by the path of the source file.
+     * The parameter maps a parser id (for example <code>markdown</code>, <code>xdoc</code> or <code>apt</code>)
+     * to a list of <code>configuration</code> elements:
+     * <pre><code>
+     * &lt;parserConfigurations&gt;
+     *   &lt;markdown&gt;
+     *     &lt;configuration&gt;
+     *       &lt;patterns&gt;
+     *         &lt;pattern&gt;glob:**&#47;*.md&lt;/pattern&gt;
+     *       &lt;/patterns&gt;
+     *       &lt;emitComments&gt;true&lt;/emitComments&gt;
+     *       &lt;emitAnchorsForIndexableEntries&gt;false&lt;/emitAnchorsForIndexableEntries&gt;
+     *     &lt;/configuration&gt;
+     *   &lt;/markdown&gt;
+     * &lt;/parserConfigurations&gt;
+     * </code></pre>
+     * Apart from <code>patterns</code>, all elements of a <code>configuration</code> are set as properties of the
+     * parser, in the same way as parameters of a Mojo. Which properties exist depends on the parser.
+     * <p>
+     * A <code>configuration</code> is applied only if both
+     * </p>
+     * <ul>
+     * <li>its parser id equals the id of the parser used for the source file and</li>
+     * <li>one of its patterns matches the absolute path of the source file (or it has no patterns at all).</li>
+     * </ul>
+     * <p>
+     * A pattern starts with the syntax, either <code>glob:</code> or <code>regex:</code>.
+     * A <code>glob:</code> pattern separates directories with <code>/</code> on every platform, while a
+     * <code>regex:</code> pattern sees the platform's own separator, <code>\</code> on Windows.
+     * The first matching <code>configuration</code> wins. Parsers without a matching <code>configuration</code>
+     * keep the defaults of the Site Plugin (<code>emitComments</code> is <code>false</code> and
+     * <code>emitAnchorsForIndexableEntries</code> is <code>true</code>). For a file with a matching
+     * <code>configuration</code>, these two properties also fall back to the defaults of the Site Plugin when the
+     * <code>configuration</code> does not set them. Any other property that the <code>configuration</code> does not
+     * set keeps the value left by the previous file of the same parser id, because Doxia shares one parser instance
+     * between all files, so set it in every <code>configuration</code> of that parser.
+     * </p>
+     *
+     * @since 3.23.0
+     * @see java.nio.file.FileSystem#getPathMatcher(String) FileSystem.getPathMatcher(String) for the supported patterns
+     */
+    @Parameter
+    private Map<String, List<PlexusConfiguration>> parserConfigurations;
 
     /**
      * Directory containing generated documentation in source format (Doxia supported markup).
@@ -278,7 +326,12 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
         return reportingPlugins.toArray(new ReportPlugin[0]);
     }
 
-    protected SiteRenderingContext createSiteRenderingContext(Locale locale)
+    protected ParserConfiguratorImpl createParserConfigurator() throws ComponentLookupException {
+        return new ParserConfiguratorImpl(
+                parserConfigurations, mavenSession.getContainer(), mojoExecution.getMojoDescriptor());
+    }
+
+    protected SiteRenderingContext createSiteRenderingContext(Locale locale, ParserConfigurator parserConfigurator)
             throws MojoExecutionException, IOException, MojoFailureException {
         SiteModel siteModel = prepareSiteModel(locale);
         Map<String, Object> templateProperties = new HashMap<>();
@@ -357,7 +410,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
                 context.setProcessedContentOutput(processedDir);
             }
         }
-
+        context.setParserConfigurator(parserConfigurator);
         return context;
     }
 
