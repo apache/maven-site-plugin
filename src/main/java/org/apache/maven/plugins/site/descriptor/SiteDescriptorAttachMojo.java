@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 
 import org.apache.maven.doxia.site.inheritance.SiteModelInheritanceAssembler;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -30,8 +31,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProjectHelper;
-import org.apache.maven.shared.utils.PathTool;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.PathTool;
 
 /**
  * Adds the site descriptor (<code>site.xml</code>) to the list of files to be installed/deployed.
@@ -95,9 +96,12 @@ public class SiteDescriptorAttachMojo extends AbstractSiteDescriptorMojo {
                     // Copy the site descriptor to a file
                     FileUtils.copyFile(descriptorFile, targetDescriptorFile);
                     // Attach the site descriptor
-                    getLog().info("Attaching '"
-                            + PathTool.getRelativeFilePath(basedir.getAbsolutePath(), descriptorFile.getAbsolutePath())
-                            + "' site descriptor with classifier '" + classifier + "'.");
+                    // plexus-utils returns null (maven-shared-utils returned "") for paths on different Windows drives
+                    String relativePath = Objects.toString(
+                            PathTool.getRelativeFilePath(basedir.getAbsolutePath(), descriptorFile.getAbsolutePath()),
+                            "");
+                    getLog().info("Attaching '" + relativePath + "' site descriptor with classifier '" + classifier
+                            + "'.");
                     projectHelper.attachArtifact(project, "xml", classifier, targetDescriptorFile);
                 } catch (IOException e) {
                     throw new MojoExecutionException("Unable to copy site descriptor", e);
