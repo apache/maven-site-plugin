@@ -192,7 +192,7 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
      * @return The input files encoding, never <code>null</code>.
      */
     protected String getInputEncoding() {
-        return (inputEncoding == null || inputEncoding.isEmpty())
+        return inputEncoding == null || inputEncoding.isEmpty()
                 ? Charset.defaultCharset().displayName()
                 : inputEncoding;
     }

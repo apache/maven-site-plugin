@@ -25,6 +25,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -222,7 +223,7 @@ public class DoxiaHandler implements HttpHandler {
     }
 
     private void sendError(HttpExchange exchange, int statusCode, String message) throws IOException {
-        send(exchange, statusCode, "text/plain; charset=utf-8", message.getBytes(Charset.forName("UTF-8")));
+        send(exchange, statusCode, "text/plain; charset=utf-8", message.getBytes(StandardCharsets.UTF_8));
     }
 
     private String getMimeType(String name, String encoding) {
@@ -252,11 +253,11 @@ public class DoxiaHandler implements HttpHandler {
                     ? docRenderer.getRenderingContext().getGenerator()
                     : docRenderer.getClass().getName();
         }
-        String localizedPath = !locale.equals(SiteTool.DEFAULT_LOCALE.toString()) ? locale + "/" + path : path;
+        String localizedPath = locale.equals(SiteTool.DEFAULT_LOCALE.toString()) ? path : locale + "/" + path;
         String localizedSource = source
-                + (!locale.equals(SiteTool.DEFAULT_LOCALE.toString())
-                        ? " (locale '" + locale + "')"
-                        : " (default locale)");
+                + (locale.equals(SiteTool.DEFAULT_LOCALE.toString())
+                        ? " (default locale)"
+                        : " (locale '" + locale + "')");
         log.info(localizedPath + " -> " + buffer().strong(localizedSource));
     }
 }

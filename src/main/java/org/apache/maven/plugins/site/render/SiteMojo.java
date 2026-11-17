@@ -115,9 +115,9 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
             for (Locale locale : localesList) {
                 getLog().info("Rendering site for "
                         + buffer().strong(
-                                        (!locale.equals(SiteTool.DEFAULT_LOCALE)
-                                                ? "locale '" + locale + "'"
-                                                : "default locale"))
+                                        locale.equals(SiteTool.DEFAULT_LOCALE)
+                                                ? "default locale"
+                                                : "locale '" + locale + "'")
                                 .build());
                 File outputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports =
@@ -211,7 +211,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
             }
         }
 
-        if (doxiaDocuments.size() > 0) {
+        if (!doxiaDocuments.isEmpty()) {
             MessageBuilder mb = buffer();
             mb.a("Rendering ");
             mb.strong(doxiaDocuments.size() + " Doxia document" + (doxiaDocuments.size() > 1 ? "s" : ""));
@@ -232,7 +232,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
             siteRenderer.render(doxiaDocuments, context, outputDirectory);
         }
 
-        if (generatedDoxiaDocuments.size() > 0) {
+        if (!generatedDoxiaDocuments.isEmpty()) {
             MessageBuilder mb = buffer();
             mb.a("Rendering ");
             mb.strong(generatedDoxiaDocuments.size() + " generated Doxia document"
@@ -284,7 +284,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
             counts.put(type, count);
         }
 
-        if (documents.size() > 0) {
+        if (!documents.isEmpty()) {
             for (Map.Entry<String, Integer> entry : counts.entrySet()) {
                 String type = entry.getKey();
                 Integer count = entry.getValue();

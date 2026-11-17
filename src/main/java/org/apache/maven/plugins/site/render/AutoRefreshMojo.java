@@ -107,7 +107,7 @@ public class AutoRefreshMojo extends AbstractSiteRenderingMojo {
             // Initial full render
             for (Locale locale : localesList) {
                 getLog().info("Rendering site for "
-                        + (!locale.equals(SiteTool.DEFAULT_LOCALE) ? "locale '" + locale + "'" : "default locale"));
+                        + (locale.equals(SiteTool.DEFAULT_LOCALE) ? "default locale" : "locale '" + locale + "'"));
                 File localeOutputDirectory = getOutputDirectory(locale);
                 List<MavenReportExecution> reports =
                         generateReports ? getReports(localeOutputDirectory) : Collections.emptyList();
