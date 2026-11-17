@@ -234,7 +234,7 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
         // so we need to convert '\' to '/' in order for the URL to be valid for Windows users
         relative = relative.replace('\\', '/');
 
-        return ("".equals(relative)) ? "./" : relative;
+        return "".equals(relative) ? "./" : relative;
     }
 
     /**
@@ -558,9 +558,9 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
                                 && atIndex + 1 < providerSpecificPart.length()
                                 && providerSpecificPart.charAt(atIndex + 1) == '[') {
                             int closingBracket = providerSpecificPart.indexOf(']', atIndex + 1);
-                            colonIndex = (closingBracket > 0) ? providerSpecificPart.indexOf(':', closingBracket) : -1;
+                            colonIndex = closingBracket > 0 ? providerSpecificPart.indexOf(':', closingBracket) : -1;
                         } else {
-                            colonIndex = (atIndex >= 0) ? providerSpecificPart.indexOf(':', atIndex) : -1;
+                            colonIndex = atIndex >= 0 ? providerSpecificPart.indexOf(':', atIndex) : -1;
                         }
 
                         // Verify this looks like SCP syntax: user@host:path

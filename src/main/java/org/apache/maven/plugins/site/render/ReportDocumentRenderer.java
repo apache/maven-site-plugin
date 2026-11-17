@@ -190,14 +190,14 @@ public class ReportDocumentRenderer implements DocumentRenderer {
             // single-page reports implementing only generate(Sink, Locale) are reached through its default
             report.generate(mainSink, multiPageSinkFactory, locale);
         } catch (MavenReportException e) {
-            String report = (reportMojoInfo == null) ? ('"' + localReportName + '"') : reportMojoInfo;
+            String report = reportMojoInfo == null ? ('"' + localReportName + '"') : reportMojoInfo;
             throw new RendererException("Error generating " + report + " report", e);
         } catch (RuntimeException re) {
             // MSITE-836: if report generation throws a RuntimeException, transform to RendererException
-            String report = (reportMojoInfo == null) ? ('"' + localReportName + '"') : reportMojoInfo;
+            String report = reportMojoInfo == null ? ('"' + localReportName + '"') : reportMojoInfo;
             throw new RendererException("Error generating " + report + " report", re);
         } catch (LinkageError e) {
-            String report = (reportMojoInfo == null) ? ('"' + localReportName + '"') : reportMojoInfo;
+            String report = reportMojoInfo == null ? ('"' + localReportName + '"') : reportMojoInfo;
             log.warn(
                     "An issue has occurred with " + report + " report, skipping LinkageError " + e.getMessage()
                             + ", please report an issue to Maven dev team.",

@@ -88,7 +88,7 @@ public class CategorySummaryDocumentRenderer implements SitePluginReportDocument
             throws RendererException, IOException {
         String msg = "Generating \"" + buffer().strong(title) + "\" report";
         // CHECKSTYLE_OFF: MagicNumber
-        log.info((StringUtils.rightPad(msg, 40) + buffer().strong(" --- ").mojo(reportMojoInfo)));
+        log.info(StringUtils.rightPad(msg, 40) + buffer().strong(" --- ").mojo(reportMojoInfo));
         // CHECKSTYLE_ON: MagicNumber
 
         SiteRendererSink sink = new SiteRendererSink(docRenderingContext);
