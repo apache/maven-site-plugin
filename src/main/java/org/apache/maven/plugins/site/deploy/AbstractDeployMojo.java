@@ -137,9 +137,11 @@ public abstract class AbstractDeployMojo extends AbstractSiteMojo {
 
     @Inject
     private WagonConfigurator wagonConfigurator;
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute() throws MojoExecutionException {
         if (skip && isDeploy()) {
             getLog().info("maven.site.skip = true: Skipping site deployment");
