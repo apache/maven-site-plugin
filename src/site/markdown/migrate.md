@@ -27,7 +27,13 @@ under the License.
 
 # Migrate
 
-The Site Plugin has had a couple of upgrades that requires the user to make adjustments to their environment, documents or configuration. Below is a list of key changes and what updates you as a user need to be aware of: you can have a look at [history](./history.html) for precise details of internal components updates.
+The Site Plugin has had a couple of upgrades that require you to adjust your environment, documents or configuration. Below is a list of key changes and what you need to be aware of: see the [history](./history.html) for the versions of the internal components.
+
+## From 3\.22\.x to 3\.23\.0
+
+- The plugin requires Maven 3\.9\.0 or later; 3\.22\.0 ran on Maven 3\.6\.3. Java 8 is still enough.
+- [`site:run`](./run-mojo.html) serves the site with the HTTP server built into the JDK instead of Jetty 9, which is no longer maintained. The `host`, `port` and `tempWebappDirectory` parameters are unchanged; Jetty is no longer on the plugin class path, so remove any Jetty dependency or configuration you added for `site:run`. See [Configuring Site Run](./examples/siterun.html).
+- Properties passed on the command line with `-D` are available when the site descriptor is interpolated: with `<item name="Built with ${my.flag}" .../>` in `site.xml`, `mvn site -Dmy.flag=CI` renders `Built with CI`. Run `mvn clean site` after changing them, since unchanged documents are not rendered again.
 
 ## From 3\.12\.x to 3\.20\.0
 
@@ -42,27 +48,11 @@ Version 3\.20\.0 moves the plugin onto the [Doxia 2\.0\.0 stack](/doxia/) and Ma
 
 ## From 3\.4 to 3\.5\.1
 
-- Since [Velocity](http://velocity.apache.org) has been upgraded from version 1\.5 to version 1\.7, which changes escaping rules, you may need to update escape sequences in your `.vm` documents and/or skins. If you can&apos;t update content and/or skin immediately, you can manually downgrade Velocity version by configuring a dependency to Maven Site Plugin:
-
-    ```xml
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.velocity</groupId>
-              <artifactId>velocity</artifactId>
-              <version>1.5</version>
-            </dependency>
-          </dependencies>
-        </plugin>
-    ```
-
 - Site Decoration Model 1\.7\.0 has changed type for `head` and `footer` from `DOM` to `String`: if your `site.xml` (or one parent) contains XML content, you&apos;ll need to escape it, usually by adding `<![CDATA[` and `]]>` around the content:
 
     ```xml
     <project xmlns="http://maven.apache.org/DECORATION/1.7.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 http://maven.apache.org/xsd/decoration-1.7.0.xsd">
+        xsi:schemaLocation="http://maven.apache.org/DECORATION/1.7.0 https://maven.apache.org/xsd/decoration-1.7.0.xsd">
         <body>
             <head>
                 <![CDATA[<anyHeadElement/>]]>
@@ -75,27 +65,14 @@ Version 3\.20\.0 moves the plugin onto the [Doxia 2\.0\.0 stack](/doxia/) and Ma
     </project>
     ```
 
-- Interpolation of `${project.*}` and `${*}` expressions in `site.xml` have changed to be consistent with equivalent feature in Maven `pom.xml`: interpolation is now done _after_ inheritance. For `site.xml`, this may lead to failures on urls (often on `${project.url}` expression), that are expected to be rebased during inheritance: a new _early interpolation_ feature has been added in Maven Site Plugin 3\.5\.1 throught `${this.*}` expressions (see [ Doxia Integration Tools reference documentation](/doxia/doxia-sitetools/doxia-integration-tools/index.html)). With this feature (for example `${this.url}` or `${this.customProperty}` expressions), you&apos;ll get former `site.xml` interpolation result.
+- Interpolation of `${project.*}` and `${*}` expressions in `site.xml` is done _after_ inheritance, consistent with the equivalent feature in Maven `pom.xml`. For `site.xml`, this may lead to failures on URLs (often on `${project.url}` expression) that are expected to be rebased during inheritance. Use `${this.*}` expressions, such as `${this.url}` or `${this.customProperty}`, for _early interpolation_ before inheritance (see the [Doxia Integration Tools reference documentation](/doxia/doxia-sitetools/doxia-integration-tools/index.html)).
+- Velocity was upgraded from 1\.5 to 1\.7, which changed the escaping rules in `.vm` documents and skins. Current versions use Velocity 2, see the [Velocity 2\.0 upgrade notes](https://velocity.apache.org/engine/2.0/upgrading.html).
 
-## From 2\.x to 3\.x
+<a id="From_2.x_to_3.x"></a>
+<a id="From_2.2.x_to_2.3.x"></a>
+<a id="From_2.1.x_to_2.2.x"></a>
+<a id="From_2.0.x_to_2.1.x"></a>
 
-- Version 3 of the plugin requires at least **Maven 2\.2\.0** to run.
-- If you use **Maven 3** please read the [Maven 3](./maven-3.html) guide about relevant issues.
+## From 2\.x
 
-## From 2\.2\.x to 2\.3\.x
-
-- The `site:stage` and `site:stage-deploy` goals have been decoupled from site generation. Executing these goals without generating the site first will lead to a build failure.
-
-## From 2\.1\.x to 2\.2\.x
-
-- The plugin now requires at least **Maven 2\.2\.0** to run, you cannot use it with older Maven versions.
-- The plugin now requires at least **Java 5** to run, you cannot use it with older Java versions.
-
-## From 2\.0\.x to 2\.1\.x
-
-- The plugin now requires at least **Maven 2\.1** to run, you cannot use it with older Maven versions.
-- The plugin has been upgraded to use **Doxia 1\.1**, which has seen a lot of major changes itself. If you experience unexpected behavior, please read these resources:
-    - [Doxia: what&apos;s new in 1\.1?](/doxia/whatsnew-1.1.html)
-    - [Doxia: Enhancements to the APT format](/doxia/references/doxia-apt.html)
-    - [Doxia: Issues &amp; Gotchas](/doxia/issues/index.html)
-    - [Doxia: Frequently Asked Questions](/doxia/faq.html)
+Site Plugin 2\.x ran on Maven 2 and Doxia 1\.1. Upgrade directly to the current version: follow the notes above from 3\.4 on, and run `site:site` before `site:stage` or `site:stage-deploy`, which do not generate the site themselves.

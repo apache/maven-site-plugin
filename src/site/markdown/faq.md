@@ -29,7 +29,7 @@ under the License.
 
 1. [What is the difference between `mvn site` and `mvn site:site`?](#What_is_the_difference_between_mvn_site_and_mvn_site.3Asite)
 2. [How do I integrate static (X)HTML pages into my Maven site?](#How_do_I_integrate_static_.28X.29HTML_pages_into_my_Maven_site)
-3. [How to include a custom Doxia module, like Twiki?](#How_to_include_a_custom_Doxia_module.2C_like_Twiki)
+3. [How to include a custom Doxia module, like AsciiDoc?](#How_to_include_a_custom_Doxia_module.2C_like_Twiki)
 4. [How can I validate my xdoc/fml source files?](#Can_I_validate_xml)
 5. [How does the Site Plugin use the &lt;url&gt; element in the POM?](#Use_of_url)
 
@@ -45,38 +45,24 @@ under the License.
 
 ### What is the difference between `mvn site` and `mvn site:site`?
 
-<dl>
-<dt><code>mvn site</code></dt>
-<dd>Calls the <i>site</i> <b>phase</b> of the site <b>lifecycle</b>.
-Full site lifecycle consists of the following life cycle phases: <code>pre-site</code>, <code>site</code>, <code>post-site</code> and <code>site-deploy</code>.
-See <a href="/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference">Lifecycle Reference</a>.
-Then it calls plugin goals associated to <code>pre-site</code> and <code>site</code> phases.</dd>
-<dt><code>mvn site:site</code></dt>
-<dd>Calls the <i>site</i> <b>goal</b> of the site <b>plugin</b>.
-See <a href="site-mojo.html">site:site</a>.</dd>
-</dl>
+`mvn site` runs the `site` **phase** of the site lifecycle, which consists of the `pre-site`, `site`, `post-site` and `site-deploy` phases (see the [Lifecycle Reference](/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference)). Maven runs every plugin goal bound to `pre-site` and `site`, for example a resource filtering step bound to `pre-site`.
+
+`mvn site:site` runs only the [`site`](site-mojo.html) **goal** of the Site Plugin; goals bound to `pre-site` do not run.
 
 <a id="How_do_I_integrate_static_.28X.29HTML_pages_into_my_Maven_site"></a>
 
 ### How do I integrate static (X)HTML pages into my Maven site?
 
-You can integrate your static pages by following these steps:
+Put the pages in `src/site/resources`; they are copied to the site unchanged. Then link to them from a menu item in your `src/site/site.xml`. See [Adding Extra Resources](https://maven.apache.org/guides/mini/guide-site.html#Adding_Extra_Resources) in the site guide.
 
-- Put your static pages in the resources directory, `${basedir}/src/site/resources`
-- Create your `site.xml` and put it in `${basedir}/src/site`
-- Link to the static pages by modifying the menu section, create items and map them to the filenames of the static pages
+To have a page decorated by the skin like the other pages, write it as an XHTML document in `src/site/xhtml` instead.
 
 <!-- mention docbook explicitly so google can find this -->
 <a id="How_to_include_a_custom_Doxia_module.2C_like_Twiki"></a>
 
-### How to include a custom Doxia module, like Twiki?
+### How to include a custom Doxia module, like AsciiDoc?
 
-The site plugin handles out-of-box xhtml5, markdown, apt, xdoc and fml formats.
-If you want to use a custom format like AsciiDoc
-(or any other document format
-for which a doxia parser exists, see the list of
-[Doxia Markup Languages](/doxia/references/index.html)),
-you need to specify the corresponding Doxia module dependency, e.g. for AsciiDoc:
+Out of the box, the Site Plugin reads Markdown, APT, XDoc, FML and XHTML5 documents. For any other format for which a Doxia parser exists (see the list of [Doxia Markup Languages](/doxia/references/index.html)), add the Doxia module as a dependency of the Site Plugin, as described in [Creating Content](https://maven.apache.org/guides/mini/guide-site.html#Creating_Content) in the site guide. For example, for AsciiDoc:
 
 ```xml
 <project>
@@ -91,7 +77,7 @@ you need to specify the corresponding Doxia module dependency, e.g. for AsciiDoc
           <dependency>
             <groupId>org.asciidoctor</groupId>
             <artifactId>asciidoctor-parser-doxia-module</artifactId>
-            <version><!-- version compatible with the Doxia version used by m-site-p --></version>
+            <version><!-- a version built for Doxia 2 --></version>
           </dependency>
         </dependencies>
       </plugin>
@@ -101,48 +87,27 @@ you need to specify the corresponding Doxia module dependency, e.g. for AsciiDoc
 </project>
 ```
 
-**Note** that the doxia version has to be adjusted to the
-site-plugin version you are using, see the [Migration Guide](migrate.html).
-In particular, for site plugin versions `>=2.1`
-you need to use doxia `>=1.1`.
+The module has to be built for the Doxia version that the Site Plugin uses: Doxia 2 since Site Plugin 3.20.0, see the [history](history.html).
 
 <a id="Can_I_validate_xml"></a>
 
 ### How can I validate my xdoc/fml source files?
 
-Since version 2.1.1 of the Site Plugin, there is a `validate`
-configuration parameter that switches on xml validation (default is off).
-Note that in the current implementation of the parser used by Doxia,
-validation requires an independent parsing run, so that every source
-file is actually parsed twice when validation is switched on.
+Set the [`validate`](site-mojo.html#validate) parameter of `site:site`, for example with `mvn site -Dvalidate=true`. The log then shows:
 
-If validation is switched on, **all** xml source
-files need a correct schema and/or DTD definition.
-See the Doxia documentation on
-[validating xdocs](/doxia/references/xdoc-format.html#Validation),
-and the schema definitions for
-[xdoc](/doxia/doxia/doxia-modules/doxia-module-xdoc/using-xdoc-xsd.html)
-and
-[fml](/doxia/doxia/doxia-modules/doxia-module-fml/using-fml-xsd.html).
+```
+[INFO] Validation is switched on, xml input documents will be validated!
+```
+
+Each XML document is parsed twice, once to validate it and once to render it, and any validation error fails the build. **All** XML source files then need a correct schema or DTD declaration. See the Doxia documentation on [validating xdocs](/doxia/references/xdoc-format.html#Validation), and the schema definitions for [xdoc](/doxia/doxia/doxia-modules/doxia-module-xdoc/using-xdoc-xsd.html) and [fml](/doxia/doxia/doxia-modules/doxia-module-fml/using-fml-xsd.html).
 
 <a id="Use_of_url"></a>
 
 ### How does the Site Plugin use the &lt;url&gt; element in the POM?
 
-The Site Plugin does not use the &lt;url&gt; element in the POM.
-The project URL is just a piece of information to let your users know
-where the project lives. Some other plugins (e.g. the project-info-report-plugin)
-may be used to present this information. If your project has a URL
-where the generated site is deployed, then put that URL into the
-&lt;url&gt; element. If the project's site is not deployed anywhere,
-then remove the &lt;url&gt; element from the POM.
+The project `<url>` is where your users find the project. The Site Plugin uses it to make the absolute links of the site descriptor relative, see [the next question](#Why_do_my_absolute_links_get_translated_into_relative_links). If the project's site is not deployed anywhere, remove the `<url>` element from the POM; the log then warns that site links will not be relativized.
 
-On the other hand, the &lt;distributionManagement.url&gt; is used in a multi-module
-build to construct relative links between the generated sub-module sites.
-In a multi module build it is important for the parent and child
-modules to have **different** URLs. If they have the
-same URL, then links within the combined site will not work.
-Note that a proper URL **should** also be terminated by a slash (&quot;/&quot;).
+The site URL in `<distributionManagement>`, `<site><url>`, is where [`site:deploy`](deploy-mojo.html) copies the site, and in a multi-module build [`site:stage`](stage-mojo.html) uses it to place each module and to build the links between modules. In a multi-module build, parent and child modules need **different** site URLs; if they share one, the links within the combined site do not work. End each URL with a slash (`/`). How child modules inherit these URLs is described in [Inheritance of the Site Distribution Management](https://maven.apache.org/guides/mini/guide-multimodule-site.html#Inheritance_of_the_Site_Distribution_Management).
 
 ## Specific issues
 
@@ -150,54 +115,38 @@ Note that a proper URL **should** also be terminated by a slash (&quot;/&quot;).
 
 ### Why do my absolute links get translated into relative links?
 
-This happens because the Site Plugin tries to make all URLs relative,
-when possible. If you have something like this defined in your
-`pom.xml`:
+The Site Plugin makes every link of the site descriptor relative to the project `<url>` when it can. With this in the `pom.xml` of a child module:
 
 ```xml
-<url>http://www.your.site.com/</url>
+<url>https://example.org/scratch/scratch-child/</url>
 ```
 
-and create links in your `site.xml` (just an example) like
-this:
+and this link in `site.xml`:
 
 ```xml
 <links>
-  <item name="Your Site" href="http://www.your.site.com/"/>
-  <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
+  <item name="Example" href="https://example.org/"/>
 </links>
 ```
 
-You will see that the link to &quot;Your site&quot; will be a relative one, but
-that the link to &quot;Maven 2&quot; will be an absolute link.
+the generated page links to `../../`, because both URLs are on the same host. A link to another host stays absolute.
 
-There is an
-[issue for this in JIRA](https://issues.apache.org/jira/browse/MSITE-159),
-where you can read more about this.
+To keep all links as written, set the [`relativizeSiteLinks`](site-mojo.html#relativizeSiteLinks) parameter to `false`, for example with `mvn site -DrelativizeSiteLinks=false`. See [MSITE-159](https://issues.apache.org/jira/browse/MSITE-159) for the background.
 
 ### Why don't the links between parent and child modules work when I run &quot;`mvn site`&quot;?
 
-What &quot;`mvn site`&quot; will do for you, in a multi-project
-build, is to run &quot;`mvn site`&quot; for the parent and all its
-modules **individually**. The links between parent and child will
-**not** work here. They **will** however work when you deploy
-the site.
-
-If you want to test this, prior to deployment, you can run the
-[`site:stage`](./stage-mojo.html) goal as
-described in the [usage documentation](./usage.html)
-instead.
+In a multi-module build, `mvn site` generates the site of each module **individually**, in its own `target/site` directory, so the links between parent and child do not work there. They work once the site is deployed. To check them before deploying, run [`site:stage`](stage-mojo.html), as described in the [usage page](usage.html#Staging_a_Site) and in [Building multi-module sites](https://maven.apache.org/guides/mini/guide-multimodule-site.html).
 
 <a id="Can_I_use_entities"></a>
 
 ### Can I use entities in xdoc/fml source files?
 
-Yes. Entity resolution has been added in Doxia version 1.1, available
-in Site Plugin 2.1 and later.
+Partly. The predefined XML entities, the HTML entities such as `&copy;`, and character references such as `&#174;` work. An entity declared in the document's DOCTYPE works only if its value is itself a character reference or an HTML entity:
 
-There is a catch however. In the current implementation (as of maven-site-plugin-2.1.1),
-entities are only resolved by an independent
-[validation](#Can_I_validate_xml) run.
-Therefore, if you want to use entities, you **have** to switch on
-validation for your xml source files.
-See [MSITE-483](https://issues.apache.org/jira/browse/MSITE-483).
+```xml
+<!DOCTYPE document [
+  <!ENTITY reg2 "&#174;">
+]>
+```
+
+An entity whose value is plain text, such as `<!ENTITY product "My Product">`, renders as an empty string, with or without [validation](#Can_I_validate_xml). To reuse text across pages, use [Velocity properties](https://maven.apache.org/guides/mini/guide-site.html#Using_Properties_in_Content) or [filtering with the Maven Resources Plugin](https://maven.apache.org/guides/mini/guide-site.html#Filtering_with_Maven_Resources_Plugin) instead.

@@ -36,7 +36,7 @@ Knowing which version of maven-site-plugin uses which version of Doxia or Doxia 
 
 | release date | maven-site-plugin | [Doxia][d]  | [Doxia Sitetools][dst] | [Maven Reporting Executor][mre] | minimum Java | minimum Maven | Comment                                        |
 |--------------|-------------------|-------------|------------------------|---------------------------------|--------------|---------------|------------------------------------------------|
-| 2026-05      | 3.22.0            | 2.1.0       | =                      | 2.0.1                           |              |               | Doxia 2.1.0, with support for Mermaid diagrams |
+| 2026-05      | 3.22.0            | 2.1.0       | =                      | 2.0.1                           | 8            | 3.6.3         | Doxia 2.1.0, with support for Mermaid diagrams |
 | 2024-10      | 3.21.0            | 2.0.0       | =                      | 2.0.0                           | 8            | 3.6.3         | Doxia 2.0.0                                    |
 | 2024-08      | 3.20.0            | *2.0.0-M12* | *2.0.0-M19*            | *2.0.0-M14*                     |              |               |                                                |
 | *2024-07*    | *4.0.0-M16*       | *2.0.0-M12* | *2.0.0-M19*            | *2.0.0-M14*                     |              |               |                                                |
