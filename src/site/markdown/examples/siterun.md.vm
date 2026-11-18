@@ -26,9 +26,43 @@ under the License.
 
 # Configuring Site Run
 
-For the [`site:run`](../run-mojo.html) goal, you can configure which port to use to start up the site as well as the directory where the pages for the site will be rendered.
+The [`site:run`](../run-mojo.html) goal serves the site from a local HTTP server and renders each page when it is requested, so you can edit a document and reload the page in the browser to see the change. It uses the HTTP server that the JDK provides; no servlet container is needed.
 
-For example, you can have the following configuration in your POM:
+${esc.h}${esc.h} Start the server
+
+From the directory of a single project, run:
+
+```shell
+mvn site:run
+```
+
+The server listens on `http://localhost:8080/` until you stop Maven with `Ctrl+C`. The log shows the address, then the source of each page as it is rendered:
+
+```
+[INFO] --- site:${project.version}:run (default-cli) @ scratch-parent ---
+[INFO] Relativizing site links with respect to localized project URL: https://example.org/scratch/
+[INFO] Configuring report plugin maven-project-info-reports-plugin:3.9.0
+[INFO] Configured 2 reports for maven-project-info-reports-plugin:3.9.0: index, summary
+[INFO] Skipped "About" report (maven-project-info-reports-plugin:3.9.0:index), file "index.html" already exists.
+[INFO] Started site:run HTTP server on http://localhost:8080/
+[INFO] index.html -> src/site/markdown/index.md (default locale)
+[INFO] summary.html -> maven-project-info-reports-plugin:3.9.0:summary (default locale)
+[INFO] Generating "Summary" report              --- maven-project-info-reports-plugin:3.9.0:summary
+```
+
+`site:run` serves one project. To preview the links between the modules of a multi-module site, stage it with [`site:stage`](../stage-mojo.html) instead, as described in [Building multi-module sites](https://maven.apache.org/guides/mini/guide-multimodule-site.html).
+
+${esc.h}${esc.h} Change the host, the port or the working directory
+
+The [`host`](../run-mojo.html${esc.hash}host) and [`port`](../run-mojo.html${esc.hash}port) parameters choose where the server listens. Both can be set on the command line:
+
+```shell
+mvn site:run -Dport=9000
+```
+
+If the port is already taken, the goal fails with `Error creating HTTP server on localhost:<port>: Address already in use`. Use `-Dport=0` to let the system pick a free port; the log then shows which one it chose.
+
+Static resources, such as the skin and the files in `src/site/resources`, are copied to [`tempWebappDirectory`](../run-mojo.html${esc.hash}tempWebappDirectory), `target/site-webapp` by default. To set the parameters in the POM:
 
 ```xml
 <project>
@@ -41,7 +75,7 @@ For example, you can have the following configuration in your POM:
         <version>${project.version}</version>
         <configuration>
           <port>9000</port>
-          <tempWebappDirectory>${basedir}/target/site/tempdir</tempWebappDirectory>
+          <tempWebappDirectory>${esc.d}{project.build.directory}/site-tempdir</tempWebappDirectory>
         </configuration>
       </plugin>
     </plugins>
@@ -50,5 +84,8 @@ For example, you can have the following configuration in your POM:
 </project>
 ```
 
-When you execute &quot;`mvn site:run`&quot;, you will see in the command line that the HTTP server is started at port 9000\. To access the site, type `http://localhost:9000` in your browser. You will also see that the served site files are generated in the `${basedir}/target/site/tempdir` directory as specified by the `tempWebappDirectory` parameter.
+With this configuration, `mvn site:run` serves the site on `http://localhost:9000/` and copies the static resources to `target/site-tempdir`.
 
+${esc.h}${esc.h} Render the site to disk while you edit
+
+[`site:auto-refresh`](../auto-refresh-mojo.html) is the alternative when you want files instead of a server: it renders the site once into `target/site`, then renders a document again whenever its source changes, until you press Enter. In batch mode (`-B`) it renders the site once and stops.

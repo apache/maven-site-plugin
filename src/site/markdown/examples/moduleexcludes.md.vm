@@ -26,23 +26,22 @@ under the License.
 
 # Excluding Document Formats
 
-To exclude specific document formats from the generated site, you can use the `moduleExcludes` parameter.
+To leave some source documents out of the generated site, use the [`moduleExcludes`](../site-mojo.html${esc.hash}moduleExcludes) parameter. Each entry is named after a source format, such as `markdown`, `apt`, `xdoc` or `fml`, and holds a comma-separated list of file names or patterns, relative to the directory of that format.
 
-For example, you have the following site content in your POM
+For example, your project has the following site content:
 
 ```
 Module1
 |-- src
-|   |-- main
 |   `-- site
-|       |-- apt
-|       |   `-- sample-apt.apt
+|       |-- markdown
+|       |   `-- index.md
 |       `-- fml
 |           `-- sample-fml.fml
 `-- pom.xml
 ```
 
-and you want to exclude all the documents in the fml format from the generated site, you need to set the following in your POM and then execute &quot;`mvn site`&quot;.
+To exclude all the documents in the FML format from the generated site, set the following in your POM and run `mvn site`:
 
 ```xml
 <project>
@@ -65,7 +64,11 @@ and you want to exclude all the documents in the fml format from the generated s
 </project>
 ```
 
-You will see that no `sample-fml.html` will be present in the generated site.
+The generated site then contains no `sample-fml.html`, and the build log counts only the remaining documents:
+
+```
+[INFO] Rendering 1 Doxia document: 1 markdown
+```
 
 See the documentation of the [moduleExcludes](../site-mojo.html#moduleExcludes) Mojo parameter for more details.
 

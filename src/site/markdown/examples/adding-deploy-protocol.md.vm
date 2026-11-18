@@ -26,21 +26,28 @@ under the License.
 
 # Adding a Protocol to Deploy the Site
 
-Out of the box, Maven and Site Plugin only supports `file:`, `http(s):` and `dav+http(s):` (for WebDAV) as transport protocols.
+[`site:deploy`](../deploy-mojo.html) and [`site:stage-deploy`](../stage-deploy-mojo.html) copy the site with a [Wagon](/wagon/) provider chosen by the protocol of the site URL in `<distributionManagement>`. Out of the box, only `file:` URLs work: the plugin brings the file provider, and the HTTP provider that ships with Maven cannot copy a directory.
 
-If you try to deploy a site with an unsupported protocol, you&apos;ll get an error:
+A URL with any other protocol fails. For example, with an `scp:` URL:
 
 ```
-[ERROR] 
-Unsupported protocol: '...' for site deployment to distributionManagement.site.url=...
-Currently supported protocols are: ...
-    Protocols may be added through wagon providers.
-    For more information, see http://maven.apache.org/plugins/maven-site-plugin/examples/adding-deploy-protocol.html
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-site-plugin:${project.version}:deploy (default-cli) on project scratch-parent: Cannot find wagon which supports the requested protocol: scp -> [Help 1]
 ```
 
-As explained in the error message, to deploy a site with a non-built-in protocol, you need to add the corresponding [wagon provider](/wagon/).
+and with an `http:` URL:
 
-You can add it either as a [global extension](/guides/mini/guide-using-extensions.html), or declare it as a dependency of the site plugin:
+```
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-site-plugin:${project.version}:deploy (default-cli) on project scratch-parent: Wagon protocol 'http' doesn't support directory copying -> [Help 1]
+```
+
+To deploy with another protocol, add the [Wagon provider](/wagon/) for it:
+
+| Site URL | Wagon provider |
+|----------|----------------|
+| `scp://`, `sftp://` | [`org.apache.maven.wagon:wagon-ssh`](/wagon/wagon-providers/wagon-ssh/) |
+| `dav:http://`, `dav:https://` (WebDAV) | [`org.apache.maven.wagon:wagon-webdav-jackrabbit`](/wagon/wagon-providers/wagon-webdav-jackrabbit/) |
+
+You can add it either as a [build extension](/guides/mini/guide-using-extensions.html), or declare it as a dependency of the Site Plugin:
 
 ```xml
 <project>
@@ -53,7 +60,7 @@ You can add it either as a [global extension](/guides/mini/guide-using-extension
           <artifactId>maven-site-plugin</artifactId>
           <version>${project.version}</version>
           <dependencies>
-            <dependency><!-- add support for sftp/scp -->
+            <dependency><!-- add support for scp and sftp -->
               <groupId>org.apache.maven.wagon</groupId>
               <artifactId>wagon-ssh</artifactId>
               <version>${wagonVersion}</version>
@@ -67,6 +74,6 @@ You can add it either as a [global extension](/guides/mini/guide-using-extension
 </project>
 ```
 
-Although deployment to SCM (Source Control Management) systems (e.g. SVN, Git, Mercury) is supported also by [Wagon SCM provider](/wagon/wagon-providers/wagon-scm/) 
-that wagon provider is currently committing each file separately which is not desirable in the context of site deployment.
-Therefore, it is recommended to use the [Maven SCM Publish Plugin](https://maven.apache.org/plugins/maven-scm-publish-plugin/) for SCM deployment instead which pushes all files in a single commit.
+Credentials for the server go into a `<server>` element of your `settings.xml` whose `<id>` matches the `<id>` of the site in `<distributionManagement>`; see the [Guide to Deployment and Security Settings](/guides/mini/guide-deployment-security-settings.html).
+
+To publish the site to a source control system, such as GitHub Pages or the Apache svnpubsub/gitpubsub service, use the [Maven SCM Publish Plugin](/plugins/maven-scm-publish-plugin/) instead of a Wagon provider: it commits all files in one commit, where the [Wagon SCM provider](/wagon/wagon-providers/wagon-scm/) commits each file separately. See [Deploying the Site](https://maven.apache.org/guides/mini/guide-site.html${esc.hash}GitHub_Pages.2C_Apache_svnpubsub.2Fgitpubsub_Deployment) in the site guide.

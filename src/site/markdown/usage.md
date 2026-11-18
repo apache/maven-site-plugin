@@ -44,7 +44,7 @@ By default, the resulting site will be in the `target/site/` directory.
 
 **Note:** If you have a multi module project, then the links between the parent and child modules will _not_ work when you use `mvn site` or `mvn site:site`. If you want to use those links, you should use `mvn site:stage` instead. You can read more about that goal further down on this page in the section called &apos;_Staging a Site_&apos;.
 
-**Note:** For performance reasons, Maven compares the timestamps of generated files and corresponding source documents, and only regenerates documents that have changed since the last build. However, this only applies to documentation source documents (apt, xdoc,...). If you change anything in your `site.xml`, any relevant sections in your pom, or any relevant properties or resource files, you should generate the site from scratch to make sure all references and links are correct.
+**Note:** For performance reasons, the Site Plugin compares the timestamps of generated files and corresponding source documents, and only regenerates documents that have changed since the last build. However, this only applies to documentation source documents (Markdown, APT, XDoc and so on). If you change anything in your `site.xml`, any relevant sections in your POM, any relevant properties or resource files, or the `-D` properties you pass on the command line, run `mvn clean site` to make sure all references and links are correct.
 
 ## Deploying a Site
 
@@ -55,8 +55,8 @@ To be able to deploy the site, you must first specify where the site will be dep
   ...
   <distributionManagement>
     <site>
-      <id>www.yourcompany.com</id>
-      <url>scp://www.yourcompany.com/www/docs/project/</url>
+      <id>www.mycompany.com</id>
+      <url>scp://www.mycompany.com/www/docs/project/</url>
     </site>
   </distributionManagement>
   ...
@@ -65,7 +65,7 @@ To be able to deploy the site, you must first specify where the site will be dep
 
 The `<id>` element identifies the repository, so that you can attach credentials to it in your `settings.xml` file using the [`<servers>` element](/ref/current/maven-settings/settings.html#Servers) as you would for any other repository.
 
-The `<url>` gives the location to deploy to. In the example above we copy to the host `www.mycompany.com` using the path `/www/docs/project/` over the `scp` protocol. You can read more about which protocols are supported on [this page](./examples/adding-deploy-protocol.html). If subprojects inherit the site URL from a parent POM, they will automatically append their `<artifactId>` to form their effective deployment location.
+The `<url>` gives the location to deploy to. In the example above we copy to the host `www.mycompany.com` using the path `/www/docs/project/` over the `scp` protocol. Only `file:` URLs work out of the box; `scp` and other protocols need a Wagon provider, see [Adding a Protocol to Deploy the Site](./examples/adding-deploy-protocol.html). How child modules inherit the site URL is described in [Inheritance of the Site Distribution Management](https://maven.apache.org/guides/mini/guide-multimodule-site.html#Inheritance_of_the_Site_Distribution_Management).
 
 Now you can execute the [`site:deploy`](./deploy-mojo.html) goal from your project directory.
 
@@ -130,11 +130,13 @@ The Site Plugin can also be used to start up the site in a local HTTP server. To
 mvn site:run
 ```
 
-The server will, by default, be started on `http://localhost:8080/`.
+The server will, by default, be started on `http://localhost:8080/`, and renders each page when it is requested, so an edited document shows up on the next reload. It uses the HTTP server provided by the JDK. The `port` and `host` parameters change the address, for example `mvn site:run -Dport=9000`; see [Configuring Site Run](./examples/siterun.html).
 
 **Note:** Running a site only works for single-module sites. To preview a multi-module site one should use `site:stage`.
 
+To write the pages to `target/site` instead, run [`site:auto-refresh`](./auto-refresh-mojo.html): it renders the site once, then renders a document again whenever its source changes, until you press Enter. In batch mode (`-B`) it renders the site once and stops.
+
 ## Rebuilding a Published (Released) Site
 
-In general, site documentation is published as part of a release. This means that changes to the documentation depend on a new release before being visible _or_ you must accept that the documentation refers to a snapshot version instead of the latest release version. To solve that problem, you first need to configure your project for reproducibility by setting the `project.build.outputTimestamp` model property. Then branch off from the SCM tag you want to modify, perform the changes, commit them and then rebuild, finally publish updated site. The underlying Maven Doxia Sitetools will automatically inject that property as `publishDate` Velocity context property into the site and the skin won&apos;t render a newer (current) date, but use this one. Checkout the `publishDate` IT for configuration details.
+In general, site documentation is published as part of a release. This means that changes to the documentation depend on a new release before being visible _or_ you must accept that the documentation refers to a snapshot version instead of the latest release version. To solve that problem, you first need to configure your project for reproducibility by setting the `project.build.outputTimestamp` model property. Then branch off from the SCM tag you want to modify, perform the changes, commit them and then rebuild, finally publish updated site. The underlying Maven Doxia Sitetools will automatically inject that property as `publishDate` Velocity context property into the site and the skin won&apos;t render a newer (current) date, but use this one. See the [`publishDate` IT](https://github.com/apache/maven-site-plugin/tree/master/src/it/projects/publishDate) for a configuration example.
 
