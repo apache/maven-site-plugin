@@ -89,8 +89,9 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
     public SiteMojo(
             SiteModelInheritanceAssembler assembler,
             SiteRenderer siteRenderer,
-            MavenReportExecutor mavenReportExecutor) {
-        super(assembler, siteRenderer, mavenReportExecutor);
+            MavenReportExecutor mavenReportExecutor,
+            SiteResourcesResolver siteResourcesResolver) {
+        super(assembler, siteRenderer, mavenReportExecutor, siteResourcesResolver);
     }
 
     /**
@@ -110,6 +111,7 @@ public class SiteMojo extends AbstractSiteRenderingMojo {
         checkInputEncoding();
 
         try {
+            resolveParentSiteResources();
             List<Locale> localesList = getLocales();
 
             for (Locale locale : localesList) {

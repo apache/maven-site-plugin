@@ -42,6 +42,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.site.render.AbstractSiteRenderingMojo;
+import org.apache.maven.plugins.site.render.SiteResourcesResolver;
 import org.apache.maven.reporting.exec.MavenReportExecution;
 import org.apache.maven.reporting.exec.MavenReportExecutor;
 
@@ -78,8 +79,9 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
     public SiteRunMojo(
             SiteModelInheritanceAssembler assembler,
             SiteRenderer siteRenderer,
-            MavenReportExecutor mavenReportExecutor) {
-        super(assembler, siteRenderer, mavenReportExecutor);
+            MavenReportExecutor mavenReportExecutor,
+            SiteResourcesResolver siteResourcesResolver) {
+        super(assembler, siteRenderer, mavenReportExecutor, siteResourcesResolver);
     }
 
     /**
@@ -141,6 +143,7 @@ public class SiteRunMojo extends AbstractSiteRenderingMojo {
         Map<String, DoxiaBean> i18nDoxiaContexts;
 
         try {
+            resolveParentSiteResources();
             // For external reports
             project.getReporting().setOutputDirectory(tempWebappDirectory.getAbsolutePath());
 
