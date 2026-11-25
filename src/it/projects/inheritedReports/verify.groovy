@@ -18,8 +18,8 @@
  * under the License.
  */
 
-File parentSiteDirectory = new File( basedir, "target/site" )
-File parentIndex = new File( parentSiteDirectory, "index.html" )
+File parentSiteDirectory = new File(basedir, "target/site")
+File parentIndex = new File(parentSiteDirectory, "index.html")
 assert parentIndex.exists() && !parentIndex.isDirectory() : "no index file in parent or is a directory."
 
 // CHILD

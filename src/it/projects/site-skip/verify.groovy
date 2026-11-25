@@ -18,13 +18,13 @@
  * under the License.
  */
 
-final File deployDirectory = new File( basedir, "deployed" )
-final File stageDirectory = new File( basedir, "target/staging" )
-final File stageDeployDirectory = new File( deployDirectory, "staging" )
+final File deployDirectory = new File(basedir, "deployed")
+final File stageDirectory = new File(basedir, "target/staging")
+final File stageDeployDirectory = new File(deployDirectory, "staging")
 
 // top
 
-File siteDir = new File( basedir, "target/site" )
+File siteDir = new File(basedir, "target/site")
 assert siteDir.exists() && siteDir.isDirectory() : "top site is missing or not a directory."
 
 File stageDir = new File( stageDirectory, "." )

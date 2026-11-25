@@ -17,11 +17,11 @@
  * under the License.
  */
 
-target = new File( basedir, 'target' );
-assert target.isDirectory();
+target = new File(basedir, 'target')
+assert target.isDirectory()
 
-stageDeploy = new File( target, 'site-deployed/staging' );
-assert stageDeploy.isDirectory();
-assert new File( stageDeploy, 'module' ).exists();
+stageDeploy = new File(target, 'site-deployed/staging')
+assert stageDeploy.isDirectory()
+assert new File(stageDeploy, 'module').exists()
 
-return true;
+return true

@@ -18,7 +18,7 @@
  * under the License.
  */
 
-File deployDirectory = new File( basedir, "deploy" )
+File deployDirectory = new File(basedir, "deploy")
 assert deployDirectory.exists() && deployDirectory.isDirectory() : "deploy directory is missing or not a directory:" + deployDirectory.getAbsolutePath()
 
 File rootDirectory = new File( deployDirectory, "MSITE-548" )

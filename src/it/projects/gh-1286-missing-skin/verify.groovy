@@ -17,15 +17,15 @@
  * under the License.
  */
 
-File buildLog = new File( basedir, 'build.log' )
+File buildLog = new File(basedir, 'build.log')
 assert buildLog.exists()
 
 String log = buildLog.text
 
 // The build must fail with a clear, actionable message ...
-assert log.contains( 'No skin is declared in the site descriptor' )
+assert log.contains('No skin is declared in the site descriptor')
 
 // ... and NOT with the previous cryptic NullPointerException from doxia-sitetools.
-assert !log.contains( 'skin cannot be null' )
+assert !log.contains('skin cannot be null')
 
 return true

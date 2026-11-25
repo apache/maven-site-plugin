@@ -18,8 +18,8 @@
  * under the License.
  */
 
-content = new File( basedir, 'target/site/index.html' ).text;
+content = new File(basedir, 'target/site/index.html').text
 
-assert content.contains( 'Correct!' );
+assert content.contains('Correct!')
 
-return true;
+return true

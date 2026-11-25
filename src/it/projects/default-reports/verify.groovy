@@ -18,11 +18,11 @@
  * under the License.
  */
 
-sitedir = new File( basedir, 'target/site' );
+sitedir = new File(basedir, 'target/site')
 
-assert new File( sitedir, 'dependency-info.html' ).exists();
-assert new File( sitedir, 'index.html' ).exists();
-assert new File( sitedir, 'plugin-management.html' ).exists();
-assert new File( sitedir, 'plugins.html' ).exists();
-assert new File( sitedir, 'project-info.html' ).exists();
-assert new File( sitedir, 'summary.html' ).exists();
+assert new File(sitedir, 'dependency-info.html').exists()
+assert new File(sitedir, 'index.html').exists()
+assert new File(sitedir, 'plugin-management.html').exists()
+assert new File(sitedir, 'plugins.html').exists()
+assert new File(sitedir, 'project-info.html').exists()
+assert new File(sitedir, 'summary.html').exists()

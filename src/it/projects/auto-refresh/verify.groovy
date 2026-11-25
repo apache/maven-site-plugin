@@ -18,13 +18,13 @@
  */
 
 // Check that the site output directory exists
-File target = new File( basedir, 'target/site' );
-assert target.isDirectory() : "target/site directory should exist";
+File target = new File(basedir, 'target/site')
+assert target.isDirectory() : "target/site directory should exist"
 
 // Check that the rendered markdown page exists
-File testPage = new File( target, 'test.html' );
-assert testPage.isFile() : "test.html should have been rendered from test.md";
+File testPage = new File( target, 'test.html' )
+assert testPage.isFile() : "test.html should have been rendered from test.md"
 
 // Check that the rendered page contains expected content
-String content = testPage.text;
-assert content.contains( 'Hot Reload Test' ) : "test.html should contain 'Hot Reload Test'";
+String content = testPage.text
+assert content.contains( 'Hot Reload Test' ) : "test.html should contain 'Hot Reload Test'"

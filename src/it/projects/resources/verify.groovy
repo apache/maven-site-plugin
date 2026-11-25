@@ -16,17 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-File site = new File( basedir, 'target/site' )
-assert site.exists();
+File site = new File(basedir, 'target/site')
+assert site.exists()
 
 // file from src/site/resources
-assert new File( site, 'src-site-resources.txt' ).exists();
+assert new File(site, 'src-site-resources.txt').exists()
 // MSITE-744 file from target/generated-site/resources
-assert new File( site, 'generated-site-resources.txt' ).exists();
+assert new File(site, 'generated-site-resources.txt').exists()
 // file from maven-default-skin:jar:1.0
-assert new File( site, 'images/logos/maven-feather.png' ).exists();
+assert new File(site, 'images/logos/maven-feather.png').exists()
 
 // MSITE-702 overriding skin content with src/site/resources
-assert new File( site, 'css/maven-base.css' ).text.contains( 'overriding Skin content...' );
+assert new File(site, 'css/maven-base.css').text.contains('overriding Skin content...')
 
-return true;
+return true

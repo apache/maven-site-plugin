@@ -18,7 +18,7 @@
  * under the License.
  */
 
-def page = new File( basedir, 'target/generated-site/markdown/filtered.md' )
+def page = new File(basedir, 'target/generated-site/markdown/filtered.md')
 assert page.exists() : "$page must have been filtered into the generated site directory"
 
 page = new File( basedir, 'target/site/filtered.html' )

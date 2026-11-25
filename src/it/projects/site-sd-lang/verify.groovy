@@ -22,7 +22,7 @@
 
 // SITE
 
-File topLevelDirectory = new File( basedir, "target/site" )
+File topLevelDirectory = new File(basedir, "target/site")
 assert topLevelDirectory.exists() && topLevelDirectory.isDirectory() : "Site directory '" + topLevelDirectory + "' is missing or not a directory."
 
 File moduleDirectory = new File( basedir, "mymodule/target/site" )

@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-File f = new File( basedir, 'target/site/licenses.html' )
-assert f.exists();
+File f = new File(basedir, 'target/site/licenses.html')
+assert f.exists()
 
-content = f.text;
+content = f.text
 
 // linkOnly parameter merged from pluginManagement
-assert content.contains( ' href="http://www.apache.org/licenses/LICENSE-2.0.txt"' );
+assert content.contains(' href="http://www.apache.org/licenses/LICENSE-2.0.txt"')
 
-return true;
+return true

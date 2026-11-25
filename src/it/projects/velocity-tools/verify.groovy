@@ -18,9 +18,9 @@
  * under the License.
  */
 
-def content = new File( basedir, 'target/generated-site/processed/tools.apt' ).text
+def content = new File(basedir, 'target/generated-site/processed/tools.apt').text
 
-assert content.contains( 'configured=Hello tools.html' ) : 'custom SafeConfig tool must get its property and the context'
+assert content.contains('configured=Hello tools.html') : 'custom SafeConfig tool must get its property and the context'
 assert content.contains( 'setter=5' ) : 'custom tool must be configured through its setter'
 assert content.contains( 'date=26/10/2026' ) : 'site-tools.xml must override the format of the date tool'
 assert content.contains( 'render=&lt;b&gt;' ) : 'render.eval must see the other tools'

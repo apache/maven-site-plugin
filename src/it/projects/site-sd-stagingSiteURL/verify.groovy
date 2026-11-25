@@ -17,12 +17,12 @@
  * under the License.
  */
 
-target = new File( basedir, 'target' );
-assert target.isDirectory();
+target = new File(basedir, 'target')
+assert target.isDirectory()
 
-stageDeploy = new File( target, 'MSITE-649-1.0-SNAPSHOT' );
-assert stageDeploy.isDirectory();
+stageDeploy = new File(target, 'MSITE-649-1.0-SNAPSHOT')
+assert stageDeploy.isDirectory()
 
-assert !new File( stageDeploy, 'MSITE-649' ).exists(); // a MSITE-649 subdirectory has been created inside the staging directory
+assert !new File(stageDeploy, 'MSITE-649').exists() // a MSITE-649 subdirectory has been created inside the staging directory
 
-return true;
+return true

@@ -18,7 +18,7 @@
  * under the License.
  */
 
-def page = new File( basedir, 'target/site/markdown.html' )
+def page = new File(basedir, 'target/site/markdown.html')
 assert page.exists() : "$page must have been generated"
 def content = page.text
 
