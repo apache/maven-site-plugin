@@ -18,7 +18,7 @@
  * under the License.
  */
 
-File target = new File( basedir, "target" )
+File target = new File(basedir, "target")
 assert target.exists() && target.isDirectory() : "target directory is missing or not a directory."
 
 File site = new File( target, "site" )

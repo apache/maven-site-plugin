@@ -20,7 +20,7 @@
 
 import java.util.jar.*
 
-File report = new File( basedir, "target/site/changes.html" )
+File report = new File(basedir, "target/site/changes.html")
 assert report.exists() && !report.isDirectory() : "report file is missing or a directory."
 String reportContent = report.getText('UTF-8')
 

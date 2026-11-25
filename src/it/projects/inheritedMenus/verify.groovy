@@ -18,7 +18,7 @@
  * under the License.
  */
 
-File parentDirectory = new File( basedir, "parentNotAsRef" )
+File parentDirectory = new File(basedir, "parentNotAsRef")
 assert parentDirectory.exists() && parentDirectory.isDirectory() : "parent is missing or not a directory."
 
 File parentSiteDirectory = new File( parentDirectory, "target/site" )

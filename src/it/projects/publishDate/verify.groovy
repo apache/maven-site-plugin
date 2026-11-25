@@ -18,7 +18,7 @@
  * under the License.
  */
 
-sitedir = new File( basedir, 'target/site' );
-index = new File( sitedir, 'index.html' );
-assert index.exists();
-assert index.getText().contains( '<li id="publishDate">Last Published: 2000-01-01' );
+sitedir = new File(basedir, 'target/site')
+index = new File(sitedir, 'index.html')
+assert index.exists()
+assert index.getText().contains('<li id="publishDate">Last Published: 2000-01-01')

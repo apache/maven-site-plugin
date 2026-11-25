@@ -18,7 +18,7 @@
  * under the License.
  */
 
-final File siteDirectory = new File( basedir, "target/site" )
+final File siteDirectory = new File(basedir, "target/site")
 assert siteDirectory.exists() && siteDirectory.isDirectory() : "site is missing or not a directory."
 
 File index = new File( siteDirectory, "index.html" )

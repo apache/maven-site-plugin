@@ -17,23 +17,23 @@
  * under the License.
  */
 
-target = new File( basedir, 'target' );
-assert target.isDirectory();
+target = new File(basedir, 'target')
+assert target.isDirectory()
 
 // msite604.siteURL property value from settings.xml
-rootDirectory = new File( target, 'root' );
-assert rootDirectory.isDirectory();
+rootDirectory = new File(target, 'root')
+assert rootDirectory.isDirectory()
 
 // msite604.siteBase property value from pom.xml
-baseDirectory = new File( rootDirectory, 'defaultBase' );
-assert !baseDirectory.isDirectory();
+baseDirectory = new File(rootDirectory, 'defaultBase')
+assert !baseDirectory.isDirectory()
 
 // msite604.siteBase property value from settings.xml
-baseDirectory = new File( rootDirectory, 'settingsBase' );
-assert baseDirectory.isDirectory();
+baseDirectory = new File(rootDirectory, 'settingsBase')
+assert baseDirectory.isDirectory()
 
 // msite604.sitePath property value from pom.xml
-defaultDirectory = new File( baseDirectory, 'defaultPath' );
-assert defaultDirectory.exists();
+defaultDirectory = new File(baseDirectory, 'defaultPath')
+assert defaultDirectory.exists()
 
-return true;
+return true

@@ -18,7 +18,7 @@
  * under the License.
  */
 
-final File siteDirectory = new File( basedir, "webhost.company.com" )
+final File siteDirectory = new File(basedir, "webhost.company.com")
 assert siteDirectory.exists() && siteDirectory.isDirectory() : "site is missing or not a directory."
 
 // DEPLOY

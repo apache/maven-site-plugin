@@ -18,11 +18,11 @@
  * under the License.
  */
 
-File index = new File( basedir, "target/site/index.html" )
+File index = new File(basedir, "target/site/index.html")
 assert index.exists() && !index.isDirectory() : "no index file or is a directory."
 
 String content = index.getText('UTF-8')
 int index1 = content.indexOf( "dummy=value" )
-int index2 = content.indexOf( "att1=val1" ); // MSITE-550
+int index2 = content.indexOf( "att1=val1" ) // MSITE-550
 
 assert index1 >= 0 && index2 >= 0 : "index.html not resolved!"

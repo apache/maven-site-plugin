@@ -17,33 +17,33 @@
  * under the License.
  */
 
-target = new File( basedir, 'target' );
-assert target.isDirectory();
+target = new File(basedir, 'target')
+assert target.isDirectory()
 
 // deploy: reference layout
 // deploy/
 //     |- aggregator/
 //     `- plugins/
 //         `- maven-rocks-plugin/
-deployDirectory = new File( basedir, 'deploy' );
-assert deployDirectory.isDirectory();
-assert new File( deployDirectory, 'aggregator' ).isDirectory();
-pluginsDirectory = new File( deployDirectory, 'plugins' );
-assert pluginsDirectory.isDirectory();
-assert new File( pluginsDirectory, 'maven-rocks-plugin' ).isDirectory();
+deployDirectory = new File(basedir, 'deploy')
+assert deployDirectory.isDirectory()
+assert new File(deployDirectory, 'aggregator').isDirectory()
+pluginsDirectory = new File(deployDirectory, 'plugins')
+assert pluginsDirectory.isDirectory()
+assert new File(pluginsDirectory, 'maven-rocks-plugin').isDirectory()
 
 // stage
-stageDirectory = new File( target, 'staging' );
-assert stageDirectory.isDirectory();
-pluginsDirectory = new File( stageDirectory, 'plugins' );
-assert pluginsDirectory.isDirectory();
-assert new File( pluginsDirectory, 'maven-rocks-plugin' ).isDirectory();
+stageDirectory = new File(target, 'staging')
+assert stageDirectory.isDirectory()
+pluginsDirectory = new File(stageDirectory, 'plugins')
+assert pluginsDirectory.isDirectory()
+assert new File(pluginsDirectory, 'maven-rocks-plugin').isDirectory()
 
 // stage deploy
-stageDeployDirectory = new File( deployDirectory, 'staging' );
-assert stageDeployDirectory.isDirectory();
-pluginsDirectory = new File( stageDeployDirectory, 'plugins' );
-assert pluginsDirectory.isDirectory();
-assert new File( pluginsDirectory, 'maven-rocks-plugin' ).isDirectory();
+stageDeployDirectory = new File(deployDirectory, 'staging')
+assert stageDeployDirectory.isDirectory()
+pluginsDirectory = new File(stageDeployDirectory, 'plugins')
+assert pluginsDirectory.isDirectory()
+assert new File(pluginsDirectory, 'maven-rocks-plugin').isDirectory()
 
-return true;
+return true

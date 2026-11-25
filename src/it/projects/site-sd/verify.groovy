@@ -17,19 +17,19 @@
  * under the License.
  */
 
-target = new File( basedir, 'target' );
-assert target.isDirectory();
+target = new File(basedir, 'target')
+assert target.isDirectory()
 
 // stage
-stagingDirectory = new File( target, 'staging' );
-assert stagingDirectory.isDirectory();
-assert new File( stagingDirectory, 'MSITE-304-child' ).isDirectory(); // notice: artifactId, not module name
+stagingDirectory = new File(target, 'staging')
+assert stagingDirectory.isDirectory()
+assert new File(stagingDirectory, 'MSITE-304-child').isDirectory() // notice: artifactId, not module name
 
 // stage-deploy
-deployDirectory = new File( target, 'www.example.com/parent' );
-stageDeployDirectory = new File( deployDirectory, 'staging' );
-assert stageDeployDirectory.isDirectory();
-assert new File( stageDeployDirectory, 'MSITE-304-child' ).isDirectory();
-assert !new File( deployDirectory, 'MSITE-304-child/staging' ).exists();
+deployDirectory = new File(target, 'www.example.com/parent')
+stageDeployDirectory = new File(deployDirectory, 'staging')
+assert stageDeployDirectory.isDirectory()
+assert new File(stageDeployDirectory, 'MSITE-304-child').isDirectory()
+assert !new File(deployDirectory, 'MSITE-304-child/staging').exists()
 
-return true;
+return true

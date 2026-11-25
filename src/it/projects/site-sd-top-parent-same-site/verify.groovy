@@ -17,22 +17,22 @@
  * under the License.
  */
 
-target = new File( basedir, 'target' );
-assert target.isDirectory();
+target = new File(basedir, 'target')
+assert target.isDirectory()
 
 // deploy
-deployDirectory = new File( basedir, 'deploy' );
-assert deployDirectory.isDirectory();
-assert new File( deployDirectory, 'module1' ).isDirectory();
+deployDirectory = new File(basedir, 'deploy')
+assert deployDirectory.isDirectory()
+assert new File(deployDirectory, 'module1').isDirectory()
 
 // stage
-stageDirectory = new File( target, 'staging' );
-assert stageDirectory.isDirectory();
-assert new File( stageDirectory, 'module1' ).isDirectory();
+stageDirectory = new File(target, 'staging')
+assert stageDirectory.isDirectory()
+assert new File(stageDirectory, 'module1').isDirectory()
 
 // stage deploy
-stageDeployDirectory = new File( deployDirectory, 'staging' );
-assert stageDeployDirectory.isDirectory();
-assert new File( stageDeployDirectory, 'module1' ).isDirectory();
+stageDeployDirectory = new File(deployDirectory, 'staging')
+assert stageDeployDirectory.isDirectory()
+assert new File(stageDeployDirectory, 'module1').isDirectory()
 
-return true;
+return true

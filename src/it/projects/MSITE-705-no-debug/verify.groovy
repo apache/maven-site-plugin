@@ -18,5 +18,5 @@
  * under the License.
  */
 
-content = new File( basedir, 'build.log' ).text
-return !content.contains( 'Session: Disconnected' )
+content = new File(basedir, 'build.log').text
+return !content.contains('Session: Disconnected')

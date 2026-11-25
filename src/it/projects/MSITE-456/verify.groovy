@@ -18,7 +18,7 @@
  * under the License.
  */
 
-File parentSiteDirectory = new File( basedir, "target/site" )
+File parentSiteDirectory = new File(basedir, "target/site")
 assert parentSiteDirectory.exists() && parentSiteDirectory.isDirectory() : "parent site is missing or not a directory."
 
 File parentIndex = new File( parentSiteDirectory, "index.html" )

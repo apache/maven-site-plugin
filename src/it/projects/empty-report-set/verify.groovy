@@ -17,13 +17,12 @@
  * under the License.
  */
 
-import java.io.*;
+import java.io.*
 
-File indexHtml = new File( basedir, "target/site/index.html" );
+File indexHtml = new File(basedir, "target/site/index.html")
 
-if ( indexHtml.exists() )
-{
-    throw new Exception( "Detected unwanted file " + indexHtml );
+if (indexHtml.exists()) {
+    throw new Exception("Detected unwanted file " + indexHtml)
 }
 
-return true;
+return true
