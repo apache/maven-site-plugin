@@ -18,68 +18,26 @@
  * under the License.
  */
 
-import java.io.*;
-import groovy.xml.XmlSlurper;
-import org.codehaus.plexus.util.*;
+import groovy.xml.XmlSlurper
 
-boolean result = true;
+File target = new File( basedir, "target" )
+assert target.exists() && target.isDirectory() : "target file is missing or not a directory."
 
-try
-{
-    File target = new File( basedir, "target" );
-    if ( !target.exists() || !target.isDirectory() )
-    {
-        System.err.println( "target file is missing or not a directory." );
-        return false;
-    }
+File siteDirectory = new File( target, "site-deployed" )
+assert siteDirectory.exists() && siteDirectory.isDirectory() : "site file is missing or not a directory."
 
-    File siteDirectory = new File( target, "site-deployed" );
-    if ( !siteDirectory.exists() || !siteDirectory.isDirectory() )
-    {
-        System.err.println( "site file is missing or not a directory." );
-        return false;
-    }
+File releaseDirectory = new File( siteDirectory, "releases" )
+assert releaseDirectory.exists() && releaseDirectory.isDirectory() : "releaseDirectory file is missing or not a directory."
+File release163 = new File( releaseDirectory, "release1.6.3.html" )
+assert release163.exists() && !release163.isDirectory() : "release163 file is missing or a directory."
+File release16 = new File( releaseDirectory, "release1.6.html" )
+assert release16.exists() && !release16.isDirectory() : "release16 file is missing or a directory."
 
-    File releaseDirectory = new File( siteDirectory, "releases" );
-    if ( !releaseDirectory.exists() || !releaseDirectory.isDirectory() )
-    {
-        System.err.println( "releaseDirectory file is missing or not a directory." );
-        return false;
-    }
-    File release163 = new File( releaseDirectory, "release1.6.3.html" );
-    if ( !release163.exists() || release163.isDirectory() )
-    {
-        System.err.println( "release163 file is missing or a directory." );
-        return false;
-    }
-    File release16 = new File( releaseDirectory, "release1.6.html" );
-    if ( !release16.exists() || release16.isDirectory() )
-    {
-        System.err.println( "release16 file is missing or a directory." );
-        return false;
-    }
-
-    File download = new File( siteDirectory, "download.html" );
-    if ( !download.exists() || download.isDirectory() )
-    {
-        System.err.println( "download.html file is missing or a directory." );
-        return false;
-    }
-    // the page interpolates ${currentVersion}, which the filtered POM sets from @mavenVersion@
-    def pom = new XmlSlurper().parse( new File( basedir, "pom.xml" ) )
-    String expected = "Download Maven " + pom.properties.currentVersion.text()
-    String downloadContent = FileUtils.fileRead( download, "UTF-8" );
-    int indexOf = downloadContent.indexOf( expected );
-    if ( indexOf < 0 )
-    {
-        System.err.println( "download.html doesn't contain " + expected );
-        return false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+File download = new File( siteDirectory, "download.html" )
+assert download.exists() && !download.isDirectory() : "download.html file is missing or a directory."
+// the page interpolates ${currentVersion}, which the filtered POM sets from @mavenVersion@
+def pom = new XmlSlurper().parse( new File( basedir, "pom.xml" ) )
+String expected = "Download Maven " + pom.properties.currentVersion.text()
+String downloadContent = download.getText('UTF-8')
+int indexOf = downloadContent.indexOf( expected )
+assert indexOf >= 0 : "download.html doesn't contain " + expected

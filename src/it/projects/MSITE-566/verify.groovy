@@ -18,65 +18,25 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+File target = new File( basedir, "target" )
+assert target.exists() && target.isDirectory() : "target file is missing or not a directory."
 
-boolean result = true;
+File siteDescriptor = new File( target, "test-1.0-SNAPSHOT-site.xml" )
+assert siteDescriptor.exists() && !siteDescriptor.isDirectory() : "siteDescriptor file is missing from target or is a directory."
 
-try
-{
-    File target = new File( basedir, "target" );
-    if ( !target.exists() || !target.isDirectory() )
-    {
-        System.err.println( "target file is missing or not a directory." );
-        result = false;
-    }
+String content = siteDescriptor.getText('UTF-8')
+int index1 = content.indexOf( 'name="${project.name}"' )
+int index2 = content.indexOf( '<menu name="${menu.title}">' )
+int index3 = content.indexOf( "<!-- a comment -->" )
+assert index1 >= 0 && index2 >= 0 && index3 >= 0 : "attached site descriptor has been modified!"
 
-    File siteDescriptor = new File( target, "test-1.0-SNAPSHOT-site.xml" );
-    if ( !siteDescriptor.exists() || siteDescriptor.isDirectory() )
-    {
-        System.err.println( "siteDescriptor file is missing from target or is a directory." );
-        result = false;
-    }
+File site = new File( target, "site" )
+assert site.exists() && site.isDirectory() : "site file is missing or not a directory."
 
-    String content = FileUtils.fileRead( siteDescriptor, "UTF-8" );
-    int index1 = content.indexOf( 'name="${project.name}"' );
-    int index2 = content.indexOf( '<menu name="${menu.title}">' );
-    int index3 = content.indexOf( "<!-- a comment -->" );
-    if ( index1 < 0 || index2 < 0 || index3 < 0 )
-    {
-        System.err.println( "attached site descriptor has been modified!" );
-        result = false;
-    }
+File index = new File( site, "index.html" )
+assert index.exists() && !index.isDirectory() : "index.html is missing from target or is a directory."
 
-
-    File site = new File( target, "site" );
-    if ( !site.exists() || !site.isDirectory() )
-    {
-        System.err.println( "site file is missing or not a directory." );
-        result = false;
-    }
-
-    File index = new File( site, "index.html" );
-    if ( !index.exists() || index.isDirectory() )
-    {
-        System.err.println( "index.html is missing from target or is a directory." );
-        result = false;
-    }
-
-    content = FileUtils.fileRead( index, "UTF-8" );
-    index1 = content.indexOf( "MSITE-566 IT" );
-    index2 = content.indexOf( "<li class=\"nav-header\">Documentation</li>" );
-    if ( index1 < 0 || index2 < 0 )
-    {
-        System.err.println( "generated site has unresolved properties!" );
-        result = false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+content = index.getText('UTF-8')
+index1 = content.indexOf( "MSITE-566 IT" )
+index2 = content.indexOf( "<li class=\"nav-header\">Documentation</li>" )
+assert index1 >= 0 && index2 >= 0 : "generated site has unresolved properties!"

@@ -18,37 +18,11 @@
  * under the License.
  */
 
-import java.io.*;
+File target = new File( basedir, "target" )
+assert target.exists() && target.isDirectory() : "target directory is missing or not a directory."
 
-boolean result = true;
+File site = new File( target, "site" )
+assert site.exists() && site.isDirectory() : "site directory is missing or not a directory."
 
-try
-{
-    File target = new File( basedir, "target" );
-    if ( !target.exists() || !target.isDirectory() )
-    {
-        System.err.println( "target directory is missing or not a directory." );
-        return false;
-    }
-
-    File site = new File( target, "site" );
-    if ( !site.exists() || !site.isDirectory() )
-    {
-        System.err.println( "site directory is missing or not a directory." );
-        return false;
-    }
-
-    File projectInfo = new File( site, "project-info.html" );
-    if ( projectInfo.exists() || projectInfo.isDirectory() )
-    {
-        System.err.println( "project-info.html file is present although it shouldn't, or is a directory." );
-        return false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+File projectInfo = new File( site, "project-info.html" )
+assert !projectInfo.exists() && !projectInfo.isDirectory() : "project-info.html file is present although it shouldn't, or is a directory."

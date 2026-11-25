@@ -18,40 +18,12 @@
  * under the License.
  */
 
-import java.io.*;
+final File siteDirectory = new File( basedir, "target/site" )
+assert siteDirectory.exists() && siteDirectory.isDirectory() : "site is missing or not a directory."
 
-import org.codehaus.plexus.util.*;
+File report = new File( siteDirectory, "MSITE-627.html" )
+assert report.exists() && !report.isDirectory() : "no report file or is a directory."
 
-boolean result = true;
-
-try
-{
-    final File siteDirectory = new File( basedir, "target/site" );
-    if ( !siteDirectory.exists() || !siteDirectory.isDirectory() )
-    {
-        System.err.println( "site is missing or not a directory." );
-        result = false;
-    }
-
-    File report = new File( siteDirectory, "MSITE-627.html" );
-    if ( !report.exists() || report.isDirectory() )
-    {
-        System.err.println( "no report file or is a directory." );
-        result = false;
-    }
-
-    String content = FileUtils.fileRead( report, "UTF-8" );
-    int index = content.indexOf( "Test passed" );
-    if ( index < 0 )
-    {
-        System.err.println( "MSITE-627.html has incorrect contents!" );
-        result = false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+String content = report.getText('UTF-8')
+int index = content.indexOf( "Test passed" )
+assert index >= 0 : "MSITE-627.html has incorrect contents!"

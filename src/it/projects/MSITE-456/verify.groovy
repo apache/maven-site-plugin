@@ -18,76 +18,31 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+File parentSiteDirectory = new File( basedir, "target/site" )
+assert parentSiteDirectory.exists() && parentSiteDirectory.isDirectory() : "parent site is missing or not a directory."
 
-boolean result = true;
+File parentIndex = new File( parentSiteDirectory, "index.html" )
+assert parentIndex.exists() && !parentIndex.isDirectory() : "no index file in parent or is a directory."
 
-try
-{
-    File parentSiteDirectory = new File( basedir, "target/site" );
-    if ( !parentSiteDirectory.exists() || !parentSiteDirectory.isDirectory() )
-    {
-        System.err.println( "parent site is missing or not a directory." );
-        result = false;
-    }
+String content = parentIndex.getText('UTF-8')
+int index1 = content.indexOf( "<a href=\"child/index.html\">MSITE-456 - child</a>" )
+int index2 = content.indexOf( "<a href=\"project-info.html\"><span class=\"icon-chevron-down\"></span>Project Information</a>" )
 
-    File parentIndex = new File( parentSiteDirectory, "index.html" );
-    if ( !parentIndex.exists() || parentIndex.isDirectory() )
-    {
-        System.err.println( "no index file in parent or is a directory." );
-        result = false;
-    }
+assert index1 >= 0 && index2 >= 0 : "parent index.html has wrong navigation menu!"
 
-    String content = FileUtils.fileRead( parentIndex, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"child/index.html\">MSITE-456 - child</a>" );
-    int index2 = content.indexOf( "<a href=\"project-info.html\"><span class=\"icon-chevron-down\"></span>Project Information</a>" );
+// CHILD
 
+File childDirectory = new File( basedir, "child" )
+assert childDirectory.exists() && childDirectory.isDirectory() : "child is missing or not a directory."
 
-    if ( index1 < 0 || index2 < 0 )
-    {
-        System.err.println( "parent index.html has wrong navigation menu!" );
-        result = false;
-    }
+File childSiteDirectory = new File( childDirectory, "target/site" )
+assert childSiteDirectory.exists() && childSiteDirectory.isDirectory() : "child site is missing or not a directory."
 
-    // CHILD
+File childIndex = new File( childSiteDirectory, "index.html" )
+assert childIndex.exists() && !childIndex.isDirectory() : "no index file in child or is a directory."
 
+content = childIndex.getText('UTF-8')
+index1 = content.indexOf( "<a href=\"../index.html\">MSITE-456 - parent</a>" )
+index2 = content.indexOf( "<a href=\"project-info.html\"><span class=\"icon-chevron-down\"></span>Project Information</a>" )
 
-    File childDirectory = new File( basedir, "child" );
-    if ( !childDirectory.exists() || !childDirectory.isDirectory() )
-    {
-        System.err.println( "child is missing or not a directory." );
-        result = false;
-    }
-
-    File childSiteDirectory = new File( childDirectory, "target/site" );
-    if ( !childSiteDirectory.exists() || !childSiteDirectory.isDirectory() )
-    {
-        System.err.println( "child site is missing or not a directory." );
-        result = false;
-    }
-
-    File childIndex = new File( childSiteDirectory, "index.html" );
-    if ( !childIndex.exists() || childIndex.isDirectory() )
-    {
-        System.err.println( "no index file in child or is a directory." );
-        result = false;
-    }
-
-    content = FileUtils.fileRead( childIndex, "UTF-8" );
-    index1 = content.indexOf( "<a href=\"../index.html\">MSITE-456 - parent</a>" );
-    index2 = content.indexOf( "<a href=\"project-info.html\"><span class=\"icon-chevron-down\"></span>Project Information</a>" );
-
-    if ( index1 < 0 || index2 < 0 )
-    {
-        System.err.println( "child index.html has wrong navigation menu!" );
-        result = false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+assert index1 >= 0 && index2 >= 0 : "child index.html has wrong navigation menu!"

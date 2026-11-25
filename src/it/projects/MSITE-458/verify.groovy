@@ -18,47 +18,16 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+final File siteDirectory = new File( basedir, "target/site" )
+assert siteDirectory.exists() && siteDirectory.isDirectory() : "site is missing or not a directory."
 
-boolean result = true;
+File index = new File( siteDirectory, "index.html" )
+assert index.exists() && !index.isDirectory() : "no index.html!"
 
-try
-{
-    final File siteDirectory = new File( basedir, "target/site" );
-    if ( !siteDirectory.exists() || !siteDirectory.isDirectory() )
-    {
-        System.err.println( "site is missing or not a directory." );
-        result = false;
-    }
+String content = index.getText('UTF-8')
+int index1 = content.indexOf( "Should be first in Modules list" )
+int index2 = content.indexOf( "Should be second in Modules list" )
 
-    File index = new File( siteDirectory, "index.html" );
-    if ( !index.exists() || index.isDirectory() )
-    {
-        System.err.println( "no index.html!" );
-        result = false;
-    }
+assert index1 >= 0 && index2 >= 0 : "index.html is missing module links!"
 
-    String content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "Should be first in Modules list" );
-    int index2 = content.indexOf( "Should be second in Modules list" );
-
-    if ( index1 < 0 || index2 < 0 )
-    {
-        System.err.println( "index.html is missing module links!" );
-        result = false;
-    }
-
-    if ( index1 > index2 )
-    {
-        System.err.println( "wrong order of module links!" );
-        result = false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+assert index1 <= index2 : "wrong order of module links!"

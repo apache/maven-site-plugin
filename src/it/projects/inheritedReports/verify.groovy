@@ -18,44 +18,16 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+File parentSiteDirectory = new File( basedir, "target/site" )
+File parentIndex = new File( parentSiteDirectory, "index.html" )
+assert parentIndex.exists() && !parentIndex.isDirectory() : "no index file in parent or is a directory."
 
-boolean result = true;
+// CHILD
 
-try
-{
-    File parentSiteDirectory = new File( basedir, "target/site" );
-    File parentIndex = new File( parentSiteDirectory, "index.html" );
-    if ( !parentIndex.exists() || parentIndex.isDirectory() )
-    {
-        System.err.println( "no index file in parent or is a directory." );
-        result = false;
-    }
+File childSiteDirectory = new File( basedir, "child/target/site" )
 
-    // CHILD
+File childIndex = new File( childSiteDirectory, "index.html" )
+assert childIndex.exists() : "no index file in child."
 
-    File childSiteDirectory = new File( basedir, "child/target/site" );
-
-    File childIndex = new File( childSiteDirectory, "index.html" );
-    if ( !childIndex.exists() )
-    {
-        System.err.println( "no index file in child." );
-        result = false;
-    }
-
-    File childSummary = new File( childSiteDirectory, "summary.html" );
-    if ( !childSummary.exists() )
-    {
-        System.err.println( "no summary file in child." );
-        result = false;
-    }
-
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+File childSummary = new File( childSiteDirectory, "summary.html" )
+assert childSummary.exists() : "no summary file in child."

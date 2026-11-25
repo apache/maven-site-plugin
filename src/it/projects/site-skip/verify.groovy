@@ -18,142 +18,62 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+final File deployDirectory = new File( basedir, "deployed" )
+final File stageDirectory = new File( basedir, "target/staging" )
+final File stageDeployDirectory = new File( deployDirectory, "staging" )
 
-boolean result = true;
+// top
 
-try
-{
-    final File deployDirectory = new File( basedir, "deployed" );
-    final File stageDirectory = new File( basedir, "target/staging" );
-    final File stageDeployDirectory = new File( deployDirectory, "staging" );
+File siteDir = new File( basedir, "target/site" )
+assert siteDir.exists() && siteDir.isDirectory() : "top site is missing or not a directory."
 
-    // top
+File stageDir = new File( stageDirectory, "." )
+assert stageDir.exists() && stageDir.isDirectory() : "top stage site is missing or not a directory."
 
-    File siteDir = new File( basedir, "target/site" );
-    if ( !siteDir.exists() || !siteDir.isDirectory() )
-    {
-        System.err.println( "top site is missing or not a directory." );
-        result = false;
-    }
+File deployDir = new File( deployDirectory, "." )
+assert deployDir.exists() && deployDir.isDirectory() : "top deploy site is missing or not a directory."
 
-    File stageDir = new File( stageDirectory, "." );
-    if ( !stageDir.exists() || !stageDir.isDirectory() )
-    {
-        System.err.println( "top stage site is missing or not a directory." );
-        result = false;
-    }
+File stageDeployDir = new File( stageDeployDirectory, "." )
+assert stageDeployDir.exists() && stageDeployDir.isDirectory() : "top stage-deploy site is missing or not a directory."
 
-    File deployDir = new File( deployDirectory, "." );
-    if ( !deployDir.exists() || !deployDir.isDirectory() )
-    {
-        System.err.println( "top deploy site is missing or not a directory." );
-        result = false;
-    }
+// site
 
-    File stageDeployDir = new File( stageDeployDirectory, "." );
-    if ( !stageDeployDir.exists() || !stageDeployDir.isDirectory() )
-    {
-        System.err.println( "top stage-deploy site is missing or not a directory." );
-        result = false;
-    }
+siteDir = new File( basedir, "site/target/site" )
+assert siteDir.exists() && siteDir.isDirectory() : "site site is missing or not a directory."
 
-    // site
+stageDir = new File( stageDirectory, "site" )
+assert stageDir.exists() && stageDir.isDirectory() : "site stage site is missing or not a directory."
 
-    siteDir = new File( basedir, "site/target/site" );
-    if ( !siteDir.exists() || !siteDir.isDirectory() )
-    {
-        System.err.println( "site site is missing or not a directory." );
-        result = false;
-    }
+deployDir = new File( deployDirectory, "site" )
+assert deployDir.exists() && deployDir.isDirectory() : "site deploy site is missing or not a directory."
 
-    stageDir = new File( stageDirectory, "site" );
-    if ( !stageDir.exists() || !stageDir.isDirectory() )
-    {
-        System.err.println( "site stage site is missing or not a directory." );
-        result = false;
-    }
+stageDeployDir = new File( stageDeployDirectory, "site" )
+assert stageDeployDir.exists() && stageDeployDir.isDirectory() : "site stage-deploy site is missing or not a directory."
 
-    deployDir = new File( deployDirectory, "site" );
-    if ( !deployDir.exists() || !deployDir.isDirectory() )
-    {
-        System.err.println( "site deploy site is missing or not a directory." );
-        result = false;
-    }
+// skip-site
 
-    stageDeployDir = new File( stageDeployDirectory, "site" );
-    if ( !stageDeployDir.exists() || !stageDeployDir.isDirectory() )
-    {
-        System.err.println( "site stage-deploy site is missing or not a directory." );
-        result = false;
-    }
+siteDir = new File( basedir, "skip-site/target/site" )
+assert !siteDir.exists() : "skip-site site exists."
 
-    // skip-site
+stageDir = new File( stageDirectory, "skip-site" )
+assert !stageDir.exists() : "skip-site stage site exists."
 
-    siteDir = new File( basedir, "skip-site/target/site" );
-    if ( siteDir.exists() )
-    {
-        System.err.println( "skip-site site exists." );
-        result = false;
-    }
+deployDir = new File( deployDirectory, "skip-site" )
+assert !deployDir.exists() : "skip-site deploy site exists."
 
-    stageDir = new File( stageDirectory, "skip-site" );
-    if ( stageDir.exists() )
-    {
-        System.err.println( "skip-site stage site exists." );
-        result = false;
-    }
+stageDeployDir = new File( stageDeployDirectory, "skip-site" )
+assert !stageDeployDir.exists() : "skip-site stage-deploy site exists."
 
-    deployDir = new File( deployDirectory, "skip-site" );
-    if ( deployDir.exists() )
-    {
-        System.err.println( "skip-site deploy site exists." );
-        result = false;
-    }
+// skip-site-deploy
 
-    stageDeployDir = new File( stageDeployDirectory, "skip-site" );
-    if ( stageDeployDir.exists() )
-    {
-        System.err.println( "skip-site stage-deploy site exists." );
-        result = false;
-    }
+siteDir = new File( basedir, "skip-site-deploy/target/site" )
+assert siteDir.exists() && siteDir.isDirectory() : "skip-site-deploy site is missing or not a directory."
 
-    // skip-site-deploy
+stageDir = new File( stageDirectory, "skip-site-deploy" )
+assert stageDir.exists() : "skip-site-deploy stage site should still exist."
 
-    siteDir = new File( basedir, "skip-site-deploy/target/site" );
-    if ( !siteDir.exists() || !siteDir.isDirectory() )
-    {
-        System.err.println( "skip-site-deploy site is missing or not a directory." );
-        result = false;
-    }
+deployDir = new File( deployDirectory, "skip-site-deploy" )
+assert !deployDir.exists() : "skip-site-deploy deploy site exists."
 
-    stageDir = new File( stageDirectory, "skip-site-deploy" );
-    if ( !stageDir.exists() )
-    {
-        System.err.println( "skip-site-deploy stage site should still exist." );
-        result = false;
-    }
-
-    deployDir = new File( deployDirectory, "skip-site-deploy" );
-    if ( deployDir.exists() )
-    {
-        System.err.println( "skip-site-deploy deploy site exists." );
-        result = false;
-    }
-
-    stageDeployDir = new File( stageDeployDirectory, "skip-site-deploy" );
-    if ( stageDeployDir.exists() )
-    {
-        System.err.println( "skip-site-deploy stage-deploy site exists." );
-        result = false;
-    }
-
-}
-catch( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+stageDeployDir = new File( stageDeployDirectory, "skip-site-deploy" )
+assert !stageDeployDir.exists() : "skip-site-deploy stage-deploy site exists."

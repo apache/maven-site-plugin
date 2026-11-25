@@ -18,180 +18,77 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
-
-boolean result = true;
-
 // TODO: also verify module links in generated files!
 
-try
-{
-    // SITE
+// SITE
 
-    File topLevelDirectory = new File( basedir, "target/site" );
-    if ( !topLevelDirectory.exists() || !topLevelDirectory.isDirectory() )
-    {
-        System.err.println( "Site directory '" + topLevelDirectory + "' is missing or not a directory." );
-        return false;
-    }
+File topLevelDirectory = new File( basedir, "target/site" )
+assert topLevelDirectory.exists() && topLevelDirectory.isDirectory() : "Site directory '" + topLevelDirectory + "' is missing or not a directory."
 
-    File moduleDirectory = new File( basedir, "mymodule/target/site" );
-    if ( !moduleDirectory.exists() || !moduleDirectory.isDirectory() )
-    {
-        System.err.println( "Site module directory '" + moduleDirectory + "' is missing or not a directory." );
-        return false;
-    }
+File moduleDirectory = new File( basedir, "mymodule/target/site" )
+assert moduleDirectory.exists() && moduleDirectory.isDirectory() : "Site module directory '" + moduleDirectory + "' is missing or not a directory."
 
-    File indexFile = new File( topLevelDirectory, "index.html" );
-    if ( !indexFile.exists() || !indexFile.isFile() )
-    {
-        System.err.println( "Site index.html '" + indexFile + "' is missing or not a file." );
-        return false;
-    }
-    String content = FileUtils.fileRead( indexFile, "UTF-8" );
-    if ( !content.contains( "the following locales are supported: [, en, fr, de, de_DE, de_AT, zh_TW]" ) )
-    {
-        System.err.println( "index.html does not contain supported locales" );
-        return false;
-    }
+File indexFile = new File( topLevelDirectory, "index.html" )
+assert indexFile.exists() && indexFile.isFile() : "Site index.html '" + indexFile + "' is missing or not a file."
+String content = indexFile.getText('UTF-8')
+assert content.contains( "the following locales are supported: [, en, fr, de, de_DE, de_AT, zh_TW]" ) : "index.html does not contain supported locales"
 
-    File projectInfoFile = new File( topLevelDirectory, "project-info.html" );
-    if ( !projectInfoFile.exists() || !projectInfoFile.isFile() )
-    {
-        System.err.println( "Site project-info.html '" + projectInfoFile + "' is missing or not a file." );
-        return false;
-    }
+File projectInfoFile = new File( topLevelDirectory, "project-info.html" )
+assert projectInfoFile.exists() && projectInfoFile.isFile() : "Site project-info.html '" + projectInfoFile + "' is missing or not a file."
 
-    File frDirectory = new File( topLevelDirectory, "fr" );
-    if ( !frDirectory.exists() || !frDirectory.isDirectory() )
-    {
-        System.err.println( "Site fr directory '" + frDirectory + "' is missing or not a directory." );
-        return false;
-    }
+File frDirectory = new File( topLevelDirectory, "fr" )
+assert frDirectory.exists() && frDirectory.isDirectory() : "Site fr directory '" + frDirectory + "' is missing or not a directory."
 
-    File frProjectInfoFile = new File( frDirectory, "project-info.html" );
-    if ( !frProjectInfoFile.exists() || !frProjectInfoFile.isFile() )
-    {
-        System.err.println( "Site fr project-info.html '" + frProjectInfoFile + "' is missing or not a file." );
-        return false;
-    }
+File frProjectInfoFile = new File( frDirectory, "project-info.html" )
+assert frProjectInfoFile.exists() && frProjectInfoFile.isFile() : "Site fr project-info.html '" + frProjectInfoFile + "' is missing or not a file."
 
-    File frModuleDirectory = new File( moduleDirectory, "fr" );
-    if ( !frModuleDirectory.exists() || !frModuleDirectory.isDirectory() )
-    {
-        System.err.println( "Site fr module directory '" + frModuleDirectory + "' is missing or not a directory." );
-        return false;
-    }
+File frModuleDirectory = new File( moduleDirectory, "fr" )
+assert frModuleDirectory.exists() && frModuleDirectory.isDirectory() : "Site fr module directory '" + frModuleDirectory + "' is missing or not a directory."
 
-    File moduleProjectInfoFile = new File( moduleDirectory, "project-info.html" );
-    if ( !moduleProjectInfoFile.exists() || !moduleProjectInfoFile.isFile() )
-    {
-        System.err.println( "Site module project-info.html '" + moduleProjectInfoFile + "' is missing or not a file." );
-        return false;
-    }
+File moduleProjectInfoFile = new File( moduleDirectory, "project-info.html" )
+assert moduleProjectInfoFile.exists() && moduleProjectInfoFile.isFile() : "Site module project-info.html '" + moduleProjectInfoFile + "' is missing or not a file."
 
-    File frModuleProjectInfoFile = new File( frModuleDirectory, "project-info.html" );
-    if ( !frModuleProjectInfoFile.exists() || !frModuleProjectInfoFile.isFile() )
-    {
-        System.err.println( "Site fr module project-info.html '" + frModuleProjectInfoFile + "' is missing or not a file." );
-        return false;
-    }
+File frModuleProjectInfoFile = new File( frModuleDirectory, "project-info.html" )
+assert frModuleProjectInfoFile.exists() && frModuleProjectInfoFile.isFile() : "Site fr module project-info.html '" + frModuleProjectInfoFile + "' is missing or not a file."
 
-    // STAGING
+// STAGING
 
-    topLevelDirectory = new File( basedir, "target/staging" );
-    if ( !topLevelDirectory.exists() || !topLevelDirectory.isDirectory() )
-    {
-        System.err.println( "Staging directory '" + topLevelDirectory + "' is missing or not a directory." );
-        return false;
-    }
+topLevelDirectory = new File( basedir, "target/staging" )
+assert topLevelDirectory.exists() && topLevelDirectory.isDirectory() : "Staging directory '" + topLevelDirectory + "' is missing or not a directory."
 
-    moduleDirectory = new File( topLevelDirectory, "mymodule" );
-    if ( !moduleDirectory.exists() || !moduleDirectory.isDirectory() )
-    {
-        System.err.println( "Staging module directory '" + moduleDirectory + "' is missing or not a directory." );
-        return false;
-    }
+moduleDirectory = new File( topLevelDirectory, "mymodule" )
+assert moduleDirectory.exists() && moduleDirectory.isDirectory() : "Staging module directory '" + moduleDirectory + "' is missing or not a directory."
 
-    frDirectory = new File( topLevelDirectory, "fr" );
-    if ( !frDirectory.exists() || !frDirectory.isDirectory() )
-    {
-        System.err.println( "Staging fr directory '" + frDirectory + "' is missing or not a directory." );
-        return false;
-    }
+frDirectory = new File( topLevelDirectory, "fr" )
+assert frDirectory.exists() && frDirectory.isDirectory() : "Staging fr directory '" + frDirectory + "' is missing or not a directory."
 
-    frModuleDirectory = new File( frDirectory, "mymodule" );
-    if ( !frModuleDirectory.exists() || !frModuleDirectory.isDirectory() )
-    {
-        System.err.println( "Staging fr module directory '" + frModuleDirectory + "' is missing or not a directory." );
-        return false;
-    }
+frModuleDirectory = new File( frDirectory, "mymodule" )
+assert frModuleDirectory.exists() && frModuleDirectory.isDirectory() : "Staging fr module directory '" + frModuleDirectory + "' is missing or not a directory."
 
-    // DEPLOY
+// DEPLOY
 
-    topLevelDirectory = new File( basedir, "deploy" );
-    if ( !topLevelDirectory.exists() || !topLevelDirectory.isDirectory() )
-    {
-        System.err.println( "Deploy directory '" + topLevelDirectory + "' is missing or not a directory." );
-        return false;
-    }
+topLevelDirectory = new File( basedir, "deploy" )
+assert topLevelDirectory.exists() && topLevelDirectory.isDirectory() : "Deploy directory '" + topLevelDirectory + "' is missing or not a directory."
 
-    moduleDirectory = new File( topLevelDirectory, "mymodule" );
-    if ( !moduleDirectory.exists() || !moduleDirectory.isDirectory() )
-    {
-        System.err.println( "Staging module directory '" + moduleDirectory + "' is missing or not a directory." );
-        return false;
-    }
+moduleDirectory = new File( topLevelDirectory, "mymodule" )
+assert moduleDirectory.exists() && moduleDirectory.isDirectory() : "Staging module directory '" + moduleDirectory + "' is missing or not a directory."
 
-    frDirectory = new File( topLevelDirectory, "fr" );
-    if ( !frDirectory.exists() || !frDirectory.isDirectory() )
-    {
-        System.err.println( "Staging fr directory '" + frDirectory + "' is missing or not a directory." );
-        return false;
-    }
+frDirectory = new File( topLevelDirectory, "fr" )
+assert frDirectory.exists() && frDirectory.isDirectory() : "Staging fr directory '" + frDirectory + "' is missing or not a directory."
 
-    frModuleDirectory = new File( frDirectory, "mymodule" );
-    if ( !frModuleDirectory.exists() || !frModuleDirectory.isDirectory() )
-    {
-        System.err.println( "Staging fr module directory '" + frModuleDirectory + "' is missing or not a directory." );
-        return false;
-    }
+frModuleDirectory = new File( frDirectory, "mymodule" )
+assert frModuleDirectory.exists() && frModuleDirectory.isDirectory() : "Staging fr module directory '" + frModuleDirectory + "' is missing or not a directory."
 
-    // STAGE DEPLOY
+// STAGE DEPLOY
 
-    topLevelDirectory = new File( topLevelDirectory, "staging" );
-    if ( !topLevelDirectory.exists() || !topLevelDirectory.isDirectory() )
-    {
-        System.err.println( "Stage deploy directory '" + topLevelDirectory + "' is missing or not a directory." );
-        return false;
-    }
+topLevelDirectory = new File( topLevelDirectory, "staging" )
+assert topLevelDirectory.exists() && topLevelDirectory.isDirectory() : "Stage deploy directory '" + topLevelDirectory + "' is missing or not a directory."
 
-    moduleDirectory = new File( topLevelDirectory, "mymodule" );
-    if ( !moduleDirectory.exists() || !moduleDirectory.isDirectory() )
-    {
-        System.err.println( "Staging module directory '" + moduleDirectory + "' is missing or not a directory." );
-        return false;
-    }
+moduleDirectory = new File( topLevelDirectory, "mymodule" )
+assert moduleDirectory.exists() && moduleDirectory.isDirectory() : "Staging module directory '" + moduleDirectory + "' is missing or not a directory."
 
-    frDirectory = new File( topLevelDirectory, "fr" );
-    if ( !frDirectory.exists() || !frDirectory.isDirectory() )
-    {
-        System.err.println( "Staging fr directory '" + frDirectory + "' is missing or not a directory." );
-        return false;
-    }
+frDirectory = new File( topLevelDirectory, "fr" )
+assert frDirectory.exists() && frDirectory.isDirectory() : "Staging fr directory '" + frDirectory + "' is missing or not a directory."
 
-    frModuleDirectory = new File( frDirectory, "mymodule" );
-    if ( !frModuleDirectory.exists() || !frModuleDirectory.isDirectory() )
-    {
-        System.err.println( "Staging fr module directory '" + frModuleDirectory + "' is missing or not a directory." );
-        return false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+frModuleDirectory = new File( frDirectory, "mymodule" )
+assert frModuleDirectory.exists() && frModuleDirectory.isDirectory() : "Staging fr module directory '" + frModuleDirectory + "' is missing or not a directory."
