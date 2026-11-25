@@ -17,50 +17,17 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+final File siteDirectory = new File( basedir, "target/site" )
+assert siteDirectory.isDirectory() : "site is missing or not a directory."
 
-try
-{
-    final File siteDirectory = new File( basedir, "target/site" );
-    if ( !siteDirectory.isDirectory() )
-    {
-        System.err.println( "site is missing or not a directory." );
-        return false;
-    }
+File sitemapHtmlFile = new File( siteDirectory, "sitemap.html" )
+assert sitemapHtmlFile.isFile() : "no sitemap.html!"
 
-    File sitemapHtmlFile = new File( siteDirectory, "sitemap.html" );
-    if ( !sitemapHtmlFile.isFile() )
-    {
-        System.err.println( "no sitemap.html!" );
-        return false;
-    }
+content = sitemapHtmlFile.getText('UTF-8')
+assert content.contains( "<li>My first item</li>" ) : "\"<li>My first item</li>\" not found in sitemap.html!"
 
-    content = FileUtils.fileRead( sitemapHtmlFile, "UTF-8" );
-    if ( !content.contains( "<li>My first item</li>" ) )
-    {
-        System.err.println( "\"<li>My first item</li>\" not found in sitemap.html!" );
-        return false;
-    }
+File sitemapGermanHtmlFile = new File( siteDirectory, "de/sitemap.html" )
+assert sitemapGermanHtmlFile.isFile() : "no German sitemap.html!"
 
-    File sitemapGermanHtmlFile = new File( siteDirectory, "de/sitemap.html" );
-    if ( !sitemapGermanHtmlFile.isFile() )
-    {
-        System.err.println( "no German sitemap.html!" );
-        return false;
-    }
-
-    content = FileUtils.fileRead( sitemapGermanHtmlFile, "UTF-8" );
-    if ( !content.contains( "<li>Mein erstes Element</li>" ) )
-    {
-        System.err.println( "\"<li>Mein erstes Element</li>\" not found in German sitemap.html!" );
-        return false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    return false;
-}
-
-return true;
+content = sitemapGermanHtmlFile.getText('UTF-8')
+assert content.contains( "<li>Mein erstes Element</li>" ) : "\"<li>Mein erstes Element</li>\" not found in German sitemap.html!"

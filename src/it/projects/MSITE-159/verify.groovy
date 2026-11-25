@@ -18,42 +18,14 @@
  * under the License.
  */
 
-import java.io.*;
+final File siteDirectory = new File( basedir, "target/site" )
+assert siteDirectory.exists() && siteDirectory.isDirectory() : "site is missing or not a directory."
 
-import org.codehaus.plexus.util.*;
+File index = new File( siteDirectory, "index.html" )
+assert index.exists() && !index.isDirectory() : "no index file or is a directory."
 
-boolean result = true;
-
-try
-{
-    final File siteDirectory = new File( basedir, "target/site" );
-    if ( !siteDirectory.exists() || !siteDirectory.isDirectory() )
-    {
-        System.err.println( "site is missing or not a directory." );
-        result = false;
-    }
-
-    File index = new File( siteDirectory, "index.html" );
-    if ( !index.exists() || index.isDirectory() )
-    {
-        System.err.println( "no index file or is a directory." );
-        result = false;
-    }
-
-    String content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "<a href=\"http://webhost.company.com/index.html\">Breadcrumb</a>" );
-    int index2 = content.indexOf( "<a href=\"http://webhost.company.com/\">Link</a>" );
-    int index3 = content.indexOf( "<a href=\"http://webhost.company.com/\">Menu</a>" );
-    if ( index1 < 0 || index2 < 0 || index3 < 0 )
-    {
-        System.err.println( "index.html has incorrect links!" );
-        result = false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+String content = index.getText('UTF-8')
+int index1 = content.indexOf( "<a href=\"http://webhost.company.com/index.html\">Breadcrumb</a>" )
+int index2 = content.indexOf( "<a href=\"http://webhost.company.com/\">Link</a>" )
+int index3 = content.indexOf( "<a href=\"http://webhost.company.com/\">Menu</a>" )
+assert index1 >= 0 && index2 >= 0 && index3 >= 0 : "index.html has incorrect links!"

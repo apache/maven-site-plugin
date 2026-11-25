@@ -18,34 +18,11 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+File index = new File( basedir, "target/site/index.html" )
+assert index.exists() && !index.isDirectory() : "no index file or is a directory."
 
-boolean result = true;
+String content = index.getText('UTF-8')
+int index1 = content.indexOf( "dummy=value" )
+int index2 = content.indexOf( "att1=val1" ); // MSITE-550
 
-try
-{
-    File index = new File( basedir, "target/site/index.html" );
-    if ( !index.exists() || index.isDirectory() )
-    {
-        System.err.println( "no index file or is a directory." );
-        result = false;
-    }
-
-    String content = FileUtils.fileRead( index, "UTF-8" );
-    int index1 = content.indexOf( "dummy=value" );
-    int index2 = content.indexOf( "att1=val1" ); // MSITE-550
-
-    if ( index1 < 0 || index2 < 0 )
-    {
-        System.err.println( "index.html not resolved!" );
-        result = false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+assert index1 >= 0 && index2 >= 0 : "index.html not resolved!"

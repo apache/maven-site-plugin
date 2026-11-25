@@ -18,69 +18,38 @@
  * under the License.
  */
 
-import java.io.*;
-import java.util.*;
-import java.util.jar.*;
-import org.codehaus.plexus.util.*;
+import java.util.jar.*
 
-boolean result = true;
+File target = new File( basedir, "target" )
+assert target.exists() && target.isDirectory() : "target file is missing or not a directory."
 
-try
+File siteJar = new File( target, "site-jar-1.0-SNAPSHOT-site.jar" )
+assert siteJar.exists() && !siteJar.isDirectory() : "siteJar file is missing or a directory."
+
+String[] fileNames =  new String[] { "download.html", "index.html", "releases/release1.6.html" }
+
+Set contents = new HashSet()
+
+JarFile jar = new JarFile( siteJar )
+Enumeration jarEntries = jar.entries()
+long timestamp = -1
+while ( jarEntries.hasMoreElements() )
 {
-    File target = new File( basedir, "target" );
-    if ( !target.exists() || !target.isDirectory() )
+    JarEntry entry = (JarEntry) jarEntries.nextElement()
+    if ( timestamp == -1 )
     {
-        System.err.println( "target file is missing or not a directory." );
-        return false;
+        timestamp = entry.getTime(); // reproducible timestamp in jar file cause local timestamp depending on timezone
     }
-
-    File siteJar = new File( target, "site-jar-1.0-SNAPSHOT-site.jar" );
-    if ( !siteJar.exists() || siteJar.isDirectory() )
+    assert entry.getTime() == timestamp : "wrong entry time for " + entry.getName() + ": " + entry.getTime() + " instead of " + timestamp
+    if ( !entry.isDirectory() )
     {
-        System.err.println( "siteJar file is missing or a directory." );
-        return false;
-    }
-
-    String[] fileNames =  new String[] { "download.html", "index.html", "releases/release1.6.html" };
-
-    Set contents = new HashSet();
-
-    JarFile jar = new JarFile( siteJar );
-    Enumeration jarEntries = jar.entries();
-    long timestamp = -1;
-    while ( jarEntries.hasMoreElements() )
-    {
-        JarEntry entry = (JarEntry) jarEntries.nextElement();
-        if ( timestamp == -1 )
-        {
-            timestamp = entry.getTime(); // reproducible timestamp in jar file cause local timestamp depending on timezone
-        }
-        if ( entry.getTime() != timestamp )
-        {
-            System.out.println( "wrong entry time for " + entry.getName() + ": " + entry.getTime() + " instead of " + timestamp );
-            return false;
-        }
-        if ( !entry.isDirectory() )
-        {
-            // Only compare files
-            contents.add( entry.getName() );
-        }
-    }
-
-    for ( int i = 0; i < fileNames.length; i++ )
-    {
-        String fileName = fileNames[i];
-		if ( !contents.contains( fileName ) )
-		{
-        	System.err.println( "File[" + fileName + "] not found in jar archive" );
-        	return false;
-        }
+        // Only compare files
+        contents.add( entry.getName() )
     }
 }
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
 
-return result;
+for ( int i = 0; i < fileNames.length; i++ )
+{
+    String fileName = fileNames[i]
+    assert contents.contains( fileName ) : "File[" + fileName + "] not found in jar archive"
+}

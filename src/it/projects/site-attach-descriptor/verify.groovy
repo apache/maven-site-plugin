@@ -18,75 +18,39 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+File target = new File( basedir, "target" )
+assert target.exists() && target.isDirectory() : "target file is missing or not a directory."
 
-boolean result = true;
+File siteDescriptor = new File( target, "site-attach-descriptor-1.0-SNAPSHOT-site.xml" )
+assert siteDescriptor.exists() && !siteDescriptor.isDirectory() : "siteDescriptor file is missing from target or is a directory."
 
-try
+File siteDescriptorSwedish = new File( target, "site-attach-descriptor-1.0-SNAPSHOT-site_sv.xml" )
+assert siteDescriptorSwedish.exists() && !siteDescriptorSwedish.isDirectory() : "siteDescriptorSwedish file is missing from target or is a directory."
+
+File artifactsDirectory = new File( target, "snapshot-repo/org/apache/maven/plugins/site/its/site-attach-descriptor/1.0-SNAPSHOT" )
+boolean pomSiteDescriptor = false
+File[] files = artifactsDirectory.listFiles()
+for ( int i = 0; i < files.length; i++ )
 {
-    File target = new File( basedir, "target" );
-    if ( !target.exists() || !target.isDirectory() )
+    String name = files[i].getName()
+    // site-attach-descriptor-1.0-20090823.204852-1-site.xml
+    if ( name.endsWith( "-site.xml" ) )
     {
-        System.err.println( "target file is missing or not a directory." );
-        return false;
-    }
-
-    File siteDescriptor = new File( target, "site-attach-descriptor-1.0-SNAPSHOT-site.xml" );
-    if ( !siteDescriptor.exists() || siteDescriptor.isDirectory() )
-    {
-        System.err.println( "siteDescriptor file is missing from target or is a directory." );
-        return false;
-    }
-
-    File siteDescriptorSwedish = new File( target, "site-attach-descriptor-1.0-SNAPSHOT-site_sv.xml" );
-    if ( !siteDescriptorSwedish.exists() || siteDescriptorSwedish.isDirectory() )
-    {
-        System.err.println( "siteDescriptorSwedish file is missing from target or is a directory." );
-        return false;
-    }
-
-
-    File artifactsDirectory = new File( target, "snapshot-repo/org/apache/maven/plugins/site/its/site-attach-descriptor/1.0-SNAPSHOT" );
-    boolean pomSiteDescriptor = false;
-    File[] files = artifactsDirectory.listFiles();
-    for ( int i = 0; i < files.length; i++ )
-    {
-        String name = files[i].getName();
-        // site-attach-descriptor-1.0-20090823.204852-1-site.xml
-        if ( name.endsWith( "-site.xml" ) )
-        {
-	        pomSiteDescriptor = pomSiteDescriptor || name.startsWith( "site-attach-descriptor-1.0" );
-	    }
-    }
-    if ( !pomSiteDescriptor )
-    {
-        System.err.println( "site descriptor not deployed for pom packaging." );
-        return false;
-    }
-
-    artifactsDirectory = new File( target, "snapshot-repo/org/apache/maven/plugins/site/its/jar-site-attach-descriptor/1.0-SNAPSHOT" );
-    boolean jarSiteDescriptor = false;
-    files = artifactsDirectory.listFiles();
-    for ( int i = 0; i < files.length; i++ )
-    {
-        String name = files[i].getName();
-        // jar-site-attach-descriptor-1.0-20090823.204852-1-site.xml
-        if ( name.endsWith( "-site.xml" ) )
-        {
-	        jarSiteDescriptor = jarSiteDescriptor || name.startsWith( "jar-site-attach-descriptor-1.0" );
-	    }
-    }
-    if ( jarSiteDescriptor )
-    {
-        System.err.println( "site descriptor deployed for jar packaging." );
-        return false;
+        pomSiteDescriptor = pomSiteDescriptor || name.startsWith( "site-attach-descriptor-1.0" )
     }
 }
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
+assert pomSiteDescriptor : "site descriptor not deployed for pom packaging."
 
-return result;
+artifactsDirectory = new File( target, "snapshot-repo/org/apache/maven/plugins/site/its/jar-site-attach-descriptor/1.0-SNAPSHOT" )
+boolean jarSiteDescriptor = false
+files = artifactsDirectory.listFiles()
+for ( int i = 0; i < files.length; i++ )
+{
+    String name = files[i].getName()
+    // jar-site-attach-descriptor-1.0-20090823.204852-1-site.xml
+    if ( name.endsWith( "-site.xml" ) )
+    {
+        jarSiteDescriptor = jarSiteDescriptor || name.startsWith( "jar-site-attach-descriptor-1.0" )
+    }
+}
+assert !jarSiteDescriptor : "site descriptor deployed for jar packaging."

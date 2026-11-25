@@ -18,41 +18,14 @@
  * under the License.
  */
 
-import java.io.*;
-import java.util.*;
-import java.util.jar.*;
-import org.codehaus.plexus.util.*;
+import java.util.jar.*
 
-boolean result = true;
+File report = new File( basedir, "target/site/changes.html" )
+assert report.exists() && !report.isDirectory() : "report file is missing or a directory."
+String reportContent = report.getText('UTF-8')
 
-try
-{
-    File report = new File( basedir, "target/site/changes.html" );
-    if ( !report.exists() || report.isDirectory() )
-    {
-        System.err.println( "report file is missing or a directory." );
-        return false;
-    }
-    String reportContent = FileUtils.fileRead( report );
+int indexOf = reportContent.indexOf( "Changes" )
+assert indexOf >= 0 : "changes.html doesn't contains Changes Report title"
 
-    int indexOf = reportContent.indexOf( "Changes" );
-    if ( indexOf < 0 )
-    {
-      System.err.println( "changes.html doesn't contains Changes Report title" );
-      return false;
-    }
-
-    indexOf = reportContent.indexOf( "href=\"http://localhost/MCHANGES-88\"" );
-    if ( indexOf < 0 )
-    {
-      System.err.println( "changes.html doesn't contains jira issue link" );
-      return false;
-    }
-}
-catch ( Throwable e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+indexOf = reportContent.indexOf( "href=\"http://localhost/MCHANGES-88\"" )
+assert indexOf >= 0 : "changes.html doesn't contains jira issue link"

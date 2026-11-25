@@ -18,64 +18,24 @@
  * under the License.
  */
 
-import java.io.*;
+final File siteDirectory = new File( basedir, "target/site" )
+assert siteDirectory.isDirectory() : "site is missing or not a directory."
 
-import org.codehaus.plexus.util.*;
+File licenses = new File( siteDirectory, "licenses.html" )
+assert licenses.exists() && !licenses.isDirectory() : "no licenses file or is a directory."
 
-boolean result = true;
+String content = licenses.getText('UTF-8')
+int index = content.indexOf( "<a href=\"index.html\">Home</a>" )
+assert index >= 0 : "licenses.html has incorrect links!"
 
-try
-{
-    final File siteDirectory = new File( basedir, "target/site" );
-    if ( !siteDirectory.isDirectory() )
-    {
-        System.err.println( "site is missing or not a directory." );
-        result = false;
-    }
+// de
 
-    File licenses = new File( siteDirectory, "licenses.html" );
-    if ( !licenses.exists() || licenses.isDirectory() )
-    {
-        System.err.println( "no licenses file or is a directory." );
-        result = false;
-    }
+final File deDirectory = new File( siteDirectory, "de" )
+assert deDirectory.isDirectory() : "site is missing or not a directory."
 
-    String content = FileUtils.fileRead( licenses, "UTF-8" );
-    int index = content.indexOf( "<a href=\"index.html\">Home</a>" );
-    if ( index < 0 )
-    {
-        System.err.println( "licenses.html has incorrect links!" );
-        result = false;
-    }
+licenses = new File( deDirectory, "licenses.html" )
+assert licenses.exists() && !licenses.isDirectory() : "no licenses file or is a directory."
 
-    // de
-
-    final File deDirectory = new File( siteDirectory, "de" );
-    if ( !deDirectory.isDirectory() )
-    {
-        System.err.println( "site is missing or not a directory." );
-        result = false;
-    }
-
-    licenses = new File( deDirectory, "licenses.html" );
-    if ( !licenses.exists() || licenses.isDirectory() )
-    {
-        System.err.println( "no licenses file or is a directory." );
-        result = false;
-    }
-
-    content = FileUtils.fileRead( licenses, "UTF-8" );
-    index = content.indexOf( "<a href=\"index.html\">Heim</a>" );
-    if ( index < 0 )
-    {
-        System.err.println( "licenses.html has incorrect links!" );
-        result = false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+content = licenses.getText('UTF-8')
+index = content.indexOf( "<a href=\"index.html\">Heim</a>" )
+assert index >= 0 : "licenses.html has incorrect links!"

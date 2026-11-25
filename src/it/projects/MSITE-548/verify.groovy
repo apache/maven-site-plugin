@@ -18,52 +18,17 @@
  * under the License.
  */
 
-import java.io.*;
-import org.codehaus.plexus.util.*;
+File deployDirectory = new File( basedir, "deploy" )
+assert deployDirectory.exists() && deployDirectory.isDirectory() : "deploy directory is missing or not a directory:" + deployDirectory.getAbsolutePath()
 
-boolean result = true;
+File rootDirectory = new File( deployDirectory, "MSITE-548" )
+assert rootDirectory.exists() && rootDirectory.isDirectory() : "rootDirectory file is missing or not a directory."
 
-try
-{
-    File deployDirectory = new File( basedir, "deploy" );
-    if ( !deployDirectory.exists() || !deployDirectory.isDirectory() )
-    {
-        System.err.println( "deploy directory is missing or not a directory:" + deployDirectory.getAbsolutePath() );
-        return false;
-    }
+File junkDirectory = new File( rootDirectory, "junk" )
+assert junkDirectory.exists() && junkDirectory.isDirectory() : "junkDirectory file is missing or not a directory."
 
-    File rootDirectory = new File( deployDirectory, "MSITE-548" );
-    if ( !rootDirectory.exists() || !rootDirectory.isDirectory() )
-    {
-        System.err.println( "rootDirectory file is missing or not a directory." );
-        return false;
-    }
+File module1Directory = new File( deployDirectory, "module1" )
+assert module1Directory.exists() && module1Directory.isDirectory() : "module1Directory file is missing or not a directory."
 
-    File junkDirectory = new File( rootDirectory, "junk" );
-    if ( !junkDirectory.exists() || !junkDirectory.isDirectory() )
-    {
-        System.err.println( "junkDirectory file is missing or not a directory." );
-        return false;
-    }
-
-    File module1Directory = new File( deployDirectory, "module1" );
-    if ( !module1Directory.exists() || !module1Directory.isDirectory() )
-    {
-        System.err.println( "module1Directory file is missing or not a directory." );
-        return false;
-    }
-
-    File module2Directory = new File( deployDirectory, "module-2" );
-    if ( !module2Directory.exists() || !module2Directory.isDirectory() )
-    {
-        System.err.println( "module2Directory file is missing or not a directory." );
-        return false;
-    }
-}
-catch ( IOException e )
-{
-    e.printStackTrace();
-    result = false;
-}
-
-return result;
+File module2Directory = new File( deployDirectory, "module-2" )
+assert module2Directory.exists() && module2Directory.isDirectory() : "module2Directory file is missing or not a directory."
