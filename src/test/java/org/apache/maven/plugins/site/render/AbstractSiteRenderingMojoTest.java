@@ -63,4 +63,16 @@ class AbstractSiteRenderingMojoTest {
                 () -> AbstractSiteRenderingMojo.checkInheritedSiteDirectory(
                         tempDir.resolve("src/../.").toFile(), site, basedir));
     }
+
+    @Test
+    void generatedSiteDirectoryAsInheritedSiteDirectoryIsRefused() {
+        File generated = tempDir.resolve("target/generated-site").toFile();
+
+        assertThrows(
+                IOException.class, () -> AbstractSiteRenderingMojo.checkInheritedSiteDirectory(generated, generated));
+        assertThrows(
+                IOException.class,
+                () -> AbstractSiteRenderingMojo.checkInheritedSiteDirectory(
+                        tempDir.resolve("target").toFile(), generated));
+    }
 }

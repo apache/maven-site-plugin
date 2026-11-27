@@ -601,7 +601,8 @@ public abstract class AbstractSiteRenderingMojo extends AbstractSiteDescriptorMo
     }
 
     protected void resolveParentSiteResources() throws IOException {
-        checkInheritedSiteDirectory(inheritedSiteDirectory, siteDirectory, project.getBasedir());
+        checkInheritedSiteDirectory(
+                inheritedSiteDirectory, siteDirectory, generatedSiteDirectory, project.getBasedir());
         getLog().debug("Start resolving site resources");
         // potentially add inherited site resources
         siteResourcesResolver.resolveParentSiteResources(
